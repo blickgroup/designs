@@ -1,0 +1,338 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Blick Hub — v1.1 vs v1.2 (Website-Aligned)</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <style>
+    * { font-family: 'Inter', sans-serif; margin: 0; padding: 0; box-sizing: border-box; }
+    body { background: #111; overflow-x: hidden; }
+
+    /* ── Comparison header ── */
+    .compare-header {
+      position: sticky; top: 0; z-index: 100;
+      display: flex; align-items: center; justify-content: center;
+      background: #0a0a0a; border-bottom: 1px solid #333;
+      height: 48px; gap: 0;
+    }
+    .compare-header .label {
+      flex: 1; text-align: center; font-size: 13px; font-weight: 600; letter-spacing: 0.04em; text-transform: uppercase;
+    }
+    .compare-header .divider-v { width: 1px; height: 48px; background: #333; }
+    .compare-header .title-center {
+      position: absolute; left: 50%; transform: translateX(-50%);
+      font-size: 14px; font-weight: 700; color: #fff; letter-spacing: 0.02em; white-space: nowrap;
+      background: #0a0a0a; padding: 0 24px;
+    }
+
+    /* ── Split layout ── */
+    .split { display: flex; min-height: calc(100vh - 48px); }
+    .split > .half { flex: 1; overflow: hidden; }
+    .split-divider { width: 2px; background: #333; flex-shrink: 0; }
+
+    /* ── Shared app frame ── */
+    .app-frame { display: flex; height: 100%; min-height: calc(100vh - 48px); }
+    .sidebar { width: 220px; flex-shrink: 0; display: flex; flex-direction: column; padding: 24px 0; }
+    .sidebar .brand { padding: 0 20px 24px; font-size: 18px; font-weight: 700; color: #fff; }
+    .sidebar .brand span { color: #f05323; }
+    .sidebar nav { flex: 1; display: flex; flex-direction: column; gap: 2px; padding: 0 12px; }
+    .sidebar .nav-item {
+      display: flex; align-items: center; gap: 12px;
+      padding: 10px 16px; border-radius: 8px; font-size: 13px; font-weight: 500;
+      cursor: pointer; transition: all 0.2s;
+    }
+    .sidebar .nav-icon { width: 18px; height: 18px; opacity: 0.5; }
+
+    .content { flex: 1; overflow-y: auto; }
+    .content-inner { padding: 32px; }
+    .page-title { font-size: 24px; font-weight: 700; margin-bottom: 4px; color: #fff; }
+    .page-subtitle { font-size: 14px; margin-bottom: 32px; color: #707070; }
+
+    .section-header { display: flex; align-items: center; gap: 8px; margin-bottom: 16px; font-size: 16px; font-weight: 600; color: #fff; }
+    .section-header svg { width: 20px; height: 20px; color: #f05323; }
+
+    .card-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 16px; margin-bottom: 32px; }
+    @media (max-width: 1600px) { .card-grid { grid-template-columns: repeat(2, 1fr); } }
+
+    .report-card {
+      position: relative; padding: 20px; border-radius: 12px; cursor: pointer;
+      display: flex; flex-direction: column; gap: 12px; transition: all 0.2s;
+    }
+    .report-card .card-icon {
+      width: 48px; height: 48px; border-radius: 10px;
+      display: flex; align-items: center; justify-content: center;
+    }
+    .report-card .card-icon svg { width: 24px; height: 24px; }
+    .report-card .card-title { font-size: 15px; font-weight: 600; }
+    .report-card .card-desc { font-size: 13px; line-height: 1.5; }
+    .report-card .card-arrow { position: absolute; bottom: 20px; right: 20px; opacity: 0.3; }
+    .report-card .card-arrow svg { width: 20px; height: 20px; }
+    .badge-soon {
+      position: absolute; top: 12px; right: 12px;
+      font-size: 11px; font-weight: 500; padding: 2px 10px; border-radius: 99px;
+    }
+
+    /* ── Annotation callouts ── */
+    .callout {
+      position: absolute; font-size: 10px; font-weight: 600;
+      color: #22d3ee; background: rgba(34,211,238,0.08);
+      border: 1px solid rgba(34,211,238,0.2); border-radius: 6px;
+      padding: 2px 8px; pointer-events: none; white-space: nowrap;
+      z-index: 10; letter-spacing: 0.02em;
+    }
+
+    /* ============================================
+       LEFT — v1.1 (Current Deployed)
+       ============================================ */
+    .v11 .sidebar {
+      background: #1e1e1e;
+      border-right: none;
+      box-shadow: 4px 0 16px rgba(0,0,0,0.4);
+      z-index: 2;
+    }
+    .v11 .sidebar .nav-item { color: #a0a0a0; border-left: 3px solid transparent; padding-left: 13px; }
+    .v11 .sidebar .nav-item:hover { background: rgba(255,255,255,0.04); color: #bcbec0; }
+    .v11 .sidebar .nav-item.active {
+      background: linear-gradient(90deg, rgba(240,83,35,0.15) 0%, transparent 100%);
+      color: #fff; border-left-color: #f05323; font-weight: 600;
+    }
+    .v11 .sidebar .nav-item.active .nav-icon { opacity: 1; }
+
+    .v11 .content { background: #1a1a1a; }
+
+    .v11 .section-header { position: relative; padding-bottom: 12px; margin-bottom: 20px; }
+    .v11 .section-header::after {
+      content: ''; position: absolute; bottom: 0; left: 0;
+      width: 48px; height: 2px; background: linear-gradient(90deg, #f05323, transparent);
+    }
+
+    .v11 .report-card {
+      background: #2a2a2a; border: 1px solid #3a3a3a;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.3); border-left: 3px solid transparent;
+    }
+    .v11 .report-card:hover {
+      border-left-color: #f05323;
+      box-shadow: 0 4px 16px rgba(0,0,0,0.4); transform: translateY(-1px);
+    }
+    .v11 .report-card .card-icon { background: rgba(240,83,35,0.1); box-shadow: 0 0 16px rgba(240,83,35,0.08); }
+    .v11 .report-card .card-icon svg { color: #f05323; }
+    .v11 .report-card .card-title { color: #fff; }
+    .v11 .report-card .card-desc { color: #8a8a8a; }
+    .v11 .report-card .card-arrow svg { color: #58595b; }
+    .v11 .report-card.disabled { opacity: 0.45; cursor: not-allowed; }
+    .v11 .badge-soon { background: rgba(255,255,255,0.05); color: #58595b; border: 1px solid rgba(255,255,255,0.08); }
+
+    /* ============================================
+       RIGHT — v1.2 (Website-Aligned)
+       Five changes from website design language:
+       1. Frosted glass sidebar
+       2. Glass card backgrounds
+       3. Orange glow on interactive elements
+       4. Tight heading letter-spacing
+       5. Section tag pattern (uppercase + bar)
+       ============================================ */
+
+    /* 1. FROSTED GLASS SIDEBAR */
+    .v12 .sidebar {
+      background: rgba(26,26,26,0.88);
+      backdrop-filter: blur(20px);
+      -webkit-backdrop-filter: blur(20px);
+      border-right: 1px solid rgba(255,255,255,0.06);
+      z-index: 2;
+    }
+    .v12 .sidebar .nav-item { color: #a0a0a0; border-left: 3px solid transparent; padding-left: 13px; }
+    .v12 .sidebar .nav-item:hover { background: rgba(255,255,255,0.04); color: #bcbec0; }
+    .v12 .sidebar .nav-item.active {
+      background: linear-gradient(90deg, rgba(240,83,35,0.12) 0%, transparent 100%);
+      color: #fff; border-left-color: #f05323; font-weight: 600;
+    }
+    .v12 .sidebar .nav-item.active .nav-icon { opacity: 1; }
+
+    .v12 .content { background: #1a1a1a; }
+
+    /* 4. TIGHT HEADING TRACKING */
+    .v12 .page-title { letter-spacing: -0.03em; }
+    .v12 .section-header { letter-spacing: -0.01em; }
+    .v12 .report-card .card-title { letter-spacing: -0.01em; }
+
+    /* 5. SECTION TAG PATTERN — uppercase + wide tracking + orange bar */
+    .v12 .section-header {
+      position: relative; padding-bottom: 0; margin-bottom: 20px;
+      font-size: 11px; font-weight: 700; text-transform: uppercase;
+      letter-spacing: 0.12em; color: #a0a0a0;
+      gap: 12px;
+    }
+    .v12 .section-header svg { width: 16px; height: 16px; }
+    .v12 .section-header::before {
+      content: ''; display: block;
+      width: 24px; height: 2px; background: #f05323; border-radius: 1px;
+      flex-shrink: 0;
+    }
+    .v12 .section-header::after { display: none; }
+
+    /* 2. GLASS CARD BACKGROUNDS */
+    .v12 .report-card {
+      background: rgba(255,255,255,0.03);
+      border: 1px solid rgba(255,255,255,0.07);
+      border-left: 3px solid transparent;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.2);
+    }
+    .v12 .report-card:hover {
+      border-left-color: #f05323;
+      background: rgba(255,255,255,0.05);
+      border-color: rgba(255,255,255,0.12);
+      border-left-color: #f05323;
+      /* 3. ORANGE GLOW on hover */
+      box-shadow: 0 8px 32px rgba(240,83,35,0.12), 0 2px 8px rgba(0,0,0,0.3);
+      transform: translateY(-2px);
+    }
+    .v12 .report-card.hover-demo {
+      border-left-color: #f05323;
+      background: rgba(255,255,255,0.05);
+      border-color: rgba(255,255,255,0.12);
+      border-left-color: #f05323;
+      box-shadow: 0 8px 32px rgba(240,83,35,0.12), 0 2px 8px rgba(0,0,0,0.3);
+      transform: translateY(-2px);
+    }
+    .v12 .report-card .card-icon {
+      background: rgba(240,83,35,0.08);
+      box-shadow: 0 0 20px rgba(240,83,35,0.06);
+      border-radius: 12px;
+    }
+    .v12 .report-card .card-icon svg { color: #f05323; }
+    .v12 .report-card .card-title { color: #fff; }
+    .v12 .report-card .card-desc { color: #8a8a8a; }
+    .v12 .report-card .card-arrow svg { color: #58595b; }
+    .v12 .report-card.disabled { opacity: 0.4; cursor: not-allowed; }
+    .v12 .report-card.disabled:hover {
+      border-left-color: transparent; transform: none;
+      background: rgba(255,255,255,0.03);
+      box-shadow: 0 2px 8px rgba(0,0,0,0.2);
+      border-color: rgba(255,255,255,0.07);
+    }
+    .v12 .badge-soon {
+      background: rgba(255,255,255,0.04); color: #58595b;
+      border: 1px solid rgba(255,255,255,0.06); font-weight: 600; letter-spacing: 0.04em;
+    }
+  </style>
+</head>
+<body>
+
+<!-- ── Comparison Header ── -->
+<div class="compare-header">
+  <div class="label" style="color: #707070;">DEPLOYED v1.1</div>
+  <div class="divider-v"></div>
+  <div class="label" style="color: #f05323;">WEBSITE-ALIGNED v1.2</div>
+  <div class="title-center">Blick Hub &mdash; v1.1 vs v1.2 Comparison</div>
+</div>
+
+<div class="split">
+
+  <!-- ═══════════════════════════
+       LEFT — v1.1 (Current)
+       ═══════════════════════════ -->
+  <div class="half v11">
+    <div class="app-frame">
+      <div class="sidebar">
+        <div class="brand">Blick <span>Hub</span></div>
+        <nav>
+          <div class="nav-item"><svg class="nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="7" height="7" rx="1"/><rect x="14" y="3" width="7" height="7" rx="1"/><rect x="3" y="14" width="7" height="7" rx="1"/><rect x="14" y="14" width="7" height="7" rx="1"/></svg>Dashboard</div>
+          <div class="nav-item"><svg class="nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>It's About Me</div>
+          <div class="nav-item"><svg class="nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14.7 6.3a1 1 0 0 0 0 1.4l1.6 1.6a1 1 0 0 0 1.4 0l3.77-3.77a6 6 0 0 1-7.94 7.94l-6.91 6.91a2.12 2.12 0 0 1-3-3l6.91-6.91a6 6 0 0 1 7.94-7.94l-3.76 3.76z"/></svg>Customer Rigs</div>
+          <div class="nav-item"><svg class="nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 11l3 3L22 4"/><path d="M21 12v7a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11"/></svg>Forms</div>
+          <div class="nav-item"><svg class="nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"/><line x1="12" y1="9" x2="12" y2="13"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg>Product Issues</div>
+          <div class="nav-item active"><svg class="nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 20V10"/><path d="M12 20V4"/><path d="M6 20v-6"/></svg>Reports</div>
+          <div class="nav-item"><svg class="nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><polygon points="16.24 7.76 14.12 14.12 7.76 16.24 9.88 9.88 16.24 7.76"/></svg>Compass</div>
+          <div class="nav-item"><svg class="nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 2a4 4 0 0 1 4 4v2a4 4 0 0 1-8 0V6a4 4 0 0 1 4-4z"/><path d="M16 14H8a4 4 0 0 0-4 4v2h16v-2a4 4 0 0 0-4-4z"/></svg>AI Agent</div>
+        </nav>
+      </div>
+      <div class="content">
+        <div class="content-inner">
+          <h1 class="page-title">Reports</h1>
+          <p class="page-subtitle">Analytics and insights across Health &amp; Safety, Operations, and Compliance</p>
+
+          <div class="section-header"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M16 4h2a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2h2"/><rect x="8" y="2" width="8" height="4" rx="1" ry="1"/></svg>Forms</div>
+          <div class="card-grid">
+            <div class="report-card"><div class="card-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M19 17h2c.6 0 1-.4 1-1v-3c0-.9-.7-1.7-1.5-1.9L18 10l-2.7-3.6A2 2 0 0 0 13.7 5H6.3a2 2 0 0 0-1.6.9L2 9.5 1.5 11A2 2 0 0 0 1 13v3c0 .6.4 1 1 1h2"/><circle cx="7" cy="17" r="2"/><circle cx="17" cy="17" r="2"/></svg></div><div class="card-title">Vehicle Inspections</div><div class="card-desc">Monthly compliance tracking, mileage trends, and exception monitoring</div><div class="card-arrow"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="9 18 15 12 9 6"/></svg></div></div>
+            <div class="report-card"><div class="card-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"/><line x1="12" y1="9" x2="12" y2="13"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg></div><div class="card-title">Hazard Reports</div><div class="card-desc">Business-wide hazard tracking, risk distribution, and trend analysis</div><div class="card-arrow"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="9 18 15 12 9 6"/></svg></div></div>
+            <div class="report-card disabled"><span class="badge-soon">Coming Soon</span><div class="card-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M16 4h2a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2h2"/><path d="M9 14l2 2 4-4"/></svg></div><div class="card-title">Follow-up Tasks</div><div class="card-desc">Monitor task completion rates, overdue items, and assignee workload</div></div>
+            <div class="report-card"><div class="card-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"/><line x1="12" y1="9" x2="12" y2="13"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg></div><div class="card-title">Incident Analysis</div><div class="card-desc">Analyze incident trends, severity distribution, and response times</div><div class="card-arrow"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="9 18 15 12 9 6"/></svg></div></div>
+          </div>
+
+          <div class="section-header"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="23 6 13.5 15.5 8.5 10.5 1 18"/><polyline points="17 6 23 6 23 12"/></svg>Operations</div>
+          <div class="card-grid">
+            <div class="report-card"><div class="card-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M17.8 19.2L16 11l3.5-3.5C21 6 21.5 4 21 3c-1-.5-3 0-4.5 1.5L13 8 4.8 6.2c-.5-.1-.9.1-1.1.5l-.3.5c-.2.4-.1.9.3 1.1l5.3 3 L6 14l-2.3-.8c-.4-.1-.8 0-1 .3l-.2.3c-.2.3-.1.7.2.9l3.3 2.3 2.3 3.3c.2.3.6.4.9.2l.3-.2c.3-.2.5-.6.3-1L9 17l2.7-3 3 5.3c.2.4.7.5 1.1.3l.5-.3c.4-.2.6-.6.5-1.1z"/></svg></div><div class="card-title">Travel Days</div><div class="card-desc">Track actual vs forecast travel days for domestic and international trips</div><div class="card-arrow"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="9 18 15 12 9 6"/></svg></div></div>
+            <div class="report-card"><div class="card-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/></svg></div><div class="card-title">Power Usage</div><div class="card-desc">Track electricity consumption for EV fleet with individual and country totals</div><div class="card-arrow"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="9 18 15 12 9 6"/></svg></div></div>
+          </div>
+
+          <div class="section-header"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="4" width="18" height="18" rx="2" ry="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>Compliance</div>
+          <div class="card-grid">
+            <div class="report-card disabled"><span class="badge-soon">Coming Soon</span><div class="card-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg></div><div class="card-title">Training Compliance</div><div class="card-desc">Track training completion, certifications, and upcoming renewals</div></div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="split-divider"></div>
+
+  <!-- ═══════════════════════════
+       RIGHT — v1.2 (Website-Aligned)
+       ═══════════════════════════ -->
+  <div class="half v12">
+    <div class="app-frame">
+      <div class="sidebar" style="position: relative;">
+        <div class="brand">Blick <span>Hub</span></div>
+        <nav>
+          <div class="nav-item"><svg class="nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="7" height="7" rx="1"/><rect x="14" y="3" width="7" height="7" rx="1"/><rect x="3" y="14" width="7" height="7" rx="1"/><rect x="14" y="14" width="7" height="7" rx="1"/></svg>Dashboard</div>
+          <div class="nav-item"><svg class="nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>It's About Me</div>
+          <div class="nav-item"><svg class="nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14.7 6.3a1 1 0 0 0 0 1.4l1.6 1.6a1 1 0 0 0 1.4 0l3.77-3.77a6 6 0 0 1-7.94 7.94l-6.91 6.91a2.12 2.12 0 0 1-3-3l6.91-6.91a6 6 0 0 1 7.94-7.94l-3.76 3.76z"/></svg>Customer Rigs</div>
+          <div class="nav-item"><svg class="nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 11l3 3L22 4"/><path d="M21 12v7a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11"/></svg>Forms</div>
+          <div class="nav-item"><svg class="nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"/><line x1="12" y1="9" x2="12" y2="13"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg>Product Issues</div>
+          <div class="nav-item active"><svg class="nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 20V10"/><path d="M12 20V4"/><path d="M6 20v-6"/></svg>Reports</div>
+          <div class="nav-item"><svg class="nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><polygon points="16.24 7.76 14.12 14.12 7.76 16.24 9.88 9.88 16.24 7.76"/></svg>Compass</div>
+          <div class="nav-item"><svg class="nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 2a4 4 0 0 1 4 4v2a4 4 0 0 1-8 0V6a4 4 0 0 1 4-4z"/><path d="M16 14H8a4 4 0 0 0-4 4v2h16v-2a4 4 0 0 0-4-4z"/></svg>AI Agent</div>
+        </nav>
+        <!-- Annotation: frosted glass -->
+        <div class="callout" style="bottom: 16px; left: 16px;">frosted glass + hairline border</div>
+      </div>
+      <div class="content">
+        <div class="content-inner">
+          <h1 class="page-title">Reports</h1>
+          <p class="page-subtitle">Analytics and insights across Health &amp; Safety, Operations, and Compliance</p>
+
+          <div class="section-header" style="position: relative;">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M16 4h2a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2h2"/><rect x="8" y="2" width="8" height="4" rx="1" ry="1"/></svg>
+            Forms
+            <div class="callout" style="top: -20px; right: 0;">uppercase tag + orange bar</div>
+          </div>
+          <div class="card-grid">
+            <!-- Hover demo card -->
+            <div class="report-card hover-demo" style="position: relative;"><div class="card-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M19 17h2c.6 0 1-.4 1-1v-3c0-.9-.7-1.7-1.5-1.9L18 10l-2.7-3.6A2 2 0 0 0 13.7 5H6.3a2 2 0 0 0-1.6.9L2 9.5 1.5 11A2 2 0 0 0 1 13v3c0 .6.4 1 1 1h2"/><circle cx="7" cy="17" r="2"/><circle cx="17" cy="17" r="2"/></svg></div><div class="card-title">Vehicle Inspections</div><div class="card-desc">Monthly compliance tracking, mileage trends, and exception monitoring</div><div class="card-arrow"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="9 18 15 12 9 6"/></svg></div><div class="callout" style="top: -20px; left: 8px;">glass bg + orange glow shadow</div></div>
+            <div class="report-card"><div class="card-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"/><line x1="12" y1="9" x2="12" y2="13"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg></div><div class="card-title">Hazard Reports</div><div class="card-desc">Business-wide hazard tracking, risk distribution, and trend analysis</div><div class="card-arrow"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="9 18 15 12 9 6"/></svg></div></div>
+            <div class="report-card disabled"><span class="badge-soon">Coming Soon</span><div class="card-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M16 4h2a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2h2"/><path d="M9 14l2 2 4-4"/></svg></div><div class="card-title">Follow-up Tasks</div><div class="card-desc">Monitor task completion rates, overdue items, and assignee workload</div></div>
+            <div class="report-card"><div class="card-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"/><line x1="12" y1="9" x2="12" y2="13"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg></div><div class="card-title">Incident Analysis</div><div class="card-desc">Analyze incident trends, severity distribution, and response times</div><div class="card-arrow"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="9 18 15 12 9 6"/></svg></div></div>
+          </div>
+
+          <div class="section-header"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="23 6 13.5 15.5 8.5 10.5 1 18"/><polyline points="17 6 23 6 23 12"/></svg>Operations</div>
+          <div class="card-grid">
+            <div class="report-card"><div class="card-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M17.8 19.2L16 11l3.5-3.5C21 6 21.5 4 21 3c-1-.5-3 0-4.5 1.5L13 8 4.8 6.2c-.5-.1-.9.1-1.1.5l-.3.5c-.2.4-.1.9.3 1.1l5.3 3 L6 14l-2.3-.8c-.4-.1-.8 0-1 .3l-.2.3c-.2.3-.1.7.2.9l3.3 2.3 2.3 3.3c.2.3.6.4.9.2l.3-.2c.3-.2.5-.6.3-1L9 17l2.7-3 3 5.3c.2.4.7.5 1.1.3l.5-.3c.4-.2.6-.6.5-1.1z"/></svg></div><div class="card-title">Travel Days</div><div class="card-desc">Track actual vs forecast travel days for domestic and international trips</div><div class="card-arrow"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="9 18 15 12 9 6"/></svg></div></div>
+            <div class="report-card"><div class="card-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/></svg></div><div class="card-title">Power Usage</div><div class="card-desc">Track electricity consumption for EV fleet with individual and country totals</div><div class="card-arrow"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="9 18 15 12 9 6"/></svg></div></div>
+          </div>
+
+          <div class="section-header"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="4" width="18" height="18" rx="2" ry="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>Compliance</div>
+          <div class="card-grid">
+            <div class="report-card disabled"><span class="badge-soon">Coming Soon</span><div class="card-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg></div><div class="card-title">Training Compliance</div><div class="card-desc">Track training completion, certifications, and upcoming renewals</div></div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+</div>
+
+</body>
+</html>
