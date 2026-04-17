@@ -1,0 +1,210 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Compass - Tickets - Blick Hub (Dark Mode)</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Montserrat:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://unpkg.com/lucide@latest"></script>
+    <link rel="stylesheet" href="blick_hub_white_theme_muted.css">
+    <script>
+        tailwind.config = { theme: { extend: { colors: { 'brand-orange': '#f05323', 'brand-cyan': '#22d3ee' }, fontFamily: { sans: ['Inter', 'Montserrat', 'sans-serif'] } } } }
+    </script>
+    <style>
+        body { font-family: 'Inter', 'Montserrat', sans-serif !important; letter-spacing: -0.01em; background-color: #0a0a0a !important; color: #ededed !important; }
+        .sidebar { transform: translateX(-100%); transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1); }
+        .sidebar.open { transform: translateX(0); }
+        .overlay { opacity: 0; pointer-events: none; transition: opacity 0.2s ease-out; }
+        .overlay.active { opacity: 1; pointer-events: all; }
+        .nav-item { transition: all 0.15s cubic-bezier(0.4, 0, 0.2, 1); }
+        .nav-item:hover { background-color: #2a2a2a; }
+        .nav-item.active { background-color: rgba(240, 83, 35, 0.15); color: #f05323; font-weight: 500; }
+        .btn { transition: all 0.15s cubic-bezier(0.4, 0, 0.2, 1); }
+        .btn:hover { transform: translateY(-1px); }
+        .badge-pulse { animation: pulse-subtle 3s cubic-bezier(0.4, 0, 0.6, 1) infinite; }
+        @keyframes pulse-subtle { 0%, 100% { opacity: 1; } 50% { opacity: 0.9; } }
+        .tab-button { transition: all 0.15s cubic-bezier(0.4, 0, 0.2, 1); }
+        .tab-button.active { background-color: #f05323; color: white; }
+        .ticket-card { transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1); }
+        .ticket-card:hover { box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1); transform: translateY(-2px); }
+    </style>
+</head>
+<body class="bg-black">
+    <div id="overlay" class="overlay fixed inset-0 bg-black bg-opacity-60 z-30" onclick="toggleSidebar()"></div>
+
+    <aside id="sidebar" class="sidebar fixed top-0 left-0 h-full w-64 bg-zinc-900 border-r border-zinc-800 z-40 flex flex-col shadow-2xl">
+        <div class="flex items-center justify-between p-5 h-16 border-b border-zinc-800">
+            <div class="flex items-center gap-2">
+                <div class="w-8 h-8 bg-brand-orange rounded-lg flex items-center justify-center"><span class="text-white font-bold text-sm">B</span></div>
+                <h1 class="text-lg font-semibold text-gray-100">Blick Hub</h1>
+            </div>
+            <button onclick="toggleSidebar()" class="text-gray-500 hover:text-gray-300 transition-colors"><i data-lucide="x" class="w-5 h-5"></i></button>
+        </div>
+        <nav class="p-3 space-y-1 flex-1">
+            <a href="#" class="nav-item block px-3 py-2.5 rounded-lg text-sm text-gray-400"><div class="flex items-center gap-3"><i data-lucide="layout-dashboard" class="w-4 h-4"></i><span>Dashboard</span></div></a>
+            <a href="#" class="nav-item block px-3 py-2.5 rounded-lg text-sm text-gray-400"><div class="flex items-center gap-3"><i data-lucide="truck" class="w-4 h-4"></i><span>Customer Rigs</span></div></a>
+            <a href="#" class="nav-item block px-3 py-2.5 rounded-lg text-sm text-gray-400"><div class="flex items-center gap-3"><i data-lucide="shield-check" class="w-4 h-4"></i><span>Health & Safety</span><span class="badge-pulse ml-auto inline-flex items-center justify-center w-5 h-5 text-xs font-semibold text-white bg-brand-orange rounded-full">3</span></div></a>
+            <a href="#" class="nav-item active block px-3 py-2.5 rounded-lg text-sm"><div class="flex items-center gap-3"><i data-lucide="compass" class="w-4 h-4"></i><span>Compass</span></div></a>
+            <a href="#" class="nav-item block px-3 py-2.5 rounded-lg text-sm text-gray-400"><div class="flex items-center gap-3"><i data-lucide="bot" class="w-4 h-4"></i><span>AI Agent</span></div></a>
+        </nav>
+        <div class="p-4 border-t border-zinc-800 space-y-3">
+            <div class="flex items-center gap-3 px-2">
+                <div class="w-8 h-8 bg-zinc-800 text-gray-400 rounded-full flex items-center justify-center text-xs font-semibold">JS</div>
+                <div class="flex-1 min-w-0"><div class="text-sm font-medium text-gray-100 truncate">John Smith</div><div class="text-xs text-gray-500">Administrator</div></div>
+            </div>
+            <div class="text-center text-xs text-gray-400">v1.4.0</div>
+        </div>
+    </aside>
+
+    <div class="min-h-screen flex flex-col">
+        <header class="bg-zinc-900 border-b border-zinc-800 h-14 flex items-center justify-between px-5 sticky top-0 z-20">
+            <button onclick="toggleSidebar()" class="text-gray-500 hover:text-gray-300 transition-colors"><i data-lucide="menu" class="w-5 h-5"></i></button>
+            <div class="flex items-center gap-3">
+                <button class="text-gray-400 hover:text-gray-400 transition-colors"><i data-lucide="bell" class="w-5 h-5"></i></button>
+                <button class="text-gray-400 hover:text-gray-400 transition-colors"><i data-lucide="moon" class="w-5 h-5"></i></button>
+            </div>
+        </header>
+
+        <main class="flex-1 p-6 md:p-8">
+            <div class="max-w-7xl mx-auto w-full">
+                <div class="mb-6">
+                    <h1 class="text-2xl font-semibold text-gray-100 mb-1">Compass</h1>
+                    <p class="text-sm text-gray-500">Strategic planning and execution</p>
+                </div>
+
+                <div class="flex gap-2 mb-6 border-b border-zinc-800 pb-2">
+                    <button class="tab-button px-4 py-2 text-sm font-medium text-gray-400 rounded-lg hover:bg-zinc-800">Ideas</button>
+                    <button class="tab-button px-4 py-2 text-sm font-medium text-gray-400 rounded-lg hover:bg-zinc-800">90-Day Plan</button>
+                    <button class="tab-button active px-4 py-2 text-sm font-medium rounded-lg">Tickets</button>
+                </div>
+
+                <div class="flex items-center justify-between mb-6">
+                    <h2 class="text-lg font-semibold text-gray-100">Tickets</h2>
+                    <div class="flex items-center gap-3">
+                        <select class="px-3 py-2 border border-zinc-800 rounded-lg text-sm text-gray-300 bg-zinc-900 focus:outline-none focus:ring-2 focus:ring-brand-orange">
+                            <option>All Statuses</option>
+                            <option>Open</option>
+                            <option>Assigned</option>
+                            <option>In Progress</option>
+                            <option>Resolved</option>
+                        </select>
+                        <select class="px-3 py-2 border border-zinc-800 rounded-lg text-sm text-gray-300 bg-zinc-900 focus:outline-none focus:ring-2 focus:ring-brand-orange">
+                            <option>All Priorities</option>
+                            <option>Urgent</option>
+                            <option>High</option>
+                            <option>Medium</option>
+                            <option>Low</option>
+                        </select>
+                        <button class="btn px-4 py-2 bg-brand-orange text-white rounded-lg text-sm font-medium hover:bg-opacity-90 flex items-center gap-2">
+                            <i data-lucide="plus" class="w-4 h-4"></i>Submit Ticket
+                        </button>
+                    </div>
+                </div>
+
+                <div class="space-y-4">
+                    <!-- Ticket 1 - Urgent -->
+                    <div class="ticket-card bg-zinc-900 rounded-lg border border-zinc-800 p-5">
+                        <div class="flex items-start justify-between mb-3">
+                            <div class="flex-1">
+                                <h3 class="text-base font-semibold text-gray-100 mb-2">Login page not loading on Safari</h3>
+                                <div class="flex flex-wrap items-center gap-2 mb-3">
+                                    <span class="px-2.5 py-0.5 bg-zinc-800 border border-zinc-800 rounded-md text-xs font-medium text-gray-300">Bug</span>
+                                    <span class="px-2.5 py-0.5 bg-red-100 border border-red-200 rounded-md text-xs font-semibold text-red-700">URGENT</span>
+                                    <span class="px-2.5 py-0.5 bg-zinc-800 border border-gray-300 rounded-md text-xs font-medium text-gray-400">OPEN</span>
+                                </div>
+                                <p class="text-sm text-gray-400 mb-3">Users on Safari 17 cannot access the login page</p>
+                            </div>
+                            <span class="flex-shrink-0 ml-4 w-6 h-6 bg-brand-orange text-white text-xs rounded-full flex items-center justify-center font-semibold">2</span>
+                        </div>
+                        <div class="flex items-center justify-between text-xs text-gray-500 border-t border-zinc-800 pt-3">
+                            <div class="flex items-center gap-4">
+                                <div class="flex items-center gap-1"><i data-lucide="user" class="w-3 h-3"></i><span>Customer Support</span></div>
+                                <div class="flex items-center gap-1"><i data-lucide="calendar" class="w-3 h-3"></i><span>Oct 12, 2025</span></div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Ticket 2 - Medium -->
+                    <div class="ticket-card bg-zinc-900 rounded-lg border border-zinc-800 p-5">
+                        <div class="flex items-start justify-between mb-3">
+                            <div class="flex-1">
+                                <h3 class="text-base font-semibold text-gray-100 mb-2">Request: Bulk export feature</h3>
+                                <div class="flex flex-wrap items-center gap-2 mb-3">
+                                    <span class="px-2.5 py-0.5 bg-zinc-800 border border-zinc-800 rounded-md text-xs font-medium text-gray-300">Feature Request</span>
+                                    <span class="px-2.5 py-0.5 bg-blue-100 border border-blue-200 rounded-md text-xs font-semibold text-blue-700">MEDIUM</span>
+                                    <span class="px-2.5 py-0.5 bg-blue-100 border border-blue-200 rounded-md text-xs font-medium text-blue-700">ASSIGNED</span>
+                                </div>
+                                <p class="text-sm text-gray-400 mb-3">Need ability to export multiple records at once</p>
+                            </div>
+                        </div>
+                        <div class="flex items-center justify-between text-xs text-gray-500 border-t border-zinc-800 pt-3">
+                            <div class="flex items-center gap-4">
+                                <div class="flex items-center gap-1"><i data-lucide="user" class="w-3 h-3"></i><span>John D.</span></div>
+                                <div class="flex items-center gap-1"><i data-lucide="arrow-right" class="w-3 h-3"></i><span>Sarah</span></div>
+                                <div class="flex items-center gap-1"><i data-lucide="calendar" class="w-3 h-3"></i><span>Oct 10, 2025</span></div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Ticket 3 - High -->
+                    <div class="ticket-card bg-zinc-900 rounded-lg border border-zinc-800 p-5">
+                        <div class="flex items-start justify-between mb-3">
+                            <div class="flex-1">
+                                <h3 class="text-base font-semibold text-gray-100 mb-2">Dashboard performance slow</h3>
+                                <div class="flex flex-wrap items-center gap-2 mb-3">
+                                    <span class="px-2.5 py-0.5 bg-zinc-800 border border-zinc-800 rounded-md text-xs font-medium text-gray-300">Performance</span>
+                                    <span class="px-2.5 py-0.5 bg-orange-100 border border-orange-200 rounded-md text-xs font-semibold text-orange-700">HIGH</span>
+                                    <span class="px-2.5 py-0.5 bg-orange-100 border border-orange-200 rounded-md text-xs font-medium text-orange-600">IN PROGRESS</span>
+                                </div>
+                                <p class="text-sm text-gray-400 mb-3">Loading time exceeds 5 seconds</p>
+                            </div>
+                            <span class="flex-shrink-0 ml-4 w-6 h-6 bg-brand-orange text-white text-xs rounded-full flex items-center justify-center font-semibold">1</span>
+                        </div>
+                        <div class="flex items-center justify-between text-xs text-gray-500 border-t border-zinc-800 pt-3">
+                            <div class="flex items-center gap-4">
+                                <div class="flex items-center gap-1"><i data-lucide="user" class="w-3 h-3"></i><span>Mike C.</span></div>
+                                <div class="flex items-center gap-1"><i data-lucide="arrow-right" class="w-3 h-3"></i><span>Team B</span></div>
+                                <div class="flex items-center gap-1"><i data-lucide="calendar" class="w-3 h-3"></i><span>Oct 8, 2025</span></div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Ticket 4 - Low/Resolved -->
+                    <div class="ticket-card bg-zinc-900 rounded-lg border border-zinc-800 p-5 opacity-60">
+                        <div class="flex items-start justify-between mb-3">
+                            <div class="flex-1">
+                                <h3 class="text-base font-semibold text-gray-100 mb-2 line-through">Add tooltips to navigation</h3>
+                                <div class="flex flex-wrap items-center gap-2 mb-3">
+                                    <span class="px-2.5 py-0.5 bg-zinc-800 border border-zinc-800 rounded-md text-xs font-medium text-gray-300">Enhancement</span>
+                                    <span class="px-2.5 py-0.5 bg-zinc-800 border border-zinc-800 rounded-md text-xs font-semibold text-gray-400">LOW</span>
+                                    <span class="px-2.5 py-0.5 bg-green-100 border border-green-200 rounded-md text-xs font-medium text-green-700">RESOLVED</span>
+                                </div>
+                                <p class="text-sm text-gray-400 mb-3">Users requesting tooltips for better UX</p>
+                            </div>
+                        </div>
+                        <div class="flex items-center justify-between text-xs text-gray-500 border-t border-zinc-800 pt-3">
+                            <div class="flex items-center gap-4">
+                                <div class="flex items-center gap-1"><i data-lucide="user" class="w-3 h-3"></i><span>Lisa A.</span></div>
+                                <div class="flex items-center gap-1"><i data-lucide="arrow-right" class="w-3 h-3"></i><span>John</span></div>
+                                <div class="flex items-center gap-1"><i data-lucide="calendar" class="w-3 h-3"></i><span>Sep 25, 2025</span></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </main>
+    </div>
+
+    <script>
+        lucide.createIcons();
+        function toggleSidebar() { document.getElementById('sidebar').classList.toggle('open'); document.getElementById('overlay').classList.toggle('active'); }
+        document.addEventListener('click', function(event) {
+            const sidebar = document.getElementById('sidebar'); const overlay = document.getElementById('overlay'); const menuButton = event.target.closest('[onclick="toggleSidebar()"]');
+            if (!menuButton && !sidebar.contains(event.target) && sidebar.classList.contains('open')) { toggleSidebar(); }
+        });
+    </script>
+</body>
+</html>

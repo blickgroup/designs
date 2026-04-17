@@ -1,0 +1,132 @@
+:root {
+  /* Blick Brand Colors - Used as accents */
+  --brand-orange: #f05323;
+  --brand-cyan: #22d3ee;
+  --brand-dark-gray: #58595b;
+  --brand-light-gray: #bcbec0;
+  --brand-black: #212121;
+  --brand-charcoal: #2a2a2a;
+
+  /* Muted palette - Primary colors */
+  --background: #fafafa;
+  --foreground: #1f1f1f;
+  --card: #ffffff;
+  --card-foreground: #1f1f1f;
+  --popover: #ffffff;
+  --popover-foreground: #1f1f1f;
+
+  --primary: #f05323;
+  --primary-foreground: #ffffff;
+  --secondary: #f5f5f5;
+  --secondary-foreground: #1f1f1f;
+
+  --muted: #f5f5f5;
+  --muted-foreground: #6b7280;
+  --accent: #f05323;
+  --accent-foreground: #ffffff;
+
+  --destructive: #ef4444;
+  --destructive-foreground: #ffffff;
+
+  --border: #e5e7eb;
+  --input: #e5e7eb;
+  --ring: #f05323;
+
+  /* Subtle grays for UI elements */
+  --gray-50: #fafafa;
+  --gray-100: #f5f5f5;
+  --gray-200: #e5e7eb;
+  --gray-300: #d1d5db;
+  --gray-400: #9ca3af;
+  --gray-500: #6b7280;
+  --gray-600: #4b5563;
+  --gray-700: #374151;
+  --gray-800: #1f2937;
+  --gray-900: #111827;
+
+  /* Sidebar - muted with brand accent */
+  --sidebar: #ffffff;
+  --sidebar-foreground: #374151;
+  --sidebar-primary: #f05323;
+  --sidebar-primary-foreground: #ffffff;
+  --sidebar-accent: #f5f5f5;
+  --sidebar-accent-foreground: #374151;
+  --sidebar-border: #e5e7eb;
+  --sidebar-ring: #f05323;
+
+  /* Typography */
+  --font-sans: 'Inter', 'Montserrat', sans-serif;
+  --font-serif: 'Inter', 'Montserrat', sans-serif;
+  --font-mono: 'Monaco', 'Courier New', monospace;
+
+  /* Border radius */
+  --radius: 0.5rem;
+  --radius-sm: 0.375rem;
+  --radius-md: 0.5rem;
+  --radius-lg: 0.75rem;
+  --radius-xl: 1rem;
+
+  /* Subtle shadows */
+  --shadow-2xs: 0 1px 2px 0 rgba(0, 0, 0, 0.03);
+  --shadow-xs: 0 1px 2px 0 rgba(0, 0, 0, 0.05);
+  --shadow-sm: 0 1px 3px 0 rgba(0, 0, 0, 0.08), 0 1px 2px -1px rgba(0, 0, 0, 0.08);
+  --shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.1), 0 1px 2px -1px rgba(0, 0, 0, 0.1);
+  --shadow-md: 0 4px 6px -1px rgba(0, 0, 0, 0.08), 0 2px 4px -2px rgba(0, 0, 0, 0.08);
+  --shadow-lg: 0 10px 15px -3px rgba(0, 0, 0, 0.08), 0 4px 6px -4px rgba(0, 0, 0, 0.08);
+  --shadow-xl: 0 20px 25px -5px rgba(0, 0, 0, 0.08), 0 8px 10px -6px rgba(0, 0, 0, 0.08);
+  --shadow-2xl: 0 25px 50px -12px rgba(0, 0, 0, 0.15);
+
+  /* Spacing */
+  --spacing: 0.25rem;
+  --tracking-normal: -0.01em;
+}
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  font-family: var(--font-sans) !important;
+  background-color: var(--background) !important;
+  color: var(--foreground) !important;
+  line-height: 1.5;
+  -webkit-font-smoothing: antialiased;
+  letter-spacing: var(--tracking-normal);
+}
+
+h1, h2, h3, h4, h5, h6 {
+  font-family: var(--font-sans) !important;
+  font-weight: 600 !important;
+  color: var(--foreground) !important;
+  letter-spacing: -0.02em !important;
+}
+
+.text-brand-orange {
+  color: var(--brand-orange) !important;
+}
+
+.bg-brand-orange {
+  background-color: var(--brand-orange) !important;
+}
+
+.text-brand-cyan {
+  color: var(--brand-cyan) !important;
+}
+
+.bg-brand-cyan {
+  background-color: var(--brand-cyan) !important;
+}
+
+.border-brand-orange {
+  border-color: var(--brand-orange) !important;
+}
+
+.hover\:bg-brand-orange:hover {
+  background-color: var(--brand-orange) !important;
+}
+
+.hover\:border-brand-orange:hover {
+  border-color: var(--brand-orange) !important;
+}

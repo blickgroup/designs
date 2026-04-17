@@ -1,0 +1,784 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="dark">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Dashboard - Org-Wide Compliance v2.0.1</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+
+  <style>
+    /* Theme System */
+    :root, [data-theme="dark"] {
+      --brand-orange: #f05323;
+      --bg-primary: #212121;
+      --bg-secondary: #2a2a2a;
+      --bg-tertiary: #1a1a1a;
+      --bg-hover: #3a3a3a;
+      --text-primary: #bcbec0;
+      --text-secondary: #a0a0a0;
+      --text-heading: #ffffff;
+      --text-muted: #707070;
+      --border-default: #58595b;
+      --border-subtle: #404040;
+      --success: #10b981;
+      --success-light: #064e3b;
+      --warning: #f59e0b;
+      --warning-light: #451a03;
+      --danger: #ef4444;
+      --danger-light: #450a0a;
+      --card-bg: #2a2a2a;
+      --card-border: #58595b;
+    }
+
+    [data-theme="light"] {
+      --brand-orange: #f05323;
+      --bg-primary: #ffffff;
+      --bg-secondary: #f9fafb;
+      --bg-tertiary: #f3f4f6;
+      --bg-hover: #e5e7eb;
+      --text-primary: #111827;
+      --text-secondary: #6b7280;
+      --text-heading: #000000;
+      --text-muted: #9ca3af;
+      --border-default: #e5e7eb;
+      --border-subtle: #f3f4f6;
+      --success: #10b981;
+      --success-light: #d1fae5;
+      --warning: #f59e0b;
+      --warning-light: #fef3c7;
+      --danger: #ef4444;
+      --danger-light: #fee2e2;
+      --card-bg: #ffffff;
+      --card-border: #e5e7eb;
+    }
+
+    * { font-family: 'Inter', sans-serif; }
+    body { background: var(--bg-primary); color: var(--text-primary); }
+
+    .card {
+      background: var(--card-bg);
+      border: 1px solid var(--card-border);
+      border-radius: 12px;
+      overflow: hidden;
+    }
+
+    .card-header {
+      padding: 16px 20px;
+      border-bottom: 1px solid var(--border-subtle);
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+
+    .table-container {
+      overflow-x: auto;
+    }
+
+    table {
+      width: 100%;
+      border-collapse: collapse;
+    }
+
+    th {
+      text-align: left;
+      padding: 12px 16px;
+      font-weight: 600;
+      font-size: 12px;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+      color: var(--text-muted);
+      border-bottom: 1px solid var(--border-subtle);
+    }
+
+    td {
+      padding: 12px 16px;
+      border-bottom: 1px solid var(--border-subtle);
+      font-size: 14px;
+    }
+
+    tr:last-child td {
+      border-bottom: none;
+    }
+
+    /* Clickable rows */
+    tbody tr {
+      cursor: pointer;
+      transition: all 0.2s;
+    }
+
+    tbody tr:hover {
+      background: var(--bg-hover);
+    }
+
+    tbody tr:hover td:first-child {
+      color: var(--brand-orange);
+    }
+
+    /* Exception row highlighting */
+    tr.row-danger {
+      background: var(--danger-light);
+    }
+    tr.row-danger:hover {
+      background: rgba(239, 68, 68, 0.2);
+    }
+
+    tr.row-warning {
+      background: var(--warning-light);
+    }
+    tr.row-warning:hover {
+      background: rgba(245, 158, 11, 0.2);
+    }
+
+    .badge {
+      display: inline-flex;
+      align-items: center;
+      padding: 4px 10px;
+      border-radius: 9999px;
+      font-size: 11px;
+      font-weight: 600;
+      text-transform: uppercase;
+    }
+
+    .badge-success {
+      background: var(--success-light);
+      color: var(--success);
+    }
+
+    .badge-warning {
+      background: var(--warning-light);
+      color: var(--warning);
+    }
+
+    .badge-danger {
+      background: var(--danger-light);
+      color: var(--danger);
+    }
+
+    .btn-secondary {
+      background: transparent;
+      color: var(--text-primary);
+      padding: 8px 16px;
+      border-radius: 8px;
+      font-weight: 500;
+      font-size: 13px;
+      border: 1px solid var(--border-default);
+      cursor: pointer;
+      transition: all 0.2s;
+    }
+
+    .btn-secondary:hover {
+      background: var(--bg-hover);
+      border-color: var(--brand-orange);
+    }
+
+    .btn-primary {
+      background: var(--brand-orange);
+      color: white;
+      padding: 8px 16px;
+      border-radius: 8px;
+      font-weight: 600;
+      font-size: 13px;
+      border: none;
+      cursor: pointer;
+      transition: all 0.2s;
+    }
+
+    .btn-primary:hover {
+      filter: brightness(1.1);
+    }
+
+    .dropdown {
+      background: var(--bg-secondary);
+      border: 1px solid var(--border-default);
+      border-radius: 6px;
+      padding: 6px 12px;
+      color: var(--text-primary);
+      font-size: 13px;
+      cursor: pointer;
+    }
+
+    .hazard-item {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      padding: 12px 16px;
+      border-bottom: 1px solid var(--border-subtle);
+      transition: background 0.2s;
+    }
+
+    .hazard-item:last-child {
+      border-bottom: none;
+    }
+
+    .hazard-item:hover {
+      background: var(--bg-hover);
+      cursor: pointer;
+    }
+
+    .risk-indicator {
+      width: 8px;
+      height: 8px;
+      border-radius: 50%;
+    }
+
+    .summary-row {
+      background: var(--bg-secondary);
+      padding: 12px 16px;
+      font-size: 13px;
+      color: var(--text-secondary);
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .version-badge {
+      position: fixed;
+      bottom: 20px;
+      right: 20px;
+      background: var(--brand-orange);
+      color: white;
+      padding: 8px 16px;
+      border-radius: 8px;
+      font-size: 12px;
+      font-weight: 600;
+    }
+
+    /* Modal Styles */
+    .modal-overlay {
+      display: none;
+      position: fixed;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      background: rgba(0, 0, 0, 0.7);
+      z-index: 1000;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .modal-overlay.active {
+      display: flex;
+    }
+
+    .modal {
+      background: var(--card-bg);
+      border: 1px solid var(--card-border);
+      border-radius: 16px;
+      width: 90%;
+      max-width: 600px;
+      max-height: 90vh;
+      overflow-y: auto;
+    }
+
+    .modal-header {
+      padding: 20px 24px;
+      border-bottom: 1px solid var(--border-subtle);
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .modal-body {
+      padding: 24px;
+    }
+
+    .modal-footer {
+      padding: 16px 24px;
+      border-top: 1px solid var(--border-subtle);
+      display: flex;
+      justify-content: flex-end;
+      gap: 12px;
+    }
+
+    .detail-row {
+      display: flex;
+      justify-content: space-between;
+      padding: 12px 0;
+      border-bottom: 1px solid var(--border-subtle);
+    }
+
+    .detail-row:last-child {
+      border-bottom: none;
+    }
+
+    .detail-label {
+      color: var(--text-muted);
+      font-size: 13px;
+    }
+
+    .detail-value {
+      color: var(--text-heading);
+      font-weight: 500;
+      text-align: right;
+    }
+
+    .close-btn {
+      background: none;
+      border: none;
+      font-size: 24px;
+      color: var(--text-muted);
+      cursor: pointer;
+      padding: 0;
+      line-height: 1;
+    }
+
+    .close-btn:hover {
+      color: var(--text-heading);
+    }
+
+    /* Click hint */
+    .click-hint {
+      display: flex;
+      align-items: center;
+      gap: 4px;
+      font-size: 11px;
+      color: var(--text-muted);
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Theme Toggle -->
+  <div style="position: fixed; top: 20px; right: 20px; z-index: 1000;">
+    <button onclick="toggleTheme()" class="btn-secondary" style="display: flex; align-items: center; gap: 8px;">
+      <span id="theme-icon">&#9790;</span>
+      <span id="theme-label">Toggle Theme</span>
+    </button>
+  </div>
+
+  <!-- Version Badge -->
+  <div class="version-badge">v2.0.1 - Dashboard (clickable rows, sorted by exceptions)</div>
+
+  <!-- Main Layout -->
+  <div style="display: flex; min-height: 100vh;">
+
+    <!-- Sidebar -->
+    <aside style="width: 260px; background: var(--bg-tertiary); border-right: 1px solid var(--border-default); padding: 24px 16px;">
+      <div style="display: flex; align-items: center; gap: 12px; margin-bottom: 32px;">
+        <div style="width: 40px; height: 40px; background: var(--brand-orange); border-radius: 8px; display: flex; align-items: center; justify-content: center;">
+          <span style="color: white; font-weight: 700; font-size: 18px;">B</span>
+        </div>
+        <span style="color: var(--text-heading); font-weight: 700; font-size: 18px;">Blick Hub</span>
+      </div>
+
+      <nav style="display: flex; flex-direction: column; gap: 4px;">
+        <a href="#" style="padding: 12px 16px; border-radius: 8px; background: var(--brand-orange); color: white; text-decoration: none; display: flex; align-items: center; gap: 12px;">
+          <span>&#128200;</span> Dashboard
+        </a>
+        <a href="#" style="padding: 12px 16px; border-radius: 8px; color: var(--text-secondary); text-decoration: none; display: flex; align-items: center; gap: 12px;">
+          <span>&#128100;</span> It's All About Me
+        </a>
+        <a href="#" style="padding: 12px 16px; border-radius: 8px; color: var(--text-secondary); text-decoration: none; display: flex; align-items: center; gap: 12px;">
+          <span>&#128736;</span> Customer Rigs
+        </a>
+        <a href="#" style="padding: 12px 16px; border-radius: 8px; color: var(--text-secondary); text-decoration: none; display: flex; align-items: center; gap: 12px;">
+          <span>&#128737;</span> Health & Safety
+        </a>
+        <a href="#" style="padding: 12px 16px; border-radius: 8px; color: var(--text-secondary); text-decoration: none; display: flex; align-items: center; gap: 12px;">
+          <span>&#127919;</span> Compass
+        </a>
+      </nav>
+    </aside>
+
+    <!-- Main Content -->
+    <main style="flex: 1; padding: 32px; max-width: 1200px;">
+
+      <!-- Header -->
+      <div style="margin-bottom: 32px;">
+        <h1 style="color: var(--text-heading); font-size: 28px; font-weight: 700; margin-bottom: 8px;">
+          &#128200; Dashboard
+        </h1>
+        <p style="color: var(--text-secondary);">Organisation compliance at a glance</p>
+      </div>
+
+      <!-- Vehicle Inspections Table - SORTED BY EXCEPTIONS -->
+      <div class="card" style="margin-bottom: 24px;">
+        <div class="card-header">
+          <div style="display: flex; align-items: center; gap: 12px;">
+            <span style="font-size: 20px;">&#128663;</span>
+            <span style="color: var(--text-heading); font-weight: 600; font-size: 16px;">Vehicle Inspections</span>
+            <span class="click-hint">&#128433; Click row for details</span>
+          </div>
+          <select class="dropdown">
+            <option>This Week</option>
+            <option>Last 7 Days</option>
+            <option>Last 30 Days</option>
+            <option>All Time</option>
+          </select>
+        </div>
+        <div class="table-container">
+          <table>
+            <thead>
+              <tr>
+                <th>Vehicle</th>
+                <th>Driver</th>
+                <th>Last Inspection</th>
+                <th>Status</th>
+                <th>Due</th>
+              </tr>
+            </thead>
+            <tbody>
+              <!-- OVERDUE FIRST (sorted by exceptions) -->
+              <tr class="row-danger" onclick="showVehicleDetail('JKL-012', 'Tim Babbage', '01 Dec 2025', 'Overdue', '08 Dec', '78,450 km', 'Toyota Hilux', '2019', 'Some brake wear noted')">
+                <td style="font-weight: 600; color: var(--text-heading);">JKL-012</td>
+                <td>Tim Babbage</td>
+                <td>01 Dec 2025</td>
+                <td><span class="badge badge-danger">&#128308; Overdue</span></td>
+                <td style="color: var(--danger); font-weight: 600;">08 Dec</td>
+              </tr>
+              <!-- DUE SOON NEXT -->
+              <tr class="row-warning" onclick="showVehicleDetail('GHI-789', 'Mike Chen', '10 Dec 2025', 'Due', '17 Dec', '52,100 km', 'Ford Ranger', '2021', 'All OK')">
+                <td style="font-weight: 600; color: var(--text-heading);">GHI-789</td>
+                <td>Mike Chen</td>
+                <td>10 Dec 2025</td>
+                <td><span class="badge badge-warning">&#9888; Due</span></td>
+                <td style="color: var(--warning); font-weight: 600;">17 Dec</td>
+              </tr>
+              <!-- PASS LAST -->
+              <tr onclick="showVehicleDetail('ABC-123', 'John Smith', '15 Dec 2025', 'Pass', '22 Dec', '45,230 km', 'Toyota Hilux', '2020', 'All OK')">
+                <td style="font-weight: 600; color: var(--text-heading);">ABC-123</td>
+                <td>John Smith</td>
+                <td>15 Dec 2025</td>
+                <td><span class="badge badge-success">&#10003; Pass</span></td>
+                <td>22 Dec</td>
+              </tr>
+              <tr onclick="showVehicleDetail('DEF-456', 'Sarah Johnson', '14 Dec 2025', 'Pass', '21 Dec', '38,900 km', 'Nissan Navara', '2022', 'All OK')">
+                <td style="font-weight: 600; color: var(--text-heading);">DEF-456</td>
+                <td>Sarah Johnson</td>
+                <td>14 Dec 2025</td>
+                <td><span class="badge badge-success">&#10003; Pass</span></td>
+                <td>21 Dec</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+        <div class="summary-row">
+          <span>Summary: <strong>12 vehicles</strong> | <span style="color: var(--danger); font-weight: 600;">1 overdue</span> | <span style="color: var(--warning); font-weight: 600;">1 due</span> | 10 current</span>
+          <a href="#" style="color: var(--brand-orange); font-weight: 600; text-decoration: none; font-size: 13px;">
+            View All Vehicles &rarr;
+          </a>
+        </div>
+      </div>
+
+      <!-- Forklift Inspections Table - SORTED BY EXCEPTIONS -->
+      <div class="card" style="margin-bottom: 24px;">
+        <div class="card-header">
+          <div style="display: flex; align-items: center; gap: 12px;">
+            <span style="font-size: 20px;">&#127959;</span>
+            <span style="color: var(--text-heading); font-weight: 600; font-size: 16px;">Forklift Inspections</span>
+            <span class="click-hint">&#128433; Click row for details</span>
+          </div>
+          <select class="dropdown">
+            <option>This Week</option>
+            <option>Last 7 Days</option>
+            <option>Last 30 Days</option>
+            <option>All Time</option>
+          </select>
+        </div>
+        <div class="table-container">
+          <table>
+            <thead>
+              <tr>
+                <th>Forklift</th>
+                <th>Operator</th>
+                <th>Last Check</th>
+                <th>Status</th>
+                <th>Hours</th>
+              </tr>
+            </thead>
+            <tbody>
+              <!-- ISSUES FIRST -->
+              <tr class="row-warning" onclick="showForkliftDetail('AU Forklift', 'Chris Thomas', '15 Dec 2025', 'Issues', '1,890', 'Toyota 8FG25', '2018', 'Hydraulic line leak detected - repair scheduled')">
+                <td style="font-weight: 600; color: var(--text-heading);">AU Forklift</td>
+                <td>Chris Thomas</td>
+                <td>15 Dec 2025</td>
+                <td><span class="badge badge-warning">&#9888; Issues</span></td>
+                <td>1,890</td>
+              </tr>
+              <!-- PASS LAST -->
+              <tr onclick="showForkliftDetail('NZ Forklift', 'Emma Wilson', '16 Dec 2025', 'Pass', '2,340', 'Toyota 8FG25', '2020', 'All OK - service due at 2,500 hours')">
+                <td style="font-weight: 600; color: var(--text-heading);">NZ Forklift</td>
+                <td>Emma Wilson</td>
+                <td>16 Dec 2025</td>
+                <td><span class="badge badge-success">&#10003; Pass</span></td>
+                <td>2,340</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+        <div class="summary-row">
+          <span>Summary: <strong>2 forklifts</strong> | <span style="color: var(--warning); font-weight: 600;">1 needs attention</span> | 1 current</span>
+          <a href="#" style="color: var(--brand-orange); font-weight: 600; text-decoration: none; font-size: 13px;">
+            View All Forklifts &rarr;
+          </a>
+        </div>
+      </div>
+
+      <!-- Active Hazards & Incidents -->
+      <div class="card">
+        <div class="card-header">
+          <div style="display: flex; align-items: center; gap: 12px;">
+            <span style="font-size: 20px;">&#128680;</span>
+            <span style="color: var(--text-heading); font-weight: 600; font-size: 16px;">Active Hazards & Incidents</span>
+          </div>
+          <select class="dropdown">
+            <option>Active Only</option>
+            <option>All Status</option>
+            <option>Last 7 Days</option>
+            <option>Last 30 Days</option>
+          </select>
+        </div>
+
+        <div class="hazard-item">
+          <div class="risk-indicator" style="background: var(--danger);"></div>
+          <div style="flex: 1;">
+            <div style="display: flex; align-items: center; gap: 8px; margin-bottom: 4px;">
+              <span class="badge badge-danger">HIGH</span>
+              <span style="color: var(--text-heading); font-weight: 600;">Slip hazard in loading bay</span>
+            </div>
+            <div style="color: var(--text-muted); font-size: 13px;">
+              &#128205; Warehouse B, Loading Dock 3 &bull; Reported by Tim Babbage
+            </div>
+          </div>
+          <span class="badge badge-warning">In Progress</span>
+        </div>
+
+        <div class="hazard-item">
+          <div class="risk-indicator" style="background: var(--warning);"></div>
+          <div style="flex: 1;">
+            <div style="display: flex; align-items: center; gap: 8px; margin-bottom: 4px;">
+              <span class="badge badge-warning">MEDIUM</span>
+              <span style="color: var(--text-heading); font-weight: 600;">Chemical spill in lab area</span>
+            </div>
+            <div style="color: var(--text-muted); font-size: 13px;">
+              &#128205; Lab 2, Workstation 5 &bull; Reported by Sarah Johnson
+            </div>
+          </div>
+          <span class="badge badge-warning">Assigned</span>
+        </div>
+
+        <div class="hazard-item">
+          <div class="risk-indicator" style="background: var(--success);"></div>
+          <div style="flex: 1;">
+            <div style="display: flex; align-items: center; gap: 8px; margin-bottom: 4px;">
+              <span class="badge badge-success">LOW</span>
+              <span style="color: var(--text-heading); font-weight: 600;">Broken railing on stairwell</span>
+            </div>
+            <div style="color: var(--text-muted); font-size: 13px;">
+              &#128205; Building A, Stairwell 2 &bull; Reported by Chris Thomas
+            </div>
+          </div>
+          <span class="badge badge-success">Resolved</span>
+        </div>
+
+        <div class="summary-row">
+          <span>Showing <strong>3 active</strong> hazards & incidents</span>
+          <a href="#" style="color: var(--brand-orange); font-weight: 600; text-decoration: none; font-size: 13px;">
+            View All Hazards &rarr;
+          </a>
+        </div>
+      </div>
+
+    </main>
+  </div>
+
+  <!-- Vehicle Detail Modal -->
+  <div class="modal-overlay" id="vehicleModal">
+    <div class="modal">
+      <div class="modal-header">
+        <div>
+          <h2 style="color: var(--text-heading); font-size: 20px; font-weight: 700; margin: 0;" id="modalVehicleTitle">Vehicle Details</h2>
+          <p style="color: var(--text-muted); font-size: 13px; margin: 4px 0 0 0;" id="modalVehicleSubtitle">Last inspection details</p>
+        </div>
+        <button class="close-btn" onclick="closeModal('vehicleModal')">&times;</button>
+      </div>
+      <div class="modal-body">
+        <div id="modalVehicleStatus" style="margin-bottom: 20px;"></div>
+
+        <div style="background: var(--bg-secondary); border-radius: 8px; padding: 16px; margin-bottom: 20px;">
+          <h3 style="color: var(--text-heading); font-size: 14px; font-weight: 600; margin: 0 0 12px 0;">Vehicle Information</h3>
+          <div class="detail-row">
+            <span class="detail-label">Registration</span>
+            <span class="detail-value" id="modalVehicleRego">-</span>
+          </div>
+          <div class="detail-row">
+            <span class="detail-label">Make/Model</span>
+            <span class="detail-value" id="modalVehicleModel">-</span>
+          </div>
+          <div class="detail-row">
+            <span class="detail-label">Year</span>
+            <span class="detail-value" id="modalVehicleYear">-</span>
+          </div>
+          <div class="detail-row">
+            <span class="detail-label">Current Mileage</span>
+            <span class="detail-value" id="modalVehicleMileage">-</span>
+          </div>
+        </div>
+
+        <div style="background: var(--bg-secondary); border-radius: 8px; padding: 16px; margin-bottom: 20px;">
+          <h3 style="color: var(--text-heading); font-size: 14px; font-weight: 600; margin: 0 0 12px 0;">Inspection Details</h3>
+          <div class="detail-row">
+            <span class="detail-label">Assigned Driver</span>
+            <span class="detail-value" id="modalVehicleDriver">-</span>
+          </div>
+          <div class="detail-row">
+            <span class="detail-label">Last Inspection</span>
+            <span class="detail-value" id="modalVehicleLastInspection">-</span>
+          </div>
+          <div class="detail-row">
+            <span class="detail-label">Next Due</span>
+            <span class="detail-value" id="modalVehicleDue">-</span>
+          </div>
+          <div class="detail-row">
+            <span class="detail-label">Notes</span>
+            <span class="detail-value" id="modalVehicleNotes">-</span>
+          </div>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button class="btn-secondary" onclick="closeModal('vehicleModal')">Close</button>
+        <button class="btn-primary">View Full History</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Forklift Detail Modal -->
+  <div class="modal-overlay" id="forkliftModal">
+    <div class="modal">
+      <div class="modal-header">
+        <div>
+          <h2 style="color: var(--text-heading); font-size: 20px; font-weight: 700; margin: 0;" id="modalForkliftTitle">Forklift Details</h2>
+          <p style="color: var(--text-muted); font-size: 13px; margin: 4px 0 0 0;" id="modalForkliftSubtitle">Last inspection details</p>
+        </div>
+        <button class="close-btn" onclick="closeModal('forkliftModal')">&times;</button>
+      </div>
+      <div class="modal-body">
+        <div id="modalForkliftStatus" style="margin-bottom: 20px;"></div>
+
+        <div style="background: var(--bg-secondary); border-radius: 8px; padding: 16px; margin-bottom: 20px;">
+          <h3 style="color: var(--text-heading); font-size: 14px; font-weight: 600; margin: 0 0 12px 0;">Forklift Information</h3>
+          <div class="detail-row">
+            <span class="detail-label">Name</span>
+            <span class="detail-value" id="modalForkliftName">-</span>
+          </div>
+          <div class="detail-row">
+            <span class="detail-label">Make/Model</span>
+            <span class="detail-value" id="modalForkliftModel">-</span>
+          </div>
+          <div class="detail-row">
+            <span class="detail-label">Year</span>
+            <span class="detail-value" id="modalForkliftYear">-</span>
+          </div>
+          <div class="detail-row">
+            <span class="detail-label">Current Hours</span>
+            <span class="detail-value" id="modalForkliftHours">-</span>
+          </div>
+        </div>
+
+        <div style="background: var(--bg-secondary); border-radius: 8px; padding: 16px; margin-bottom: 20px;">
+          <h3 style="color: var(--text-heading); font-size: 14px; font-weight: 600; margin: 0 0 12px 0;">Inspection Details</h3>
+          <div class="detail-row">
+            <span class="detail-label">Assigned Operator</span>
+            <span class="detail-value" id="modalForkliftOperator">-</span>
+          </div>
+          <div class="detail-row">
+            <span class="detail-label">Last Inspection</span>
+            <span class="detail-value" id="modalForkliftLastInspection">-</span>
+          </div>
+          <div class="detail-row">
+            <span class="detail-label">Notes</span>
+            <span class="detail-value" id="modalForkliftNotes">-</span>
+          </div>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button class="btn-secondary" onclick="closeModal('forkliftModal')">Close</button>
+        <button class="btn-primary">View Full History</button>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    function toggleTheme() {
+      const html = document.documentElement;
+      const currentTheme = html.getAttribute('data-theme');
+      const newTheme = currentTheme === 'dark' ? 'light' : 'dark';
+      html.setAttribute('data-theme', newTheme);
+    }
+
+    function showVehicleDetail(rego, driver, lastInspection, status, due, mileage, model, year, notes) {
+      document.getElementById('modalVehicleTitle').textContent = rego;
+      document.getElementById('modalVehicleSubtitle').textContent = model + ' (' + year + ')';
+      document.getElementById('modalVehicleRego').textContent = rego;
+      document.getElementById('modalVehicleDriver').textContent = driver;
+      document.getElementById('modalVehicleLastInspection').textContent = lastInspection;
+      document.getElementById('modalVehicleDue').textContent = due;
+      document.getElementById('modalVehicleMileage').textContent = mileage;
+      document.getElementById('modalVehicleModel').textContent = model;
+      document.getElementById('modalVehicleYear').textContent = year;
+      document.getElementById('modalVehicleNotes').textContent = notes;
+
+      let statusHtml = '';
+      if (status === 'Overdue') {
+        statusHtml = '<span class="badge badge-danger" style="font-size: 14px; padding: 8px 16px;">&#128308; OVERDUE - Inspection required immediately</span>';
+      } else if (status === 'Due') {
+        statusHtml = '<span class="badge badge-warning" style="font-size: 14px; padding: 8px 16px;">&#9888; DUE SOON - Inspection due by ' + due + '</span>';
+      } else {
+        statusHtml = '<span class="badge badge-success" style="font-size: 14px; padding: 8px 16px;">&#10003; CURRENT - Next inspection due ' + due + '</span>';
+      }
+      document.getElementById('modalVehicleStatus').innerHTML = statusHtml;
+
+      document.getElementById('vehicleModal').classList.add('active');
+    }
+
+    function showForkliftDetail(name, operator, lastInspection, status, hours, model, year, notes) {
+      document.getElementById('modalForkliftTitle').textContent = name;
+      document.getElementById('modalForkliftSubtitle').textContent = model + ' (' + year + ')';
+      document.getElementById('modalForkliftName').textContent = name;
+      document.getElementById('modalForkliftOperator').textContent = operator;
+      document.getElementById('modalForkliftLastInspection').textContent = lastInspection;
+      document.getElementById('modalForkliftHours').textContent = hours + ' hours';
+      document.getElementById('modalForkliftModel').textContent = model;
+      document.getElementById('modalForkliftYear').textContent = year;
+      document.getElementById('modalForkliftNotes').textContent = notes;
+
+      let statusHtml = '';
+      if (status === 'Issues') {
+        statusHtml = '<span class="badge badge-warning" style="font-size: 14px; padding: 8px 16px;">&#9888; ISSUES FOUND - Action required</span>';
+      } else {
+        statusHtml = '<span class="badge badge-success" style="font-size: 14px; padding: 8px 16px;">&#10003; PASSED - All checks OK</span>';
+      }
+      document.getElementById('modalForkliftStatus').innerHTML = statusHtml;
+
+      document.getElementById('forkliftModal').classList.add('active');
+    }
+
+    function closeModal(modalId) {
+      document.getElementById(modalId).classList.remove('active');
+    }
+
+    // Close modal on overlay click
+    document.querySelectorAll('.modal-overlay').forEach(overlay => {
+      overlay.addEventListener('click', function(e) {
+        if (e.target === this) {
+          this.classList.remove('active');
+        }
+      });
+    });
+
+    // Close modal on Escape key
+    document.addEventListener('keydown', function(e) {
+      if (e.key === 'Escape') {
+        document.querySelectorAll('.modal-overlay').forEach(overlay => {
+          overlay.classList.remove('active');
+        });
+      }
+    });
+  </script>
+
+</body>
+</html>

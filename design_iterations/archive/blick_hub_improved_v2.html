@@ -1,0 +1,679 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Blick Hub - Improved Design v2</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <script src="https://unpkg.com/lucide@latest/dist/umd/lucide.min.js"></script>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        body {
+            font-family: 'Inter', system-ui, -apple-system, sans-serif;
+            background: var(--bg-page);
+            color: var(--text-primary);
+            margin: 0;
+            padding: 0;
+            transition: all 0.3s ease;
+        }
+
+        /* LIGHT THEME */
+        [data-theme="light"] {
+            --primary: #f05323;
+            --primary-hover: #d63911;
+            --bg-page: #f8fafc;
+            --bg-surface: #ffffff;
+            --bg-surface-secondary: #f1f5f9;
+            --bg-overlay: rgba(0, 0, 0, 0.3);
+            --text-primary: #1e293b;
+            --text-secondary: #64748b;
+            --text-muted: #94a3b8;
+            --text-inverse: #ffffff;
+            --border-default: #e2e8f0;
+            --border-strong: #cbd5e1;
+            --border-subtle: #f1f5f9;
+
+            /* Quick Action Buttons - Light */
+            --btn-action-bg: #ffffff;
+            --btn-action-border: #e2e8f0;
+            --btn-action-orange-accent: #f05323;
+            --btn-action-text: #1e293b;
+            --btn-action-hover-bg: #fef5f2;
+
+            /* Form Elements - Light */
+            --input-bg: #ffffff;
+            --input-border: #cbd5e1;
+            --input-text: #1e293b;
+            --input-placeholder: #94a3b8;
+
+            /* Pagination - Light */
+            --pagination-bg: #ffffff;
+            --pagination-border: #e2e8f0;
+            --pagination-active-bg: #f05323;
+            --pagination-active-text: #ffffff;
+        }
+
+        /* DARK THEME */
+        [data-theme="dark"] {
+            --primary: #f05323;
+            --primary-hover: #ff6a3d;
+            --bg-page: #0f0f0f;
+            --bg-surface: #1a1a1a;
+            --bg-surface-secondary: #262626;
+            --bg-overlay: rgba(0, 0, 0, 0.7);
+            --text-primary: #e2e8f0;
+            --text-secondary: #94a3b8;
+            --text-muted: #64748b;
+            --text-inverse: #0f172a;
+            --border-default: #2d2d2d;
+            --border-strong: #404040;
+            --border-subtle: #1f1f1f;
+
+            /* Quick Action Buttons - Dark (IMPROVED) */
+            --btn-action-bg: #1a1a1a;
+            --btn-action-border: #2d2d2d;
+            --btn-action-orange-accent: #f05323;
+            --btn-action-text: #e2e8f0;
+            --btn-action-hover-bg: #262626;
+
+            /* Form Elements - Dark */
+            --input-bg: #262626;
+            --input-border: #404040;
+            --input-text: #e2e8f0;
+            --input-placeholder: #64748b;
+
+            /* Pagination - Dark */
+            --pagination-bg: #1a1a1a;
+            --pagination-border: #2d2d2d;
+            --pagination-active-bg: #f05323;
+            --pagination-active-text: #ffffff;
+        }
+
+        /* IMPROVED QUICK ACTION BUTTONS */
+        .btn-action {
+            background: var(--btn-action-bg);
+            color: var(--btn-action-text);
+            border: 2px solid var(--btn-action-border);
+            border-left: 4px solid var(--btn-action-orange-accent); /* PERMANENT ORANGE ACCENT */
+            border-radius: 12px;
+            padding: 28px 24px;
+            transition: all 0.3s ease;
+            cursor: pointer;
+            text-align: left;
+            min-height: 140px;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            gap: 12px;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .btn-action:hover {
+            background: var(--btn-action-hover-bg);
+            border-color: var(--btn-action-orange-accent);
+            border-left-width: 6px; /* EXPAND ORANGE ACCENT */
+            transform: translateX(2px);
+            box-shadow: 0 4px 12px rgba(240, 83, 35, 0.15);
+        }
+
+        .btn-action-icon {
+            font-size: 36px;
+            line-height: 1;
+        }
+
+        .btn-action-title {
+            font-weight: 600;
+            font-size: 18px;
+            color: var(--text-primary);
+        }
+
+        .btn-action-subtitle {
+            font-size: 14px;
+            color: var(--text-secondary);
+        }
+
+        /* FORM ELEMENTS WITH PROPER THEMING */
+        .input-field {
+            background: var(--input-bg);
+            border: 1px solid var(--input-border);
+            color: var(--input-text);
+            padding: 10px 14px;
+            border-radius: 8px;
+            width: 100%;
+            transition: all 0.2s ease;
+            font-size: 14px;
+        }
+
+        .input-field:focus {
+            border-color: var(--primary);
+            box-shadow: 0 0 0 3px rgba(240, 83, 35, 0.1);
+            outline: none;
+        }
+
+        .input-field::placeholder {
+            color: var(--input-placeholder);
+        }
+
+        /* SELECT DROPDOWN - PROPER THEMING */
+        .select-field {
+            background: var(--input-bg);
+            border: 1px solid var(--input-border);
+            color: var(--input-text);
+            padding: 10px 14px;
+            padding-right: 36px;
+            border-radius: 8px;
+            width: 100%;
+            transition: all 0.2s ease;
+            font-size: 14px;
+            appearance: none;
+            cursor: pointer;
+            background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='24' height='24' viewBox='0 0 24 24' fill='none' stroke='%2394a3b8' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpolyline points='6 9 12 15 18 9'%3E%3C/polyline%3E%3C/svg%3E");
+            background-repeat: no-repeat;
+            background-position: right 8px center;
+            background-size: 20px;
+        }
+
+        [data-theme="dark"] .select-field {
+            background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='24' height='24' viewBox='0 0 24 24' fill='none' stroke='%2394a3b8' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpolyline points='6 9 12 15 18 9'%3E%3C/polyline%3E%3C/svg%3E");
+        }
+
+        .select-field:focus {
+            border-color: var(--primary);
+            box-shadow: 0 0 0 3px rgba(240, 83, 35, 0.1);
+            outline: none;
+        }
+
+        /* INPUT WITH ICON (SEARCH, SPEECH-TO-TEXT) */
+        .input-with-icon-wrapper {
+            position: relative;
+            width: 100%;
+        }
+
+        .input-with-icon {
+            padding-left: 40px;
+            padding-right: 100px;
+        }
+
+        .input-icon-left {
+            position: absolute;
+            left: 12px;
+            top: 50%;
+            transform: translateY(-50%);
+            color: var(--text-muted);
+            pointer-events: none;
+        }
+
+        .input-icon-right {
+            position: absolute;
+            right: 12px;
+            top: 50%;
+            transform: translateY(-50%);
+            display: flex;
+            gap: 8px;
+        }
+
+        .icon-button {
+            background: transparent;
+            border: none;
+            color: var(--text-muted);
+            cursor: pointer;
+            padding: 4px;
+            border-radius: 4px;
+            transition: all 0.2s ease;
+        }
+
+        .icon-button:hover {
+            color: var(--primary);
+            background: rgba(240, 83, 35, 0.1);
+        }
+
+        /* PAGINATION */
+        .pagination {
+            display: flex;
+            gap: 8px;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .pagination-button {
+            background: var(--pagination-bg);
+            border: 1px solid var(--pagination-border);
+            color: var(--text-primary);
+            padding: 8px 12px;
+            border-radius: 6px;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            font-size: 14px;
+            min-width: 40px;
+            text-align: center;
+        }
+
+        .pagination-button:hover:not(:disabled) {
+            border-color: var(--primary);
+            color: var(--primary);
+        }
+
+        .pagination-button.active {
+            background: var(--pagination-active-bg);
+            color: var(--pagination-active-text);
+            border-color: var(--pagination-active-bg);
+        }
+
+        .pagination-button:disabled {
+            opacity: 0.4;
+            cursor: not-allowed;
+        }
+
+        /* TABS */
+        .tabs {
+            display: flex;
+            border-bottom: 2px solid var(--border-default);
+            gap: 0;
+        }
+
+        .tab-button {
+            background: transparent;
+            border: none;
+            color: var(--text-secondary);
+            padding: 12px 24px;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            font-weight: 500;
+            border-bottom: 2px solid transparent;
+            margin-bottom: -2px;
+        }
+
+        .tab-button:hover {
+            color: var(--text-primary);
+        }
+
+        .tab-button.active {
+            color: var(--primary);
+            border-bottom-color: var(--primary);
+        }
+
+        /* TOOL/ACCESSORY CARDS */
+        .tool-card {
+            background: var(--bg-surface);
+            border: 1px solid var(--border-default);
+            border-radius: 8px;
+            padding: 16px;
+            transition: all 0.2s ease;
+        }
+
+        .tool-card:hover {
+            border-color: var(--primary);
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+        }
+
+        .header {
+            background: var(--bg-surface);
+            border-bottom: 1px solid var(--border-default);
+            padding: 16px 24px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .theme-toggle {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            z-index: 100;
+        }
+
+        .btn-primary {
+            background: linear-gradient(135deg, #f05323 0%, #e8471a 100%);
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 8px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.2s ease;
+        }
+
+        .btn-primary:hover {
+            transform: translateY(-1px);
+            box-shadow: 0 4px 12px rgba(240, 83, 35, 0.3);
+        }
+
+        .btn-secondary {
+            background: var(--bg-surface);
+            color: var(--text-primary);
+            border: 1px solid var(--border-default);
+            padding: 10px 20px;
+            border-radius: 8px;
+            font-weight: 500;
+            cursor: pointer;
+            transition: all 0.2s ease;
+        }
+
+        .section {
+            margin-bottom: 48px;
+        }
+
+        .section-title {
+            color: var(--text-primary);
+            margin-bottom: 24px;
+            font-size: 20px;
+            font-weight: 600;
+        }
+
+        .card {
+            background: var(--bg-surface);
+            border: 1px solid var(--border-default);
+            border-radius: 12px;
+            padding: 24px;
+        }
+    </style>
+</head>
+<body data-theme="dark">
+    <!-- Theme Toggle -->
+    <div class="theme-toggle">
+        <button class="btn-secondary" onclick="toggleTheme()">
+            <span id="theme-icon">🌙</span> <span id="theme-text">Dark Mode</span>
+        </button>
+    </div>
+
+    <!-- Header -->
+    <div class="header">
+        <h1 style="color: var(--primary); margin: 0; font-size: 24px; font-weight: 700;">Blick Hub - Improved UI v2</h1>
+        <div style="color: var(--text-secondary); font-size: 14px;">Better Buttons, Forms & Pagination</div>
+    </div>
+
+    <!-- Main Content -->
+    <div style="padding: 24px; max-width: 1400px; margin: 0 auto;">
+
+        <!-- IMPROVED QUICK ACTION BUTTONS -->
+        <section class="section">
+            <h2 class="section-title">Quick Action Buttons (Improved)</h2>
+            <p style="color: var(--text-secondary); margin-bottom: 20px;">
+                ✓ Permanent orange left accent<br>
+                ✓ Better visibility in both themes<br>
+                ✓ Expands on hover
+            </p>
+            <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 16px;">
+                <button class="btn-action">
+                    <div class="btn-action-icon">⚠️</div>
+                    <div class="btn-action-title">Report Incident</div>
+                    <div class="btn-action-subtitle">Document safety incidents</div>
+                </button>
+                <button class="btn-action">
+                    <div class="btn-action-icon">⚡</div>
+                    <div class="btn-action-title">Hazard Report</div>
+                    <div class="btn-action-subtitle">Identify potential hazards</div>
+                </button>
+                <button class="btn-action">
+                    <div class="btn-action-icon">🚗</div>
+                    <div class="btn-action-title">Vehicle Inspection</div>
+                    <div class="btn-action-subtitle">Pre-trip safety check</div>
+                </button>
+            </div>
+        </section>
+
+        <!-- FORM ELEMENTS WITH PROPER THEMING -->
+        <section class="section">
+            <h2 class="section-title">Form Elements (Light Mode Fixed)</h2>
+            <p style="color: var(--text-secondary); margin-bottom: 20px;">
+                ✓ Dropdowns work in both themes<br>
+                ✓ Speech-to-text and search icons<br>
+                ✓ Proper placeholder colors
+            </p>
+            <div class="card" style="max-width: 600px;">
+                <div style="margin-bottom: 20px;">
+                    <label style="display: block; margin-bottom: 8px; font-weight: 500; color: var(--text-primary);">
+                        Search with Icons
+                    </label>
+                    <div class="input-with-icon-wrapper">
+                        <div class="input-icon-left">
+                            <i data-lucide="search" style="width: 20px; height: 20px;"></i>
+                        </div>
+                        <input type="text" class="input-field input-with-icon" placeholder="Search customers, rigs...">
+                        <div class="input-icon-right">
+                            <button class="icon-button" title="Voice search" onclick="alert('Speech-to-text activated!')">
+                                <i data-lucide="mic" style="width: 18px; height: 18px;"></i>
+                            </button>
+                            <button class="icon-button" title="Clear" onclick="this.closest('.input-with-icon-wrapper').querySelector('input').value = ''">
+                                <i data-lucide="x" style="width: 18px; height: 18px;"></i>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+
+                <div style="margin-bottom: 20px;">
+                    <label style="display: block; margin-bottom: 8px; font-weight: 500; color: var(--text-primary);">
+                        Dropdown (Works in Light Mode)
+                    </label>
+                    <select class="select-field">
+                        <option value="">Select a customer...</option>
+                        <option value="1">Parkinson & Holland Limited</option>
+                        <option value="2">TD Drilling Limited</option>
+                        <option value="3">Waipa Civil Limited</option>
+                        <option value="4">1D Flooring</option>
+                    </select>
+                </div>
+
+                <div style="margin-bottom: 20px;">
+                    <label style="display: block; margin-bottom: 8px; font-weight: 500; color: var(--text-primary);">
+                        Text Area with Speech-to-Text
+                    </label>
+                    <div class="input-with-icon-wrapper">
+                        <textarea class="input-field" rows="4" placeholder="Add notes... (click mic for voice input)" style="padding-right: 50px;"></textarea>
+                        <div class="input-icon-right" style="top: 16px; transform: none;">
+                            <button class="icon-button" title="Speech-to-text">
+                                <i data-lucide="mic" style="width: 18px; height: 18px;"></i>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+
+                <div style="margin-bottom: 20px;">
+                    <label style="display: block; margin-bottom: 8px; font-weight: 500; color: var(--text-primary);">
+                        Number Input with Clear
+                    </label>
+                    <div class="input-with-icon-wrapper">
+                        <input type="number" class="input-field" placeholder="Enter mileage..." style="padding-right: 50px;">
+                        <div class="input-icon-right">
+                            <button class="icon-button" title="Clear">
+                                <i data-lucide="x" style="width: 18px; height: 18px;"></i>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- PAGINATION FOR TOOLS/ACCESSORIES -->
+        <section class="section">
+            <h2 class="section-title">Rig Configuration - Tools & Accessories Tabs</h2>
+            <p style="color: var(--text-secondary); margin-bottom: 20px;">
+                ✓ Tab navigation (Tools / Accessories)<br>
+                ✓ Paginated tool/accessory cards<br>
+                ✓ Proper pagination controls
+            </p>
+            <div class="card">
+                <!-- Tab Navigation -->
+                <div class="tabs" style="margin-bottom: 24px;">
+                    <button class="tab-button active" onclick="switchTab('tools', this)">
+                        <i data-lucide="wrench" style="width: 16px; height: 16px; display: inline-block; vertical-align: middle; margin-right: 6px;"></i>
+                        Tools
+                    </button>
+                    <button class="tab-button" onclick="switchTab('accessories', this)">
+                        <i data-lucide="package" style="width: 16px; height: 16px; display: inline-block; vertical-align: middle; margin-right: 6px;"></i>
+                        Accessories
+                    </button>
+                </div>
+
+                <!-- Tools Tab Content -->
+                <div id="tools-tab" style="display: block;">
+                    <div style="display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: 16px; margin-bottom: 24px;">
+                        <div class="tool-card">
+                            <div style="display: flex; justify-content: between; align-items: start; gap: 12px;">
+                                <div style="flex: 1;">
+                                    <div style="font-weight: 600; color: var(--text-primary); margin-bottom: 4px;">Drive Chuck</div>
+                                    <div style="color: var(--text-secondary); font-size: 14px; margin-bottom: 8px;">Product Code: DC-8892</div>
+                                    <div style="display: inline-block; background: rgba(240, 83, 35, 0.1); color: var(--primary); padding: 4px 8px; border-radius: 4px; font-size: 12px; font-weight: 500;">
+                                        Quantity: 2
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="tool-card">
+                            <div style="display: flex; justify-content: between; align-items: start; gap: 12px;">
+                                <div style="flex: 1;">
+                                    <div style="font-weight: 600; color: var(--text-primary); margin-bottom: 4px;">Sub Saver</div>
+                                    <div style="color: var(--text-secondary); font-size: 14px; margin-bottom: 8px;">Product Code: SS-1203</div>
+                                    <div style="display: inline-block; background: rgba(240, 83, 35, 0.1); color: var(--primary); padding: 4px 8px; border-radius: 4px; font-size: 12px; font-weight: 500;">
+                                        Quantity: 4
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="tool-card">
+                            <div style="display: flex; justify-content: between; align-items: start; gap: 12px;">
+                                <div style="flex: 1;">
+                                    <div style="font-weight: 600; color: var(--text-primary); margin-bottom: 4px;">Drill Rod</div>
+                                    <div style="color: var(--text-secondary); font-size: 14px; margin-bottom: 8px;">Product Code: DR-5566</div>
+                                    <div style="display: inline-block; background: rgba(240, 83, 35, 0.1); color: var(--primary); padding: 4px 8px; border-radius: 4px; font-size: 12px; font-weight: 500;">
+                                        Quantity: 6
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="tool-card">
+                            <div style="display: flex; justify-content: between; align-items: start; gap: 12px;">
+                                <div style="flex: 1;">
+                                    <div style="font-weight: 600; color: var(--text-primary); margin-bottom: 4px;">Lead Rod</div>
+                                    <div style="color: var(--text-secondary); font-size: 14px; margin-bottom: 8px;">Product Code: LR-3344</div>
+                                    <div style="display: inline-block; background: rgba(240, 83, 35, 0.1); color: var(--primary); padding: 4px 8px; border-radius: 4px; font-size: 12px; font-weight: 500;">
+                                        Quantity: 3
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="tool-card">
+                            <div style="display: flex; justify-content: between; align-items: start; gap: 12px;">
+                                <div style="flex: 1;">
+                                    <div style="font-weight: 600; color: var(--text-primary); margin-bottom: 4px;">Collar</div>
+                                    <div style="color: var(--text-secondary); font-size: 14px; margin-bottom: 8px;">Product Code: CL-7788</div>
+                                    <div style="display: inline-block; background: rgba(240, 83, 35, 0.1); color: var(--primary); padding: 4px 8px; border-radius: 4px; font-size: 12px; font-weight: 500;">
+                                        Quantity: 2
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="tool-card">
+                            <div style="display: flex; justify-content: between; align-items: start; gap: 12px;">
+                                <div style="flex: 1;">
+                                    <div style="font-weight: 600; color: var(--text-primary); margin-bottom: 4px;">Adaptor</div>
+                                    <div style="color: var(--text-secondary); font-size: 14px; margin-bottom: 8px;">Product Code: AD-9901</div>
+                                    <div style="display: inline-block; background: rgba(240, 83, 35, 0.1); color: var(--primary); padding: 4px 8px; border-radius: 4px; font-size: 12px; font-weight: 500;">
+                                        Quantity: 5
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Pagination -->
+                    <div style="border-top: 1px solid var(--border-default); padding-top: 20px;">
+                        <div class="pagination">
+                            <button class="pagination-button" disabled>
+                                <i data-lucide="chevron-left" style="width: 16px; height: 16px;"></i>
+                            </button>
+                            <button class="pagination-button active">1</button>
+                            <button class="pagination-button">2</button>
+                            <button class="pagination-button">3</button>
+                            <span style="color: var(--text-muted); padding: 0 8px;">...</span>
+                            <button class="pagination-button">12</button>
+                            <button class="pagination-button">
+                                <i data-lucide="chevron-right" style="width: 16px; height: 16px;"></i>
+                            </button>
+                        </div>
+                        <div style="text-align: center; margin-top: 12px; color: var(--text-secondary); font-size: 14px;">
+                            Showing 1-6 of 72 tools
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Accessories Tab Content (Hidden by default) -->
+                <div id="accessories-tab" style="display: none;">
+                    <div style="display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: 16px; margin-bottom: 24px;">
+                        <div class="tool-card">
+                            <div style="display: flex; justify-content: between; align-items: start; gap: 12px;">
+                                <div style="flex: 1;">
+                                    <div style="font-weight: 600; color: var(--text-primary); margin-bottom: 4px;">Housing</div>
+                                    <div style="color: var(--text-secondary); font-size: 14px; margin-bottom: 8px;">Product Code: HS-2211</div>
+                                    <div style="display: inline-block; background: rgba(34, 211, 238, 0.1); color: #22d3ee; padding: 4px 8px; border-radius: 4px; font-size: 12px; font-weight: 500;">
+                                        Quantity: 3
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="tool-card">
+                            <div style="display: flex; justify-content: between; align-items: start; gap: 12px;">
+                                <div style="flex: 1;">
+                                    <div style="font-weight: 600; color: var(--text-primary); margin-bottom: 4px;">Grease</div>
+                                    <div style="color: var(--text-secondary); font-size: 14px; margin-bottom: 8px;">Product Code: GR-4455</div>
+                                    <div style="display: inline-block; background: rgba(34, 211, 238, 0.1); color: #22d3ee; padding: 4px 8px; border-radius: 4px; font-size: 12px; font-weight: 500;">
+                                        Quantity: 8
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Pagination -->
+                    <div style="border-top: 1px solid var(--border-default); padding-top: 20px;">
+                        <div class="pagination">
+                            <button class="pagination-button" disabled>
+                                <i data-lucide="chevron-left" style="width: 16px; height: 16px;"></i>
+                            </button>
+                            <button class="pagination-button active">1</button>
+                            <button class="pagination-button">
+                                <i data-lucide="chevron-right" style="width: 16px; height: 16px;"></i>
+                            </button>
+                        </div>
+                        <div style="text-align: center; margin-top: 12px; color: var(--text-secondary); font-size: 14px;">
+                            Showing 1-2 of 2 accessories
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+    </div>
+
+    <script>
+        // Initialize Lucide icons
+        lucide.createIcons();
+
+        function toggleTheme() {
+            const body = document.body;
+            const currentTheme = body.getAttribute('data-theme');
+            const newTheme = currentTheme === 'dark' ? 'light' : 'dark';
+            body.setAttribute('data-theme', newTheme);
+
+            document.getElementById('theme-icon').textContent = newTheme === 'dark' ? '🌙' : '☀️';
+            document.getElementById('theme-text').textContent = newTheme === 'dark' ? 'Dark Mode' : 'Light Mode';
+        }
+
+        function switchTab(tabName, buttonElement) {
+            // Hide all tabs
+            document.getElementById('tools-tab').style.display = 'none';
+            document.getElementById('accessories-tab').style.display = 'none';
+
+            // Remove active class from all buttons
+            document.querySelectorAll('.tab-button').forEach(btn => btn.classList.remove('active'));
+
+            // Show selected tab
+            document.getElementById(tabName + '-tab').style.display = 'block';
+
+            // Add active class to clicked button
+            buttonElement.classList.add('active');
+        }
+    </script>
+</body>
+</html>

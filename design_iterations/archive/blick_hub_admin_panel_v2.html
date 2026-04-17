@@ -1,0 +1,953 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="dark">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Blick Hub - Admin Panel</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+
+  <style>
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    :root { font-family: "Inter", system-ui, -apple-system, sans-serif; }
+
+    /* Theme System */
+    :root, [data-theme="dark"] {
+      --brand-orange: #f05323;
+      --primary: #f05323;
+      --bg-page: #212121;
+      --bg-surface: #2a2a2a;
+      --bg-secondary: #1a1a1a;
+      --bg-hover: #3a3a3a;
+      --text-primary: #bcbec0;
+      --text-secondary: #a0a0a0;
+      --text-heading: #ffffff;
+      --text-muted: #707070;
+      --border-default: #58595b;
+      --border-subtle: #404040;
+      --success: #10b981;
+      --success-light: #064e3b;
+      --warning: #f59e0b;
+      --warning-light: #451a03;
+      --danger: #ef4444;
+      --danger-light: #450a0a;
+    }
+
+    [data-theme="light"] {
+      --brand-orange: #f05323;
+      --primary: #f05323;
+      --bg-page: #f9fafb;
+      --bg-surface: #ffffff;
+      --bg-secondary: #f3f4f6;
+      --bg-hover: #e5e7eb;
+      --text-primary: #111827;
+      --text-secondary: #6b7280;
+      --text-heading: #000000;
+      --text-muted: #9ca3af;
+      --border-default: #e5e7eb;
+      --border-subtle: #f3f4f6;
+      --success: #10b981;
+      --success-light: #d1fae5;
+      --warning: #f59e0b;
+      --warning-light: #fef3c7;
+      --danger: #ef4444;
+      --danger-light: #fee2e2;
+    }
+
+    body {
+      background: var(--bg-page);
+      color: var(--text-primary);
+      min-height: 100vh;
+    }
+
+    /* Theme Toggle */
+    .theme-controls {
+      position: fixed;
+      top: 16px;
+      right: 16px;
+      display: flex;
+      gap: 8px;
+      z-index: 1000;
+    }
+
+    .theme-btn {
+      padding: 8px 16px;
+      border-radius: 8px;
+      border: 1px solid var(--border-default);
+      background: var(--bg-surface);
+      color: var(--text-primary);
+      font-size: 12px;
+      font-weight: 600;
+      cursor: pointer;
+    }
+
+    .theme-btn:hover, .theme-btn.active {
+      background: var(--primary);
+      color: white;
+      border-color: var(--primary);
+    }
+
+    /* Navigation Tabs */
+    .admin-tabs {
+      display: flex;
+      gap: 4px;
+      padding: 16px 24px;
+      background: var(--bg-surface);
+      border-bottom: 1px solid var(--border-default);
+      position: sticky;
+      top: 0;
+      z-index: 100;
+    }
+
+    .admin-tab {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      padding: 10px 16px;
+      border: none;
+      background: transparent;
+      color: var(--text-secondary);
+      font-size: 13px;
+      font-weight: 600;
+      cursor: pointer;
+      border-radius: 8px;
+      transition: all 0.2s;
+    }
+
+    .admin-tab:hover {
+      background: var(--bg-hover);
+      color: var(--text-primary);
+    }
+
+    .admin-tab.active {
+      background: var(--primary);
+      color: white;
+    }
+
+    .admin-tab .tab-icon {
+      font-size: 16px;
+    }
+
+    .admin-tab .badge {
+      background: rgba(255,255,255,0.2);
+      padding: 2px 8px;
+      border-radius: 10px;
+      font-size: 10px;
+      font-weight: 700;
+    }
+
+    .admin-tab:not(.active) .badge {
+      background: var(--bg-secondary);
+      color: var(--text-muted);
+    }
+
+    .admin-tab:not(.active) .badge.alert {
+      background: var(--danger-light);
+      color: var(--danger);
+    }
+
+    /* Page Container */
+    .page-container {
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 24px;
+    }
+
+    /* Page sections */
+    .page-section {
+      display: none;
+    }
+
+    .page-section.active {
+      display: block;
+    }
+
+    /* Page Header */
+    .page-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-start;
+      margin-bottom: 24px;
+    }
+
+    .page-header h1 {
+      font-size: 1.5rem;
+      font-weight: 700;
+      color: var(--text-heading);
+    }
+
+    .page-header p {
+      color: var(--text-secondary);
+      font-size: 14px;
+      margin-top: 4px;
+    }
+
+    /* Cards */
+    .card {
+      background: var(--bg-surface);
+      border: 1px solid var(--border-default);
+      border-radius: 12px;
+      padding: 20px;
+    }
+
+    .card-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 16px;
+    }
+
+    .card-header h2 {
+      font-size: 1rem;
+      font-weight: 600;
+      color: var(--text-heading);
+    }
+
+    /* Buttons */
+    .btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      padding: 10px 16px;
+      border-radius: 8px;
+      font-size: 13px;
+      font-weight: 600;
+      cursor: pointer;
+      transition: all 0.2s;
+      border: none;
+    }
+
+    .btn-primary {
+      background: var(--primary);
+      color: white;
+    }
+
+    .btn-primary:hover {
+      opacity: 0.9;
+      transform: translateY(-1px);
+    }
+
+    .btn-secondary {
+      background: var(--bg-hover);
+      color: var(--text-primary);
+      border: 1px solid var(--border-default);
+    }
+
+    .btn-secondary:hover {
+      border-color: var(--primary);
+    }
+
+    .btn-sm {
+      padding: 6px 12px;
+      font-size: 12px;
+    }
+
+    /* Form Elements */
+    .form-group {
+      margin-bottom: 16px;
+    }
+
+    .form-label {
+      display: block;
+      font-size: 12px;
+      font-weight: 600;
+      color: var(--text-muted);
+      margin-bottom: 6px;
+    }
+
+    .form-input, .form-select {
+      width: 100%;
+      padding: 10px 12px;
+      border-radius: 8px;
+      border: 1px solid var(--border-default);
+      background: var(--bg-surface);
+      color: var(--text-primary);
+      font-size: 13px;
+    }
+
+    .form-input:focus, .form-select:focus {
+      outline: none;
+      border-color: var(--primary);
+    }
+
+    /* Step Wizard */
+    .wizard-steps {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      margin-bottom: 32px;
+    }
+
+    .wizard-step {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .step-number {
+      width: 28px;
+      height: 28px;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 12px;
+      font-weight: 700;
+    }
+
+    .step-number.completed {
+      background: var(--success);
+      color: white;
+    }
+
+    .step-number.current {
+      background: var(--primary);
+      color: white;
+    }
+
+    .step-number.pending {
+      background: var(--bg-hover);
+      color: var(--text-muted);
+    }
+
+    .step-label {
+      font-size: 12px;
+      font-weight: 600;
+    }
+
+    .step-label.completed { color: var(--success); }
+    .step-label.current { color: var(--primary); }
+    .step-label.pending { color: var(--text-muted); }
+
+    .step-connector {
+      flex: 1;
+      height: 2px;
+      background: var(--border-default);
+      max-width: 60px;
+    }
+
+    /* Table */
+    .data-table {
+      width: 100%;
+      border-collapse: collapse;
+    }
+
+    .data-table th {
+      text-align: left;
+      padding: 12px 16px;
+      font-size: 11px;
+      font-weight: 600;
+      text-transform: uppercase;
+      color: var(--text-muted);
+      background: var(--bg-secondary);
+      border-bottom: 1px solid var(--border-default);
+    }
+
+    .data-table td {
+      padding: 12px 16px;
+      font-size: 13px;
+      border-bottom: 1px solid var(--border-subtle);
+      color: var(--text-primary);
+    }
+
+    .data-table tr:hover td {
+      background: var(--bg-hover);
+    }
+
+    /* Badges */
+    .badge {
+      display: inline-flex;
+      align-items: center;
+      padding: 4px 10px;
+      border-radius: 12px;
+      font-size: 11px;
+      font-weight: 600;
+    }
+
+    .badge-success { background: var(--success-light); color: var(--success); }
+    .badge-warning { background: var(--warning-light); color: var(--warning); }
+    .badge-danger { background: var(--danger-light); color: var(--danger); }
+    .badge-neutral { background: var(--bg-hover); color: var(--text-muted); }
+
+    /* Alert Box */
+    .alert {
+      padding: 16px;
+      border-radius: 8px;
+      margin-bottom: 20px;
+      display: flex;
+      gap: 12px;
+      align-items: flex-start;
+    }
+
+    .alert-warning {
+      background: var(--warning-light);
+      border-left: 3px solid var(--warning);
+    }
+
+    .alert-warning .alert-icon { color: var(--warning); }
+    .alert-warning .alert-title { color: var(--warning); font-weight: 600; }
+    .alert-warning .alert-text { color: var(--warning); font-size: 13px; }
+
+    /* User Avatar */
+    .avatar {
+      width: 28px;
+      height: 28px;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 11px;
+      font-weight: 600;
+      color: white;
+    }
+
+    /* Filter Bar */
+    .filter-bar {
+      display: flex;
+      gap: 12px;
+      margin-bottom: 20px;
+      flex-wrap: wrap;
+    }
+
+    .filter-bar .form-select,
+    .filter-bar .form-input {
+      width: auto;
+      min-width: 160px;
+    }
+
+    .filter-bar .search-input {
+      flex: 1;
+      min-width: 200px;
+      max-width: 300px;
+    }
+
+    /* Empty State */
+    .empty-state {
+      text-align: center;
+      padding: 48px 24px;
+      color: var(--text-muted);
+    }
+
+    .empty-state-icon {
+      font-size: 48px;
+      margin-bottom: 16px;
+    }
+  </style>
+</head>
+
+<body>
+
+  <!-- Theme Toggle -->
+  <div class="theme-controls">
+    <button class="theme-btn active" onclick="setTheme('dark')">Dark</button>
+    <button class="theme-btn" onclick="setTheme('light')">Light</button>
+  </div>
+
+  <!-- Navigation Tabs -->
+  <nav class="admin-tabs">
+    <button class="admin-tab active" onclick="showTab('offboarding')">
+      <span class="tab-icon">&#128587;</span>
+      Staff Offboarding
+      <span class="badge alert">1</span>
+    </button>
+    <button class="admin-tab" onclick="showTab('vehicles')">
+      <span class="tab-icon">&#128663;</span>
+      Vehicles
+    </button>
+    <button class="admin-tab" onclick="showTab('forklifts')">
+      <span class="tab-icon">&#128737;</span>
+      Forklifts
+    </button>
+    <button class="admin-tab" onclick="showTab('sites')">
+      <span class="tab-icon">&#127970;</span>
+      Sites
+    </button>
+  </nav>
+
+  <div class="page-container">
+
+    <!-- ============================================
+         TAB 1: STAFF OFFBOARDING
+         ============================================ -->
+    <section id="tab-offboarding" class="page-section active">
+      <div class="page-header">
+        <div>
+          <h1>Staff Offboarding</h1>
+          <p>Deactivate departing staff while preserving historical data</p>
+        </div>
+        <button class="btn btn-primary">+ New Offboard</button>
+      </div>
+
+      <!-- Pending Alert -->
+      <div class="alert alert-warning">
+        <span class="alert-icon" style="font-size: 24px;">&#9888;</span>
+        <div>
+          <div class="alert-title">Pending Offboard: John Smith</div>
+          <p class="alert-text">Last day: Feb 14, 2026. Has 5 open follow-ups and 1 assigned vehicle.</p>
+        </div>
+      </div>
+
+      <!-- Offboarding Wizard -->
+      <div class="card">
+        <div class="card-header">
+          <h2>Offboarding: John Smith</h2>
+          <span class="badge badge-warning">In Progress</span>
+        </div>
+
+        <!-- Step Indicators -->
+        <div class="wizard-steps">
+          <div class="wizard-step">
+            <div class="step-number completed">&#10003;</div>
+            <span class="step-label completed">Select User</span>
+          </div>
+          <div class="step-connector"></div>
+          <div class="wizard-step">
+            <div class="step-number current">2</div>
+            <span class="step-label current">Review & Reassign</span>
+          </div>
+          <div class="step-connector"></div>
+          <div class="wizard-step">
+            <div class="step-number pending">3</div>
+            <span class="step-label pending">Confirm</span>
+          </div>
+        </div>
+
+        <!-- Items to Reassign -->
+        <div style="background: var(--bg-secondary); border-radius: 8px; padding: 16px; margin-bottom: 20px;">
+          <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 12px;">
+            <span style="font-weight: 600; color: var(--text-heading);">Items Assigned to John Smith</span>
+            <span style="font-size: 12px; color: var(--text-muted);">6 items</span>
+          </div>
+
+          <table class="data-table">
+            <thead>
+              <tr>
+                <th style="width: 30px;"><input type="checkbox" checked></th>
+                <th>Type</th>
+                <th>Item</th>
+                <th>Status</th>
+                <th>Due</th>
+                <th>Reassign To</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td><input type="checkbox" checked></td>
+                <td><span class="badge" style="background: #3b82f6; color: white;">Vehicle</span></td>
+                <td>ABC123 (Toyota Hilux)</td>
+                <td><span class="badge badge-success">Assigned</span></td>
+                <td style="color: var(--text-muted);">-</td>
+                <td>
+                  <select class="form-select" style="width: 160px;">
+                    <option>Select person...</option>
+                    <option>Sarah Jones</option>
+                    <option>Mike Wilson</option>
+                    <option>-- Unassigned --</option>
+                  </select>
+                </td>
+              </tr>
+              <tr>
+                <td><input type="checkbox" checked></td>
+                <td><span class="badge badge-warning">Follow-up</span></td>
+                <td>Review safety signage at Site A</td>
+                <td><span class="badge badge-warning">Open</span></td>
+                <td style="color: var(--danger);">Overdue</td>
+                <td>
+                  <select class="form-select" style="width: 160px;">
+                    <option>Select person...</option>
+                    <option selected>Sarah Jones</option>
+                    <option>Mike Wilson</option>
+                  </select>
+                </td>
+              </tr>
+              <tr>
+                <td><input type="checkbox" checked></td>
+                <td><span class="badge badge-warning">Follow-up</span></td>
+                <td>Complete hazard control for HZ-2024-089</td>
+                <td><span class="badge" style="background: #3b82f6; color: white;">In Progress</span></td>
+                <td>Feb 28</td>
+                <td>
+                  <select class="form-select" style="width: 160px;">
+                    <option>Select person...</option>
+                    <option>Sarah Jones</option>
+                    <option selected>Mike Wilson</option>
+                  </select>
+                </td>
+              </tr>
+              <tr>
+                <td><input type="checkbox" checked></td>
+                <td><span class="badge" style="background: #8b5cf6; color: white;">Ticket</span></td>
+                <td>JT-1892: Fix login timeout issue</td>
+                <td><span class="badge" style="background: #3b82f6; color: white;">In Progress</span></td>
+                <td style="color: var(--text-muted);">-</td>
+                <td>
+                  <select class="form-select" style="width: 160px;">
+                    <option>Select person...</option>
+                    <option selected>Sarah Jones</option>
+                    <option>Mike Wilson</option>
+                  </select>
+                </td>
+              </tr>
+              <tr>
+                <td><input type="checkbox" checked></td>
+                <td><span class="badge badge-success">Idea</span></td>
+                <td>Automate weekly safety reports</td>
+                <td><span class="badge" style="background: #3b82f6; color: white;">In Execution</span></td>
+                <td>Mar 15</td>
+                <td>
+                  <select class="form-select" style="width: 160px;">
+                    <option>Select person...</option>
+                    <option>Sarah Jones</option>
+                    <option selected>Mike Wilson</option>
+                  </select>
+                </td>
+              </tr>
+              <tr>
+                <td><input type="checkbox" checked></td>
+                <td><span class="badge badge-warning">Follow-up</span></td>
+                <td>Schedule forklift maintenance review</td>
+                <td><span class="badge badge-warning">Open</span></td>
+                <td>Mar 1</td>
+                <td>
+                  <select class="form-select" style="width: 160px;">
+                    <option>Select person...</option>
+                    <option selected>Sarah Jones</option>
+                    <option>Mike Wilson</option>
+                  </select>
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+
+        <!-- Action Buttons -->
+        <div style="display: flex; justify-content: space-between; align-items: center;">
+          <button class="btn btn-secondary">&larr; Back</button>
+          <div style="display: flex; gap: 12px;">
+            <button class="btn btn-secondary">Save Draft</button>
+            <button class="btn btn-primary">Continue &rarr;</button>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ============================================
+         TAB 2: VEHICLES
+         ============================================ -->
+    <section id="tab-vehicles" class="page-section">
+      <div class="page-header">
+        <div>
+          <h1>Vehicles</h1>
+          <p>Manage fleet vehicle assignments</p>
+        </div>
+        <button class="btn btn-primary">+ Add Vehicle</button>
+      </div>
+
+      <!-- Filters -->
+      <div class="filter-bar">
+        <select class="form-select">
+          <option>All Statuses</option>
+          <option>Assigned</option>
+          <option>Unassigned</option>
+          <option>Decommissioned</option>
+        </select>
+        <select class="form-select">
+          <option>All Types</option>
+          <option>Car</option>
+          <option>Ute</option>
+          <option>Van</option>
+          <option>Truck</option>
+        </select>
+        <input type="text" class="form-input search-input" placeholder="Search by rego, driver...">
+      </div>
+
+      <!-- Vehicles Table -->
+      <div class="card" style="padding: 0; overflow: hidden;">
+        <table class="data-table">
+          <thead>
+            <tr>
+              <th>Registration</th>
+              <th>Vehicle</th>
+              <th>Assigned To</th>
+              <th>Status</th>
+              <th>WOF/Rego Expiry</th>
+              <th>Actions</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td style="font-family: monospace; font-weight: 600; color: var(--text-heading);">ABC123</td>
+              <td>Toyota Hilux SR5 (2022)</td>
+              <td>
+                <div style="display: flex; align-items: center; gap: 8px;">
+                  <div class="avatar" style="background: #3b82f6;">JS</div>
+                  John Smith
+                </div>
+              </td>
+              <td><span class="badge badge-success">Assigned</span></td>
+              <td>Mar 15, 2026</td>
+              <td>
+                <button class="btn btn-secondary btn-sm">Reassign</button>
+              </td>
+            </tr>
+            <tr>
+              <td style="font-family: monospace; font-weight: 600; color: var(--text-heading);">XYZ789</td>
+              <td>Ford Ranger XLT (2023)</td>
+              <td style="color: var(--text-muted); font-style: italic;">Unassigned</td>
+              <td><span class="badge badge-warning">Unassigned</span></td>
+              <td>Apr 22, 2026</td>
+              <td>
+                <button class="btn btn-primary btn-sm">Assign</button>
+              </td>
+            </tr>
+            <tr>
+              <td style="font-family: monospace; font-weight: 600; color: var(--text-heading);">DEF456</td>
+              <td>Nissan Navara (2021)</td>
+              <td>
+                <div style="display: flex; align-items: center; gap: 8px;">
+                  <div class="avatar" style="background: #8b5cf6;">SJ</div>
+                  Sarah Jones
+                </div>
+              </td>
+              <td><span class="badge badge-success">Assigned</span></td>
+              <td style="color: var(--danger);">Jan 10, 2026 (Expired!)</td>
+              <td>
+                <button class="btn btn-secondary btn-sm">Reassign</button>
+              </td>
+            </tr>
+            <tr style="opacity: 0.6;">
+              <td style="font-family: monospace; font-weight: 600; color: var(--text-muted);">OLD001</td>
+              <td style="color: var(--text-muted);">Toyota Corolla (2015)</td>
+              <td style="color: var(--text-muted);">-</td>
+              <td><span class="badge badge-neutral">Decommissioned</span></td>
+              <td style="color: var(--text-muted);">-</td>
+              <td>
+                <button class="btn btn-secondary btn-sm">View History</button>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </section>
+
+    <!-- ============================================
+         TAB 3: FORKLIFTS
+         ============================================ -->
+    <section id="tab-forklifts" class="page-section">
+      <div class="page-header">
+        <div>
+          <h1>Forklifts</h1>
+          <p>Manage forklift equipment</p>
+        </div>
+        <button class="btn btn-primary">+ Add Forklift</button>
+      </div>
+
+      <!-- Filters -->
+      <div class="filter-bar">
+        <select class="form-select">
+          <option>All Statuses</option>
+          <option>Active</option>
+          <option>Maintenance</option>
+          <option>Decommissioned</option>
+        </select>
+        <select class="form-select">
+          <option>All Sites</option>
+          <option>Auckland Warehouse</option>
+          <option>Wellington Depot</option>
+          <option>Christchurch Site</option>
+        </select>
+        <input type="text" class="form-input search-input" placeholder="Search by ID, location...">
+      </div>
+
+      <!-- Forklifts Table -->
+      <div class="card" style="padding: 0; overflow: hidden;">
+        <table class="data-table">
+          <thead>
+            <tr>
+              <th>Forklift ID</th>
+              <th>Model</th>
+              <th>Location</th>
+              <th>Status</th>
+              <th>Last Inspection</th>
+              <th>Actions</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td style="font-family: monospace; font-weight: 600; color: var(--text-heading);">FL-001</td>
+              <td>Toyota 8FGU25</td>
+              <td>Auckland Warehouse</td>
+              <td><span class="badge badge-success">Active</span></td>
+              <td>Jan 15, 2026</td>
+              <td>
+                <button class="btn btn-secondary btn-sm">Edit</button>
+              </td>
+            </tr>
+            <tr>
+              <td style="font-family: monospace; font-weight: 600; color: var(--text-heading);">FL-002</td>
+              <td>Hyster H50FT</td>
+              <td>Auckland Warehouse</td>
+              <td><span class="badge badge-warning">Maintenance</span></td>
+              <td style="color: var(--warning);">Dec 20, 2025</td>
+              <td>
+                <button class="btn btn-secondary btn-sm">Edit</button>
+              </td>
+            </tr>
+            <tr>
+              <td style="font-family: monospace; font-weight: 600; color: var(--text-heading);">FL-003</td>
+              <td>Crown FC5200</td>
+              <td>Wellington Depot</td>
+              <td><span class="badge badge-success">Active</span></td>
+              <td>Jan 22, 2026</td>
+              <td>
+                <button class="btn btn-secondary btn-sm">Edit</button>
+              </td>
+            </tr>
+            <tr style="opacity: 0.6;">
+              <td style="font-family: monospace; font-weight: 600; color: var(--text-muted);">FL-004</td>
+              <td style="color: var(--text-muted);">Yale GLP050</td>
+              <td style="color: var(--text-muted);">-</td>
+              <td><span class="badge badge-neutral">Decommissioned</span></td>
+              <td style="color: var(--text-muted);">-</td>
+              <td>
+                <button class="btn btn-secondary btn-sm">View History</button>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </section>
+
+    <!-- ============================================
+         TAB 4: SITES
+         ============================================ -->
+    <section id="tab-sites" class="page-section">
+      <div class="page-header">
+        <div>
+          <h1>Sites</h1>
+          <p>Manage site locations</p>
+        </div>
+        <button class="btn btn-primary">+ Add Site</button>
+      </div>
+
+      <!-- Filters -->
+      <div class="filter-bar">
+        <select class="form-select">
+          <option>All Statuses</option>
+          <option>Active</option>
+          <option>Inactive</option>
+        </select>
+        <select class="form-select">
+          <option>All Countries</option>
+          <option>New Zealand</option>
+          <option>Australia</option>
+        </select>
+        <input type="text" class="form-input search-input" placeholder="Search by name, address...">
+      </div>
+
+      <!-- Sites Table -->
+      <div class="card" style="padding: 0; overflow: hidden;">
+        <table class="data-table">
+          <thead>
+            <tr>
+              <th>Site Name</th>
+              <th>Address</th>
+              <th>Country</th>
+              <th>Status</th>
+              <th>Actions</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td style="font-weight: 600; color: var(--text-heading);">Auckland Head Office</td>
+              <td>123 Queen Street, Auckland CBD</td>
+              <td>New Zealand</td>
+              <td><span class="badge badge-success">Active</span></td>
+              <td>
+                <button class="btn btn-secondary btn-sm">Edit</button>
+              </td>
+            </tr>
+            <tr>
+              <td style="font-weight: 600; color: var(--text-heading);">Auckland Warehouse</td>
+              <td>45 Industrial Ave, Penrose</td>
+              <td>New Zealand</td>
+              <td><span class="badge badge-success">Active</span></td>
+              <td>
+                <button class="btn btn-secondary btn-sm">Edit</button>
+              </td>
+            </tr>
+            <tr>
+              <td style="font-weight: 600; color: var(--text-heading);">Wellington Depot</td>
+              <td>78 Thorndon Quay, Wellington</td>
+              <td>New Zealand</td>
+              <td><span class="badge badge-success">Active</span></td>
+              <td>
+                <button class="btn btn-secondary btn-sm">Edit</button>
+              </td>
+            </tr>
+            <tr>
+              <td style="font-weight: 600; color: var(--text-heading);">Christchurch Site</td>
+              <td>22 Blenheim Road, Christchurch</td>
+              <td>New Zealand</td>
+              <td><span class="badge badge-success">Active</span></td>
+              <td>
+                <button class="btn btn-secondary btn-sm">Edit</button>
+              </td>
+            </tr>
+            <tr>
+              <td style="font-weight: 600; color: var(--text-heading);">Sydney Office</td>
+              <td>100 George Street, Sydney</td>
+              <td>Australia</td>
+              <td><span class="badge badge-success">Active</span></td>
+              <td>
+                <button class="btn btn-secondary btn-sm">Edit</button>
+              </td>
+            </tr>
+            <tr style="opacity: 0.6;">
+              <td style="font-weight: 600; color: var(--text-muted);">Old Depot (Closed)</td>
+              <td style="color: var(--text-muted);">99 Fake Street, Hamilton</td>
+              <td style="color: var(--text-muted);">New Zealand</td>
+              <td><span class="badge badge-neutral">Inactive</span></td>
+              <td>
+                <button class="btn btn-secondary btn-sm">Reactivate</button>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </section>
+
+  </div>
+
+  <script>
+    function showTab(tabId) {
+      // Hide all sections
+      document.querySelectorAll('.page-section').forEach(section => {
+        section.classList.remove('active');
+      });
+
+      // Deactivate all tabs
+      document.querySelectorAll('.admin-tab').forEach(tab => {
+        tab.classList.remove('active');
+      });
+
+      // Show selected section
+      document.getElementById('tab-' + tabId).classList.add('active');
+
+      // Activate clicked tab
+      event.currentTarget.classList.add('active');
+    }
+
+    function setTheme(theme) {
+      document.documentElement.setAttribute('data-theme', theme);
+      document.querySelectorAll('.theme-btn').forEach(btn => {
+        btn.classList.remove('active');
+      });
+      event.currentTarget.classList.add('active');
+    }
+  </script>
+
+</body>
+</html>

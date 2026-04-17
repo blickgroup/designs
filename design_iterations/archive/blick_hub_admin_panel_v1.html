@@ -1,0 +1,1057 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Blick Hub - Admin Panel Mockup v1</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          colors: {
+            'brand-orange': '#f05323',
+            'brand-dark-gray': '#58595b',
+            'brand-light-gray': '#bcbec0',
+            'brand-black': '#212121',
+            'brand-charcoal': '#2a2a2a',
+          },
+          fontFamily: {
+            sans: ['Inter', 'sans-serif'],
+          },
+        }
+      }
+    }
+  </script>
+
+  <style>
+    :root,
+    [data-theme="dark"] {
+      --brand-orange: #f05323;
+      --bg-primary: #212121;
+      --bg-secondary: #2a2a2a;
+      --bg-tertiary: #1a1a1a;
+      --bg-hover: #3a3a3a;
+      --text-primary: #bcbec0;
+      --text-secondary: #a0a0a0;
+      --text-heading: #ffffff;
+      --text-muted: #707070;
+      --border-default: #58595b;
+      --border-subtle: #404040;
+      --interactive-primary: #f05323;
+      --input-bg: #2a2a2a;
+      --input-border: #58595b;
+      --input-text: #ffffff;
+      --button-primary-bg: #f05323;
+      --button-primary-text: #ffffff;
+      --card-bg: #2a2a2a;
+      --card-border: #58595b;
+      --card-hover-border: #f05323;
+      --error-bg: #991b1b;
+      --error-text: #fca5a5;
+      --success-bg: #065f46;
+      --success-text: #6ee7b7;
+      --warning-bg: #92400e;
+      --warning-text: #fcd34d;
+    }
+
+    [data-theme="light"] {
+      --brand-orange: #f05323;
+      --bg-primary: #ffffff;
+      --bg-secondary: #f9fafb;
+      --bg-tertiary: #f3f4f6;
+      --bg-hover: #e5e7eb;
+      --text-primary: #111827;
+      --text-secondary: #6b7280;
+      --text-heading: #000000;
+      --text-muted: #9ca3af;
+      --border-default: #e5e7eb;
+      --border-subtle: #f3f4f6;
+      --interactive-primary: #f05323;
+      --input-bg: #ffffff;
+      --input-border: #d1d5db;
+      --input-text: #111827;
+      --button-primary-bg: #f05323;
+      --button-primary-text: #ffffff;
+      --card-bg: #f9fafb;
+      --card-border: #e5e7eb;
+      --card-hover-border: #f05323;
+      --error-bg: #fef2f2;
+      --error-text: #dc2626;
+      --success-bg: #f0fdf4;
+      --success-text: #16a34a;
+      --warning-bg: #fffbeb;
+      --warning-text: #d97706;
+    }
+
+    * {
+      font-family: 'Inter', sans-serif;
+      transition: background-color 0.2s, border-color 0.2s, color 0.2s;
+    }
+
+    .sidebar {
+      transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    }
+
+    .nav-item {
+      transition: all 0.15s ease;
+    }
+    .nav-item:hover {
+      background-color: var(--bg-hover);
+    }
+    .nav-item.active {
+      background-color: var(--brand-orange);
+      color: white;
+    }
+
+    .stat-card {
+      transition: all 0.2s ease;
+    }
+    .stat-card:hover {
+      border-color: var(--brand-orange);
+      transform: translateY(-2px);
+    }
+
+    .action-card {
+      transition: all 0.2s ease;
+      cursor: pointer;
+    }
+    .action-card:hover {
+      border-color: var(--brand-orange);
+      box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+    }
+
+    .tab-btn {
+      transition: all 0.15s ease;
+    }
+    .tab-btn.active {
+      border-bottom-color: var(--brand-orange);
+      color: var(--brand-orange);
+    }
+
+    .step-indicator {
+      width: 32px;
+      height: 32px;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-weight: 600;
+    }
+    .step-indicator.completed {
+      background-color: #16a34a;
+      color: white;
+    }
+    .step-indicator.current {
+      background-color: var(--brand-orange);
+      color: white;
+    }
+    .step-indicator.pending {
+      background-color: var(--bg-hover);
+      color: var(--text-muted);
+    }
+
+    .modal-overlay {
+      background-color: rgba(0, 0, 0, 0.6);
+      backdrop-filter: blur(4px);
+    }
+
+    /* Hide scrollbar but allow scrolling */
+    .hide-scrollbar::-webkit-scrollbar {
+      display: none;
+    }
+    .hide-scrollbar {
+      -ms-overflow-style: none;
+      scrollbar-width: none;
+    }
+  </style>
+</head>
+
+<body data-theme="dark" style="background-color: var(--bg-primary);">
+
+  <!-- Top Navigation Bar -->
+  <header class="fixed top-0 left-0 right-0 h-16 z-50 border-b flex items-center justify-between px-6"
+          style="background-color: var(--bg-secondary); border-color: var(--border-default);">
+    <div class="flex items-center gap-4">
+      <div class="text-2xl font-bold" style="color: var(--brand-orange);">Blick Hub</div>
+      <span class="px-2 py-1 text-xs font-semibold rounded"
+            style="background-color: var(--warning-bg); color: var(--warning-text);">
+        Admin Panel
+      </span>
+    </div>
+    <div class="flex items-center gap-4">
+      <button onclick="toggleTheme()" class="px-3 py-2 rounded-md text-sm font-medium"
+              style="background-color: var(--bg-hover); color: var(--text-primary);">
+        Toggle Theme
+      </button>
+      <div class="flex items-center gap-2">
+        <div class="w-8 h-8 rounded-full bg-brand-orange flex items-center justify-center text-white font-semibold">
+          SA
+        </div>
+        <span style="color: var(--text-primary);">Shaun Admin</span>
+      </div>
+    </div>
+  </header>
+
+  <!-- Sidebar Navigation -->
+  <aside class="sidebar fixed top-16 left-0 h-[calc(100vh-4rem)] w-64 border-r z-40 overflow-y-auto hide-scrollbar"
+         style="background-color: var(--bg-secondary); border-color: var(--border-default);">
+    <nav class="p-4 space-y-2">
+      <div class="text-xs font-semibold uppercase tracking-wider mb-3" style="color: var(--text-muted);">
+        Overview
+      </div>
+      <a href="#dashboard" class="nav-item active block px-3 py-2.5 rounded-lg text-sm font-medium">
+        Dashboard
+      </a>
+
+      <div class="text-xs font-semibold uppercase tracking-wider mt-6 mb-3" style="color: var(--text-muted);">
+        Staff Management
+      </div>
+      <a href="#offboarding" class="nav-item block px-3 py-2.5 rounded-lg text-sm font-medium" style="color: var(--text-primary);">
+        Staff Offboarding
+      </a>
+      <a href="#users" class="nav-item block px-3 py-2.5 rounded-lg text-sm font-medium" style="color: var(--text-primary);">
+        User Directory
+      </a>
+
+      <div class="text-xs font-semibold uppercase tracking-wider mt-6 mb-3" style="color: var(--text-muted);">
+        Asset Management
+      </div>
+      <a href="#vehicles" class="nav-item block px-3 py-2.5 rounded-lg text-sm font-medium" style="color: var(--text-primary);">
+        Vehicles
+      </a>
+      <a href="#forklifts" class="nav-item block px-3 py-2.5 rounded-lg text-sm font-medium" style="color: var(--text-primary);">
+        Forklifts
+      </a>
+
+      <div class="text-xs font-semibold uppercase tracking-wider mt-6 mb-3" style="color: var(--text-muted);">
+        Bulk Operations
+      </div>
+      <a href="#reassign" class="nav-item block px-3 py-2.5 rounded-lg text-sm font-medium" style="color: var(--text-primary);">
+        Bulk Reassignment
+      </a>
+      <a href="#status" class="nav-item block px-3 py-2.5 rounded-lg text-sm font-medium" style="color: var(--text-primary);">
+        Status Updates
+      </a>
+
+      <div class="text-xs font-semibold uppercase tracking-wider mt-6 mb-3" style="color: var(--text-muted);">
+        Settings
+      </div>
+      <a href="#sites" class="nav-item block px-3 py-2.5 rounded-lg text-sm font-medium" style="color: var(--text-primary);">
+        Sites
+      </a>
+      <a href="#audit" class="nav-item block px-3 py-2.5 rounded-lg text-sm font-medium" style="color: var(--text-primary);">
+        Audit Log
+      </a>
+    </nav>
+  </aside>
+
+  <!-- Main Content Area -->
+  <main class="ml-64 mt-16 p-8 min-h-[calc(100vh-4rem)]" style="background-color: var(--bg-primary);">
+
+    <!-- ============================================
+         SECTION 1: DASHBOARD OVERVIEW
+         ============================================ -->
+    <section id="dashboard" class="mb-12">
+      <h1 class="text-3xl font-bold mb-2" style="color: var(--text-heading);">Admin Dashboard</h1>
+      <p class="text-sm mb-8" style="color: var(--text-muted);">Manage staff, assets, and bulk operations across all Blick Hub services.</p>
+
+      <!-- Stat Cards -->
+      <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
+        <div class="stat-card rounded-lg p-6 border-2"
+             style="background-color: var(--card-bg); border-color: var(--card-border);">
+          <div class="text-sm font-medium mb-1" style="color: var(--text-muted);">Active Staff</div>
+          <div class="text-3xl font-bold" style="color: var(--text-heading);">127</div>
+          <div class="text-xs mt-2" style="color: var(--success-text);">+3 this month</div>
+        </div>
+        <div class="stat-card rounded-lg p-6 border-2"
+             style="background-color: var(--card-bg); border-color: var(--card-border);">
+          <div class="text-sm font-medium mb-1" style="color: var(--text-muted);">Assigned Vehicles</div>
+          <div class="text-3xl font-bold" style="color: var(--text-heading);">43</div>
+          <div class="text-xs mt-2" style="color: var(--text-muted);">5 unassigned</div>
+        </div>
+        <div class="stat-card rounded-lg p-6 border-2"
+             style="background-color: var(--card-bg); border-color: var(--card-border);">
+          <div class="text-sm font-medium mb-1" style="color: var(--text-muted);">Open Follow-ups</div>
+          <div class="text-3xl font-bold" style="color: var(--text-heading);">28</div>
+          <div class="text-xs mt-2" style="color: var(--warning-text);">12 overdue</div>
+        </div>
+        <div class="stat-card rounded-lg p-6 border-2"
+             style="background-color: var(--card-bg); border-color: var(--card-border);">
+          <div class="text-sm font-medium mb-1" style="color: var(--text-muted);">Pending Offboards</div>
+          <div class="text-3xl font-bold" style="color: var(--brand-orange);">1</div>
+          <div class="text-xs mt-2" style="color: var(--error-text);">Action required</div>
+        </div>
+      </div>
+
+      <!-- Quick Actions Grid -->
+      <h2 class="text-xl font-bold mb-4" style="color: var(--text-heading);">Quick Actions</h2>
+      <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+        <div class="action-card rounded-lg p-6 border-2"
+             style="background-color: var(--card-bg); border-color: var(--card-border);"
+             onclick="showSection('offboarding')">
+          <div class="flex items-center gap-4 mb-3">
+            <div class="w-12 h-12 rounded-lg flex items-center justify-center text-2xl"
+                 style="background-color: var(--error-bg);">
+              <span style="color: var(--error-text);">&#128587;</span>
+            </div>
+            <div>
+              <h3 class="font-bold" style="color: var(--text-heading);">Offboard Staff Member</h3>
+              <p class="text-sm" style="color: var(--text-muted);">Deactivate user & reassign items</p>
+            </div>
+          </div>
+          <div class="text-xs px-2 py-1 rounded inline-block" style="background-color: var(--error-bg); color: var(--error-text);">
+            1 pending
+          </div>
+        </div>
+
+        <div class="action-card rounded-lg p-6 border-2"
+             style="background-color: var(--card-bg); border-color: var(--card-border);"
+             onclick="showSection('vehicles')">
+          <div class="flex items-center gap-4 mb-3">
+            <div class="w-12 h-12 rounded-lg flex items-center justify-center text-2xl"
+                 style="background-color: var(--bg-hover);">
+              <span>&#128663;</span>
+            </div>
+            <div>
+              <h3 class="font-bold" style="color: var(--text-heading);">Manage Vehicles</h3>
+              <p class="text-sm" style="color: var(--text-muted);">Assign, unassign, or deactivate</p>
+            </div>
+          </div>
+          <div class="text-xs px-2 py-1 rounded inline-block" style="background-color: var(--warning-bg); color: var(--warning-text);">
+            5 unassigned
+          </div>
+        </div>
+
+        <div class="action-card rounded-lg p-6 border-2"
+             style="background-color: var(--card-bg); border-color: var(--card-border);"
+             onclick="showSection('reassign')">
+          <div class="flex items-center gap-4 mb-3">
+            <div class="w-12 h-12 rounded-lg flex items-center justify-center text-2xl"
+                 style="background-color: var(--bg-hover);">
+              <span>&#128260;</span>
+            </div>
+            <div>
+              <h3 class="font-bold" style="color: var(--text-heading);">Bulk Reassign</h3>
+              <p class="text-sm" style="color: var(--text-muted);">Move items between users</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ============================================
+         SECTION 2: STAFF OFFBOARDING WORKFLOW
+         ============================================ -->
+    <section id="offboarding" class="mb-12">
+      <div class="flex items-center justify-between mb-6">
+        <div>
+          <h1 class="text-3xl font-bold" style="color: var(--text-heading);">Staff Offboarding</h1>
+          <p class="text-sm" style="color: var(--text-muted);">Deactivate departing staff while preserving historical data.</p>
+        </div>
+        <button class="px-4 py-2 rounded-md font-semibold"
+                style="background-color: var(--button-primary-bg); color: var(--button-primary-text);">
+          + New Offboard
+        </button>
+      </div>
+
+      <!-- Pending Offboard Alert -->
+      <div class="rounded-lg p-4 mb-6 border-l-4 flex items-start gap-4"
+           style="background-color: var(--warning-bg); border-color: var(--brand-orange);">
+        <span class="text-2xl">&#9888;</span>
+        <div>
+          <div class="font-semibold" style="color: var(--warning-text);">Pending Offboard: John Smith</div>
+          <p class="text-sm" style="color: var(--warning-text);">Last day: Feb 14, 2026. Has 5 open follow-ups and 1 assigned vehicle.</p>
+          <button class="mt-2 text-sm font-semibold underline" style="color: var(--brand-orange);">
+            Continue offboarding &rarr;
+          </button>
+        </div>
+      </div>
+
+      <!-- Offboarding Wizard -->
+      <div class="rounded-lg border-2 p-6" style="background-color: var(--card-bg); border-color: var(--card-border);">
+        <h2 class="text-xl font-bold mb-6" style="color: var(--text-heading);">Offboarding Wizard: John Smith</h2>
+
+        <!-- Step Indicators -->
+        <div class="flex items-center gap-4 mb-8">
+          <div class="flex items-center gap-2">
+            <div class="step-indicator completed">&#10003;</div>
+            <span class="text-sm font-medium" style="color: var(--success-text);">Select User</span>
+          </div>
+          <div class="h-0.5 flex-1" style="background-color: var(--border-default);"></div>
+          <div class="flex items-center gap-2">
+            <div class="step-indicator current">2</div>
+            <span class="text-sm font-medium" style="color: var(--brand-orange);">Review Items</span>
+          </div>
+          <div class="h-0.5 flex-1" style="background-color: var(--border-default);"></div>
+          <div class="flex items-center gap-2">
+            <div class="step-indicator pending">3</div>
+            <span class="text-sm font-medium" style="color: var(--text-muted);">Reassign</span>
+          </div>
+          <div class="h-0.5 flex-1" style="background-color: var(--border-default);"></div>
+          <div class="flex items-center gap-2">
+            <div class="step-indicator pending">4</div>
+            <span class="text-sm font-medium" style="color: var(--text-muted);">Confirm</span>
+          </div>
+        </div>
+
+        <!-- Step 2: Review Items -->
+        <div class="space-y-6">
+          <div class="p-4 rounded-lg" style="background-color: var(--bg-tertiary);">
+            <div class="flex items-center justify-between mb-4">
+              <h3 class="font-semibold" style="color: var(--text-heading);">Items Assigned to John Smith</h3>
+              <span class="text-sm" style="color: var(--text-muted);">6 items found</span>
+            </div>
+
+            <!-- Items Table -->
+            <div class="overflow-x-auto rounded-lg border" style="border-color: var(--border-default);">
+              <table class="w-full">
+                <thead style="background-color: var(--bg-secondary);">
+                  <tr>
+                    <th class="px-4 py-3 text-left text-sm font-semibold" style="color: var(--text-heading);">
+                      <input type="checkbox" class="mr-2" style="accent-color: var(--brand-orange);">
+                      Type
+                    </th>
+                    <th class="px-4 py-3 text-left text-sm font-semibold" style="color: var(--text-heading);">Item</th>
+                    <th class="px-4 py-3 text-left text-sm font-semibold" style="color: var(--text-heading);">Status</th>
+                    <th class="px-4 py-3 text-left text-sm font-semibold" style="color: var(--text-heading);">Due Date</th>
+                    <th class="px-4 py-3 text-left text-sm font-semibold" style="color: var(--text-heading);">Reassign To</th>
+                  </tr>
+                </thead>
+                <tbody style="background-color: var(--card-bg);">
+                  <tr class="border-t" style="border-color: var(--border-default);">
+                    <td class="px-4 py-3">
+                      <input type="checkbox" checked class="mr-2" style="accent-color: var(--brand-orange);">
+                      <span class="px-2 py-1 text-xs font-semibold rounded bg-blue-600 text-white">Vehicle</span>
+                    </td>
+                    <td class="px-4 py-3 text-sm" style="color: var(--text-primary);">ABC123 (Toyota Hilux)</td>
+                    <td class="px-4 py-3"><span class="px-2 py-1 text-xs font-semibold rounded bg-green-600 text-white">Assigned</span></td>
+                    <td class="px-4 py-3 text-sm" style="color: var(--text-muted);">-</td>
+                    <td class="px-4 py-3">
+                      <select class="rounded py-1 px-2 text-sm w-full"
+                              style="background-color: var(--input-bg); border: 1px solid var(--input-border); color: var(--input-text);">
+                        <option>Select person...</option>
+                        <option>Sarah Jones</option>
+                        <option>Mike Wilson</option>
+                        <option>Unassigned (Pool)</option>
+                      </select>
+                    </td>
+                  </tr>
+                  <tr class="border-t" style="border-color: var(--border-default);">
+                    <td class="px-4 py-3">
+                      <input type="checkbox" checked class="mr-2" style="accent-color: var(--brand-orange);">
+                      <span class="px-2 py-1 text-xs font-semibold rounded bg-yellow-600 text-white">Follow-up</span>
+                    </td>
+                    <td class="px-4 py-3 text-sm" style="color: var(--text-primary);">Review safety signage at Site A</td>
+                    <td class="px-4 py-3"><span class="px-2 py-1 text-xs font-semibold rounded bg-yellow-600 text-white">Open</span></td>
+                    <td class="px-4 py-3 text-sm" style="color: var(--error-text);">Overdue (Jan 20)</td>
+                    <td class="px-4 py-3">
+                      <select class="rounded py-1 px-2 text-sm w-full"
+                              style="background-color: var(--input-bg); border: 1px solid var(--input-border); color: var(--input-text);">
+                        <option>Select person...</option>
+                        <option selected>Sarah Jones</option>
+                        <option>Mike Wilson</option>
+                      </select>
+                    </td>
+                  </tr>
+                  <tr class="border-t" style="border-color: var(--border-default);">
+                    <td class="px-4 py-3">
+                      <input type="checkbox" checked class="mr-2" style="accent-color: var(--brand-orange);">
+                      <span class="px-2 py-1 text-xs font-semibold rounded bg-yellow-600 text-white">Follow-up</span>
+                    </td>
+                    <td class="px-4 py-3 text-sm" style="color: var(--text-primary);">Complete hazard control for HZ-2024-089</td>
+                    <td class="px-4 py-3"><span class="px-2 py-1 text-xs font-semibold rounded bg-blue-600 text-white">In Progress</span></td>
+                    <td class="px-4 py-3 text-sm" style="color: var(--text-primary);">Feb 28</td>
+                    <td class="px-4 py-3">
+                      <select class="rounded py-1 px-2 text-sm w-full"
+                              style="background-color: var(--input-bg); border: 1px solid var(--input-border); color: var(--input-text);">
+                        <option>Select person...</option>
+                        <option>Sarah Jones</option>
+                        <option selected>Mike Wilson</option>
+                      </select>
+                    </td>
+                  </tr>
+                  <tr class="border-t" style="border-color: var(--border-default);">
+                    <td class="px-4 py-3">
+                      <input type="checkbox" checked class="mr-2" style="accent-color: var(--brand-orange);">
+                      <span class="px-2 py-1 text-xs font-semibold rounded bg-purple-600 text-white">Ticket</span>
+                    </td>
+                    <td class="px-4 py-3 text-sm" style="color: var(--text-primary);">JT-1892: Fix login timeout issue</td>
+                    <td class="px-4 py-3"><span class="px-2 py-1 text-xs font-semibold rounded bg-blue-600 text-white">In Progress</span></td>
+                    <td class="px-4 py-3 text-sm" style="color: var(--text-muted);">-</td>
+                    <td class="px-4 py-3">
+                      <select class="rounded py-1 px-2 text-sm w-full"
+                              style="background-color: var(--input-bg); border: 1px solid var(--input-border); color: var(--input-text);">
+                        <option>Select person...</option>
+                        <option selected>Sarah Jones</option>
+                        <option>Mike Wilson</option>
+                      </select>
+                    </td>
+                  </tr>
+                  <tr class="border-t" style="border-color: var(--border-default);">
+                    <td class="px-4 py-3">
+                      <input type="checkbox" checked class="mr-2" style="accent-color: var(--brand-orange);">
+                      <span class="px-2 py-1 text-xs font-semibold rounded bg-green-600 text-white">Idea</span>
+                    </td>
+                    <td class="px-4 py-3 text-sm" style="color: var(--text-primary);">Automate weekly safety reports</td>
+                    <td class="px-4 py-3"><span class="px-2 py-1 text-xs font-semibold rounded bg-blue-600 text-white">In Execution</span></td>
+                    <td class="px-4 py-3 text-sm" style="color: var(--text-primary);">Mar 15</td>
+                    <td class="px-4 py-3">
+                      <select class="rounded py-1 px-2 text-sm w-full"
+                              style="background-color: var(--input-bg); border: 1px solid var(--input-border); color: var(--input-text);">
+                        <option>Select person...</option>
+                        <option>Sarah Jones</option>
+                        <option selected>Mike Wilson</option>
+                      </select>
+                    </td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+
+          <!-- Action Buttons -->
+          <div class="flex justify-between items-center pt-4">
+            <button class="px-4 py-2 rounded-md font-semibold"
+                    style="background-color: var(--bg-hover); color: var(--text-primary);">
+              &larr; Back
+            </button>
+            <div class="flex gap-3">
+              <button class="px-4 py-2 rounded-md font-semibold border"
+                      style="border-color: var(--border-default); color: var(--text-primary);">
+                Save Draft
+              </button>
+              <button class="px-4 py-2 rounded-md font-semibold"
+                      style="background-color: var(--button-primary-bg); color: var(--button-primary-text);">
+                Continue to Reassign &rarr;
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ============================================
+         SECTION 3: VEHICLE MANAGEMENT
+         ============================================ -->
+    <section id="vehicles" class="mb-12">
+      <div class="flex items-center justify-between mb-6">
+        <div>
+          <h1 class="text-3xl font-bold" style="color: var(--text-heading);">Vehicle Management</h1>
+          <p class="text-sm" style="color: var(--text-muted);">Assign, reassign, and manage fleet vehicles.</p>
+        </div>
+        <div class="flex gap-3">
+          <button class="px-4 py-2 rounded-md font-semibold border"
+                  style="border-color: var(--border-default); color: var(--text-primary);">
+            Export CSV
+          </button>
+          <button class="px-4 py-2 rounded-md font-semibold"
+                  style="background-color: var(--button-primary-bg); color: var(--button-primary-text);">
+            + Add Vehicle
+          </button>
+        </div>
+      </div>
+
+      <!-- Filter Bar -->
+      <div class="flex gap-4 mb-6 flex-wrap">
+        <div>
+          <label class="block text-xs font-medium mb-1" style="color: var(--text-muted);">Status</label>
+          <select class="rounded-md py-2 px-3 text-sm"
+                  style="background-color: var(--input-bg); border: 1px solid var(--input-border); color: var(--input-text);">
+            <option>All Statuses</option>
+            <option>Assigned</option>
+            <option>Unassigned</option>
+            <option>Decommissioned</option>
+          </select>
+        </div>
+        <div>
+          <label class="block text-xs font-medium mb-1" style="color: var(--text-muted);">Type</label>
+          <select class="rounded-md py-2 px-3 text-sm"
+                  style="background-color: var(--input-bg); border: 1px solid var(--input-border); color: var(--input-text);">
+            <option>All Types</option>
+            <option>Car</option>
+            <option>Ute</option>
+            <option>Van</option>
+            <option>Truck</option>
+          </select>
+        </div>
+        <div class="flex-1">
+          <label class="block text-xs font-medium mb-1" style="color: var(--text-muted);">Search</label>
+          <input type="text" placeholder="Search by rego, driver name..."
+                 class="rounded-md py-2 px-3 text-sm w-full max-w-md"
+                 style="background-color: var(--input-bg); border: 1px solid var(--input-border); color: var(--input-text);">
+        </div>
+      </div>
+
+      <!-- Vehicles Table -->
+      <div class="rounded-lg border-2 overflow-hidden" style="border-color: var(--border-default);">
+        <table class="w-full">
+          <thead style="background-color: var(--bg-tertiary);">
+            <tr>
+              <th class="px-4 py-3 text-left text-sm font-semibold" style="color: var(--text-heading);">Registration</th>
+              <th class="px-4 py-3 text-left text-sm font-semibold" style="color: var(--text-heading);">Vehicle</th>
+              <th class="px-4 py-3 text-left text-sm font-semibold" style="color: var(--text-heading);">Assigned To</th>
+              <th class="px-4 py-3 text-left text-sm font-semibold" style="color: var(--text-heading);">Status</th>
+              <th class="px-4 py-3 text-left text-sm font-semibold" style="color: var(--text-heading);">WOF/Rego Expiry</th>
+              <th class="px-4 py-3 text-left text-sm font-semibold" style="color: var(--text-heading);">Actions</th>
+            </tr>
+          </thead>
+          <tbody style="background-color: var(--card-bg);">
+            <tr class="border-t" style="border-color: var(--border-default);">
+              <td class="px-4 py-3 font-mono text-sm font-semibold" style="color: var(--text-heading);">ABC123</td>
+              <td class="px-4 py-3 text-sm" style="color: var(--text-primary);">Toyota Hilux SR5 (2022)</td>
+              <td class="px-4 py-3 text-sm" style="color: var(--text-primary);">
+                <div class="flex items-center gap-2">
+                  <div class="w-6 h-6 rounded-full bg-blue-600 flex items-center justify-center text-white text-xs font-semibold">JS</div>
+                  John Smith
+                </div>
+              </td>
+              <td class="px-4 py-3"><span class="px-2 py-1 text-xs font-semibold rounded bg-green-600 text-white">Assigned</span></td>
+              <td class="px-4 py-3 text-sm" style="color: var(--text-primary);">Mar 15, 2026</td>
+              <td class="px-4 py-3">
+                <div class="flex gap-2">
+                  <button class="px-3 py-1 text-xs font-semibold rounded"
+                          style="background-color: var(--bg-hover); color: var(--text-primary);">
+                    Reassign
+                  </button>
+                  <button class="px-3 py-1 text-xs font-semibold rounded"
+                          style="background-color: var(--bg-hover); color: var(--text-primary);">
+                    Edit
+                  </button>
+                </div>
+              </td>
+            </tr>
+            <tr class="border-t" style="border-color: var(--border-default);">
+              <td class="px-4 py-3 font-mono text-sm font-semibold" style="color: var(--text-heading);">XYZ789</td>
+              <td class="px-4 py-3 text-sm" style="color: var(--text-primary);">Ford Ranger XLT (2023)</td>
+              <td class="px-4 py-3 text-sm" style="color: var(--text-muted);">
+                <span class="italic">Unassigned</span>
+              </td>
+              <td class="px-4 py-3"><span class="px-2 py-1 text-xs font-semibold rounded bg-yellow-600 text-white">Unassigned</span></td>
+              <td class="px-4 py-3 text-sm" style="color: var(--text-primary);">Apr 22, 2026</td>
+              <td class="px-4 py-3">
+                <div class="flex gap-2">
+                  <button class="px-3 py-1 text-xs font-semibold rounded"
+                          style="background-color: var(--brand-orange); color: white;">
+                    Assign
+                  </button>
+                  <button class="px-3 py-1 text-xs font-semibold rounded"
+                          style="background-color: var(--bg-hover); color: var(--text-primary);">
+                    Edit
+                  </button>
+                </div>
+              </td>
+            </tr>
+            <tr class="border-t" style="border-color: var(--border-default);">
+              <td class="px-4 py-3 font-mono text-sm font-semibold" style="color: var(--text-heading);">DEF456</td>
+              <td class="px-4 py-3 text-sm" style="color: var(--text-primary);">Nissan Navara (2021)</td>
+              <td class="px-4 py-3 text-sm" style="color: var(--text-primary);">
+                <div class="flex items-center gap-2">
+                  <div class="w-6 h-6 rounded-full bg-purple-600 flex items-center justify-center text-white text-xs font-semibold">SJ</div>
+                  Sarah Jones
+                </div>
+              </td>
+              <td class="px-4 py-3"><span class="px-2 py-1 text-xs font-semibold rounded bg-green-600 text-white">Assigned</span></td>
+              <td class="px-4 py-3 text-sm" style="color: var(--error-text);">Jan 10, 2026 (Expired!)</td>
+              <td class="px-4 py-3">
+                <div class="flex gap-2">
+                  <button class="px-3 py-1 text-xs font-semibold rounded"
+                          style="background-color: var(--bg-hover); color: var(--text-primary);">
+                    Reassign
+                  </button>
+                  <button class="px-3 py-1 text-xs font-semibold rounded"
+                          style="background-color: var(--bg-hover); color: var(--text-primary);">
+                    Edit
+                  </button>
+                </div>
+              </td>
+            </tr>
+            <tr class="border-t" style="border-color: var(--border-default); opacity: 0.6;">
+              <td class="px-4 py-3 font-mono text-sm font-semibold" style="color: var(--text-muted);">OLD001</td>
+              <td class="px-4 py-3 text-sm" style="color: var(--text-muted);">Toyota Corolla (2015)</td>
+              <td class="px-4 py-3 text-sm" style="color: var(--text-muted);">-</td>
+              <td class="px-4 py-3"><span class="px-2 py-1 text-xs font-semibold rounded bg-gray-600 text-white">Decommissioned</span></td>
+              <td class="px-4 py-3 text-sm" style="color: var(--text-muted);">-</td>
+              <td class="px-4 py-3">
+                <button class="px-3 py-1 text-xs font-semibold rounded"
+                        style="background-color: var(--bg-hover); color: var(--text-primary);">
+                  View History
+                </button>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </section>
+
+    <!-- ============================================
+         SECTION 4: BULK REASSIGNMENT
+         ============================================ -->
+    <section id="reassign" class="mb-12">
+      <div class="flex items-center justify-between mb-6">
+        <div>
+          <h1 class="text-3xl font-bold" style="color: var(--text-heading);">Bulk Reassignment</h1>
+          <p class="text-sm" style="color: var(--text-muted);">Reassign multiple items from one user to another across all services.</p>
+        </div>
+      </div>
+
+      <!-- Reassignment Form -->
+      <div class="rounded-lg border-2 p-6" style="background-color: var(--card-bg); border-color: var(--card-border);">
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mb-6">
+          <div>
+            <label class="block text-sm font-medium mb-2" style="color: var(--text-muted);">From User</label>
+            <select class="rounded-md py-2 px-3 text-sm w-full"
+                    style="background-color: var(--input-bg); border: 1px solid var(--input-border); color: var(--input-text);">
+              <option>Select user...</option>
+              <option selected>John Smith (john.smith@blick.group)</option>
+              <option>Sarah Jones (sarah.jones@blick.group)</option>
+              <option>Mike Wilson (mike.wilson@blick.group)</option>
+            </select>
+          </div>
+          <div>
+            <label class="block text-sm font-medium mb-2" style="color: var(--text-muted);">To User</label>
+            <select class="rounded-md py-2 px-3 text-sm w-full"
+                    style="background-color: var(--input-bg); border: 1px solid var(--input-border); color: var(--input-text);">
+              <option>Select user...</option>
+              <option>Sarah Jones (sarah.jones@blick.group)</option>
+              <option>Mike Wilson (mike.wilson@blick.group)</option>
+              <option>Lisa Brown (lisa.brown@blick.group)</option>
+            </select>
+          </div>
+        </div>
+
+        <div class="mb-6">
+          <label class="block text-sm font-medium mb-2" style="color: var(--text-muted);">Item Types to Include</label>
+          <div class="flex flex-wrap gap-4">
+            <label class="flex items-center gap-2 cursor-pointer">
+              <input type="checkbox" checked class="w-4 h-4" style="accent-color: var(--brand-orange);">
+              <span style="color: var(--text-primary);">Follow-up Tasks</span>
+              <span class="text-xs px-2 py-0.5 rounded" style="background-color: var(--bg-hover); color: var(--text-muted);">5</span>
+            </label>
+            <label class="flex items-center gap-2 cursor-pointer">
+              <input type="checkbox" checked class="w-4 h-4" style="accent-color: var(--brand-orange);">
+              <span style="color: var(--text-primary);">Tickets</span>
+              <span class="text-xs px-2 py-0.5 rounded" style="background-color: var(--bg-hover); color: var(--text-muted);">1</span>
+            </label>
+            <label class="flex items-center gap-2 cursor-pointer">
+              <input type="checkbox" checked class="w-4 h-4" style="accent-color: var(--brand-orange);">
+              <span style="color: var(--text-primary);">Ideas</span>
+              <span class="text-xs px-2 py-0.5 rounded" style="background-color: var(--bg-hover); color: var(--text-muted);">1</span>
+            </label>
+            <label class="flex items-center gap-2 cursor-pointer">
+              <input type="checkbox" class="w-4 h-4" style="accent-color: var(--brand-orange);">
+              <span style="color: var(--text-primary);">Vehicles</span>
+              <span class="text-xs px-2 py-0.5 rounded" style="background-color: var(--bg-hover); color: var(--text-muted);">1</span>
+            </label>
+            <label class="flex items-center gap-2 cursor-pointer">
+              <input type="checkbox" class="w-4 h-4" style="accent-color: var(--brand-orange);">
+              <span style="color: var(--text-primary);">Hazard Controls</span>
+              <span class="text-xs px-2 py-0.5 rounded" style="background-color: var(--bg-hover); color: var(--text-muted);">0</span>
+            </label>
+          </div>
+        </div>
+
+        <div class="mb-6">
+          <label class="block text-sm font-medium mb-2" style="color: var(--text-muted);">Status Filter</label>
+          <div class="flex flex-wrap gap-4">
+            <label class="flex items-center gap-2 cursor-pointer">
+              <input type="checkbox" checked class="w-4 h-4" style="accent-color: var(--brand-orange);">
+              <span style="color: var(--text-primary);">Open</span>
+            </label>
+            <label class="flex items-center gap-2 cursor-pointer">
+              <input type="checkbox" checked class="w-4 h-4" style="accent-color: var(--brand-orange);">
+              <span style="color: var(--text-primary);">In Progress</span>
+            </label>
+            <label class="flex items-center gap-2 cursor-pointer">
+              <input type="checkbox" class="w-4 h-4" style="accent-color: var(--brand-orange);">
+              <span style="color: var(--text-primary);">Completed</span>
+            </label>
+          </div>
+        </div>
+
+        <!-- Preview -->
+        <div class="p-4 rounded-lg mb-6" style="background-color: var(--bg-tertiary);">
+          <div class="flex items-center justify-between mb-2">
+            <span class="font-semibold" style="color: var(--text-heading);">Preview</span>
+            <span class="text-sm" style="color: var(--text-muted);">7 items will be reassigned</span>
+          </div>
+          <div class="text-sm" style="color: var(--text-primary);">
+            <p>From: <strong>John Smith</strong> &rarr; To: <strong>Sarah Jones</strong></p>
+            <p class="mt-1">5 Follow-up Tasks, 1 Ticket, 1 Idea</p>
+          </div>
+        </div>
+
+        <div class="flex justify-end gap-3">
+          <button class="px-4 py-2 rounded-md font-semibold border"
+                  style="border-color: var(--border-default); color: var(--text-primary);">
+            Cancel
+          </button>
+          <button class="px-4 py-2 rounded-md font-semibold"
+                  style="background-color: var(--button-primary-bg); color: var(--button-primary-text);">
+            Reassign 7 Items
+          </button>
+        </div>
+      </div>
+    </section>
+
+    <!-- ============================================
+         SECTION 5: ADMIN ACTIVITIES AUDIT SUMMARY
+         ============================================ -->
+    <section id="audit-summary" class="mb-12">
+      <h1 class="text-3xl font-bold mb-2" style="color: var(--text-heading);">Admin Activities Audit</h1>
+      <p class="text-sm mb-6" style="color: var(--text-muted);">Summary of all entities requiring admin management across services.</p>
+
+      <!-- Audit Cards by Service -->
+      <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
+
+        <!-- Health & Safety Service -->
+        <div class="rounded-lg border-2 p-6" style="background-color: var(--card-bg); border-color: var(--card-border);">
+          <h2 class="text-xl font-bold mb-4" style="color: var(--brand-orange);">Health & Safety</h2>
+          <div class="space-y-3">
+            <div class="flex justify-between items-center py-2 border-b" style="border-color: var(--border-subtle);">
+              <span style="color: var(--text-primary);">Hazards</span>
+              <div class="flex gap-2">
+                <span class="text-xs px-2 py-1 rounded" style="background-color: var(--bg-hover); color: var(--text-muted);">follow_up_assignee</span>
+                <span class="text-xs px-2 py-1 rounded" style="background-color: var(--bg-hover); color: var(--text-muted);">control_implemented_by</span>
+              </div>
+            </div>
+            <div class="flex justify-between items-center py-2 border-b" style="border-color: var(--border-subtle);">
+              <span style="color: var(--text-primary);">Incidents</span>
+              <div class="flex gap-2">
+                <span class="text-xs px-2 py-1 rounded" style="background-color: var(--bg-hover); color: var(--text-muted);">follow_up_assignee</span>
+              </div>
+            </div>
+            <div class="flex justify-between items-center py-2 border-b" style="border-color: var(--border-subtle);">
+              <span style="color: var(--text-primary);">Vehicle Inspections</span>
+              <div class="flex gap-2">
+                <span class="text-xs px-2 py-1 rounded" style="background-color: var(--bg-hover); color: var(--text-muted);">follow_up_assignee</span>
+              </div>
+            </div>
+            <div class="flex justify-between items-center py-2">
+              <span style="color: var(--text-primary);">Forklift Inspections</span>
+              <div class="flex gap-2">
+                <span class="text-xs px-2 py-1 rounded" style="background-color: var(--bg-hover); color: var(--text-muted);">follow_up_assignee</span>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Compass Service -->
+        <div class="rounded-lg border-2 p-6" style="background-color: var(--card-bg); border-color: var(--card-border);">
+          <h2 class="text-xl font-bold mb-4" style="color: var(--brand-orange);">Compass</h2>
+          <div class="space-y-3">
+            <div class="flex justify-between items-center py-2 border-b" style="border-color: var(--border-subtle);">
+              <span style="color: var(--text-primary);">Tickets</span>
+              <div class="flex gap-2">
+                <span class="text-xs px-2 py-1 rounded" style="background-color: var(--bg-hover); color: var(--text-muted);">assignee_email</span>
+              </div>
+            </div>
+            <div class="flex justify-between items-center py-2 border-b" style="border-color: var(--border-subtle);">
+              <span style="color: var(--text-primary);">Ideas</span>
+              <div class="flex gap-2">
+                <span class="text-xs px-2 py-1 rounded" style="background-color: var(--bg-hover); color: var(--text-muted);">assignee_email</span>
+                <span class="text-xs px-2 py-1 rounded" style="background-color: var(--bg-hover); color: var(--text-muted);">triaged_by</span>
+              </div>
+            </div>
+            <div class="flex justify-between items-center py-2">
+              <span style="color: var(--text-primary);">Quarterly Plans</span>
+              <div class="flex gap-2">
+                <span class="text-xs px-2 py-1 rounded" style="background-color: var(--bg-hover); color: var(--text-muted);">created_by</span>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Shared/Fleet Service -->
+        <div class="rounded-lg border-2 p-6" style="background-color: var(--card-bg); border-color: var(--card-border);">
+          <h2 class="text-xl font-bold mb-4" style="color: var(--brand-orange);">Shared / Fleet</h2>
+          <div class="space-y-3">
+            <div class="flex justify-between items-center py-2 border-b" style="border-color: var(--border-subtle);">
+              <span style="color: var(--text-primary);">Vehicles</span>
+              <div class="flex gap-2">
+                <span class="text-xs px-2 py-1 rounded bg-red-900" style="color: var(--error-text);">assigned_to_email (1:1)</span>
+              </div>
+            </div>
+            <div class="flex justify-between items-center py-2 border-b" style="border-color: var(--border-subtle);">
+              <span style="color: var(--text-primary);">Follow-up Tasks</span>
+              <div class="flex gap-2">
+                <span class="text-xs px-2 py-1 rounded bg-red-900" style="color: var(--error-text);">assignee_email (HIGH VOL)</span>
+              </div>
+            </div>
+            <div class="flex justify-between items-center py-2">
+              <span style="color: var(--text-primary);">Entity Notes</span>
+              <div class="flex gap-2">
+                <span class="text-xs px-2 py-1 rounded" style="background-color: var(--bg-hover); color: var(--text-muted);">created_by_email</span>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Identity Service -->
+        <div class="rounded-lg border-2 p-6" style="background-color: var(--card-bg); border-color: var(--card-border);">
+          <h2 class="text-xl font-bold mb-4" style="color: var(--brand-orange);">Identity</h2>
+          <div class="space-y-3">
+            <div class="flex justify-between items-center py-2 border-b" style="border-color: var(--border-subtle);">
+              <span style="color: var(--text-primary);">User Profiles</span>
+              <div class="flex gap-2">
+                <span class="text-xs px-2 py-1 rounded bg-green-900" style="color: var(--success-text);">is_active</span>
+                <span class="text-xs px-2 py-1 rounded" style="background-color: var(--bg-hover); color: var(--text-muted);">employment_status</span>
+              </div>
+            </div>
+            <div class="flex justify-between items-center py-2">
+              <span style="color: var(--text-primary);">Sites</span>
+              <div class="flex gap-2">
+                <span class="text-xs px-2 py-1 rounded bg-green-900" style="color: var(--success-text);">active</span>
+              </div>
+            </div>
+          </div>
+        </div>
+
+      </div>
+    </section>
+
+  </main>
+
+  <!-- ============================================
+       MODAL: Vehicle Reassignment
+       ============================================ -->
+  <div id="modal-vehicle" class="modal-overlay fixed inset-0 z-50 flex items-center justify-center hidden">
+    <div class="rounded-lg border-2 max-w-lg w-full mx-4"
+         style="background-color: var(--bg-secondary); border-color: var(--border-default);">
+      <div class="flex items-center justify-between p-6 border-b" style="border-color: var(--border-default);">
+        <h3 class="text-xl font-bold" style="color: var(--text-heading);">Reassign Vehicle</h3>
+        <button onclick="closeModal('modal-vehicle')" class="text-3xl leading-none p-1" style="color: var(--text-muted);">&times;</button>
+      </div>
+      <div class="p-6 space-y-4">
+        <div class="p-4 rounded-lg" style="background-color: var(--bg-tertiary);">
+          <div class="text-sm" style="color: var(--text-muted);">Vehicle</div>
+          <div class="font-bold" style="color: var(--text-heading);">ABC123 - Toyota Hilux SR5 (2022)</div>
+        </div>
+        <div>
+          <label class="block text-sm font-medium mb-2" style="color: var(--text-muted);">
+            Currently Assigned To
+          </label>
+          <div class="flex items-center gap-2 p-3 rounded-lg" style="background-color: var(--bg-tertiary);">
+            <div class="w-8 h-8 rounded-full bg-blue-600 flex items-center justify-center text-white text-sm font-semibold">JS</div>
+            <span style="color: var(--text-primary);">John Smith</span>
+          </div>
+        </div>
+        <div>
+          <label class="block text-sm font-medium mb-2" style="color: var(--text-muted);">
+            Reassign To <span class="text-red-400">*</span>
+          </label>
+          <select class="rounded-md py-2 px-3 text-sm w-full"
+                  style="background-color: var(--input-bg); border: 1px solid var(--input-border); color: var(--input-text);">
+            <option>Select new driver...</option>
+            <option>Sarah Jones</option>
+            <option>Mike Wilson</option>
+            <option>Lisa Brown</option>
+            <option>-- Unassigned (Return to Pool) --</option>
+          </select>
+        </div>
+        <div>
+          <label class="block text-sm font-medium mb-2" style="color: var(--text-muted);">
+            Reason (Optional)
+          </label>
+          <textarea rows="2" placeholder="e.g., Staff departure, role change..."
+                    class="rounded-md py-2 px-3 text-sm w-full"
+                    style="background-color: var(--input-bg); border: 1px solid var(--input-border); color: var(--input-text);"></textarea>
+        </div>
+      </div>
+      <div class="flex justify-end gap-4 p-6 border-t" style="border-color: var(--border-default);">
+        <button onclick="closeModal('modal-vehicle')" class="px-6 py-2 rounded-md font-semibold"
+                style="background-color: var(--bg-hover); color: var(--text-primary);">
+          Cancel
+        </button>
+        <button class="px-6 py-2 rounded-md font-semibold"
+                style="background-color: var(--button-primary-bg); color: var(--button-primary-text);">
+          Reassign Vehicle
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- ============================================
+       MODAL: Confirmation
+       ============================================ -->
+  <div id="modal-confirm" class="modal-overlay fixed inset-0 z-50 flex items-center justify-center hidden">
+    <div class="rounded-lg border-2 max-w-md w-full mx-4"
+         style="background-color: var(--bg-secondary); border-color: var(--border-default);">
+      <div class="p-6">
+        <div class="text-center mb-4">
+          <div class="w-16 h-16 rounded-full mx-auto flex items-center justify-center text-4xl"
+               style="background-color: var(--warning-bg);">
+            &#9888;
+          </div>
+        </div>
+        <h3 class="text-xl font-bold text-center mb-2" style="color: var(--text-heading);">Confirm Offboarding</h3>
+        <p class="text-sm text-center mb-6" style="color: var(--text-primary);">
+          You are about to deactivate <strong>John Smith</strong>. This will:
+        </p>
+        <ul class="text-sm space-y-2 mb-6" style="color: var(--text-primary);">
+          <li class="flex items-start gap-2">
+            <span style="color: var(--success-text);">&#10003;</span>
+            Preserve all historical records
+          </li>
+          <li class="flex items-start gap-2">
+            <span style="color: var(--success-text);">&#10003;</span>
+            Remove from all dropdowns
+          </li>
+          <li class="flex items-start gap-2">
+            <span style="color: var(--success-text);">&#10003;</span>
+            Reassign 6 items to selected users
+          </li>
+          <li class="flex items-start gap-2">
+            <span style="color: var(--warning-text);">&#9888;</span>
+            Google Workspace removal is separate
+          </li>
+        </ul>
+      </div>
+      <div class="flex gap-4 p-6 border-t" style="border-color: var(--border-default);">
+        <button onclick="closeModal('modal-confirm')" class="flex-1 px-6 py-2 rounded-md font-semibold"
+                style="background-color: var(--bg-hover); color: var(--text-primary);">
+          Cancel
+        </button>
+        <button class="flex-1 px-6 py-2 rounded-md font-semibold"
+                style="background-color: var(--error-bg); color: var(--error-text);">
+          Confirm Deactivation
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    function toggleTheme() {
+      const body = document.body;
+      const currentTheme = body.getAttribute('data-theme');
+      body.setAttribute('data-theme', currentTheme === 'dark' ? 'light' : 'dark');
+    }
+
+    function showSection(sectionId) {
+      // In a real app, this would navigate to the section
+      document.getElementById(sectionId).scrollIntoView({ behavior: 'smooth' });
+    }
+
+    function openModal(modalId) {
+      document.getElementById(modalId).classList.remove('hidden');
+    }
+
+    function closeModal(modalId) {
+      document.getElementById(modalId).classList.add('hidden');
+    }
+
+    // Navigation active state
+    document.querySelectorAll('.nav-item').forEach(item => {
+      item.addEventListener('click', function(e) {
+        document.querySelectorAll('.nav-item').forEach(i => i.classList.remove('active'));
+        this.classList.add('active');
+      });
+    });
+  </script>
+
+</body>
+</html>

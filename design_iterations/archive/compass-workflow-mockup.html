@@ -1,0 +1,1369 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="light">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Compass Full Workflow - Ideas → Voting → Planning → Execution</title>
+  <link rel="stylesheet" href="../../src/styles/themes.css" />
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <style>
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    :root { font-family: "Inter", system-ui, -apple-system, sans-serif; }
+
+    body {
+      background: var(--bg-page);
+      color: var(--text-primary);
+      min-height: 100vh;
+    }
+
+    /* Theme Toggle */
+    .theme-controls {
+      position: fixed;
+      top: 16px;
+      right: 16px;
+      display: flex;
+      gap: 8px;
+      z-index: 1000;
+    }
+
+    .theme-btn {
+      padding: 8px 16px;
+      border-radius: 8px;
+      border: 1px solid var(--border-default);
+      background: var(--bg-surface);
+      color: var(--text-primary);
+      font-size: 12px;
+      font-weight: 600;
+      cursor: pointer;
+    }
+
+    .theme-btn:hover, .theme-btn.active {
+      background: var(--primary);
+      color: white;
+      border-color: var(--primary);
+    }
+
+    /* Navigation Tabs */
+    .workflow-tabs {
+      display: flex;
+      gap: 4px;
+      padding: 16px 24px;
+      background: var(--bg-surface);
+      border-bottom: 1px solid var(--border-default);
+      position: sticky;
+      top: 0;
+      z-index: 100;
+    }
+
+    .workflow-tab {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      padding: 10px 16px;
+      border: none;
+      background: transparent;
+      color: var(--text-secondary);
+      font-size: 13px;
+      font-weight: 600;
+      cursor: pointer;
+      border-radius: 8px;
+      transition: all 0.2s;
+    }
+
+    .workflow-tab:hover {
+      background: var(--bg-hover);
+      color: var(--text-primary);
+    }
+
+    .workflow-tab.active {
+      background: var(--primary);
+      color: white;
+    }
+
+    .workflow-tab .tab-icon {
+      font-size: 16px;
+    }
+
+    .workflow-tab .badge {
+      background: rgba(255,255,255,0.2);
+      padding: 2px 6px;
+      border-radius: 10px;
+      font-size: 10px;
+      font-weight: 700;
+    }
+
+    .workflow-tab:not(.active) .badge {
+      background: var(--bg-secondary);
+      color: var(--text-muted);
+    }
+
+    /* Page Container */
+    .page-container {
+      max-width: 1400px;
+      margin: 0 auto;
+      padding: 24px;
+    }
+
+    /* Page sections - hidden by default */
+    .page-section {
+      display: none;
+    }
+
+    .page-section.active {
+      display: block;
+    }
+
+    /* =============================================
+       PAGE 1: IDEAS BANK
+       ============================================= */
+    .ideas-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 24px;
+    }
+
+    .ideas-header h1 {
+      font-size: 1.75rem;
+      font-weight: 800;
+      color: var(--text-heading);
+    }
+
+    .ideas-header p {
+      color: var(--text-secondary);
+      font-size: 14px;
+      margin-top: 4px;
+    }
+
+    .submit-idea-btn {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      padding: 12px 20px;
+      background: linear-gradient(135deg, #6366F1 0%, #8B5CF6 100%);
+      color: white;
+      border: none;
+      border-radius: 10px;
+      font-size: 14px;
+      font-weight: 600;
+      cursor: pointer;
+      transition: all 0.2s;
+    }
+
+    .submit-idea-btn:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 4px 12px rgba(99, 102, 241, 0.4);
+    }
+
+    /* Ideas Grid */
+    .ideas-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+      gap: 16px;
+    }
+
+    .idea-card {
+      background: var(--bg-surface);
+      border: 1px solid var(--border-default);
+      border-radius: 12px;
+      padding: 16px;
+      transition: all 0.2s;
+    }
+
+    .idea-card:hover {
+      border-color: var(--primary);
+      box-shadow: 0 4px 12px rgba(0,0,0,0.08);
+    }
+
+    .idea-status {
+      display: inline-flex;
+      align-items: center;
+      gap: 4px;
+      padding: 4px 8px;
+      border-radius: 12px;
+      font-size: 10px;
+      font-weight: 700;
+      text-transform: uppercase;
+      margin-bottom: 10px;
+    }
+
+    .idea-status.new {
+      background: rgba(99, 102, 241, 0.1);
+      color: #6366F1;
+    }
+
+    .idea-status.voting {
+      background: rgba(16, 185, 129, 0.1);
+      color: #10B981;
+    }
+
+    .idea-status.parked {
+      background: rgba(156, 163, 175, 0.1);
+      color: #6B7280;
+    }
+
+    .idea-status.promoted {
+      background: rgba(245, 158, 11, 0.1);
+      color: #D97706;
+    }
+
+    .idea-card h3 {
+      font-size: 14px;
+      font-weight: 600;
+      color: var(--text-heading);
+      margin-bottom: 8px;
+      line-height: 1.4;
+    }
+
+    .idea-card p {
+      font-size: 12px;
+      color: var(--text-secondary);
+      line-height: 1.5;
+      margin-bottom: 12px;
+    }
+
+    .idea-meta {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding-top: 12px;
+      border-top: 1px solid var(--border-default);
+    }
+
+    .idea-author {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      font-size: 11px;
+      color: var(--text-muted);
+    }
+
+    .idea-author-avatar {
+      width: 20px;
+      height: 20px;
+      border-radius: 50%;
+      background: linear-gradient(135deg, #6366F1 0%, #8B5CF6 100%);
+      color: white;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 8px;
+      font-weight: 700;
+    }
+
+    .idea-votes {
+      display: flex;
+      align-items: center;
+      gap: 4px;
+      font-size: 12px;
+      font-weight: 600;
+      color: var(--text-secondary);
+    }
+
+    .idea-goal-tag {
+      display: inline-flex;
+      align-items: center;
+      gap: 4px;
+      padding: 3px 6px;
+      border-radius: 4px;
+      font-size: 9px;
+      font-weight: 600;
+      margin-bottom: 8px;
+    }
+
+    .idea-goal-tag[data-goal="expansion"] {
+      background: rgba(99, 102, 241, 0.08);
+      color: #6366F1;
+    }
+
+    .idea-goal-tag[data-goal="customer"] {
+      background: rgba(16, 185, 129, 0.08);
+      color: #10B981;
+    }
+
+    .idea-goal-tag[data-goal="innovation"] {
+      background: rgba(245, 158, 11, 0.08);
+      color: #D97706;
+    }
+
+    .idea-goal-tag[data-goal="excellence"] {
+      background: rgba(236, 72, 153, 0.08);
+      color: #EC4899;
+    }
+
+    /* =============================================
+       PAGE 2: TRIAGE (Admin Only)
+       ============================================= */
+    .triage-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 24px;
+    }
+
+    .triage-header h1 {
+      font-size: 1.75rem;
+      font-weight: 800;
+      color: var(--text-heading);
+    }
+
+    .triage-stats {
+      display: flex;
+      gap: 16px;
+    }
+
+    .triage-stat {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      padding: 8px 12px;
+      background: var(--bg-surface);
+      border: 1px solid var(--border-default);
+      border-radius: 8px;
+      font-size: 12px;
+      color: var(--text-secondary);
+    }
+
+    .triage-stat strong {
+      color: var(--text-heading);
+      font-size: 16px;
+    }
+
+    .triage-table {
+      background: var(--bg-surface);
+      border: 1px solid var(--border-default);
+      border-radius: 12px;
+      overflow: hidden;
+    }
+
+    .triage-table-header {
+      display: grid;
+      grid-template-columns: 1fr 150px 120px 150px 120px;
+      gap: 16px;
+      padding: 12px 16px;
+      background: var(--bg-secondary);
+      font-size: 11px;
+      font-weight: 700;
+      color: var(--text-muted);
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+    }
+
+    .triage-row {
+      display: grid;
+      grid-template-columns: 1fr 150px 120px 150px 120px;
+      gap: 16px;
+      padding: 14px 16px;
+      border-bottom: 1px solid var(--border-default);
+      align-items: center;
+    }
+
+    .triage-row:last-child {
+      border-bottom: none;
+    }
+
+    .triage-row:hover {
+      background: var(--bg-hover);
+    }
+
+    .triage-idea-title {
+      font-size: 13px;
+      font-weight: 600;
+      color: var(--text-heading);
+    }
+
+    .triage-idea-desc {
+      font-size: 11px;
+      color: var(--text-muted);
+      margin-top: 2px;
+    }
+
+    .triage-action-btn {
+      padding: 6px 10px;
+      border: 1px solid var(--border-default);
+      border-radius: 6px;
+      font-size: 11px;
+      font-weight: 600;
+      cursor: pointer;
+      transition: all 0.2s;
+    }
+
+    .triage-action-btn.approve {
+      background: rgba(16, 185, 129, 0.1);
+      border-color: #10B981;
+      color: #10B981;
+    }
+
+    .triage-action-btn.approve:hover {
+      background: #10B981;
+      color: white;
+    }
+
+    .triage-action-btn.park {
+      background: var(--bg-page);
+      color: var(--text-secondary);
+    }
+
+    .triage-action-btn.park:hover {
+      background: var(--bg-secondary);
+    }
+
+    .triage-action-btn.reject {
+      background: rgba(239, 68, 68, 0.1);
+      border-color: #EF4444;
+      color: #EF4444;
+    }
+
+    .triage-action-btn.reject:hover {
+      background: #EF4444;
+      color: white;
+    }
+
+    /* =============================================
+       PAGE 3: VOTING
+       ============================================= */
+    .voting-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-start;
+      margin-bottom: 24px;
+    }
+
+    .voting-header h1 {
+      font-size: 1.75rem;
+      font-weight: 800;
+      color: var(--text-heading);
+    }
+
+    .voting-period {
+      font-size: 13px;
+      color: var(--text-secondary);
+      margin-top: 4px;
+    }
+
+    .votes-remaining {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      padding: 12px 16px;
+      background: var(--bg-surface);
+      border: 1px solid var(--border-default);
+      border-radius: 10px;
+    }
+
+    .votes-remaining-label {
+      font-size: 12px;
+      color: var(--text-secondary);
+    }
+
+    .votes-remaining-count {
+      display: flex;
+      gap: 6px;
+    }
+
+    .vote-token {
+      width: 28px;
+      height: 28px;
+      border-radius: 50%;
+      background: linear-gradient(135deg, #6366F1 0%, #8B5CF6 100%);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 12px;
+      color: white;
+    }
+
+    .vote-token.used {
+      background: var(--bg-secondary);
+      color: var(--text-muted);
+    }
+
+    /* Voting Cards */
+    .voting-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+      gap: 16px;
+    }
+
+    .voting-card {
+      background: var(--bg-surface);
+      border: 1px solid var(--border-default);
+      border-radius: 12px;
+      padding: 16px;
+      transition: all 0.2s;
+    }
+
+    .voting-card:hover {
+      border-color: var(--primary);
+    }
+
+    .voting-card.voted {
+      border-color: #10B981;
+      background: rgba(16, 185, 129, 0.02);
+    }
+
+    .voting-card h3 {
+      font-size: 14px;
+      font-weight: 600;
+      color: var(--text-heading);
+      margin-bottom: 8px;
+    }
+
+    .voting-card p {
+      font-size: 12px;
+      color: var(--text-secondary);
+      line-height: 1.5;
+      margin-bottom: 12px;
+    }
+
+    .voting-card-footer {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding-top: 12px;
+      border-top: 1px solid var(--border-default);
+    }
+
+    .vote-count {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      font-size: 14px;
+      font-weight: 700;
+      color: var(--text-heading);
+    }
+
+    .vote-btn {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      padding: 8px 14px;
+      border: 1px solid var(--primary);
+      border-radius: 8px;
+      background: transparent;
+      color: var(--primary);
+      font-size: 12px;
+      font-weight: 600;
+      cursor: pointer;
+      transition: all 0.2s;
+    }
+
+    .vote-btn:hover {
+      background: var(--primary);
+      color: white;
+    }
+
+    .vote-btn.voted {
+      background: #10B981;
+      border-color: #10B981;
+      color: white;
+    }
+
+    /* =============================================
+       PAGE 4: PLANNING
+       ============================================= */
+    .planning-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 24px;
+    }
+
+    .planning-header h1 {
+      font-size: 1.75rem;
+      font-weight: 800;
+      color: var(--text-heading);
+    }
+
+    .planning-target {
+      font-size: 13px;
+      color: var(--text-secondary);
+      margin-top: 4px;
+    }
+
+    .planning-actions {
+      display: flex;
+      gap: 8px;
+    }
+
+    .planning-action-btn {
+      padding: 10px 16px;
+      border: 1px solid var(--border-default);
+      border-radius: 8px;
+      background: var(--bg-surface);
+      color: var(--text-primary);
+      font-size: 13px;
+      font-weight: 600;
+      cursor: pointer;
+    }
+
+    .planning-action-btn.primary {
+      background: linear-gradient(135deg, #10B981 0%, #059669 100%);
+      border-color: transparent;
+      color: white;
+    }
+
+    /* Planning Layout */
+    .planning-layout {
+      display: grid;
+      grid-template-columns: 350px 1fr;
+      gap: 20px;
+      min-height: 600px;
+    }
+
+    /* Voted Ideas Panel */
+    .voted-ideas-panel {
+      background: var(--bg-surface);
+      border: 1px solid var(--border-default);
+      border-radius: 12px;
+      display: flex;
+      flex-direction: column;
+    }
+
+    .panel-header {
+      padding: 14px 16px;
+      border-bottom: 1px solid var(--border-default);
+    }
+
+    .panel-header h2 {
+      font-size: 14px;
+      font-weight: 700;
+      color: var(--text-heading);
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .panel-header .count {
+      background: var(--bg-secondary);
+      padding: 2px 8px;
+      border-radius: 10px;
+      font-size: 11px;
+      color: var(--text-muted);
+    }
+
+    .panel-content {
+      flex: 1;
+      padding: 12px;
+      overflow-y: auto;
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+    }
+
+    .draggable-idea {
+      background: var(--bg-page);
+      border: 1px solid var(--border-default);
+      border-radius: 8px;
+      padding: 12px;
+      cursor: grab;
+      transition: all 0.2s;
+    }
+
+    .draggable-idea:hover {
+      border-color: var(--primary);
+      box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+    }
+
+    .draggable-idea h4 {
+      font-size: 12px;
+      font-weight: 600;
+      color: var(--text-heading);
+      margin-bottom: 6px;
+    }
+
+    .draggable-idea-meta {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .idea-vote-score {
+      display: flex;
+      align-items: center;
+      gap: 4px;
+      font-size: 11px;
+      font-weight: 600;
+      color: #10B981;
+    }
+
+    /* Plan Builder */
+    .plan-builder {
+      background: var(--bg-surface);
+      border: 1px solid var(--border-default);
+      border-radius: 12px;
+      display: flex;
+      flex-direction: column;
+    }
+
+    .plan-builder-header {
+      padding: 14px 16px;
+      border-bottom: 1px solid var(--border-default);
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .plan-builder-header h2 {
+      font-size: 14px;
+      font-weight: 700;
+      color: var(--text-heading);
+    }
+
+    .cycle-tabs {
+      display: flex;
+      gap: 4px;
+    }
+
+    .cycle-tab {
+      padding: 6px 12px;
+      border: 1px solid var(--border-default);
+      border-radius: 6px;
+      background: var(--bg-page);
+      font-size: 11px;
+      font-weight: 600;
+      color: var(--text-secondary);
+      cursor: pointer;
+    }
+
+    .cycle-tab.active {
+      background: var(--primary);
+      border-color: var(--primary);
+      color: white;
+    }
+
+    .plan-builder-content {
+      flex: 1;
+      padding: 16px;
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+    }
+
+    .drop-zone {
+      border: 2px dashed var(--border-default);
+      border-radius: 10px;
+      padding: 20px;
+      text-align: center;
+      color: var(--text-muted);
+      font-size: 13px;
+      min-height: 120px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      transition: all 0.2s;
+    }
+
+    .drop-zone:hover {
+      border-color: var(--primary);
+      background: rgba(99, 102, 241, 0.02);
+    }
+
+    .drop-zone-icon {
+      font-size: 24px;
+      opacity: 0.5;
+    }
+
+    .planned-item {
+      background: var(--bg-page);
+      border: 1px solid var(--border-strong, var(--border-default));
+      border-radius: 8px;
+      padding: 12px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .planned-item-info h4 {
+      font-size: 12px;
+      font-weight: 600;
+      color: var(--text-heading);
+      margin-bottom: 4px;
+    }
+
+    .planned-item-meta {
+      display: flex;
+      gap: 8px;
+      font-size: 10px;
+      color: var(--text-muted);
+    }
+
+    .remove-btn {
+      padding: 4px 8px;
+      background: rgba(239, 68, 68, 0.1);
+      border: none;
+      border-radius: 4px;
+      color: #EF4444;
+      font-size: 10px;
+      cursor: pointer;
+    }
+
+    /* =============================================
+       PAGE 5: EXECUTION (Link to existing)
+       ============================================= */
+    .execution-link {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      padding: 60px 40px;
+      background: var(--bg-surface);
+      border: 1px solid var(--border-default);
+      border-radius: 16px;
+      text-align: center;
+    }
+
+    .execution-link h2 {
+      font-size: 1.5rem;
+      font-weight: 700;
+      color: var(--text-heading);
+      margin-bottom: 8px;
+    }
+
+    .execution-link p {
+      color: var(--text-secondary);
+      margin-bottom: 20px;
+    }
+
+    .execution-link a {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      padding: 12px 24px;
+      background: linear-gradient(135deg, #6366F1 0%, #8B5CF6 100%);
+      color: white;
+      text-decoration: none;
+      border-radius: 10px;
+      font-weight: 600;
+      transition: all 0.2s;
+    }
+
+    .execution-link a:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 4px 12px rgba(99, 102, 241, 0.4);
+    }
+
+    /* Responsive */
+    @media (max-width: 1024px) {
+      .planning-layout {
+        grid-template-columns: 1fr;
+      }
+
+      .triage-table-header,
+      .triage-row {
+        grid-template-columns: 1fr 100px 100px;
+      }
+
+      .triage-row > *:nth-child(4),
+      .triage-row > *:nth-child(5),
+      .triage-table-header > *:nth-child(4),
+      .triage-table-header > *:nth-child(5) {
+        display: none;
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Theme Controls -->
+  <div class="theme-controls">
+    <button class="theme-btn active" onclick="setTheme('light')">Light</button>
+    <button class="theme-btn" onclick="setTheme('dark')">Dark</button>
+  </div>
+
+  <!-- Workflow Tabs -->
+  <nav class="workflow-tabs">
+    <button class="workflow-tab active" onclick="showPage('ideas')">
+      <span class="tab-icon">💡</span>
+      <span>Ideas Bank</span>
+      <span class="badge">12</span>
+    </button>
+    <button class="workflow-tab" onclick="showPage('triage')">
+      <span class="tab-icon">🎯</span>
+      <span>Triage</span>
+      <span class="badge">5</span>
+    </button>
+    <button class="workflow-tab" onclick="showPage('voting')">
+      <span class="tab-icon">🗳️</span>
+      <span>Voting</span>
+      <span class="badge">8</span>
+    </button>
+    <button class="workflow-tab" onclick="showPage('planning')">
+      <span class="tab-icon">📋</span>
+      <span>Planning</span>
+    </button>
+    <button class="workflow-tab" onclick="showPage('execution')">
+      <span class="tab-icon">🚀</span>
+      <span>Execution</span>
+    </button>
+  </nav>
+
+  <div class="page-container">
+
+    <!-- ============================================
+         PAGE 1: IDEAS BANK
+         ============================================ -->
+    <section id="ideas-page" class="page-section active">
+      <div class="ideas-header">
+        <div>
+          <h1>💡 Ideas Bank</h1>
+          <p>Share your ideas to make Blick better. Anyone can submit!</p>
+        </div>
+        <button class="submit-idea-btn">
+          <span>✨</span>
+          <span>Submit Idea</span>
+        </button>
+      </div>
+
+      <div class="ideas-grid">
+        <div class="idea-card">
+          <span class="idea-status new">🆕 New</span>
+          <span class="idea-goal-tag" data-goal="innovation">💡 Innovation</span>
+          <h3>AI-powered job scheduling assistant</h3>
+          <p>Use machine learning to predict optimal job scheduling based on historical data, weather, and crew availability.</p>
+          <div class="idea-meta">
+            <div class="idea-author">
+              <div class="idea-author-avatar">SM</div>
+              <span>Sarah M. • 2 days ago</span>
+            </div>
+            <div class="idea-votes">💬 3</div>
+          </div>
+        </div>
+
+        <div class="idea-card">
+          <span class="idea-status voting">🗳️ Open for Voting</span>
+          <span class="idea-goal-tag" data-goal="customer">💚 Customer Success</span>
+          <h3>Customer portal for real-time job tracking</h3>
+          <p>Let customers see where their job is in the workflow, upload documents, and communicate directly with their project manager.</p>
+          <div class="idea-meta">
+            <div class="idea-author">
+              <div class="idea-author-avatar">JD</div>
+              <span>John D. • 1 week ago</span>
+            </div>
+            <div class="idea-votes">🗳️ 12</div>
+          </div>
+        </div>
+
+        <div class="idea-card">
+          <span class="idea-status voting">🗳️ Open for Voting</span>
+          <span class="idea-goal-tag" data-goal="expansion">🚀 Market Expansion</span>
+          <h3>Partner integration with major drill manufacturers</h3>
+          <p>Build API connections with Sandvik, Epiroc, and Atlas Copco for automatic parts ordering and inventory sync.</p>
+          <div class="idea-meta">
+            <div class="idea-author">
+              <div class="idea-author-avatar">MK</div>
+              <span>Mike K. • 5 days ago</span>
+            </div>
+            <div class="idea-votes">🗳️ 8</div>
+          </div>
+        </div>
+
+        <div class="idea-card">
+          <span class="idea-status parked">⏸️ Parked</span>
+          <span class="idea-goal-tag" data-goal="excellence">⚙️ Excellence</span>
+          <h3>Automated timesheet reminders</h3>
+          <p>Send SMS reminders to crew members who haven't submitted their timesheets by end of day Friday.</p>
+          <div class="idea-meta">
+            <div class="idea-author">
+              <div class="idea-author-avatar">LW</div>
+              <span>Lisa W. • 2 weeks ago</span>
+            </div>
+            <div class="idea-votes">💬 5</div>
+          </div>
+        </div>
+
+        <div class="idea-card">
+          <span class="idea-status promoted">🎯 In Plan</span>
+          <span class="idea-goal-tag" data-goal="customer">💚 Customer Success</span>
+          <h3>NPS survey implementation</h3>
+          <p>Automatically send NPS surveys after job completion and track scores over time by customer and project type.</p>
+          <div class="idea-meta">
+            <div class="idea-author">
+              <div class="idea-author-avatar">DK</div>
+              <span>David K. • 3 weeks ago</span>
+            </div>
+            <div class="idea-votes">🎯 Q1</div>
+          </div>
+        </div>
+
+        <div class="idea-card">
+          <span class="idea-status new">🆕 New</span>
+          <span class="idea-goal-tag" data-goal="innovation">💡 Innovation</span>
+          <h3>Mobile app for field technicians</h3>
+          <p>Native iOS/Android app for technicians to log work, capture photos, and sync offline when in remote locations.</p>
+          <div class="idea-meta">
+            <div class="idea-author">
+              <div class="idea-author-avatar">AX</div>
+              <span>Alex X. • 1 day ago</span>
+            </div>
+            <div class="idea-votes">💬 1</div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ============================================
+         PAGE 2: TRIAGE (Admin Only)
+         ============================================ -->
+    <section id="triage-page" class="page-section">
+      <div class="triage-header">
+        <div>
+          <h1>🎯 Triage</h1>
+          <p>Review new ideas and decide which go to voting. Admin only.</p>
+        </div>
+        <div class="triage-stats">
+          <div class="triage-stat">
+            <span>📥</span>
+            <strong>5</strong>
+            <span>Pending Review</span>
+          </div>
+          <div class="triage-stat">
+            <span>✅</span>
+            <strong>8</strong>
+            <span>Approved This Month</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="triage-table">
+        <div class="triage-table-header">
+          <span>Idea</span>
+          <span>Submitted By</span>
+          <span>Goal</span>
+          <span>Est. Effort</span>
+          <span>Actions</span>
+        </div>
+
+        <div class="triage-row">
+          <div>
+            <div class="triage-idea-title">AI-powered job scheduling assistant</div>
+            <div class="triage-idea-desc">Use ML for optimal scheduling...</div>
+          </div>
+          <div class="idea-author">
+            <div class="idea-author-avatar">SM</div>
+            <span>Sarah M.</span>
+          </div>
+          <span class="idea-goal-tag" data-goal="innovation">💡 Innovation</span>
+          <span style="font-size: 12px; color: var(--text-secondary)">Large (2+ months)</span>
+          <div style="display: flex; gap: 6px;">
+            <button class="triage-action-btn approve">✓ Vote</button>
+            <button class="triage-action-btn park">Park</button>
+            <button class="triage-action-btn reject">✗</button>
+          </div>
+        </div>
+
+        <div class="triage-row">
+          <div>
+            <div class="triage-idea-title">Mobile app for field technicians</div>
+            <div class="triage-idea-desc">Native app for field work logging...</div>
+          </div>
+          <div class="idea-author">
+            <div class="idea-author-avatar">AX</div>
+            <span>Alex X.</span>
+          </div>
+          <span class="idea-goal-tag" data-goal="innovation">💡 Innovation</span>
+          <span style="font-size: 12px; color: var(--text-secondary)">Large (2+ months)</span>
+          <div style="display: flex; gap: 6px;">
+            <button class="triage-action-btn approve">✓ Vote</button>
+            <button class="triage-action-btn park">Park</button>
+            <button class="triage-action-btn reject">✗</button>
+          </div>
+        </div>
+
+        <div class="triage-row">
+          <div>
+            <div class="triage-idea-title">Dark mode for all dashboards</div>
+            <div class="triage-idea-desc">Add dark theme option...</div>
+          </div>
+          <div class="idea-author">
+            <div class="idea-author-avatar">EM</div>
+            <span>Emma M.</span>
+          </div>
+          <span class="idea-goal-tag" data-goal="excellence">⚙️ Excellence</span>
+          <span style="font-size: 12px; color: var(--text-secondary)">Small (1-2 weeks)</span>
+          <div style="display: flex; gap: 6px;">
+            <button class="triage-action-btn approve">✓ Vote</button>
+            <button class="triage-action-btn park">Park</button>
+            <button class="triage-action-btn reject">✗</button>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ============================================
+         PAGE 3: VOTING
+         ============================================ -->
+    <section id="voting-page" class="page-section">
+      <div class="voting-header">
+        <div>
+          <h1>🗳️ Vote for Q2 2026</h1>
+          <p class="voting-period">Voting open until 15 Mar 2026 • 8 ideas to vote on</p>
+        </div>
+        <div class="votes-remaining">
+          <span class="votes-remaining-label">Your votes:</span>
+          <div class="votes-remaining-count">
+            <div class="vote-token used">✓</div>
+            <div class="vote-token">2</div>
+            <div class="vote-token">3</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="voting-grid">
+        <div class="voting-card voted">
+          <span class="idea-goal-tag" data-goal="customer">💚 Customer Success</span>
+          <h3>Customer portal for real-time job tracking</h3>
+          <p>Let customers see job progress, upload documents, and communicate with their project manager.</p>
+          <div class="voting-card-footer">
+            <div class="vote-count">🗳️ 12 votes</div>
+            <button class="vote-btn voted">✓ Voted</button>
+          </div>
+        </div>
+
+        <div class="voting-card">
+          <span class="idea-goal-tag" data-goal="expansion">🚀 Market Expansion</span>
+          <h3>Partner integration with drill manufacturers</h3>
+          <p>Build API connections with Sandvik, Epiroc, and Atlas Copco for automatic parts ordering.</p>
+          <div class="voting-card-footer">
+            <div class="vote-count">🗳️ 8 votes</div>
+            <button class="vote-btn">+ Vote</button>
+          </div>
+        </div>
+
+        <div class="voting-card">
+          <span class="idea-goal-tag" data-goal="innovation">💡 Innovation</span>
+          <h3>AI-powered job scheduling assistant</h3>
+          <p>Use machine learning to predict optimal job scheduling based on historical data.</p>
+          <div class="voting-card-footer">
+            <div class="vote-count">🗳️ 6 votes</div>
+            <button class="vote-btn">+ Vote</button>
+          </div>
+        </div>
+
+        <div class="voting-card">
+          <span class="idea-goal-tag" data-goal="innovation">💡 Innovation</span>
+          <h3>Mobile app for field technicians</h3>
+          <p>Native iOS/Android app for technicians to log work and capture photos offline.</p>
+          <div class="voting-card-footer">
+            <div class="vote-count">🗳️ 5 votes</div>
+            <button class="vote-btn">+ Vote</button>
+          </div>
+        </div>
+
+        <div class="voting-card">
+          <span class="idea-goal-tag" data-goal="excellence">⚙️ Excellence</span>
+          <h3>Automated compliance reporting</h3>
+          <p>Generate monthly compliance reports automatically and flag items needing attention.</p>
+          <div class="voting-card-footer">
+            <div class="vote-count">🗳️ 4 votes</div>
+            <button class="vote-btn">+ Vote</button>
+          </div>
+        </div>
+
+        <div class="voting-card">
+          <span class="idea-goal-tag" data-goal="customer">💚 Customer Success</span>
+          <h3>Proactive maintenance alerts</h3>
+          <p>Notify customers before scheduled maintenance is due based on usage patterns.</p>
+          <div class="voting-card-footer">
+            <div class="vote-count">🗳️ 3 votes</div>
+            <button class="vote-btn">+ Vote</button>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ============================================
+         PAGE 4: PLANNING
+         ============================================ -->
+    <section id="planning-page" class="page-section">
+      <div class="planning-header">
+        <div>
+          <h1>📋 Plan Q2 2026</h1>
+          <p class="planning-target">Apr 1 – Jun 30, 2026 • Drag ideas to add to plan</p>
+        </div>
+        <div class="planning-actions">
+          <button class="planning-action-btn">Preview Plan</button>
+          <button class="planning-action-btn primary">✓ Publish Plan</button>
+        </div>
+      </div>
+
+      <div class="planning-layout">
+        <!-- Voted Ideas Panel -->
+        <div class="voted-ideas-panel">
+          <div class="panel-header">
+            <h2>🏆 Top Voted Ideas <span class="count">6</span></h2>
+          </div>
+          <div class="panel-content">
+            <div class="draggable-idea">
+              <span class="idea-goal-tag" data-goal="customer">💚 Customer</span>
+              <h4>Customer portal for job tracking</h4>
+              <div class="draggable-idea-meta">
+                <span class="idea-vote-score">🗳️ 12 votes</span>
+                <span style="font-size: 10px; color: var(--text-muted)">Large</span>
+              </div>
+            </div>
+
+            <div class="draggable-idea">
+              <span class="idea-goal-tag" data-goal="expansion">🚀 Expansion</span>
+              <h4>Partner integration - drill mfrs</h4>
+              <div class="draggable-idea-meta">
+                <span class="idea-vote-score">🗳️ 8 votes</span>
+                <span style="font-size: 10px; color: var(--text-muted)">Medium</span>
+              </div>
+            </div>
+
+            <div class="draggable-idea">
+              <span class="idea-goal-tag" data-goal="innovation">💡 Innovation</span>
+              <h4>AI job scheduling assistant</h4>
+              <div class="draggable-idea-meta">
+                <span class="idea-vote-score">🗳️ 6 votes</span>
+                <span style="font-size: 10px; color: var(--text-muted)">Large</span>
+              </div>
+            </div>
+
+            <div class="draggable-idea">
+              <span class="idea-goal-tag" data-goal="innovation">💡 Innovation</span>
+              <h4>Mobile app for field techs</h4>
+              <div class="draggable-idea-meta">
+                <span class="idea-vote-score">🗳️ 5 votes</span>
+                <span style="font-size: 10px; color: var(--text-muted)">Large</span>
+              </div>
+            </div>
+
+            <div class="draggable-idea">
+              <span class="idea-goal-tag" data-goal="excellence">⚙️ Excellence</span>
+              <h4>Automated compliance reporting</h4>
+              <div class="draggable-idea-meta">
+                <span class="idea-vote-score">🗳️ 4 votes</span>
+                <span style="font-size: 10px; color: var(--text-muted)">Small</span>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Plan Builder -->
+        <div class="plan-builder">
+          <div class="plan-builder-header">
+            <h2>Q2 2026 Plan</h2>
+            <div class="cycle-tabs">
+              <button class="cycle-tab active">Cycle 1 (Apr)</button>
+              <button class="cycle-tab">Cycle 2 (May)</button>
+              <button class="cycle-tab">Cycle 3 (Jun)</button>
+            </div>
+          </div>
+          <div class="plan-builder-content">
+            <div class="planned-item">
+              <div class="planned-item-info">
+                <h4>Customer portal for job tracking</h4>
+                <div class="planned-item-meta">
+                  <span>👤 Sarah M.</span>
+                  <span>💚 Customer Success</span>
+                </div>
+              </div>
+              <button class="remove-btn">✕ Remove</button>
+            </div>
+
+            <div class="planned-item">
+              <div class="planned-item-info">
+                <h4>Automated compliance reporting</h4>
+                <div class="planned-item-meta">
+                  <span>👤 Mike R.</span>
+                  <span>⚙️ Excellence</span>
+                </div>
+              </div>
+              <button class="remove-btn">✕ Remove</button>
+            </div>
+
+            <div class="drop-zone">
+              <span class="drop-zone-icon">📥</span>
+              <span>Drag ideas here to add to Cycle 1</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ============================================
+         PAGE 5: EXECUTION
+         ============================================ -->
+    <section id="execution-page" class="page-section">
+      <div class="execution-link">
+        <span style="font-size: 64px; margin-bottom: 16px;">🚀</span>
+        <h2>90-Day Plan Execution</h2>
+        <p>Track progress on the current plan with the Kanban board</p>
+        <a href="compass-90day-v2-mockup-v5.html">
+          <span>Open 90-Day Plan</span>
+          <span>→</span>
+        </a>
+      </div>
+    </section>
+
+  </div>
+
+  <script>
+    function setTheme(theme) {
+      document.documentElement.setAttribute('data-theme', theme);
+      document.querySelectorAll('.theme-btn').forEach(btn => btn.classList.remove('active'));
+      event.target.classList.add('active');
+    }
+
+    function showPage(pageId) {
+      // Hide all pages
+      document.querySelectorAll('.page-section').forEach(page => {
+        page.classList.remove('active');
+      });
+
+      // Deactivate all tabs
+      document.querySelectorAll('.workflow-tab').forEach(tab => {
+        tab.classList.remove('active');
+      });
+
+      // Show selected page
+      document.getElementById(pageId + '-page').classList.add('active');
+
+      // Activate clicked tab
+      event.target.closest('.workflow-tab').classList.add('active');
+    }
+
+    // Voting interaction
+    document.querySelectorAll('.vote-btn:not(.voted)').forEach(btn => {
+      btn.addEventListener('click', function() {
+        const votesUsed = document.querySelectorAll('.vote-token.used').length;
+        if (votesUsed >= 3) {
+          alert('You\'ve used all 3 votes!');
+          return;
+        }
+
+        this.classList.add('voted');
+        this.textContent = '✓ Voted';
+        this.closest('.voting-card').classList.add('voted');
+
+        // Update vote count
+        const countEl = this.closest('.voting-card-footer').querySelector('.vote-count');
+        const currentVotes = parseInt(countEl.textContent.match(/\d+/)[0]);
+        countEl.innerHTML = `🗳️ ${currentVotes + 1} votes`;
+
+        // Mark a token as used
+        const unusedToken = document.querySelector('.vote-token:not(.used)');
+        if (unusedToken) {
+          unusedToken.classList.add('used');
+          unusedToken.textContent = '✓';
+        }
+      });
+    });
+
+    // Cycle tabs
+    document.querySelectorAll('.cycle-tab').forEach(tab => {
+      tab.addEventListener('click', function() {
+        document.querySelectorAll('.cycle-tab').forEach(t => t.classList.remove('active'));
+        this.classList.add('active');
+      });
+    });
+  </script>
+
+</body>
+</html>

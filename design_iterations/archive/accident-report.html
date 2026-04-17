@@ -1,0 +1,799 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="light">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Compass Accident Report Assistant</title>
+  <style>
+    :root,
+    [data-theme="dark"] {
+      font-family: "Inter", system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+      --sd-space-xs: 4px;
+      --sd-space-sm: 8px;
+      --sd-space-md: 12px;
+      --sd-space-lg: 16px;
+      --sd-space-xl: 24px;
+      --sd-space-2xl: 32px;
+      --sd-radius-sm: 8px;
+      --sd-radius-md: 12px;
+      --sd-radius-lg: 16px;
+      --sd-radius-xl: 22px;
+      --bg-page: #212121;
+      --bg-card: #2a2a2a;
+      --bg-muted: #1a1a1a;
+      --text-primary: #bcbec0;
+      --text-secondary: #a0a0a0;
+      --text-tertiary: #707070;
+      --text-heading: #ffffff;
+      --accent: #f05323;
+      --accent-soft: rgba(240, 83, 35, 0.12);
+      --border-color: #58595b;
+      --border-subtle: #404040;
+      --shadow-color: rgba(0, 0, 0, 0.35);
+      --success: #2fce8c;
+      --warning: #ed8936;
+      --danger: #f56565;
+    }
+
+    [data-theme="light"] {
+      --bg-page: #ffffff;
+      --bg-card: #f9fafb;
+      --bg-muted: #f3f4f6;
+      --text-primary: #111827;
+      --text-secondary: #374151;
+      --text-tertiary: #6b7280;
+      --text-heading: #000000;
+      --accent: #f05323;
+      --accent-soft: rgba(240, 83, 35, 0.08);
+      --border-color: #e5e7eb;
+      --border-subtle: #f3f4f6;
+      --shadow-color: rgba(15, 23, 42, 0.12);
+      --success: #15803d;
+      --warning: #b45309;
+      --danger: #b91c1c;
+    }
+
+    * {
+      box-sizing: border-box;
+    }
+
+    body {
+      margin: 0;
+      background: var(--bg-page);
+      color: var(--text-primary);
+      transition: background 0.3s ease, color 0.3s ease;
+    }
+
+    header {
+      position: sticky;
+      top: 0;
+      z-index: 10;
+      background: var(--bg-card);
+      border-bottom: 1px solid var(--border-color);
+      padding: var(--sd-space-lg) var(--sd-space-xl);
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: var(--sd-space-lg);
+    }
+
+    header h1 {
+      margin: 0;
+      font-size: 1.25rem;
+      font-weight: 600;
+      color: var(--text-heading);
+    }
+
+    header h1 span {
+      display: block;
+      font-size: 0.8rem;
+      font-weight: 400;
+      color: var(--text-tertiary);
+    }
+
+    .theme-toggle {
+      border: 1px solid var(--border-color);
+      background: var(--bg-muted);
+      color: var(--text-secondary);
+      padding: var(--sd-space-sm) var(--sd-space-lg);
+      border-radius: 999px;
+      font-size: 0.85rem;
+      cursor: pointer;
+      transition: border-color 0.2s ease, color 0.2s ease;
+    }
+
+    .theme-toggle:hover {
+      border-color: var(--accent);
+      color: var(--accent);
+    }
+
+    main {
+      padding: var(--sd-space-lg) var(--sd-space-xl) var(--sd-space-2xl);
+      display: grid;
+      gap: var(--sd-space-lg);
+      max-width: 960px;
+      margin: 0 auto;
+    }
+
+    .sd-accordion {
+      display: grid;
+      gap: var(--sd-space-lg);
+    }
+
+    .sd-accordion__item {
+      border: 1px solid var(--border-color);
+      border-radius: var(--sd-radius-xl);
+      background: var(--bg-card);
+      overflow: hidden;
+      box-shadow: 0 12px 28px var(--shadow-color);
+      transition: border-color 0.2s ease, box-shadow 0.2s ease;
+    }
+
+    details[open].sd-accordion__item {
+      border-color: var(--accent);
+      box-shadow: 0 18px 32px rgba(240, 83, 35, 0.18);
+    }
+
+    summary.sd-accordion__summary {
+      list-style: none;
+      cursor: pointer;
+      padding: var(--sd-space-lg) var(--sd-space-xl);
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: var(--sd-space-md);
+    }
+
+    summary::-webkit-details-marker {
+      display: none;
+    }
+
+    .sd-accordion__meta {
+      display: grid;
+      gap: var(--sd-space-sm);
+    }
+
+    .sd-accordion__meta span:first-child {
+      font-size: 0.75rem;
+      letter-spacing: 0.14em;
+      text-transform: uppercase;
+      color: var(--accent);
+      font-weight: 600;
+    }
+
+    .sd-accordion__meta span:last-child {
+      font-size: 1.1rem;
+      font-weight: 600;
+      color: var(--text-heading);
+    }
+
+    .sd-chevron {
+      width: 24px;
+      height: 24px;
+      border-radius: 999px;
+      background: var(--bg-muted);
+      display: grid;
+      place-items: center;
+      color: var(--text-tertiary);
+      transition: transform 0.3s ease, background 0.3s ease;
+    }
+
+    details[open] .sd-chevron {
+      transform: rotate(180deg);
+      background: var(--accent-soft);
+      color: var(--accent);
+    }
+
+    .sd-accordion__panel {
+      padding: 0 var(--sd-space-xl) var(--sd-space-xl);
+      display: grid;
+      gap: var(--sd-space-xl);
+    }
+
+    .sd-panel-section {
+      display: grid;
+      gap: var(--sd-space-md);
+    }
+
+    .sd-panel-section h3 {
+      margin: 0;
+      font-size: 0.95rem;
+      font-weight: 600;
+      color: var(--text-heading);
+    }
+
+    .sd-panel-section p {
+      margin: 0;
+      font-size: 0.9rem;
+      color: var(--text-secondary);
+      line-height: 1.5;
+    }
+
+    .sd-alert {
+      border-radius: var(--sd-radius-lg);
+      padding: var(--sd-space-lg);
+      display: grid;
+      gap: var(--sd-space-sm);
+      font-size: 0.9rem;
+    }
+
+    .sd-alert--danger {
+      background: rgba(248, 113, 113, 0.08);
+      color: var(--danger);
+      border: 1px solid rgba(248, 113, 113, 0.32);
+    }
+
+    .sd-alert--warning {
+      background: rgba(251, 191, 36, 0.08);
+      color: var(--warning);
+      border: 1px solid rgba(251, 191, 36, 0.28);
+    }
+
+    .sd-alert--primary {
+      background: var(--accent-soft);
+      color: var(--accent);
+      border: 1px solid rgba(240, 83, 35, 0.28);
+    }
+
+    .sd-stack {
+      display: grid;
+      gap: var(--sd-space-md);
+    }
+
+    .sd-stack--split {
+      display: grid;
+      gap: var(--sd-space-md);
+    }
+
+    @media (min-width: 680px) {
+      .sd-stack--split {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+      }
+    }
+
+    .sd-field {
+      display: grid;
+      gap: var(--sd-space-sm);
+    }
+
+    .sd-field label {
+      font-size: 0.8rem;
+      font-weight: 600;
+      color: var(--text-secondary);
+    }
+
+    .sd-pill-group {
+      display: flex;
+      flex-wrap: wrap;
+      gap: var(--sd-space-sm);
+    }
+
+    .sd-pill {
+      padding: var(--sd-space-sm) var(--sd-space-md);
+      border-radius: 999px;
+      background: var(--bg-muted);
+      color: var(--text-tertiary);
+      font-size: 0.75rem;
+      font-weight: 600;
+    }
+
+    .sd-input,
+    .sd-select,
+    .sd-textarea {
+      width: 100%;
+      padding: var(--sd-space-md) var(--sd-space-lg);
+      border-radius: var(--sd-radius-md);
+      border: 1px solid var(--border-color);
+      background: var(--bg-muted);
+      color: var(--text-primary);
+      font-size: 0.95rem;
+      transition: border 0.2s ease, background 0.2s ease;
+    }
+
+    .sd-input:focus,
+    .sd-select:focus,
+    .sd-textarea:focus {
+      outline: 3px solid rgba(240, 83, 35, 0.2);
+      border-color: var(--accent);
+      background: var(--bg-card);
+    }
+
+    .sd-textarea {
+      min-height: 120px;
+      resize: vertical;
+    }
+
+    .sd-radio-group,
+    .sd-checkbox-group {
+      display: grid;
+      gap: var(--sd-space-sm);
+    }
+
+    .sd-radio,
+    .sd-checkbox {
+      display: flex;
+      align-items: center;
+      gap: var(--sd-space-sm);
+      font-size: 0.9rem;
+      color: var(--text-secondary);
+    }
+
+    .sd-surface {
+      border: 1px dashed var(--border-color);
+      border-radius: var(--sd-radius-lg);
+      padding: var(--sd-space-lg);
+      text-align: center;
+      display: grid;
+      gap: var(--sd-space-sm);
+      color: var(--text-secondary);
+      cursor: pointer;
+      background: var(--bg-muted);
+      transition: border 0.2s ease, color 0.2s ease;
+    }
+
+    .sd-surface:hover {
+      border-color: var(--accent);
+      color: var(--accent);
+    }
+
+    footer {
+      padding: var(--sd-space-xl) var(--sd-space-xl);
+      display: flex;
+      justify-content: center;
+    }
+
+    .sd-button {
+      padding: var(--sd-space-md) var(--sd-space-xl);
+      border-radius: 999px;
+      border: none;
+      background: var(--accent);
+      color: #fff;
+      font-weight: 600;
+      font-size: 0.95rem;
+      cursor: pointer;
+      box-shadow: 0 16px 32px rgba(240, 83, 35, 0.28);
+      transition: transform 0.2s ease, box-shadow 0.2s ease;
+    }
+
+    .sd-button:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 20px 36px rgba(240, 83, 35, 0.32);
+    }
+
+    .sd-button--ghost {
+      background: transparent;
+      color: var(--accent);
+      box-shadow: none;
+      border: 1px solid rgba(240, 83, 35, 0.3);
+    }
+
+    @media (min-width: 960px) {
+      main {
+        padding: var(--sd-space-2xl) var(--sd-space-2xl) calc(var(--sd-space-2xl) * 1.5);
+      }
+    }
+  </style>
+</head>
+<body>
+  <header>
+    <h1>
+      Compass Health &amp; Safety
+      <span>Accident Report Assistant</span>
+    </h1>
+    <button class="theme-toggle" id="toggleTheme">Toggle light / dark</button>
+  </header>
+
+  <main>
+    <details class="sd-accordion__item" open>
+      <summary class="sd-accordion__summary">
+        <div class="sd-accordion__meta">
+          <span>Step 0</span>
+          <span>Make sure everyone is safe</span>
+        </div>
+        <div class="sd-chevron">⌄</div>
+      </summary>
+      <div class="sd-accordion__panel">
+        <div class="sd-panel-section">
+          <div class="sd-alert sd-alert--danger">
+            <strong>Breathe. Check yourself and others. Call 000 / 111 immediately if anyone is hurt.</strong>
+            <span>Move to a safe position, switch on hazard lights and set out warning triangles if available.</span>
+          </div>
+        </div>
+        <div class="sd-panel-section">
+          <h3>Immediate checklist</h3>
+          <div class="sd-checkbox-group">
+            <label class="sd-checkbox"><input type="checkbox" /> Attended to injured people and called emergency services if required</label>
+            <label class="sd-checkbox"><input type="checkbox" /> Moved to a safe location and turned on hazard lights</label>
+            <label class="sd-checkbox"><input type="checkbox" /> Notified the police (mandatory for injuries or major damage)</label>
+          </div>
+        </div>
+        <div class="sd-panel-section">
+          <div class="sd-alert sd-alert--warning">
+            <strong>Do not admit liability.</strong> Stick to the facts, exchange details calmly, and let our insurer handle questions about fault.
+          </div>
+        </div>
+      </div>
+    </details>
+
+    <details class="sd-accordion__item">
+      <summary class="sd-accordion__summary">
+        <div class="sd-accordion__meta">
+          <span>Step 1</span>
+          <span>Confirm who’s involved</span>
+        </div>
+        <div class="sd-chevron">⌄</div>
+      </summary>
+      <div class="sd-accordion__panel">
+        <div class="sd-panel-section">
+          <div class="sd-pill-group">
+            <span class="sd-pill">Signed in as Michael O’Connor</span>
+            <button class="theme-toggle" style="border-radius:var(--sd-radius-lg);" type="button" onclick="toggleDetails()">Show my details</button>
+          </div>
+          <div id="myDetails" class="sd-stack sd-stack--split" style="display:none;">
+            <div class="sd-field">
+              <label>Name</label>
+              <input class="sd-input" type="text" value="Michael O'Connor" readonly />
+            </div>
+            <div class="sd-field">
+              <label>Email</label>
+              <input class="sd-input" type="email" value="michael.oconnor@blick.group" readonly />
+            </div>
+            <div class="sd-field">
+              <label>Mobile</label>
+              <input class="sd-input" type="tel" value="+64 21 555 9012" readonly />
+            </div>
+            <div class="sd-field">
+              <label>Region</label>
+              <select class="sd-select" readonly>
+                <option>New Zealand (NZ)</option>
+                <option>Australia (AU)</option>
+              </select>
+            </div>
+          </div>
+        </div>
+
+        <div class="sd-panel-section">
+          <h3>Vehicle</h3>
+          <div class="sd-stack">
+            <div class="sd-pill-group">
+              <span class="sd-pill">Fleet vehicle: Blick Transit Van · Plate BLC672 · NZ</span>
+              <span class="sd-pill">24/7 roadside &amp; towing</span>
+            </div>
+            <div class="sd-radio-group">
+              <label class="sd-radio"><input type="radio" name="vehicleOption" value="assigned" checked /> This is my allocated vehicle</label>
+              <label class="sd-radio"><input type="radio" id="radioAlternate" name="vehicleOption" value="alternate" /> Different vehicle today</label>
+            </div>
+            <div id="alternateCard" hidden style="border:1px solid var(--border-color); border-radius:var(--sd-radius-lg); padding:var(--sd-space-lg); background:var(--bg-muted);">
+              <div class="sd-stack sd-stack--split">
+                <div class="sd-field">
+                  <label for="alternateVehicle">Alternate vehicle</label>
+                  <input id="alternateVehicle" class="sd-input" type="text" placeholder="Toyota Corolla · Plate ABC123" />
+                </div>
+                <div class="sd-field">
+                  <label for="alternateCountry">Country of registration</label>
+                  <select id="alternateCountry" class="sd-select">
+                    <option value="" selected hidden>Choose country</option>
+                    <option>New Zealand (NZ)</option>
+                    <option>Australia (AU)</option>
+                    <option>Other</option>
+                  </select>
+                </div>
+              </div>
+              <p style="font-size:0.8rem; color:var(--text-tertiary); margin:var(--sd-space-sm) 0 0;">We'll use these details to pull the right insurer info.</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </details>
+
+    <details class="sd-accordion__item">
+      <summary class="sd-accordion__summary">
+        <div class="sd-accordion__meta">
+          <span>Step 2</span>
+          <span>Capture what happened</span>
+        </div>
+        <div class="sd-chevron">⌄</div>
+      </summary>
+      <div class="sd-accordion__panel">
+        <div class="sd-alert sd-alert--warning">
+          <strong>Reminder: do not admit liability.</strong> Describe only what you saw, heard, and did.
+        </div>
+
+        <div class="sd-panel-section">
+          <h3>Incident snapshot</h3>
+          <div class="sd-stack sd-stack--split">
+            <div class="sd-field">
+              <label for="incidentTime">Date &amp; time</label>
+              <input id="incidentTime" class="sd-input" type="datetime-local" />
+            </div>
+            <div class="sd-field">
+              <label for="incidentLocation">Location</label>
+              <div class="sd-stack">
+                <button type="button" class="theme-toggle" style="border-radius:var(--sd-radius-lg);" onclick="captureLocation()">📍 Use my GPS location</button>
+                <input id="incidentLocation" class="sd-input" type="text" placeholder="Street, suburb, or GPS if remote" />
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="sd-panel-section">
+          <h3>Tell us what happened</h3>
+          <div class="sd-alert sd-alert--primary">
+            Speak calmly and we’ll turn it into text. Tap a prompt to get started, or type instead.
+          </div>
+          <div class="sd-stack">
+            <textarea id="incidentStory" class="sd-textarea" placeholder="Start with the lead-up (weather, traffic) then describe the event and aftermath."></textarea>
+            <div class="sd-pill-group" style="justify-content:flex-start;">
+              <button type="button" class="theme-toggle" style="border-radius:var(--sd-radius-lg);" onclick="insertPrompt('Before the accident, I was...')">Before</button>
+              <button type="button" class="theme-toggle" style="border-radius:var(--sd-radius-lg);" onclick="insertPrompt('The impact happened when...')">Impact</button>
+              <button type="button" class="theme-toggle" style="border-radius:var(--sd-radius-lg);" onclick="insertPrompt('Immediately after, I...')">After</button>
+            </div>
+            <div style="display:flex; justify-content:flex-end; gap:var(--sd-space-md);">
+              <button type="button" class="theme-toggle" style="border-radius:var(--sd-radius-lg);" onclick="startSpeech()">🎤 Start speech-to-text</button>
+              <button type="button" class="theme-toggle" style="border-radius:var(--sd-radius-lg);" onclick="stopSpeech()">Stop</button>
+            </div>
+          </div>
+        </div>
+
+        <div class="sd-panel-section">
+          <h3>Other people involved (optional)</h3>
+          <div class="sd-stack sd-stack--split">
+            <div class="sd-field">
+              <label for="otherName">Other driver name</label>
+              <input id="otherName" class="sd-input" type="text" placeholder="If known" />
+            </div>
+            <div class="sd-field">
+              <label for="otherPhone">Phone</label>
+              <input id="otherPhone" class="sd-input" type="tel" placeholder="+64..." />
+            </div>
+            <div class="sd-field">
+              <label for="otherEmail">Email</label>
+              <input id="otherEmail" class="sd-input" type="email" placeholder="name@email.com" />
+            </div>
+            <div class="sd-field">
+              <label for="otherVehicle">Vehicle</label>
+              <input id="otherVehicle" class="sd-input" type="text" placeholder="Make · Model · Colour" />
+            </div>
+            <div class="sd-field">
+              <label for="otherPlate">Registration / plate</label>
+              <input id="otherPlate" class="sd-input" type="text" placeholder="Plate or identifier" />
+            </div>
+            <div class="sd-field">
+              <label for="otherInsurer">Their insurer</label>
+              <input id="otherInsurer" class="sd-input" type="text" placeholder="Company or policy #" />
+            </div>
+          </div>
+        </div>
+
+        <div class="sd-panel-section">
+          <h3>Witnesses (optional)</h3>
+          <div class="sd-stack sd-stack--split">
+            <div class="sd-field">
+              <label for="witnessName">Witness name</label>
+              <input id="witnessName" class="sd-input" type="text" placeholder="Jane Smith" />
+            </div>
+            <div class="sd-field">
+              <label for="witnessContact">Contact</label>
+              <input id="witnessContact" class="sd-input" type="text" placeholder="Phone or email" />
+            </div>
+          </div>
+          <button type="button" class="theme-toggle" style="border-radius:var(--sd-radius-lg); width:max-content;" onclick="addWitnessRow()">Add another witness</button>
+        </div>
+      </div>
+    </details>
+
+    <details class="sd-accordion__item">
+      <summary class="sd-accordion__summary">
+        <div class="sd-accordion__meta">
+          <span>Step 3</span>
+          <span>Photos &amp; files</span>
+        </div>
+        <div class="sd-chevron">⌄</div>
+      </summary>
+      <div class="sd-accordion__panel">
+        <div class="sd-panel-section">
+          <h3>Capture evidence</h3>
+          <div class="sd-stack sd-stack--split">
+            <button type="button" class="theme-toggle" style="border-radius:var(--sd-radius-lg);" onclick="document.getElementById('cameraInput').click()">📸 Take photo (opens camera)</button>
+            <button type="button" class="theme-toggle" style="border-radius:var(--sd-radius-lg);" onclick="document.getElementById('fileInput').click()">🗂 Choose from library</button>
+          </div>
+          <input id="cameraInput" type="file" accept="image/*" capture="environment" hidden />
+          <input id="fileInput" type="file" accept="image/*,application/pdf" hidden />
+          <div class="sd-surface" style="border-style:solid;">
+            <strong>Tip</strong>
+            <span>Capture damage, vehicle positions, road conditions, signage, and skid marks.</span>
+          </div>
+        </div>
+      </div>
+    </details>
+
+    <details class="sd-accordion__item">
+      <summary class="sd-accordion__summary">
+        <div class="sd-accordion__meta">
+          <span>Step 4</span>
+          <span>Insurance &amp; follow-up</span>
+        </div>
+        <div class="sd-chevron">⌄</div>
+      </summary>
+      <div class="sd-accordion__panel">
+        <div class="sd-panel-section">
+          <div class="sd-alert sd-alert--primary">
+            <strong>Insurer:</strong> CGU (AU &amp; NZ) · <strong>Policy ref:</strong> BLICK-FLEET-2025 · <strong>Assistance:</strong> AU 13 24 80 · NZ 0800 88 88 77
+          </div>
+          <p>You can fill this section now or return later. The essential information (Steps 0–3) is logged as soon as you hit “Save”.</p>
+        </div>
+        <div class="sd-panel-section" style="opacity:0.85;">
+          <div class="sd-stack sd-stack--split">
+            <div class="sd-field">
+              <label for="tow">Preferred tow operator</label>
+              <input id="tow" class="sd-input" type="text" value="Allied Towing · 1300 555 981" readonly />
+            </div>
+            <div class="sd-field">
+              <label for="broker">Broker contact</label>
+              <input id="broker" class="sd-input" type="text" value="Michael Traill · +61 7 3062 4538" readonly />
+            </div>
+          </div>
+          <div class="sd-field">
+            <label for="policeRef">Police incident number (if given)</label>
+            <input id="policeRef" class="sd-input" type="text" placeholder="Police reference" />
+          </div>
+          <div class="sd-field">
+            <label for="policeOfficer">Officer / station name</label>
+            <input id="policeOfficer" class="sd-input" type="text" placeholder="Officer or station" />
+          </div>
+        </div>
+      </div>
+    </details>
+
+    <details class="sd-accordion__item">
+      <summary class="sd-accordion__summary">
+        <div class="sd-accordion__meta">
+          <span>Step 5</span>
+          <span>Review &amp; submit</span>
+        </div>
+        <div class="sd-chevron">⌄</div>
+      </summary>
+      <div class="sd-accordion__panel">
+        <div class="sd-panel-section">
+          <h3>Almost done</h3>
+          <p>You’ll receive a confirmation email within minutes. Our Safety team contacts you within one working day. If you need urgent help, call the insurer hotline above.</p>
+        </div>
+        <div class="sd-panel-section">
+          <h3>Additional notes (optional)</h3>
+          <textarea class="sd-textarea" placeholder="Anything else we should know? e.g. wellbeing follow-up, vehicle still drivable, temporary replacement needed."></textarea>
+        </div>
+        <div class="sd-panel-section">
+          <h3>Consent</h3>
+          <div class="sd-checkbox-group">
+            <label class="sd-checkbox"><input type="checkbox" /> I confirm the information provided is accurate to the best of my knowledge.</label>
+            <label class="sd-checkbox"><input type="checkbox" /> I authorise Blick to share this report with our insurer and broker.</label>
+          </div>
+        </div>
+      </div>
+    </details>
+  </main>
+
+  <footer>
+    <button class="sd-button" type="button">Save now &amp; continue later</button>
+  </footer>
+
+  <script>
+    const root = document.documentElement;
+    const toggleThemeButton = document.getElementById('toggleTheme');
+    toggleThemeButton.addEventListener('click', () => {
+      root.setAttribute('data-theme', root.getAttribute('data-theme') === 'dark' ? 'light' : 'dark');
+    });
+
+    const accordionItems = document.querySelectorAll('.sd-accordion__item');
+    accordionItems.forEach((item) => {
+      item.addEventListener('toggle', () => {
+        if (item.open) {
+          accordionItems.forEach((other) => {
+            if (other !== item) other.removeAttribute('open');
+          });
+        }
+      });
+    });
+
+    const radioAlternate = document.getElementById('radioAlternate');
+    const alternateCard = document.getElementById('alternateCard');
+    const vehicleRadios = document.querySelectorAll('input[name="vehicleOption"]');
+    vehicleRadios.forEach((radio) => {
+      radio.addEventListener('change', () => {
+        alternateCard.hidden = !radioAlternate.checked;
+      });
+    });
+
+    function toggleDetails() {
+      const details = document.getElementById('myDetails');
+      details.style.display = details.style.display === 'none' ? 'grid' : 'none';
+    }
+
+    async function captureLocation() {
+      if (!navigator.geolocation) {
+        alert('Geolocation is not supported by your browser. Please enter the address manually.');
+        return;
+      }
+      try {
+        const position = await new Promise((resolve, reject) => {
+          navigator.geolocation.getCurrentPosition(resolve, reject, { enableHighAccuracy: true, timeout: 10000 });
+        });
+        const { latitude, longitude } = position.coords;
+        // Simulated reverse geocode. Replace with real API when available.
+        const locationField = document.getElementById('incidentLocation');
+        locationField.value = `${latitude.toFixed(6)}, ${longitude.toFixed(6)} (GPS)`;
+        locationField.dataset.coords = JSON.stringify({ latitude, longitude });
+      } catch (error) {
+        alert('Unable to get your location. Please type the address manually.');
+      }
+    }
+
+    window.captureLocation = captureLocation;
+    window.toggleDetails = toggleDetails;
+
+    function insertPrompt(text) {
+      const textarea = document.getElementById('incidentStory');
+      textarea.value = textarea.value ? `${textarea.value}\n${text}` : text;
+      textarea.focus();
+    }
+    window.insertPrompt = insertPrompt;
+
+    const recognition = 'webkitSpeechRecognition' in window ? new webkitSpeechRecognition() : null;
+    if (recognition) {
+      recognition.continuous = true;
+      recognition.interimResults = true;
+      recognition.lang = 'en-AU';
+      recognition.onresult = (event) => {
+        const textarea = document.getElementById('incidentStory');
+        let transcript = '';
+        for (let i = event.resultIndex; i < event.results.length; i++) {
+          transcript += event.results[i][0].transcript;
+        }
+        textarea.value = transcript;
+      };
+      recognition.onerror = () => stopSpeech();
+    }
+
+    function startSpeech() {
+      if (!recognition) {
+        alert('Speech recognition not supported on this device.');
+        return;
+      }
+      recognition.start();
+    }
+
+    function stopSpeech() {
+      if (recognition) recognition.stop();
+    }
+
+    window.startSpeech = startSpeech;
+    window.stopSpeech = stopSpeech;
+
+    const dropZone = document.getElementById('dropZone');
+    if (dropZone) {
+      dropZone.addEventListener('dragover', (event) => {
+        event.preventDefault();
+        dropZone.style.borderColor = getComputedStyle(root).getPropertyValue('--accent');
+      });
+      dropZone.addEventListener('dragleave', () => {
+        dropZone.style.borderColor = getComputedStyle(root).getPropertyValue('--border-color');
+      });
+      dropZone.addEventListener('drop', (event) => {
+        event.preventDefault();
+        dropZone.style.borderColor = getComputedStyle(root).getPropertyValue('--border-color');
+        const { files } = event.dataTransfer;
+        if (files && files.length) {
+          alert(`${files.length} file${files.length > 1 ? 's' : ''} ready to upload.`);
+        }
+      });
+    }
+
+    document.addEventListener('DOMContentLoaded', () => {
+      const now = new Date();
+      const localISOTime = new Date(now.getTime() - now.getTimezoneOffset() * 60000).toISOString().slice(0, 16);
+      const timeInput = document.getElementById('incidentTime');
+      if (timeInput) timeInput.value = localISOTime;
+    });
+  </script>
+</body>
+</html>

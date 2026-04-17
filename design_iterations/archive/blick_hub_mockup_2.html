@@ -1,0 +1,433 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Blick Hub - Muted White Theme</title>
+
+    <!-- Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Montserrat:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+
+    <!-- Lucide Icons -->
+    <script src="https://unpkg.com/lucide@latest"></script>
+
+    <!-- Custom Theme -->
+    <link rel="stylesheet" href="blick_hub_white_theme_muted.css">
+
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        'brand-orange': '#f05323',
+                        'brand-dark-gray': '#58595b',
+                        'brand-light-gray': '#bcbec0',
+                        'brand-black': '#212121',
+                        'brand-charcoal': '#2a2a2a',
+                        'brand-cyan': '#22d3ee',
+                    },
+                    fontFamily: {
+                        sans: ['Inter', 'Montserrat', 'sans-serif'],
+                    },
+                }
+            }
+        }
+    </script>
+
+    <style>
+        body {
+            font-family: 'Inter', 'Montserrat', sans-serif !important;
+            letter-spacing: -0.01em;
+        }
+
+        /* Sidebar animation */
+        .sidebar {
+            transform: translateX(-100%);
+            transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        .sidebar.open {
+            transform: translateX(0);
+        }
+
+        /* Overlay animation */
+        .overlay {
+            opacity: 0;
+            pointer-events: none;
+            transition: opacity 0.2s ease-out;
+        }
+
+        .overlay.active {
+            opacity: 1;
+            pointer-events: all;
+        }
+
+        /* Subtle card hover effects */
+        .service-card {
+            transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        .service-card:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.06), 0 4px 6px -4px rgba(0, 0, 0, 0.06);
+        }
+
+        /* Button animations */
+        .btn {
+            transition: all 0.15s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        .btn:hover {
+            transform: translateY(-1px);
+        }
+
+        .btn:active {
+            transform: translateY(0);
+        }
+
+        /* Badge subtle pulse */
+        @keyframes pulse-subtle {
+            0%, 100% {
+                opacity: 1;
+            }
+            50% {
+                opacity: 0.9;
+            }
+        }
+
+        .badge-pulse {
+            animation: pulse-subtle 3s cubic-bezier(0.4, 0, 0.6, 1) infinite;
+        }
+
+        /* Nav item subtle hover */
+        .nav-item {
+            transition: all 0.15s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        .nav-item:hover {
+            background-color: #f9fafb;
+        }
+
+        .nav-item.active {
+            background-color: #fef2f2;
+            color: #f05323;
+            font-weight: 500;
+        }
+
+        /* Progress bar animation */
+        .progress-bar {
+            transition: width 0.6s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        /* Subtle icon colors */
+        .icon-muted {
+            color: #9ca3af;
+        }
+
+        .icon-accent {
+            color: #f05323;
+        }
+    </style>
+</head>
+<body class="bg-gray-50">
+    <!-- Overlay -->
+    <div id="overlay" class="overlay fixed inset-0 bg-black bg-opacity-20 z-30" onclick="toggleSidebar()"></div>
+
+    <!-- Sidebar -->
+    <aside id="sidebar" class="sidebar fixed top-0 left-0 h-full w-64 bg-white border-r border-gray-200 z-40 flex flex-col shadow-lg">
+        <!-- Sidebar Header -->
+        <div class="flex items-center justify-between p-5 h-16 border-b border-gray-100">
+            <div class="flex items-center gap-2">
+                <div class="w-8 h-8 bg-brand-orange rounded-lg flex items-center justify-center">
+                    <span class="text-white font-bold text-sm">B</span>
+                </div>
+                <h1 class="text-lg font-semibold text-gray-900">Blick Hub</h1>
+            </div>
+            <button onclick="toggleSidebar()" class="text-gray-400 hover:text-gray-600 transition-colors">
+                <i data-lucide="x" class="w-5 h-5"></i>
+            </button>
+        </div>
+
+        <!-- Navigation -->
+        <nav class="p-3 space-y-1 flex-1">
+            <a href="#" class="nav-item active block px-3 py-2.5 rounded-lg text-sm">
+                <div class="flex items-center gap-3">
+                    <i data-lucide="layout-dashboard" class="w-4 h-4"></i>
+                    <span>Dashboard</span>
+                </div>
+            </a>
+            <a href="#" class="nav-item block px-3 py-2.5 rounded-lg text-sm text-gray-600">
+                <div class="flex items-center gap-3">
+                    <i data-lucide="truck" class="w-4 h-4"></i>
+                    <span>Customer Rigs</span>
+                </div>
+            </a>
+            <a href="#" class="nav-item block px-3 py-2.5 rounded-lg text-sm text-gray-600 relative">
+                <div class="flex items-center gap-3">
+                    <i data-lucide="shield-check" class="w-4 h-4"></i>
+                    <span>Health & Safety</span>
+                    <span class="badge-pulse ml-auto inline-flex items-center justify-center w-5 h-5 text-xs font-semibold text-white bg-brand-orange rounded-full">
+                        3
+                    </span>
+                </div>
+            </a>
+            <a href="#" class="nav-item block px-3 py-2.5 rounded-lg text-sm text-gray-600">
+                <div class="flex items-center gap-3">
+                    <i data-lucide="compass" class="w-4 h-4"></i>
+                    <span>Compass</span>
+                </div>
+            </a>
+            <a href="#" class="nav-item block px-3 py-2.5 rounded-lg text-sm text-gray-600">
+                <div class="flex items-center gap-3">
+                    <i data-lucide="bot" class="w-4 h-4"></i>
+                    <span>AI Agent</span>
+                </div>
+            </a>
+        </nav>
+
+        <!-- Sidebar Footer -->
+        <div class="p-4 border-t border-gray-100 space-y-3">
+            <div class="flex items-center gap-3 px-2">
+                <div class="w-8 h-8 bg-gray-100 text-gray-600 rounded-full flex items-center justify-center text-xs font-semibold">
+                    JS
+                </div>
+                <div class="flex-1 min-w-0">
+                    <div class="text-sm font-medium text-gray-900 truncate">John Smith</div>
+                    <div class="text-xs text-gray-500">Administrator</div>
+                </div>
+            </div>
+            <div class="text-center text-xs text-gray-400">
+                v1.4.0
+            </div>
+        </div>
+    </aside>
+
+    <!-- Main Content -->
+    <div class="min-h-screen flex flex-col">
+        <!-- Header -->
+        <header class="bg-white border-b border-gray-100 h-14 flex items-center justify-between px-5 sticky top-0 z-20">
+            <button onclick="toggleSidebar()" class="text-gray-400 hover:text-gray-600 transition-colors">
+                <i data-lucide="menu" class="w-5 h-5"></i>
+            </button>
+            <div class="flex items-center gap-3">
+                <button class="text-gray-400 hover:text-gray-600 transition-colors">
+                    <i data-lucide="bell" class="w-5 h-5"></i>
+                </button>
+                <button class="text-gray-400 hover:text-gray-600 transition-colors">
+                    <i data-lucide="sun" class="w-5 h-5"></i>
+                </button>
+            </div>
+        </header>
+
+        <!-- Main Content Area -->
+        <main class="flex-1 p-6 md:p-8">
+            <!-- Page Header -->
+            <div class="mb-8">
+                <h1 class="text-2xl font-semibold text-gray-900 mb-1">Dashboard</h1>
+                <p class="text-sm text-gray-500">Monitor your AI agents and their progress</p>
+            </div>
+
+            <!-- Stats Cards -->
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-4 mb-8">
+                <!-- Total Agents -->
+                <div class="bg-white rounded-xl border border-gray-200 p-5">
+                    <div class="flex items-center justify-between mb-3">
+                        <span class="text-sm font-medium text-gray-600">Total Agents</span>
+                        <div class="w-8 h-8 bg-gray-50 rounded-lg flex items-center justify-center">
+                            <i data-lucide="users" class="w-4 h-4 text-gray-400"></i>
+                        </div>
+                    </div>
+                    <div class="text-3xl font-semibold text-gray-900 mb-1">5</div>
+                    <p class="text-xs text-gray-500">4 currently active</p>
+                </div>
+
+                <!-- Active Tasks -->
+                <div class="bg-white rounded-xl border border-gray-200 p-5">
+                    <div class="flex items-center justify-between mb-3">
+                        <span class="text-sm font-medium text-gray-600">Active Tasks</span>
+                        <div class="w-8 h-8 bg-green-50 rounded-lg flex items-center justify-center">
+                            <i data-lucide="activity" class="w-4 h-4 text-green-600"></i>
+                        </div>
+                    </div>
+                    <div class="text-3xl font-semibold text-gray-900 mb-1">5</div>
+                    <p class="text-xs text-gray-500">Tasks currently in progress</p>
+                </div>
+
+                <!-- Need Attention -->
+                <div class="bg-white rounded-xl border border-gray-200 p-5">
+                    <div class="flex items-center justify-between mb-3">
+                        <span class="text-sm font-medium text-gray-600">Need Attention</span>
+                        <div class="w-8 h-8 bg-orange-50 rounded-lg flex items-center justify-center">
+                            <i data-lucide="alert-triangle" class="w-4 h-4 text-brand-orange"></i>
+                        </div>
+                    </div>
+                    <div class="text-3xl font-semibold text-gray-900 mb-1">1</div>
+                    <p class="text-xs text-gray-500">Agents requiring review</p>
+                </div>
+            </div>
+
+            <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
+                <!-- Agent Activity (Left 2/3) -->
+                <div class="lg:col-span-2 bg-white rounded-xl border border-gray-200 p-6">
+                    <div class="flex items-center justify-between mb-6">
+                        <div>
+                            <h2 class="text-lg font-semibold text-gray-900">Agent Activity</h2>
+                            <p class="text-sm text-gray-500 mt-0.5">Your agents currently working on tasks</p>
+                        </div>
+                    </div>
+
+                    <div class="space-y-4">
+                        <!-- Data Analyst Pro -->
+                        <div class="p-4 bg-gray-50 rounded-lg border border-gray-100">
+                            <div class="flex items-start justify-between mb-3">
+                                <div class="flex items-center gap-3">
+                                    <div class="w-10 h-10 bg-white rounded-lg border border-gray-200 flex items-center justify-center">
+                                        <i data-lucide="briefcase" class="w-5 h-5 text-gray-600"></i>
+                                    </div>
+                                    <div>
+                                        <div class="flex items-center gap-2">
+                                            <h3 class="text-sm font-semibold text-gray-900">Data Analyst Pro</h3>
+                                            <span class="px-2 py-0.5 bg-gray-900 text-white text-xs rounded-md font-medium">Working</span>
+                                        </div>
+                                        <p class="text-xs text-gray-500 mt-0.5">Analyze Q4 sales data and create comprehensive report with insights</p>
+                                    </div>
+                                </div>
+                                <button class="text-xs font-medium text-gray-600 hover:text-gray-900 transition-colors">
+                                    View Task
+                                </button>
+                            </div>
+                            <div class="flex items-center gap-3">
+                                <div class="flex-1 bg-gray-200 rounded-full h-1.5 overflow-hidden">
+                                    <div class="progress-bar bg-gray-900 h-full rounded-full" style="width: 75%"></div>
+                                </div>
+                                <span class="text-xs font-semibold text-gray-900 w-10 text-right">75%</span>
+                            </div>
+                        </div>
+
+                        <!-- Code Reviewer -->
+                        <div class="p-4 bg-gray-50 rounded-lg border border-gray-100">
+                            <div class="flex items-start justify-between mb-3">
+                                <div class="flex items-center gap-3">
+                                    <div class="w-10 h-10 bg-white rounded-lg border border-gray-200 flex items-center justify-center">
+                                        <i data-lucide="code" class="w-5 h-5 text-gray-600"></i>
+                                    </div>
+                                    <div>
+                                        <div class="flex items-center gap-2">
+                                            <h3 class="text-sm font-semibold text-gray-900">Code Reviewer</h3>
+                                            <span class="px-2 py-0.5 bg-gray-900 text-white text-xs rounded-md font-medium">Working</span>
+                                        </div>
+                                        <p class="text-xs text-gray-500 mt-0.5">Review authentication system changes and provide feedback</p>
+                                    </div>
+                                </div>
+                                <button class="text-xs font-medium text-gray-600 hover:text-gray-900 transition-colors">
+                                    View Task
+                                </button>
+                            </div>
+                            <div class="flex items-center gap-3">
+                                <div class="flex-1 bg-gray-200 rounded-full h-1.5 overflow-hidden">
+                                    <div class="progress-bar bg-gray-900 h-full rounded-full" style="width: 90%"></div>
+                                </div>
+                                <span class="text-xs font-semibold text-gray-900 w-10 text-right">90%</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Notifications (Right 1/3) -->
+                <div class="bg-white rounded-xl border border-gray-200 p-6">
+                    <div class="flex items-center justify-between mb-5">
+                        <h2 class="text-lg font-semibold text-gray-900">Notifications</h2>
+                        <button class="text-xs font-medium text-brand-orange hover:text-opacity-80 transition-colors">
+                            View All
+                        </button>
+                    </div>
+                    <p class="text-sm text-gray-500 mb-4">Recent alerts and updates</p>
+
+                    <div class="space-y-3">
+                        <!-- Notification 1 -->
+                        <div class="p-3 bg-orange-50 rounded-lg border border-orange-100">
+                            <div class="flex gap-2 mb-2">
+                                <i data-lucide="alert-circle" class="w-4 h-4 text-brand-orange flex-shrink-0 mt-0.5"></i>
+                                <div class="flex-1 min-w-0">
+                                    <div class="text-sm font-semibold text-gray-900 mb-0.5">Code Review Completed</div>
+                                    <p class="text-xs text-gray-600 leading-relaxed">Code Reviewer has finished analyzing pull request #247 and found 3 suggestions for improvement.</p>
+                                </div>
+                                <div class="w-2 h-2 bg-brand-orange rounded-full flex-shrink-0 mt-1.5"></div>
+                            </div>
+                            <div class="flex items-center justify-between mt-2 pt-2 border-t border-orange-100">
+                                <span class="text-xs text-gray-500">2 minutes ago</span>
+                                <div class="flex gap-2">
+                                    <button class="px-3 py-1 bg-gray-900 text-white text-xs rounded-md font-medium hover:bg-gray-800 transition-colors">
+                                        Review Now
+                                    </button>
+                                    <button class="px-3 py-1 bg-white text-gray-700 text-xs rounded-md font-medium border border-gray-200 hover:bg-gray-50 transition-colors">
+                                        Mark Read
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Notification 2 -->
+                        <div class="p-3 bg-gray-50 rounded-lg border border-gray-100">
+                            <div class="flex gap-2 mb-2">
+                                <i data-lucide="info" class="w-4 h-4 text-blue-500 flex-shrink-0 mt-0.5"></i>
+                                <div class="flex-1 min-w-0">
+                                    <div class="text-sm font-semibold text-gray-900 mb-0.5">Data Access Request</div>
+                                    <p class="text-xs text-gray-600 leading-relaxed">Data Analyst Pro requires additional permissions to access the Q4 sales database for report generation.</p>
+                                </div>
+                            </div>
+                            <div class="flex items-center justify-between mt-2 pt-2 border-t border-gray-100">
+                                <span class="text-xs text-gray-500">1 hour ago</span>
+                            </div>
+                        </div>
+
+                        <!-- Notification 3 -->
+                        <div class="p-3 bg-gray-50 rounded-lg border border-gray-100">
+                            <div class="flex gap-2 mb-2">
+                                <i data-lucide="check-circle" class="w-4 h-4 text-green-500 flex-shrink-0 mt-0.5"></i>
+                                <div class="flex-1 min-w-0">
+                                    <div class="text-sm font-semibold text-gray-900 mb-0.5">Task Completed</div>
+                                    <p class="text-xs text-gray-600 leading-relaxed">Report Generator successfully created monthly analytics summary.</p>
+                                </div>
+                            </div>
+                            <div class="flex items-center justify-between mt-2 pt-2 border-t border-gray-100">
+                                <span class="text-xs text-gray-500">3 hours ago</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </main>
+    </div>
+
+    <script>
+        // Initialize Lucide icons
+        lucide.createIcons();
+
+        // Sidebar toggle functionality
+        function toggleSidebar() {
+            const sidebar = document.getElementById('sidebar');
+            const overlay = document.getElementById('overlay');
+
+            sidebar.classList.toggle('open');
+            overlay.classList.toggle('active');
+        }
+
+        // Close sidebar when clicking outside
+        document.addEventListener('click', function(event) {
+            const sidebar = document.getElementById('sidebar');
+            const overlay = document.getElementById('overlay');
+            const menuButton = event.target.closest('[onclick="toggleSidebar()"]');
+
+            if (!menuButton && !sidebar.contains(event.target) && sidebar.classList.contains('open')) {
+                toggleSidebar();
+            }
+        });
+    </script>
+</body>
+</html>

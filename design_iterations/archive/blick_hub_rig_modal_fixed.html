@@ -1,0 +1,699 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Blick Hub - Rig Modal (Light & Dark)</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <script src="https://unpkg.com/lucide@latest/dist/umd/lucide.min.js"></script>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        * {
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Inter', system-ui, -apple-system, sans-serif;
+            margin: 0;
+            padding: 20px;
+            background: #0f0f0f;
+        }
+
+        /* LIGHT THEME */
+        body[data-theme="light"] {
+            background: #f8fafc;
+        }
+
+        body[data-theme="light"] .modal-overlay {
+            background: rgba(0, 0, 0, 0.4);
+        }
+
+        body[data-theme="light"] .modal-content {
+            background: #ffffff;
+            color: #1e293b;
+        }
+
+        body[data-theme="light"] .modal-header {
+            border-bottom-color: #e2e8f0;
+        }
+
+        body[data-theme="light"] .modal-title {
+            color: #0f172a;
+        }
+
+        body[data-theme="light"] .modal-subtitle {
+            color: #64748b;
+        }
+
+        body[data-theme="light"] .close-button {
+            color: #64748b;
+        }
+
+        body[data-theme="light"] .close-button:hover {
+            background: #f1f5f9;
+            color: #1e293b;
+        }
+
+        body[data-theme="light"] .tabs {
+            border-bottom-color: #e2e8f0;
+        }
+
+        body[data-theme="light"] .tab-button {
+            color: #64748b;
+        }
+
+        body[data-theme="light"] .tab-button:hover {
+            color: #1e293b;
+            background: #f8fafc;
+        }
+
+        body[data-theme="light"] .tab-button.active {
+            color: #f05323;
+            border-bottom-color: #f05323;
+        }
+
+        body[data-theme="light"] .section-title {
+            color: #22d3ee;
+        }
+
+        body[data-theme="light"] .form-label {
+            color: #475569;
+        }
+
+        body[data-theme="light"] .readonly-value {
+            background: #f1f5f9;
+            border-color: #e2e8f0;
+            color: #475569;
+        }
+
+        body[data-theme="light"] .product-code {
+            background: #dbeafe;
+            color: #1e40af;
+            border-color: #93c5fd;
+        }
+
+        body[data-theme="light"] .product-code:hover {
+            background: #bfdbfe;
+            border-color: #60a5fa;
+        }
+
+        body[data-theme="light"] .item-label {
+            color: #64748b;
+        }
+
+        body[data-theme="light"] .item-value {
+            color: #1e293b;
+        }
+
+        body[data-theme="light"] .modal-footer {
+            border-top-color: #e2e8f0;
+            background: linear-gradient(to top, #ffffff, #f8fafc);
+        }
+
+        body[data-theme="light"] .btn-close {
+            background: #ffffff;
+            color: #475569;
+            border-color: #cbd5e1;
+        }
+
+        body[data-theme="light"] .btn-close:hover {
+            background: #f8fafc;
+            border-color: #94a3b8;
+        }
+
+        body[data-theme="light"] .btn-edit {
+            background: linear-gradient(135deg, #f05323 0%, #e8471a 100%);
+        }
+
+        /* DARK THEME (Default) */
+        .modal-overlay {
+            position: fixed;
+            inset: 0;
+            background: rgba(0, 0, 0, 0.7);
+            backdrop-filter: blur(4px);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            z-index: 1000;
+            padding: 20px;
+        }
+
+        .modal-content {
+            background: #1a1a1a;
+            border-radius: 16px;
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.5);
+            max-width: 900px;
+            width: 100%;
+            max-height: 90vh;
+            overflow: hidden;
+            display: flex;
+            flex-direction: column;
+            color: #e2e8f0;
+        }
+
+        /* MODAL HEADER */
+        .modal-header {
+            padding: 24px;
+            border-bottom: 1px solid #2d2d2d;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .modal-title {
+            font-size: 22px;
+            font-weight: 700;
+            color: #ffffff;
+            margin: 0;
+        }
+
+        .modal-subtitle {
+            font-size: 14px;
+            color: #94a3b8;
+            margin-top: 4px;
+        }
+
+        .close-button {
+            background: transparent;
+            border: none;
+            color: #94a3b8;
+            cursor: pointer;
+            font-size: 28px;
+            padding: 4px 8px;
+            border-radius: 6px;
+            transition: all 0.2s ease;
+            line-height: 1;
+        }
+
+        .close-button:hover {
+            background: #262626;
+            color: #ffffff;
+        }
+
+        /* MODAL BODY */
+        .modal-body {
+            padding: 24px;
+            overflow-y: auto;
+            flex: 1;
+        }
+
+        /* TABS - POSITIONED ABOVE GENERAL INFORMATION */
+        .tabs {
+            display: flex;
+            border-bottom: 2px solid #2d2d2d;
+            gap: 0;
+            margin-bottom: 24px;
+        }
+
+        .tab-button {
+            background: transparent;
+            border: none;
+            color: #94a3b8;
+            padding: 12px 24px;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            font-weight: 600;
+            border-bottom: 2px solid transparent;
+            margin-bottom: -2px;
+            font-size: 15px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .tab-button:hover {
+            color: #e2e8f0;
+        }
+
+        .tab-button.active {
+            color: #f05323;
+            border-bottom-color: #f05323;
+        }
+
+        /* FORM SECTIONS */
+        .section-title {
+            font-size: 16px;
+            font-weight: 700;
+            color: #22d3ee;
+            margin: 0 0 16px 0;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        .section {
+            margin-bottom: 32px;
+        }
+
+        /* VERTICAL STACKING (like dev) */
+        .form-field {
+            margin-bottom: 16px;
+        }
+
+        .form-label {
+            font-size: 14px;
+            font-weight: 500;
+            color: #94a3b8;
+            margin-bottom: 8px;
+            display: block;
+        }
+
+        .form-label .required {
+            color: #f05323;
+            margin-left: 2px;
+        }
+
+        /* READ-ONLY VALUES */
+        .readonly-value {
+            background: #262626;
+            border: 1px solid #404040;
+            color: #e2e8f0;
+            padding: 10px 14px;
+            border-radius: 8px;
+            font-size: 14px;
+            min-height: 42px;
+            display: flex;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 8px;
+        }
+
+        .readonly-value.not-set {
+            color: #64748b;
+            font-style: italic;
+        }
+
+        /* PRODUCT CODE BADGE */
+        .product-code {
+            background: #1e3a5f;
+            color: #60a5fa;
+            padding: 4px 10px;
+            border-radius: 6px;
+            font-family: 'Monaco', 'Courier New', monospace;
+            font-size: 13px;
+            font-weight: 700;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            display: inline-block;
+            border: 1px solid #2563eb;
+        }
+
+        .product-code:hover {
+            background: #2563eb;
+            color: #ffffff;
+            transform: translateY(-1px);
+        }
+
+        .product-code:active {
+            transform: translateY(0);
+        }
+
+        /* TOOL/ACCESSORY ITEMS (VERTICAL LIST) */
+        .tool-list {
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+        }
+
+        .tool-item {
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+        }
+
+        .item-label {
+            font-size: 14px;
+            font-weight: 500;
+            color: #94a3b8;
+        }
+
+        .item-value {
+            background: #262626;
+            border: 1px solid #404040;
+            color: #e2e8f0;
+            padding: 10px 14px;
+            border-radius: 8px;
+            font-size: 14px;
+            display: flex;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 8px;
+        }
+
+        /* MODAL FOOTER */
+        .modal-footer {
+            padding: 20px 24px;
+            border-top: 1px solid #2d2d2d;
+            display: flex;
+            justify-content: flex-end;
+            gap: 12px;
+        }
+
+        .btn-close {
+            background: #262626;
+            color: #e2e8f0;
+            border: 1px solid #404040;
+            padding: 10px 24px;
+            border-radius: 8px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            font-size: 14px;
+        }
+
+        .btn-close:hover {
+            background: #353535;
+            border-color: #525252;
+        }
+
+        .btn-edit {
+            background: linear-gradient(135deg, #f05323 0%, #ff6a3d 100%);
+            color: #ffffff;
+            border: none;
+            padding: 10px 24px;
+            border-radius: 8px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            font-size: 14px;
+        }
+
+        .btn-edit:hover {
+            transform: translateY(-1px);
+            box-shadow: 0 4px 12px rgba(240, 83, 35, 0.4);
+        }
+
+        /* THEME TOGGLE */
+        .theme-toggle {
+            position: fixed;
+            top: 20px;
+            left: 20px;
+            z-index: 2000;
+        }
+
+        .btn-theme {
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(10px);
+            color: #ffffff;
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            padding: 10px 16px;
+            border-radius: 8px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            font-size: 14px;
+        }
+
+        .btn-theme:hover {
+            background: rgba(255, 255, 255, 0.2);
+        }
+
+        body[data-theme="light"] .btn-theme {
+            background: rgba(0, 0, 0, 0.05);
+            color: #1e293b;
+            border-color: #cbd5e1;
+        }
+
+        body[data-theme="light"] .btn-theme:hover {
+            background: rgba(0, 0, 0, 0.1);
+        }
+    </style>
+</head>
+<body data-theme="dark">
+    <!-- Theme Toggle -->
+    <div class="theme-toggle">
+        <button class="btn-theme" onclick="toggleTheme()">
+            <span id="theme-icon">🌙</span> <span id="theme-text">Dark Mode</span>
+        </button>
+    </div>
+
+    <!-- MODAL -->
+    <div class="modal-overlay">
+        <div class="modal-content">
+            <!-- HEADER -->
+            <div class="modal-header">
+                <div>
+                    <h2 class="modal-title">Parkinson & Holland Limited</h2>
+                    <p class="modal-subtitle">Rig: JT922</p>
+                </div>
+                <button class="close-button" onclick="alert('Close modal')">×</button>
+            </div>
+
+            <!-- BODY -->
+            <div class="modal-body">
+                <!-- TABS FIRST (ABOVE GENERAL INFORMATION) -->
+                <div class="tabs">
+                    <button class="tab-button active" onclick="switchTab('tools', this)">
+                        <i data-lucide="wrench" style="width: 16px; height: 16px;"></i>
+                        Tools
+                    </button>
+                    <button class="tab-button" onclick="switchTab('accessories', this)">
+                        <i data-lucide="package" style="width: 16px; height: 16px;"></i>
+                        Accessories
+                    </button>
+                </div>
+
+                <!-- TOOLS TAB -->
+                <div id="tools-tab">
+                    <!-- General Information Section -->
+                    <div class="section">
+                        <h3 class="section-title">General Information</h3>
+
+                        <div class="form-field">
+                            <label class="form-label">Customer <span class="required">*</span></label>
+                            <div class="readonly-value">Parkinson & Holland Limited</div>
+                        </div>
+
+                        <div class="form-field">
+                            <label class="form-label">Rig Model <span class="required">*</span></label>
+                            <div class="readonly-value">
+                                <span class="product-code" title="Click to copy">JT922</span>
+                                <span>Jumbo T4 (Atlas Copco)</span>
+                            </div>
+                        </div>
+
+                        <div class="form-field">
+                            <label class="form-label">Rig Name (Optional)</label>
+                            <div class="readonly-value not-set">Not set</div>
+                        </div>
+
+                        <div class="form-field">
+                            <label class="form-label">Notes</label>
+                            <div class="readonly-value">
+                                Customer prefers deliveries on Wednesdays. Contact Dave for site access.
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Tools Section -->
+                    <div class="tool-list">
+                        <div class="tool-item">
+                            <div class="item-label">Grease</div>
+                            <div class="item-value">
+                                <span class="product-code" title="Click to copy">23923</span>
+                                <span>Thread grease HDD Kopr small pail 3.8L</span>
+                            </div>
+                        </div>
+
+                        <div class="tool-item">
+                            <div class="item-label">Drive Chuck</div>
+                            <div class="item-value">
+                                <span class="product-code" title="Click to copy">1630979</span>
+                                <span>Drive Chuck DD3238</span>
+                            </div>
+                        </div>
+
+                        <div class="tool-item">
+                            <div class="item-label">Sub Saver</div>
+                            <div class="item-value">
+                                <span class="product-code" title="Click to copy">SS-1203</span>
+                                <span>Sub Saver T45/T51</span>
+                            </div>
+                        </div>
+
+                        <div class="tool-item">
+                            <div class="item-label">Drill Rod</div>
+                            <div class="item-value">
+                                <span class="product-code" title="Click to copy">DR-5566</span>
+                                <span>Extension Rod T45 3660mm</span>
+                            </div>
+                        </div>
+
+                        <div class="tool-item">
+                            <div class="item-label">Lead Rod</div>
+                            <div class="item-value">
+                                <span class="product-code" title="Click to copy">LR-3344</span>
+                                <span>Lead Rod T45 4000mm</span>
+                            </div>
+                        </div>
+
+                        <div class="tool-item">
+                            <div class="item-label">Collar</div>
+                            <div class="item-value">
+                                <span class="product-code" title="Click to copy">CL-7788</span>
+                                <span>Drill Collar T51 178mm</span>
+                            </div>
+                        </div>
+
+                        <div class="tool-item">
+                            <div class="item-label">Adaptor</div>
+                            <div class="item-value">
+                                <span class="product-code" title="Click to copy">AD-9901</span>
+                                <span>Thread Adaptor T45-T51</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- ACCESSORIES TAB (Hidden by default) -->
+                <div id="accessories-tab" style="display: none;">
+                    <!-- General Information (repeated for context) -->
+                    <div class="section">
+                        <h3 class="section-title">General Information</h3>
+
+                        <div class="form-field">
+                            <label class="form-label">Customer <span class="required">*</span></label>
+                            <div class="readonly-value">Parkinson & Holland Limited</div>
+                        </div>
+
+                        <div class="form-field">
+                            <label class="form-label">Rig Model <span class="required">*</span></label>
+                            <div class="readonly-value">
+                                <span class="product-code" title="Click to copy">JT922</span>
+                                <span>Jumbo T4 (Atlas Copco)</span>
+                            </div>
+                        </div>
+
+                        <div class="form-field">
+                            <label class="form-label">Rig Name (Optional)</label>
+                            <div class="readonly-value not-set">Not set</div>
+                        </div>
+
+                        <div class="form-field">
+                            <label class="form-label">Notes</label>
+                            <div class="readonly-value">
+                                Customer prefers deliveries on Wednesdays. Contact Dave for site access.
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Accessories Section -->
+                    <div class="tool-list">
+                        <div class="tool-item">
+                            <div class="item-label">Top Jaw Insert 1</div>
+                            <div class="item-value">
+                                <span class="product-code" title="Click to copy">JAWS-001</span>
+                                <span>Jaw Insert Standard 114mm</span>
+                            </div>
+                        </div>
+
+                        <div class="tool-item">
+                            <div class="item-label">Top Jaw Insert 2</div>
+                            <div class="item-value">
+                                <span class="product-code" title="Click to copy">JAWS-002</span>
+                                <span>Jaw Insert Heavy Duty 127mm</span>
+                            </div>
+                        </div>
+
+                        <div class="tool-item">
+                            <div class="item-label">Dual Rod Wiper</div>
+                            <div class="item-value">
+                                <span class="product-code" title="Click to copy">RW-DUAL-55</span>
+                                <span>Dual Wiper Assembly T45</span>
+                            </div>
+                        </div>
+
+                        <div class="tool-item">
+                            <div class="item-label">Solid Rod Wiper</div>
+                            <div class="item-value">
+                                <span class="product-code" title="Click to copy">RW-SOLID-33</span>
+                                <span>Solid Wiper Ring T51</span>
+                            </div>
+                        </div>
+
+                        <div class="tool-item">
+                            <div class="item-label">Blade Bolt</div>
+                            <div class="item-value">
+                                <span class="product-code" title="Click to copy">BB-M16-80</span>
+                                <span>Hex Bolt M16x80mm Grade 8.8</span>
+                            </div>
+                        </div>
+
+                        <div class="tool-item">
+                            <div class="item-label">Blade 1</div>
+                            <div class="item-value">
+                                <span class="product-code" title="Click to copy">BLADE-ST-200</span>
+                                <span>Stabilizer Blade 200mm</span>
+                            </div>
+                        </div>
+
+                        <div class="tool-item">
+                            <div class="item-label">Blade 2</div>
+                            <div class="item-value">
+                                <span class="product-code" title="Click to copy">BLADE-ST-250</span>
+                                <span>Stabilizer Blade 250mm Heavy</span>
+                            </div>
+                        </div>
+
+                        <div class="tool-item">
+                            <div class="item-label">Housing</div>
+                            <div class="item-value">
+                                <span class="product-code" title="Click to copy">HS-2211</span>
+                                <span>Drill Housing Assembly</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- FOOTER -->
+            <div class="modal-footer">
+                <button class="btn-close">Close</button>
+                <button class="btn-edit">Edit</button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        lucide.createIcons();
+
+        function toggleTheme() {
+            const body = document.body;
+            const currentTheme = body.getAttribute('data-theme');
+            const newTheme = currentTheme === 'dark' ? 'light' : 'dark';
+            body.setAttribute('data-theme', newTheme);
+
+            document.getElementById('theme-icon').textContent = newTheme === 'dark' ? '🌙' : '☀️';
+            document.getElementById('theme-text').textContent = newTheme === 'dark' ? 'Dark Mode' : 'Light Mode';
+        }
+
+        function switchTab(tabName, buttonElement) {
+            // Hide all tabs
+            document.getElementById('tools-tab').style.display = 'none';
+            document.getElementById('accessories-tab').style.display = 'none';
+
+            // Remove active class from all buttons
+            document.querySelectorAll('.tab-button').forEach(btn => btn.classList.remove('active'));
+
+            // Show selected tab
+            document.getElementById(tabName + '-tab').style.display = 'block';
+
+            // Add active class to clicked button
+            buttonElement.classList.add('active');
+        }
+
+        // Product code copy functionality
+        document.querySelectorAll('.product-code').forEach(code => {
+            code.addEventListener('click', function() {
+                const text = this.textContent;
+                navigator.clipboard.writeText(text).then(() => {
+                    const original = this.textContent;
+                    this.textContent = 'Copied!';
+                    setTimeout(() => {
+                        this.textContent = original;
+                    }, 1500);
+                });
+            });
+        });
+    </script>
+</body>
+</html>

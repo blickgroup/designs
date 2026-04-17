@@ -1,0 +1,1279 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Fluid Selector | Blick Group</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+<style>
+  *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+
+  :root {
+    --orange: #FD4F00;
+    --orange-light: #FF6B26;
+    --black: #1A1A1A;
+    --charcoal: #2D2D2D;
+    --grey-dark: #6B6B6B;
+    --grey-mid: #D0CFC8;
+    --grey-light: #F0F0EE;
+    --off-white: #FAFAFA;
+    --white: #FFFFFF;
+    --font: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+  }
+
+  html { scroll-behavior: smooth; font-size: 16px; -webkit-font-smoothing: antialiased; }
+  body { font-family: var(--font); color: var(--charcoal); background: var(--white); line-height: 1.6; overflow-x: hidden; }
+
+  .container { max-width: 1280px; margin: 0 auto; padding: 0 clamp(24px, 5vw, 80px); }
+
+  .reveal { opacity: 0; transform: translateY(40px); transition: opacity 0.8s cubic-bezier(0.16,1,0.3,1), transform 0.8s cubic-bezier(0.16,1,0.3,1); }
+  .reveal.visible { opacity: 1; transform: translateY(0); }
+  .stagger-1 { transition-delay: 0.1s; }
+  .stagger-2 { transition-delay: 0.2s; }
+  .stagger-3 { transition-delay: 0.3s; }
+
+  /* ── Nav ── */
+  nav { position: fixed; top: 0; left: 0; right: 0; z-index: 1000; padding: 24px 0; transition: all 0.4s cubic-bezier(0.16,1,0.3,1); background: rgba(26,26,26,0); }
+  nav.scrolled { padding: 16px 0; background: rgba(255,255,255,0.92); backdrop-filter: blur(20px); box-shadow: 0 1px 0 rgba(0,0,0,0.05); }
+  nav .container { display: flex; align-items: center; justify-content: space-between; }
+  .nav-logo { display: flex; align-items: center; gap: 12px; text-decoration: none; }
+  .nav-logo img { height: 36px; width: auto; }
+  nav:not(.scrolled) .nav-logo img { filter: brightness(0) invert(1); }
+  .nav-links { display: flex; gap: 36px; list-style: none; align-items: center; }
+  .nav-links a { text-decoration: none; color: rgba(255,255,255,0.7); font-size: 0.85rem; font-weight: 500; letter-spacing: 0.02em; transition: color 0.3s; }
+  nav.scrolled .nav-links a { color: var(--grey-dark); }
+  .nav-links a:hover { color: var(--orange) !important; }
+  .nav-links a.active { color: var(--orange) !important; }
+  .nav-cta { background: var(--orange); color: var(--white) !important; padding: 10px 24px; border-radius: 100px; font-weight: 600 !important; transition: background 0.3s, transform 0.3s !important; }
+  .nav-cta:hover { background: var(--orange-light) !important; transform: translateY(-1px); }
+
+  /* ── Page Hero ── */
+  .page-hero {
+    background: var(--black);
+    padding: 160px 0 120px;
+    position: relative;
+    overflow: hidden;
+  }
+  .page-hero::before {
+    content: '';
+    position: absolute;
+    top: -300px; right: -200px;
+    width: 700px; height: 700px;
+    border-radius: 50%;
+    background: var(--orange);
+    opacity: 0.05;
+  }
+  .page-hero::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background-image:
+      linear-gradient(rgba(253,79,0,0.04) 1px, transparent 1px),
+      linear-gradient(90deg, rgba(253,79,0,0.04) 1px, transparent 1px);
+    background-size: 80px 80px;
+    mask-image: radial-gradient(ellipse 80% 80% at 80% 40%, black 10%, transparent 70%);
+  }
+  .page-hero-content { position: relative; z-index: 1; max-width: 780px; }
+  .page-hero .hero-tag { display: inline-flex; align-items: center; gap: 8px; font-size: 0.8rem; font-weight: 600; letter-spacing: 0.12em; text-transform: uppercase; color: var(--orange); margin-bottom: 32px; }
+  .page-hero .hero-tag::before { content: ''; width: 32px; height: 2px; background: var(--orange); }
+  .page-hero h1 { font-size: clamp(2.8rem, 6vw, 4.5rem); font-weight: 800; line-height: 1.05; letter-spacing: -0.03em; color: var(--white); margin-bottom: 32px; }
+  .page-hero p { font-size: clamp(1rem, 1.8vw, 1.2rem); line-height: 1.7; color: rgba(255,255,255,0.55); max-width: 600px; }
+
+  /* ── Wizard Section ── */
+  .wizard-section { padding: 80px 0 120px; background: var(--off-white); }
+
+  /* ── Progress Bar ── */
+  .progress-bar { display: flex; align-items: center; margin-bottom: 56px; }
+  .progress-step { display: flex; flex-direction: column; align-items: center; gap: 8px; flex: 1; position: relative; }
+  .progress-step:not(:last-child)::after {
+    content: '';
+    position: absolute;
+    top: 18px;
+    left: calc(50% + 18px);
+    right: calc(-50% + 18px);
+    height: 2px;
+    background: var(--grey-mid);
+    z-index: 0;
+    transition: background 0.4s;
+  }
+  .progress-step.completed:not(:last-child)::after { background: var(--orange); }
+  .progress-dot {
+    width: 36px; height: 36px;
+    border-radius: 50%;
+    border: 2px solid var(--grey-mid);
+    background: var(--white);
+    display: flex; align-items: center; justify-content: center;
+    font-size: 0.8rem; font-weight: 600;
+    color: var(--grey-dark);
+    z-index: 1;
+    transition: all 0.3s;
+    position: relative;
+  }
+  .progress-step.active .progress-dot { border-color: var(--orange); background: var(--orange); color: var(--white); }
+  .progress-step.completed .progress-dot { border-color: var(--orange); background: var(--orange); color: var(--white); }
+  .progress-label { font-size: 0.72rem; font-weight: 600; letter-spacing: 0.06em; text-transform: uppercase; color: var(--grey-dark); text-align: center; }
+  .progress-step.active .progress-label { color: var(--orange); }
+  .progress-step.completed .progress-label { color: var(--charcoal); }
+
+  /* ── Option Cards ── */
+  .options-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 16px; }
+  .option-card {
+    background: var(--white);
+    border: 2px solid var(--grey-light);
+    border-radius: 16px;
+    padding: 28px 24px;
+    cursor: pointer;
+    transition: all 0.25s cubic-bezier(0.16,1,0.3,1);
+    position: relative;
+    overflow: hidden;
+  }
+  .option-card:hover { border-color: var(--orange); transform: translateY(-2px); box-shadow: 0 8px 32px rgba(0,0,0,0.08); }
+  .option-card.selected { border-color: var(--orange); background: rgba(253,79,0,0.04); }
+  .option-card .card-icon { font-size: 2rem; margin-bottom: 16px; display: block; line-height: 1; }
+  .option-card .card-title { font-size: 1rem; font-weight: 700; color: var(--black); margin-bottom: 6px; }
+  .option-card .card-desc { font-size: 0.85rem; color: var(--grey-dark); line-height: 1.5; }
+  .option-card .card-tagline { font-size: 0.8rem; color: var(--grey-dark); font-style: italic; margin-top: 8px; }
+  .option-card.selected .card-title { color: var(--orange); }
+  .option-card .check-mark {
+    position: absolute; top: 12px; right: 12px;
+    width: 22px; height: 22px; border-radius: 50%;
+    background: var(--orange); color: var(--white);
+    display: none; align-items: center; justify-content: center;
+    font-size: 0.7rem; font-weight: 700;
+  }
+  .option-card.selected .check-mark { display: flex; }
+
+  /* ── Step headers ── */
+  .step-header { margin-bottom: 36px; }
+  .step-header h2 { font-size: clamp(1.6rem, 3vw, 2.2rem); font-weight: 800; letter-spacing: -0.02em; color: var(--black); margin-bottom: 8px; }
+  .step-header p { color: var(--grey-dark); font-size: 0.95rem; }
+
+  /* ── Buttons ── */
+  .btn { display: inline-flex; align-items: center; gap: 8px; padding: 14px 32px; border-radius: 100px; font-size: 0.9rem; font-weight: 600; text-decoration: none; transition: all 0.3s cubic-bezier(0.16,1,0.3,1); cursor: pointer; border: none; font-family: var(--font); }
+  .btn-primary { background: var(--orange); color: var(--white); box-shadow: 0 4px 24px rgba(253,79,0,0.25); }
+  .btn-primary:hover { background: var(--orange-light); transform: translateY(-2px); box-shadow: 0 8px 32px rgba(253,79,0,0.3); }
+  .btn-secondary { background: var(--white); color: var(--charcoal); border: 1.5px solid var(--grey-mid); }
+  .btn-secondary:hover { border-color: var(--orange); color: var(--orange); }
+  .btn-text { background: none; border: none; color: var(--grey-dark); font-size: 0.9rem; font-weight: 500; cursor: pointer; padding: 8px 0; font-family: var(--font); display: inline-flex; align-items: center; gap: 6px; transition: color 0.2s; }
+  .btn-text:hover { color: var(--orange); }
+  .step-actions { display: flex; align-items: center; justify-content: space-between; margin-top: 40px; }
+  .step-actions-right { display: flex; gap: 12px; align-items: center; }
+
+  /* ── Step 3 Form ── */
+  .specs-form { background: var(--white); border-radius: 20px; padding: 40px; border: 1px solid var(--grey-light); max-width: 680px; }
+  .form-group { margin-bottom: 28px; }
+  .form-label { display: block; font-size: 0.85rem; font-weight: 600; color: var(--charcoal); margin-bottom: 10px; letter-spacing: 0.02em; }
+  .form-sublabel { display: block; font-size: 0.78rem; color: var(--grey-dark); margin-bottom: 10px; }
+  .preset-buttons { display: flex; flex-wrap: wrap; gap: 8px; margin-bottom: 12px; }
+  .preset-btn {
+    padding: 8px 16px;
+    border-radius: 8px;
+    border: 1.5px solid var(--grey-mid);
+    background: var(--white);
+    font-size: 0.85rem; font-weight: 600;
+    color: var(--charcoal);
+    cursor: pointer;
+    transition: all 0.2s;
+    font-family: var(--font);
+  }
+  .preset-btn:hover { border-color: var(--orange); color: var(--orange); }
+  .preset-btn.active { border-color: var(--orange); background: rgba(253,79,0,0.08); color: var(--orange); }
+  .form-input {
+    width: 100%;
+    padding: 12px 16px;
+    border-radius: 10px;
+    border: 1.5px solid var(--grey-mid);
+    font-size: 0.95rem;
+    font-family: var(--font);
+    color: var(--charcoal);
+    background: var(--white);
+    transition: border-color 0.2s;
+    outline: none;
+  }
+  .form-input:focus { border-color: var(--orange); }
+  .input-with-unit { position: relative; }
+  .input-unit { position: absolute; right: 14px; top: 50%; transform: translateY(-50%); font-size: 0.82rem; color: var(--grey-dark); font-weight: 500; pointer-events: none; }
+  .checkbox-group { display: flex; flex-direction: column; gap: 12px; }
+  .checkbox-item { display: flex; align-items: flex-start; gap: 12px; cursor: pointer; }
+  .checkbox-item input[type="checkbox"] { width: 18px; height: 18px; margin-top: 2px; accent-color: var(--orange); cursor: pointer; flex-shrink: 0; }
+  .checkbox-item label { font-size: 0.9rem; color: var(--charcoal); cursor: pointer; line-height: 1.4; }
+  .conditional-field { display: none; margin-top: 10px; padding-left: 30px; }
+  .conditional-field.visible { display: block; }
+  .form-textarea {
+    width: 100%; padding: 12px 14px; border: 1.5px solid var(--grey-mid);
+    border-radius: 8px; font-family: inherit; font-size: 0.875rem; color: var(--charcoal);
+    background: var(--white); resize: vertical; min-height: 80px; line-height: 1.6;
+    transition: border-color 0.2s;
+  }
+  .form-textarea:focus { outline: none; border-color: var(--orange); }
+  .form-textarea::placeholder { color: #aaa; }
+  .label-opt { font-weight: 400; color: var(--grey-dark); font-size: 0.78rem; margin-left: 4px; }
+  .form-hint { font-size: 0.78rem; color: var(--grey-dark); margin-top: 6px; line-height: 1.5; }
+  .form-error { color: #c0392b; font-size: 0.8rem; margin-top: 6px; display: none; }
+  .form-group.has-error .form-input { border-color: #c0392b; }
+  .form-group.has-error .form-error { display: block; }
+
+  /* ── Fallback (geotech/other) ── */
+  .fallback-card { background: var(--white); border: 1px solid var(--grey-light); border-radius: 20px; padding: 48px 40px; text-align: center; max-width: 520px; margin: 0 auto; }
+  .fallback-icon { font-size: 3rem; margin-bottom: 20px; display: block; }
+  .fallback-card h3 { font-size: 1.4rem; font-weight: 700; color: var(--black); margin-bottom: 12px; }
+  .fallback-card p { color: var(--grey-dark); margin-bottom: 28px; line-height: 1.6; }
+
+  /* ── Results ── */
+  .results-container { max-width: 860px; }
+
+  .results-summary-bar {
+    display: flex; gap: 0;
+    background: var(--black);
+    border-radius: 14px;
+    overflow: hidden;
+    margin-bottom: 36px;
+  }
+  .summary-item {
+    flex: 1; padding: 20px 24px;
+    border-right: 1px solid rgba(255,255,255,0.08);
+  }
+  .summary-item:last-child { border-right: none; }
+  .summary-label { font-size: 0.72rem; font-weight: 600; letter-spacing: 0.1em; text-transform: uppercase; color: rgba(255,255,255,0.4); margin-bottom: 4px; }
+  .summary-value { font-size: 1.1rem; font-weight: 700; color: var(--white); }
+  .summary-value .accent { color: var(--orange); }
+
+  .results-tagline { font-size: 1rem; color: var(--grey-dark); font-style: italic; margin-bottom: 28px; padding-bottom: 28px; border-bottom: 1px solid var(--grey-light); }
+
+  .volume-breakdown {
+    background: rgba(253,79,0,0.05);
+    border: 1px solid rgba(253,79,0,0.15);
+    border-radius: 12px;
+    padding: 16px 20px;
+    margin-bottom: 32px;
+    font-size: 0.88rem;
+    color: var(--charcoal);
+    display: flex; flex-wrap: wrap; gap: 4px 16px; align-items: center;
+  }
+  .volume-breakdown strong { color: var(--orange); }
+  .vb-sep { color: var(--grey-mid); }
+
+  .products-heading { font-size: 1rem; font-weight: 700; color: var(--black); margin-bottom: 16px; text-transform: uppercase; letter-spacing: 0.08em; font-size: 0.78rem; }
+
+  .product-cards { display: flex; flex-direction: column; gap: 12px; margin-bottom: 40px; }
+  .product-card {
+    background: var(--white);
+    border: 1px solid var(--grey-light);
+    border-radius: 14px;
+    padding: 20px 24px;
+    display: grid;
+    grid-template-columns: 40px 1fr auto;
+    gap: 0 20px;
+    align-items: start;
+    transition: box-shadow 0.2s;
+  }
+  .product-card:hover { box-shadow: 0 4px 20px rgba(0,0,0,0.06); }
+  .product-order { width: 40px; height: 40px; border-radius: 10px; background: var(--grey-light); display: flex; align-items: center; justify-content: center; font-size: 0.85rem; font-weight: 700; color: var(--charcoal); flex-shrink: 0; margin-top: 2px; }
+  .product-info { min-width: 0; }
+  .product-name-row { display: flex; align-items: center; gap: 10px; flex-wrap: wrap; margin-bottom: 4px; }
+  .product-name { font-size: 1rem; font-weight: 700; color: var(--black); }
+  .role-badge { font-size: 0.68rem; font-weight: 700; letter-spacing: 0.06em; text-transform: uppercase; padding: 3px 9px; border-radius: 100px; flex-shrink: 0; }
+  .role-base { background: #2D2D2D; color: #fff; }
+  .role-polymer { background: var(--orange); color: #fff; }
+  .role-conditioner { background: #4A7C9E; color: #fff; }
+  .role-inhibitor { background: #B8860B; color: #fff; }
+  .role-additive { background: var(--grey-light); color: var(--charcoal); }
+  .role-biocide { background: #8B2020; color: #fff; }
+  .role-reaming { background: #5B3E8C; color: #fff; }
+  .product-notes { font-size: 0.82rem; color: var(--grey-dark); line-height: 1.4; }
+  .product-dosage { text-align: right; flex-shrink: 0; }
+  .dosage-qty { font-size: 1.1rem; font-weight: 800; color: var(--black); line-height: 1; }
+  .dosage-unit { font-size: 0.75rem; color: var(--grey-dark); margin-top: 2px; }
+  .dosage-range { font-size: 0.72rem; color: var(--grey-mid); margin-top: 4px; }
+
+  .mixing-card {
+    background: var(--black);
+    border-radius: 16px;
+    padding: 32px;
+    margin-bottom: 32px;
+  }
+  .mixing-card h3 { font-size: 0.78rem; font-weight: 700; letter-spacing: 0.1em; text-transform: uppercase; color: var(--orange); margin-bottom: 20px; }
+  .mixing-instruction { font-size: 0.82rem; color: rgba(255,255,255,0.45); margin-bottom: 20px; }
+  .mixing-steps { display: flex; flex-direction: column; gap: 10px; }
+  .mixing-step { display: flex; align-items: center; gap: 14px; }
+  .mix-num { width: 28px; height: 28px; border-radius: 50%; background: rgba(253,79,0,0.15); border: 1px solid rgba(253,79,0,0.3); display: flex; align-items: center; justify-content: center; font-size: 0.75rem; font-weight: 700; color: var(--orange); flex-shrink: 0; }
+  .mix-text { font-size: 0.88rem; color: rgba(255,255,255,0.75); }
+  .mix-qty { margin-left: auto; font-size: 0.82rem; font-weight: 700; color: rgba(255,255,255,0.5); flex-shrink: 0; }
+
+  .warnings-section { margin-bottom: 32px; display: flex; flex-direction: column; gap: 12px; }
+  .warning-box {
+    background: rgba(184,134,11,0.08);
+    border: 1px solid rgba(184,134,11,0.25);
+    border-radius: 10px;
+    padding: 14px 18px;
+    font-size: 0.85rem;
+    color: #7a5c00;
+    display: flex; gap: 10px; align-items: flex-start;
+  }
+  .warning-icon { flex-shrink: 0; font-size: 1rem; margin-top: 1px; }
+
+  .results-notes { font-size: 0.82rem; color: var(--grey-dark); background: var(--grey-light); border-radius: 12px; padding: 20px; margin-bottom: 32px; line-height: 1.6; }
+  .results-notes-section { background: var(--grey-light); border-radius: 12px; padding: 20px 24px; margin-bottom: 24px; }
+  .results-notes-heading { font-size: 0.7rem; font-weight: 700; letter-spacing: 0.1em; text-transform: uppercase; color: var(--grey-dark); margin-bottom: 12px; }
+  .results-note-item { font-size: 0.875rem; color: var(--charcoal); line-height: 1.6; padding: 8px 0; border-bottom: 1px solid var(--grey-mid); }
+  .results-note-item:last-child { border-bottom: none; }
+  .note-label { font-weight: 600; }
+
+  .results-cta { display: flex; gap: 12px; flex-wrap: wrap; margin-bottom: 40px; }
+
+  .results-footer-actions { display: flex; gap: 24px; align-items: center; padding-top: 32px; border-top: 1px solid var(--grey-light); }
+
+  /* ── Section tag ── */
+  .section-tag { display: inline-flex; align-items: center; gap: 8px; font-size: 0.75rem; font-weight: 600; letter-spacing: 0.15em; text-transform: uppercase; color: var(--orange); margin-bottom: 24px; }
+  .section-tag::before { content: ''; width: 24px; height: 2px; background: var(--orange); }
+
+  /* ── Footer ── */
+  footer { background: var(--black); color: rgba(255,255,255,0.55); padding: 80px 0 40px; }
+  .footer-grid { display: grid; grid-template-columns: 2fr 1fr 1fr 1fr; gap: 48px; margin-bottom: 60px; }
+  .footer-brand p { font-size: 0.85rem; line-height: 1.7; margin-top: 20px; }
+  .footer-logo img { height: 32px; width: auto; filter: brightness(0) invert(1); }
+  .footer-col h4 { font-size: 0.75rem; font-weight: 700; letter-spacing: 0.1em; text-transform: uppercase; color: rgba(255,255,255,0.3); margin-bottom: 20px; }
+  .footer-col ul { list-style: none; display: flex; flex-direction: column; gap: 10px; }
+  .footer-col ul li a { color: rgba(255,255,255,0.55); text-decoration: none; font-size: 0.875rem; transition: color 0.2s; }
+  .footer-col ul li a:hover { color: var(--white); }
+  .footer-bottom { display: flex; justify-content: space-between; align-items: center; padding-top: 32px; border-top: 1px solid rgba(255,255,255,0.06); font-size: 0.8rem; flex-wrap: wrap; gap: 12px; }
+
+  /* ── Responsive ── */
+  @media (max-width: 768px) {
+    .options-grid { grid-template-columns: 1fr 1fr; }
+    .footer-grid { grid-template-columns: 1fr 1fr; }
+    .results-summary-bar { flex-direction: column; }
+    .summary-item { border-right: none; border-bottom: 1px solid rgba(255,255,255,0.08); }
+    .summary-item:last-child { border-bottom: none; }
+    .product-card { grid-template-columns: 36px 1fr; }
+    .product-dosage { grid-column: 2; text-align: left; margin-top: 8px; }
+    .nav-links { display: none; }
+  }
+  @media (max-width: 480px) {
+    .options-grid { grid-template-columns: 1fr; }
+    .footer-grid { grid-template-columns: 1fr; }
+    .specs-form { padding: 24px; }
+  }
+</style>
+
+<style media="print">
+  * { -webkit-print-color-adjust: exact; print-color-adjust: exact; }
+  nav, footer, .wizard-section > .container > .progress-bar,
+  .step-actions, .results-footer-actions, .results-cta .btn-secondary,
+  .page-hero { display: none !important; }
+  .wizard-section { padding: 0 !important; background: white !important; }
+  .results-container { max-width: 100% !important; }
+  .print-header { display: block !important; padding: 20px 0 16px; border-bottom: 2px solid #FD4F00; margin-bottom: 24px; }
+  .print-header img { height: 28px; }
+  .print-title { font-size: 1.4rem; font-weight: 800; color: #1A1A1A; margin-top: 16px; margin-bottom: 4px; }
+  .print-subtitle { font-size: 0.85rem; color: #6B6B6B; margin-bottom: 0; }
+  .mixing-card { background: #1A1A1A !important; border-radius: 8px !important; }
+  .results-summary-bar { background: #1A1A1A !important; border-radius: 8px !important; }
+  .product-card { break-inside: avoid; }
+  .page-break { page-break-before: always; }
+  @page { margin: 20mm; size: A4; }
+</style>
+</head>
+<body>
+
+<!-- Nav -->
+<nav id="nav">
+  <div class="container">
+    <a href="index.html" class="nav-logo">
+      <img src="blick-logo.png" alt="Blick">
+    </a>
+    <ul class="nav-links">
+      <li><a href="index.html">Home</a></li>
+      <li><a href="products.html">Products</a></li>
+      <li><a href="services.html">Services</a></li>
+      <li><a href="team.html">Team</a></li>
+      <li><a href="contact.html" class="nav-cta">Contact</a></li>
+    </ul>
+  </div>
+</nav>
+
+<!-- Hero -->
+<section class="page-hero">
+  <div class="container">
+    <div class="page-hero-content">
+      <div class="hero-tag reveal">Fluid Selector</div>
+      <h1 class="reveal stagger-1">Find the right fluid<br>for your job</h1>
+      <p class="reveal stagger-2">Answer three quick questions. Get a complete fluid program with mixing ratios and volume estimates.</p>
+    </div>
+  </div>
+</section>
+
+<!-- Wizard -->
+<section class="wizard-section">
+  <div class="container">
+
+    <!-- Print header (hidden on screen) -->
+    <div class="print-header" style="display:none;" id="printHeader">
+      <img src="blick-logo.png" alt="Blick Group">
+      <div class="print-title" id="printTitle">Fluid Program</div>
+      <div class="print-subtitle" id="printSubtitle"></div>
+    </div>
+
+    <!-- Progress Bar -->
+    <div class="progress-bar" id="progressBar">
+      <div class="progress-step active" id="ps1">
+        <div class="progress-dot">1</div>
+        <div class="progress-label">Application</div>
+      </div>
+      <div class="progress-step" id="ps2">
+        <div class="progress-dot">2</div>
+        <div class="progress-label">Ground</div>
+      </div>
+      <div class="progress-step" id="ps3">
+        <div class="progress-dot">3</div>
+        <div class="progress-label">Bore Specs</div>
+      </div>
+      <div class="progress-step" id="ps4">
+        <div class="progress-dot">4</div>
+        <div class="progress-label">Results</div>
+      </div>
+    </div>
+
+    <!-- Step 1 -->
+    <div id="step1">
+      <div class="step-header reveal">
+        <div class="section-tag">Step 1 of 4</div>
+        <h2>What application are you drilling for?</h2>
+        <p>Select the drilling type that best matches your project.</p>
+      </div>
+      <div class="options-grid reveal stagger-1" id="segmentGrid"></div>
+      <div class="step-actions reveal stagger-2">
+        <span></span>
+        <div class="step-actions-right">
+          <button class="btn btn-primary" id="step1Next" disabled onclick="goToStep2()">Next: Ground Condition &rarr;</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- Step 2 -->
+    <div id="step2" style="display:none;">
+      <div class="step-header">
+        <div class="section-tag">Step 2 of 4</div>
+        <h2 id="step2Heading">Select your ground condition</h2>
+        <p>Choose the system that matches your ground condition.</p>
+      </div>
+      <div class="options-grid" id="systemGrid"></div>
+      <div class="step-actions">
+        <button class="btn-text" onclick="goToStep(1)">&larr; Back</button>
+        <div class="step-actions-right">
+          <button class="btn btn-primary" id="step2Next" disabled onclick="goToStep3()">Next: Bore Specs &rarr;</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- Step 2 Fallback -->
+    <div id="step2Fallback" style="display:none;">
+      <div class="step-header">
+        <div class="section-tag">Step 2 of 4</div>
+        <h2 id="fallbackHeading">Speak to a specialist</h2>
+        <p>This application involves highly variable conditions. Our team will help you design the right program.</p>
+      </div>
+      <div class="fallback-card">
+        <span class="fallback-icon">&#128222;</span>
+        <h3>Let's talk about your project</h3>
+        <p>Geotech and oilfield/geothermal/other applications involve highly variable ground conditions. A Blick specialist will design the right fluid program for your specific job.</p>
+        <a href="contact.html" class="btn btn-primary">Talk to a Blick Specialist</a>
+      </div>
+      <div class="step-actions" style="margin-top:40px;">
+        <button class="btn-text" onclick="goToStep(1)">&larr; Back</button>
+        <span></span>
+      </div>
+    </div>
+
+    <!-- Step 3 -->
+    <div id="step3" style="display:none;">
+      <div class="step-header">
+        <div class="section-tag">Step 3 of 4</div>
+        <h2>Enter your bore specifications</h2>
+        <p>We'll use these to estimate fluid volumes and product quantities.</p>
+      </div>
+      <div class="specs-form">
+        <div class="form-group" id="fgDiameter">
+          <label class="form-label" for="boreDiameter">Bore diameter (mm)</label>
+          <span class="form-sublabel">Select a preset or enter a custom value</span>
+          <div class="preset-buttons" id="diameterPresets"></div>
+          <div class="input-with-unit">
+            <input type="number" class="form-input" id="boreDiameter" placeholder="e.g. 250" min="50" max="2000" oninput="onDiameterInput()">
+            <span class="input-unit">mm</span>
+          </div>
+          <div class="form-error" id="diameterError">Please enter a bore diameter.</div>
+        </div>
+        <div class="form-group" id="fgDepth">
+          <label class="form-label" for="boreDepth" id="depthLabel">Bore depth / length (m)</label>
+          <div class="input-with-unit">
+            <input type="number" class="form-input" id="boreDepth" placeholder="e.g. 150" min="1" max="10000">
+            <span class="input-unit">m</span>
+          </div>
+          <div class="form-error" id="depthError">Please enter a bore depth.</div>
+        </div>
+        <div class="form-group">
+          <label class="form-label">Anything we should know?</label>
+          <div class="checkbox-group">
+            <div>
+              <label class="checkbox-item">
+                <input type="checkbox" id="reqEnv" onchange="toggleConditional('envNotes', this.checked)">
+                <label for="reqEnv">Environmental constraints apply</label>
+              </label>
+              <div class="conditional-field" id="envNotes">
+                <textarea class="form-textarea" id="envNotesText" placeholder="Tell us what applies — waterway proximity, discharge limits, consents in place, etc. We'll factor it in."></textarea>
+              </div>
+            </div>
+            <div>
+              <label class="checkbox-item">
+                <input type="checkbox" id="reqRecycler" onchange="toggleConditional('recyclerNotes', this.checked)">
+                <label for="reqRecycler">Using a mud recycler on site</label>
+              </label>
+              <div class="conditional-field" id="recyclerNotes">
+                <textarea class="form-textarea" id="recyclerNotesText" placeholder="Make / model if you know it, and anything about the setup that's relevant."></textarea>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="form-group">
+          <label class="form-label" for="generalNotes">General notes <span class="label-opt">optional</span></label>
+          <textarea class="form-textarea" id="generalNotes" placeholder="Anything else — unusual ground, previous issues on site, what you've tried before."></textarea>
+        </div>
+        <div class="form-group">
+          <label class="form-label" for="customerEmail">Your email <span class="label-opt">optional</span></label>
+          <input type="email" class="form-input" id="customerEmail" placeholder="e.g. you@company.com">
+          <div class="form-hint">Drop it in and we'll attach this program to your account — so when you call in to refine it, we're already up to speed.</div>
+        </div>
+        <div class="step-actions" style="margin-top: 8px;">
+          <button class="btn-text" onclick="goToStep(2)">&larr; Back</button>
+          <button class="btn btn-primary" onclick="calculateResults()">Get My Fluid Program &rarr;</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- Step 4 Results -->
+    <div id="step4" style="display:none;">
+      <div class="results-container" id="resultsContainer"></div>
+    </div>
+
+  </div>
+</section>
+
+<!-- Footer -->
+<footer>
+  <div class="container">
+    <div class="footer-grid">
+      <div class="footer-brand">
+        <a href="index.html" class="footer-logo">
+          <img src="blick-logo.png" alt="Blick">
+        </a>
+        <p>Australasia's leading drilling fluid solutions partner. Serving Australia, New Zealand, and the Pacific Islands.</p>
+      </div>
+      <div class="footer-col">
+        <h4>Industries</h4>
+        <ul>
+          <li><a href="services.html">HDD &amp; Trenchless</a></li>
+          <li><a href="services.html">Geotech &amp; Coring</a></li>
+          <li><a href="services.html">Waterwell</a></li>
+          <li><a href="services.html">Piling &amp; Construction</a></li>
+          <li><a href="services.html">Oilfield &amp; Geothermal</a></li>
+        </ul>
+      </div>
+      <div class="footer-col">
+        <h4>Solutions</h4>
+        <ul>
+          <li><a href="products.html">Blick Fluids</a></li>
+          <li><a href="products.html">Equipment &amp; Tooling</a></li>
+          <li><a href="products.html">Grease</a></li>
+          <li><a href="services.html">Fluid Design</a></li>
+          <li><a href="services.html">Mud Schools</a></li>
+        </ul>
+      </div>
+      <div class="footer-col">
+        <h4>Connect</h4>
+        <ul>
+          <li><a href="mailto:sales@blick.group">sales@blick.group</a></li>
+          <li><a href="tel:+6478492366">NZ: +64 7 849 2366</a></li>
+          <li><a href="tel:+61390685688">AU: +61 3 9068 5688</a></li>
+          <li><a href="team.html">The Team</a></li>
+          <li><a href="contact.html">Contact Us</a></li>
+        </ul>
+      </div>
+    </div>
+    <div class="footer-bottom">
+      <span>&copy; 2026 Blick Group. All rights reserved.</span>
+      <span>Australia &middot; New Zealand &middot; Pacific Islands</span>
+    </div>
+  </div>
+</footer>
+
+<script>
+// ─────────────────────────────────────────────
+// DATA
+// ─────────────────────────────────────────────
+const SEGMENTS = [
+  { id:"hdd",       icon:"↩",   title:"HDD",       desc:"Horizontal Directional Drilling" },
+  { id:"waterwell", icon:"💧",  title:"Waterwell",  desc:"Water bore drilling" },
+  { id:"piling",    icon:"🏗",  title:"Piling",     desc:"Bored piles & foundations" },
+  { id:"geotech",   icon:"🔬",  title:"Geotech",    desc:"Geotechnical investigation" },
+  { id:"other",     icon:"🌍",  title:"Other",      desc:"Oilfield, geothermal & more" },
+];
+
+const SYSTEMS = {
+  hdd: [
+    { id:"H2", largeBoreId:"H1", label:"Sticky clay (Clay Control)",      tagline:"Cut through sticky clay" },
+    { id:"H8", largeBoreId:"H7", label:"Sticky clay (Clay Dissolve)",     tagline:"Dissolve sticky clay" },
+    { id:"H4", largeBoreId:"H3", label:"Sand, gravel & firm ground",      tagline:"Slice through sand, gravel and firm ground" },
+    { id:"H6", largeBoreId:"H5", label:"Rock, gravel & sand (heavy)",     tagline:"The heavy lifter" },
+    { id:"H9",                   label:"Sand or rock (large diameter)",   tagline:"HDD in sand or rock" },
+    { id:"H10",                  label:"Non-reactive ground (big holes)", tagline:"Cleaning big holes in non reactive ground" },
+  ],
+  waterwell: [
+    { id:"W1", label:"Sand (WA Waterbores)",          tagline:"WA Waterbores" },
+    { id:"W4", label:"Sand",                          tagline:"Sand waterbores" },
+    { id:"W2", label:"Reactive clay (WA)",            tagline:"WA Waterbores" },
+    { id:"W5", label:"Reactive clay",                 tagline:"Reactive clay waterbores" },
+    { id:"W3", label:"Rock & gravel (heavy lifting)", tagline:"The heavy lifter" },
+    { id:"W6", label:"Hole cleaning (foam)",          tagline:"Efficient hole cleaning" },
+  ],
+  piling: [
+    { id:"P1", label:"Bentonite system",       tagline:"Bored piles using bentonite" },
+    { id:"P2", label:"Polymer (PHPA) system",  tagline:"Bored piles using PHPA polymer" },
+  ],
+  geotech: null,
+  other:   null,
+};
+
+const RULES = {
+  H1:  { id:"H1",  systemName:"Clay Control",         groundCondition:"sticky-clay",       tagline:"Cut through sticky clay",                        description:"The key to drilling in sticky clay is stopping the clay swelling and cleaning the bore well", elements:[
+    {productId:"soda-ash",         name:"Soda Ash",          order:1, role:"conditioner", notes:"Water conditioner — adjusts pH and reduces hardness for optimal fluid performance",   dosageMin:1,   dosageMax:3,  dosageUnit:"kg/1000L", largeBoreOnly:false},
+    {productId:"carry-flow",       name:"Carry Flow",        order:2, role:"polymer",     notes:"PHPA polymer for cuttings transport, clay encapsulation, and bore stabilisation",      dosageMin:2,   dosageMax:5,  dosageUnit:"L/1000L",  largeBoreOnly:false},
+    {productId:"swell-stop-liquid",name:"Swell Stop Liquid", order:3, role:"inhibitor",   notes:"Clay inhibitor — prevents swelling in reactive formations",                           dosageMin:5,   dosageMax:15, dosageUnit:"L/1000L",  largeBoreOnly:false},
+    {productId:"clay-control",     name:"Clay Control",      order:4, role:"inhibitor",   notes:"Clay swelling inhibitor — controls reactive clay and shale",                          dosageMin:5,   dosageMax:10, dosageUnit:"L/1000L",  largeBoreOnly:false},
+    {productId:"detergent",        name:"Detergent",         order:5, role:"additive",    notes:"Bore cleaning agent — helps remove clay build-up from tooling and bore walls",        dosageMin:2,   dosageMax:5,  dosageUnit:"L/1000L",  largeBoreOnly:false},
+    {productId:"biocide-75",       name:"Biocide 75",        order:6, role:"biocide",     notes:"Bactericide — prevents bacterial degradation of drilling fluid",                      dosageMin:0.5, dosageMax:1,  dosageUnit:"L/1000L",  largeBoreOnly:false},
+    {productId:"bigger-bores",     name:"Bigger Bores",      order:7, role:"reaming",     notes:"Reaming compound — improves hole enlargement efficiency for bores over 355mm",        dosageMin:3,   dosageMax:6,  dosageUnit:"L/1000L",  largeBoreOnly:true},
+    {productId:"reamer-tornado",   name:"Reamer Tornado",    order:8, role:"reaming",     notes:"Reaming fluid for clay conditions — prevents clay build-up on reaming tools",         dosageMin:3,   dosageMax:6,  dosageUnit:"L/1000L",  largeBoreOnly:true},
+  ]},
+  H2:  { id:"H2",  systemName:"Clay Control",         groundCondition:"sticky-clay",       tagline:"Cut through sticky clay",                        description:"The key to drilling in sticky clay is stopping the clay swelling and cleaning the bore well", elements:[
+    {productId:"soda-ash",         name:"Soda Ash",          order:1, role:"conditioner", notes:"Water conditioner",                                                                   dosageMin:1,   dosageMax:3,  dosageUnit:"kg/1000L", largeBoreOnly:false},
+    {productId:"carry-flow",       name:"Carry Flow",        order:2, role:"polymer",     notes:"PHPA polymer for cuttings transport, clay encapsulation, and bore stabilisation",      dosageMin:2,   dosageMax:5,  dosageUnit:"L/1000L",  largeBoreOnly:false},
+    {productId:"swell-stop-liquid",name:"Swell Stop Liquid", order:3, role:"inhibitor",   notes:"Clay inhibitor",                                                                      dosageMin:5,   dosageMax:15, dosageUnit:"L/1000L",  largeBoreOnly:false},
+    {productId:"clay-control",     name:"Clay Control",      order:4, role:"inhibitor",   notes:"Clay swelling inhibitor",                                                             dosageMin:5,   dosageMax:10, dosageUnit:"L/1000L",  largeBoreOnly:false},
+    {productId:"detergent",        name:"Detergent",         order:5, role:"additive",    notes:"Bore cleaning agent",                                                                 dosageMin:2,   dosageMax:5,  dosageUnit:"L/1000L",  largeBoreOnly:false},
+    {productId:"biocide-75",       name:"Biocide 75",        order:6, role:"biocide",     notes:"Bactericide",                                                                         dosageMin:0.5, dosageMax:1,  dosageUnit:"L/1000L",  largeBoreOnly:false},
+    {productId:"bigger-bores",     name:"Bigger Bores",      order:7, role:"reaming",     notes:"Reaming compound for large bores",                                                    dosageMin:3,   dosageMax:6,  dosageUnit:"L/1000L",  largeBoreOnly:true},
+  ]},
+  H3:  { id:"H3",  systemName:"Max Bore",              groundCondition:"sand-gravel-firm",  tagline:"Slice through sand, gravel and firm ground",      description:"Effective drilling in sand, gravel, and firm ground means stopping fluid loss and keeping the borehole clean", elements:[
+    {productId:"soda-ash",  name:"Soda Ash",   order:1, role:"conditioner", notes:"Water conditioner",                                                                               dosageMin:1,   dosageMax:3,  dosageUnit:"kg/1000L", largeBoreOnly:false},
+    {productId:"max-bore",  name:"Max Bore",   order:2, role:"base",        notes:"High-performance bentonite — provides bore stability, filtration control, and cuttings suspension", dosageMin:30,  dosageMax:60, dosageUnit:"kg/1000L", largeBoreOnly:false},
+    {productId:"carry-flow",name:"Carry Flow", order:3, role:"polymer",     notes:"PHPA polymer for cuttings transport",                                                              dosageMin:2,   dosageMax:5,  dosageUnit:"L/1000L",  largeBoreOnly:false},
+    {productId:"torque-down",name:"Torque Down",order:4,role:"additive",    notes:"Friction reducer — reduces torque and drag on drill string and tooling",                           dosageMin:2,   dosageMax:5,  dosageUnit:"L/1000L",  largeBoreOnly:false},
+    {productId:"biocide-75",name:"Biocide 75", order:5, role:"biocide",     notes:"Bactericide",                                                                                     dosageMin:0.5, dosageMax:1,  dosageUnit:"L/1000L",  largeBoreOnly:false},
+    {productId:"bigger-bores",  name:"Bigger Bores",  order:6, role:"reaming", notes:"Reaming compound",                                                                             dosageMin:3,   dosageMax:6,  dosageUnit:"L/1000L",  largeBoreOnly:true},
+    {productId:"reamer-turbo",  name:"Reamer Turbo",  order:7, role:"reaming", notes:"High-performance reaming fluid for firm ground",                                               dosageMin:3,   dosageMax:6,  dosageUnit:"L/1000L",  largeBoreOnly:true},
+  ]},
+  H4:  { id:"H4",  systemName:"Max Bore",              groundCondition:"sand-gravel-firm",  tagline:"Slice through sand, gravel and firm ground",      description:"Effective drilling in sand, gravel, and firm ground means stopping fluid loss and keeping the borehole clean", elements:[
+    {productId:"soda-ash",     name:"Soda Ash",    order:1, role:"conditioner", notes:"Water conditioner",                      dosageMin:1,   dosageMax:3,  dosageUnit:"kg/1000L", largeBoreOnly:false},
+    {productId:"max-bore",     name:"Max Bore",    order:2, role:"base",        notes:"High-performance bentonite",              dosageMin:30,  dosageMax:60, dosageUnit:"kg/1000L", largeBoreOnly:false},
+    {productId:"carry-flow",   name:"Carry Flow",  order:3, role:"polymer",     notes:"PHPA polymer for cuttings transport",     dosageMin:2,   dosageMax:5,  dosageUnit:"L/1000L",  largeBoreOnly:false},
+    {productId:"torque-down",  name:"Torque Down", order:4, role:"additive",    notes:"Friction reducer",                        dosageMin:2,   dosageMax:5,  dosageUnit:"L/1000L",  largeBoreOnly:false},
+    {productId:"biocide-75",   name:"Biocide 75",  order:5, role:"biocide",     notes:"Bactericide",                             dosageMin:0.5, dosageMax:1,  dosageUnit:"L/1000L",  largeBoreOnly:false},
+    {productId:"bigger-bores", name:"Bigger Bores",order:6, role:"reaming",     notes:"Reaming compound for large bores",        dosageMin:3,   dosageMax:6,  dosageUnit:"L/1000L",  largeBoreOnly:true},
+  ]},
+  H5:  { id:"H5",  systemName:"Carry Max",             groundCondition:"heavy-rock-gravel", tagline:"The heavy lifter",                               description:"Ability to create a semi-grout around the bore and carry heavy cuttings (rock, gravel, sand)", elements:[
+    {productId:"soda-ash",   name:"Soda Ash",   order:1, role:"conditioner", notes:"Water conditioner",                                                          dosageMin:1,   dosageMax:3,  dosageUnit:"kg/1000L", largeBoreOnly:false},
+    {productId:"max-gel",    name:"Max Gel",    order:2, role:"base",        notes:"High-yield bentonite — builds viscosity and gel strength",                    dosageMin:30,  dosageMax:60, dosageUnit:"kg/1000L", largeBoreOnly:false},
+    {productId:"carry-max",  name:"Carry Max",  order:3, role:"polymer",     notes:"Heavy-duty cuttings transport — creates a semi-grout around the bore",        dosageMin:3,   dosageMax:8,  dosageUnit:"L/1000L",  largeBoreOnly:false},
+    {productId:"torque-down",name:"Torque Down",order:4, role:"additive",    notes:"Friction reducer",                                                             dosageMin:2,   dosageMax:5,  dosageUnit:"L/1000L",  largeBoreOnly:false},
+    {productId:"bigger-bores",name:"Bigger Bores",order:5,role:"reaming",   notes:"Reaming compound",                                                             dosageMin:3,   dosageMax:6,  dosageUnit:"L/1000L",  largeBoreOnly:true},
+    {productId:"reamer-turbo",name:"Reamer Turbo",order:6,role:"reaming",   notes:"High-performance reaming fluid",                                               dosageMin:3,   dosageMax:6,  dosageUnit:"L/1000L",  largeBoreOnly:true},
+    {productId:"carry-flow", name:"Carry Flow", order:7, role:"polymer",     notes:"PHPA polymer for additional cuttings transport",                               dosageMin:2,   dosageMax:5,  dosageUnit:"L/1000L",  largeBoreOnly:false},
+  ]},
+  H6:  { id:"H6",  systemName:"Carry Max",             groundCondition:"heavy-rock-gravel", tagline:"The heavy lifter",                               description:"Ability to create a semi-grout around the bore and carry heavy cuttings (rock, gravel, sand)", elements:[
+    {productId:"soda-ash",   name:"Soda Ash",   order:1, role:"conditioner", notes:"Water conditioner",               dosageMin:1,   dosageMax:3,  dosageUnit:"kg/1000L", largeBoreOnly:false},
+    {productId:"max-gel",    name:"Max Gel",    order:2, role:"base",        notes:"High-yield bentonite",             dosageMin:30,  dosageMax:60, dosageUnit:"kg/1000L", largeBoreOnly:false},
+    {productId:"carry-max",  name:"Carry Max",  order:3, role:"polymer",     notes:"Heavy-duty cuttings transport",    dosageMin:3,   dosageMax:8,  dosageUnit:"L/1000L",  largeBoreOnly:false},
+    {productId:"torque-down",name:"Torque Down",order:4, role:"additive",    notes:"Friction reducer",                 dosageMin:2,   dosageMax:5,  dosageUnit:"L/1000L",  largeBoreOnly:false},
+    {productId:"bigger-bores",name:"Bigger Bores",order:5,role:"reaming",   notes:"Reaming compound",                 dosageMin:3,   dosageMax:6,  dosageUnit:"L/1000L",  largeBoreOnly:true},
+    {productId:"carry-flow", name:"Carry Flow", order:6, role:"polymer",     notes:"PHPA polymer supplement",          dosageMin:2,   dosageMax:5,  dosageUnit:"L/1000L",  largeBoreOnly:false},
+  ]},
+  H7:  { id:"H7",  systemName:"Clay Dissolve",         groundCondition:"sticky-clay",       tagline:"Dissolve sticky clay",                           description:"Separates sticky clay particles, reduces stickiness, reducing bit balling and reamer binding", elements:[
+    {productId:"soda-ash",         name:"Soda Ash",          order:1, role:"conditioner", notes:"Water conditioner",                                                                    dosageMin:1,   dosageMax:3,  dosageUnit:"kg/1000L", largeBoreOnly:false},
+    {productId:"swell-stop-liquid",name:"Swell Stop Liquid", order:2, role:"inhibitor",   notes:"Clay inhibitor",                                                                       dosageMin:5,   dosageMax:15, dosageUnit:"L/1000L",  largeBoreOnly:false},
+    {productId:"clay-dissolve",    name:"Clay Dissolve",     order:3, role:"additive",    notes:"Separates sticky clay particles — reduces bit balling, stickiness, and reamer binding", dosageMin:3,   dosageMax:8,  dosageUnit:"L/1000L",  largeBoreOnly:false},
+    {productId:"carry-flow",       name:"Carry Flow",        order:4, role:"polymer",     notes:"PHPA polymer for cuttings transport",                                                   dosageMin:2,   dosageMax:5,  dosageUnit:"L/1000L",  largeBoreOnly:false},
+    {productId:"bigger-bores",     name:"Bigger Bores",      order:5, role:"reaming",     notes:"Reaming compound",                                                                      dosageMin:3,   dosageMax:6,  dosageUnit:"L/1000L",  largeBoreOnly:true},
+    {productId:"reamer-tornado",   name:"Reamer Tornado",    order:6, role:"reaming",     notes:"Reaming fluid for clay",                                                                dosageMin:3,   dosageMax:6,  dosageUnit:"L/1000L",  largeBoreOnly:true},
+  ]},
+  H8:  { id:"H8",  systemName:"Clay Dissolve",         groundCondition:"sticky-clay",       tagline:"Dissolve sticky clay",                           description:"Separates sticky clay particles, reduces stickiness, reducing bit balling and reamer binding", elements:[
+    {productId:"soda-ash",         name:"Soda Ash",          order:1, role:"conditioner", notes:"Water conditioner",                        dosageMin:1,   dosageMax:3,  dosageUnit:"kg/1000L", largeBoreOnly:false},
+    {productId:"swell-stop-liquid",name:"Swell Stop Liquid", order:2, role:"inhibitor",   notes:"Clay inhibitor",                           dosageMin:5,   dosageMax:15, dosageUnit:"L/1000L",  largeBoreOnly:false},
+    {productId:"clay-dissolve",    name:"Clay Dissolve",     order:3, role:"additive",    notes:"Separates sticky clay particles",          dosageMin:3,   dosageMax:8,  dosageUnit:"L/1000L",  largeBoreOnly:false},
+    {productId:"carry-flow",       name:"Carry Flow",        order:4, role:"polymer",     notes:"PHPA polymer for cuttings transport",      dosageMin:2,   dosageMax:5,  dosageUnit:"L/1000L",  largeBoreOnly:false},
+    {productId:"bigger-bores",     name:"Bigger Bores",      order:5, role:"reaming",     notes:"Reaming compound",                         dosageMin:3,   dosageMax:6,  dosageUnit:"L/1000L",  largeBoreOnly:true},
+  ]},
+  H9:  { id:"H9",  systemName:"Max Gel & Carry Flow",  groundCondition:"large-sand-rock",   tagline:"HDD in sand or rock",                            description:"Large diameter HDD shots in sand or rock needing filtration control and carrying capacity", elements:[
+    {productId:"soda-ash",   name:"Soda Ash",   order:1, role:"conditioner", notes:"Water conditioner",                                                              dosageMin:1,   dosageMax:3,  dosageUnit:"kg/1000L", largeBoreOnly:false},
+    {productId:"max-gel",    name:"Max Gel",    order:2, role:"base",        notes:"High-yield bentonite",                                                            dosageMin:30,  dosageMax:60, dosageUnit:"kg/1000L", largeBoreOnly:false},
+    {productId:"carry-flow", name:"Carry Flow", order:3, role:"polymer",     notes:"PHPA polymer for cuttings transport",                                             dosageMin:2,   dosageMax:5,  dosageUnit:"L/1000L",  largeBoreOnly:false},
+    {productId:"filter-low", name:"Filter Low", order:4, role:"additive",    notes:"Fluid loss reducer — controls filtration into permeable formations",               dosageMin:2,   dosageMax:5,  dosageUnit:"kg/1000L", largeBoreOnly:false},
+    {productId:"torque-down",name:"Torque Down",order:5, role:"additive",    notes:"Friction reducer",                                                                dosageMin:2,   dosageMax:5,  dosageUnit:"L/1000L",  largeBoreOnly:false},
+    {productId:"one-stop",   name:"One Stop",   order:6, role:"additive",    notes:"Multi-purpose additive — combines fluid loss control and lubrication",             dosageMin:3,   dosageMax:6,  dosageUnit:"L/1000L",  largeBoreOnly:false},
+    {productId:"biocide-75", name:"Biocide 75", order:7, role:"biocide",     notes:"Bactericide",                                                                     dosageMin:0.5, dosageMax:1,  dosageUnit:"L/1000L",  largeBoreOnly:false},
+  ]},
+  H10: { id:"H10", systemName:"Max Bore",              groundCondition:"non-reactive-large", tagline:"Cleaning big holes in non reactive ground",      description:"Max Bore, Filter Low and Carry Flow provide excellent bore hole stability and gel strength in large diameter bores", elements:[
+    {productId:"soda-ash",   name:"Soda Ash",   order:1, role:"conditioner", notes:"Water conditioner",      dosageMin:1,   dosageMax:3,  dosageUnit:"kg/1000L", largeBoreOnly:false},
+    {productId:"max-bore",   name:"Max Bore",   order:2, role:"base",        notes:"High-performance bentonite", dosageMin:30, dosageMax:60,dosageUnit:"kg/1000L", largeBoreOnly:false},
+    {productId:"carry-flow", name:"Carry Flow", order:3, role:"polymer",     notes:"PHPA polymer for cuttings transport", dosageMin:2,dosageMax:5,dosageUnit:"L/1000L",largeBoreOnly:false},
+    {productId:"filter-low", name:"Filter Low", order:4, role:"additive",    notes:"Fluid loss reducer",      dosageMin:2,   dosageMax:5,  dosageUnit:"kg/1000L", largeBoreOnly:false},
+    {productId:"torque-down",name:"Torque Down",order:5, role:"additive",    notes:"Friction reducer",        dosageMin:2,   dosageMax:5,  dosageUnit:"L/1000L",  largeBoreOnly:false},
+    {productId:"biocide-75", name:"Biocide 75", order:6, role:"biocide",     notes:"Bactericide",             dosageMin:0.5, dosageMax:1,  dosageUnit:"L/1000L",  largeBoreOnly:false},
+  ]},
+  P1:  { id:"P1",  systemName:"Bentonite Piling",      groundCondition:"bentonite-piling",  tagline:"Bored piles using bentonite",                    description:"High-yield Wyoming bentonite with filtration control polymer", elements:[
+    {productId:"soda-ash",  name:"Soda Ash",  order:1, role:"conditioner", notes:"Water conditioner",    dosageMin:1,  dosageMax:3,  dosageUnit:"kg/1000L", largeBoreOnly:false},
+    {productId:"max-gel",   name:"Max Gel",   order:2, role:"base",        notes:"High-yield bentonite", dosageMin:30, dosageMax:60, dosageUnit:"kg/1000L", largeBoreOnly:false},
+    {productId:"filter-low",name:"Filter Low",order:3, role:"additive",    notes:"Fluid loss reducer",   dosageMin:2,  dosageMax:5,  dosageUnit:"kg/1000L", largeBoreOnly:false},
+  ]},
+  P2:  { id:"P2",  systemName:"PHPA Piling",           groundCondition:"polymer-piling",    tagline:"Bored piles using PHPA polymer",                 description:"High viscosity polymer option for bored piles", elements:[
+    {productId:"soda-ash",     name:"Soda Ash",      order:1, role:"conditioner", notes:"Water conditioner",                                                         dosageMin:1, dosageMax:3,  dosageUnit:"kg/1000L", largeBoreOnly:false},
+    {productId:"swell-stop-dry",name:"Swell Stop Dry",order:2,role:"inhibitor",  notes:"Dry clay inhibitor — potassium-based swelling prevention for polymer systems",dosageMin:5, dosageMax:10, dosageUnit:"kg/1000L", largeBoreOnly:false},
+    {productId:"filter-high",  name:"Filter High",   order:3, role:"additive",    notes:"High-viscosity filtration control",                                          dosageMin:2, dosageMax:5,  dosageUnit:"kg/1000L", largeBoreOnly:false},
+  ]},
+  W1:  { id:"W1",  systemName:"Sand",                  groundCondition:"sand",              tagline:"WA Waterbores",                                  description:"Large diameter waterbores drilling deep in sand", elements:[
+    {productId:"soda-ash",    name:"Soda Ash",    order:1, role:"conditioner", notes:"Water conditioner",            dosageMin:1,   dosageMax:3,  dosageUnit:"kg/1000L", largeBoreOnly:false},
+    {productId:"max-gel",     name:"Max Gel",     order:2, role:"base",        notes:"High-yield bentonite",         dosageMin:30,  dosageMax:60, dosageUnit:"kg/1000L", largeBoreOnly:false},
+    {productId:"carry-flow",  name:"Carry Flow",  order:3, role:"polymer",     notes:"PHPA polymer for cuttings transport", dosageMin:2, dosageMax:5, dosageUnit:"L/1000L", largeBoreOnly:false},
+    {productId:"filter-low",  name:"Filter Low",  order:4, role:"additive",    notes:"Fluid loss reducer",           dosageMin:2,   dosageMax:5,  dosageUnit:"kg/1000L", largeBoreOnly:false},
+    {productId:"torque-down", name:"Torque Down", order:5, role:"additive",    notes:"Friction reducer",             dosageMin:2,   dosageMax:5,  dosageUnit:"L/1000L",  largeBoreOnly:false},
+    {productId:"biocide-75",  name:"Biocide 75",  order:6, role:"biocide",     notes:"Bactericide",                  dosageMin:0.5, dosageMax:1,  dosageUnit:"L/1000L",  largeBoreOnly:false},
+    {productId:"one-stop",    name:"One Stop",    order:7, role:"additive",    notes:"Multi-purpose additive",       dosageMin:3,   dosageMax:6,  dosageUnit:"L/1000L",  largeBoreOnly:false},
+    {productId:"clay-dissolve",name:"Clay Dissolve",order:8,role:"additive",   notes:"Bore cleaning agent",          dosageMin:3,   dosageMax:8,  dosageUnit:"L/1000L",  largeBoreOnly:false},
+  ]},
+  W2:  { id:"W2",  systemName:"Reactive Clay",         groundCondition:"reactive-clay",     tagline:"WA Waterbores",                                  description:"Large diameter waterbores drilling deep in reactive clay", elements:[
+    {productId:"soda-ash",    name:"Soda Ash",    order:1, role:"conditioner", notes:"Water conditioner",            dosageMin:1,   dosageMax:3,  dosageUnit:"kg/1000L", largeBoreOnly:false},
+    {productId:"carry-flow",  name:"Carry Flow",  order:2, role:"polymer",     notes:"PHPA polymer for clay control", dosageMin:2,  dosageMax:5,  dosageUnit:"L/1000L",  largeBoreOnly:false},
+    {productId:"filter-low",  name:"Filter Low",  order:3, role:"additive",    notes:"Fluid loss reducer",           dosageMin:2,   dosageMax:5,  dosageUnit:"kg/1000L", largeBoreOnly:false},
+    {productId:"clay-control",name:"Clay Control",order:4, role:"inhibitor",   notes:"Clay swelling inhibitor",      dosageMin:5,   dosageMax:10, dosageUnit:"L/1000L",  largeBoreOnly:false},
+    {productId:"clay-dissolve",name:"Clay Dissolve",order:5,role:"additive",   notes:"Bore cleaning agent",          dosageMin:3,   dosageMax:8,  dosageUnit:"L/1000L",  largeBoreOnly:false},
+    {productId:"torque-down", name:"Torque Down", order:6, role:"additive",    notes:"Friction reducer",             dosageMin:2,   dosageMax:5,  dosageUnit:"L/1000L",  largeBoreOnly:false},
+    {productId:"biocide-75",  name:"Biocide 75",  order:7, role:"biocide",     notes:"Bactericide",                  dosageMin:0.5, dosageMax:1,  dosageUnit:"L/1000L",  largeBoreOnly:false},
+  ]},
+  W3:  { id:"W3",  systemName:"Carry Max",             groundCondition:"heavy-lifting",     tagline:"The heavy lifter",                               description:"Ability to create a semi-grout around the bore and carry heavy cuttings (rock, gravel, sand)", elements:[
+    {productId:"soda-ash",    name:"Soda Ash",    order:1, role:"conditioner", notes:"Water conditioner",           dosageMin:1,  dosageMax:3,  dosageUnit:"kg/1000L", largeBoreOnly:false},
+    {productId:"max-gel",     name:"Max Gel",     order:2, role:"base",        notes:"High-yield bentonite",        dosageMin:30, dosageMax:60, dosageUnit:"kg/1000L", largeBoreOnly:false},
+    {productId:"carry-max",   name:"Carry Max",   order:3, role:"polymer",     notes:"Heavy-duty cuttings transport",dosageMin:3,  dosageMax:8,  dosageUnit:"L/1000L",  largeBoreOnly:false},
+    {productId:"torque-down", name:"Torque Down", order:4, role:"additive",    notes:"Friction reducer",            dosageMin:2,  dosageMax:5,  dosageUnit:"L/1000L",  largeBoreOnly:false},
+    {productId:"clay-dissolve",name:"Clay Dissolve",order:6,role:"additive",  notes:"Bore cleaning",               dosageMin:3,  dosageMax:8,  dosageUnit:"L/1000L",  largeBoreOnly:false},
+  ]},
+  W4:  { id:"W4",  systemName:"Sand",                  groundCondition:"sand",              tagline:"Sand waterbores",                                description:"Large diameter waterbores drilling deep in sand", elements:[
+    {productId:"soda-ash",    name:"Soda Ash",    order:1, role:"conditioner", notes:"Water conditioner",           dosageMin:1,   dosageMax:3,  dosageUnit:"kg/1000L", largeBoreOnly:false},
+    {productId:"max-gel",     name:"Max Gel",     order:2, role:"base",        notes:"High-yield bentonite",        dosageMin:30,  dosageMax:60, dosageUnit:"kg/1000L", largeBoreOnly:false},
+    {productId:"carry-flow",  name:"Carry Flow",  order:3, role:"polymer",     notes:"PHPA polymer",                dosageMin:2,   dosageMax:5,  dosageUnit:"L/1000L",  largeBoreOnly:false},
+    {productId:"filter-high", name:"Filter High", order:4, role:"additive",    notes:"High-viscosity filtration control", dosageMin:2,dosageMax:5,dosageUnit:"kg/1000L",largeBoreOnly:false},
+    {productId:"torque-down", name:"Torque Down", order:5, role:"additive",    notes:"Friction reducer",            dosageMin:2,   dosageMax:5,  dosageUnit:"L/1000L",  largeBoreOnly:false},
+    {productId:"biocide-75",  name:"Biocide 75",  order:6, role:"biocide",     notes:"Bactericide",                 dosageMin:0.5, dosageMax:1,  dosageUnit:"L/1000L",  largeBoreOnly:false},
+    {productId:"one-stop",    name:"One Stop",    order:7, role:"additive",    notes:"Multi-purpose additive",      dosageMin:3,   dosageMax:6,  dosageUnit:"L/1000L",  largeBoreOnly:false},
+    {productId:"clay-dissolve",name:"Clay Dissolve",order:8,role:"additive",  notes:"Bore cleaning",               dosageMin:3,   dosageMax:8,  dosageUnit:"L/1000L",  largeBoreOnly:false},
+  ]},
+  W5:  { id:"W5",  systemName:"Reactive Clay",         groundCondition:"reactive-clay",     tagline:"Reactive clay waterbores",                       description:"Large diameter waterbores drilling deep in reactive clay", elements:[
+    {productId:"soda-ash",    name:"Soda Ash",    order:1, role:"conditioner", notes:"Water conditioner",           dosageMin:1,   dosageMax:3,  dosageUnit:"kg/1000L", largeBoreOnly:false},
+    {productId:"carry-flow",  name:"Carry Flow",  order:2, role:"polymer",     notes:"PHPA polymer",                dosageMin:2,   dosageMax:5,  dosageUnit:"L/1000L",  largeBoreOnly:false},
+    {productId:"filter-low",  name:"Filter Low",  order:3, role:"additive",    notes:"Fluid loss reducer",          dosageMin:2,   dosageMax:5,  dosageUnit:"kg/1000L", largeBoreOnly:false},
+    {productId:"clay-control",name:"Clay Control",order:4, role:"inhibitor",   notes:"Clay swelling inhibitor",     dosageMin:5,   dosageMax:10, dosageUnit:"L/1000L",  largeBoreOnly:false},
+    {productId:"clay-dissolve",name:"Clay Dissolve",order:5,role:"additive",  notes:"Bore cleaning",               dosageMin:3,   dosageMax:8,  dosageUnit:"L/1000L",  largeBoreOnly:false},
+    {productId:"torque-down", name:"Torque Down", order:6, role:"additive",    notes:"Friction reducer",            dosageMin:2,   dosageMax:5,  dosageUnit:"L/1000L",  largeBoreOnly:false},
+    {productId:"biocide-75",  name:"Biocide 75",  order:7, role:"biocide",     notes:"Bactericide",                 dosageMin:0.5, dosageMax:1,  dosageUnit:"L/1000L",  largeBoreOnly:false},
+  ]},
+  W6:  { id:"W6",  systemName:"Stiff Foam",            groundCondition:"hole-cleaning",     tagline:"Efficient hole cleaning",                        description:"Dense, stable foam for hole cleaning", elements:[
+    {productId:"soda-ash",        name:"Soda Ash",         order:1, role:"conditioner", notes:"Water conditioner", dosageMin:1,   dosageMax:3,  dosageUnit:"kg/1000L", largeBoreOnly:false},
+    {productId:"carry-foam",      name:"Carry Foam",       order:2, role:"polymer",     notes:"Dense, stable foam for efficient hole cleaning", dosageMin:3, dosageMax:6, dosageUnit:"L/1000L", largeBoreOnly:false},
+    {productId:"swell-stop-liquid",name:"Swell Stop Liquid",order:3,role:"inhibitor",  notes:"Clay inhibitor",    dosageMin:5,   dosageMax:15, dosageUnit:"L/1000L",  largeBoreOnly:false},
+    {productId:"defoam",          name:"Defoam",           order:4, role:"additive",    notes:"Defoaming agent",   dosageMin:0.5, dosageMax:2,  dosageUnit:"mL/1000L", largeBoreOnly:false},
+    {productId:"clay-dissolve",   name:"Clay Dissolve",    order:5, role:"additive",    notes:"Bore cleaning",     dosageMin:3,   dosageMax:8,  dosageUnit:"L/1000L",  largeBoreOnly:false},
+  ]},
+};
+
+const FLUID_RATIOS = {
+  "sticky-clay":       2.1,
+  "sand-gravel-firm":  2.0,
+  "heavy-rock-gravel": 2.0,
+  "large-sand-rock":   2.1,
+  "non-reactive-large":2.0,
+  "sand":              2.0,
+  "reactive-clay":     2.7,
+  "heavy-lifting":     2.1,
+  "hole-cleaning":     2.0,
+};
+
+const WASTE_FACTORS = {
+  "sand":             2.5,
+  "reactive-clay":    1.8,
+  "heavy-lifting":    2.0,
+  "hole-cleaning":    1.5,
+  "bentonite-piling": 1.5,
+  "polymer-piling":   1.5,
+};
+
+// ─────────────────────────────────────────────
+// STATE
+// ─────────────────────────────────────────────
+let state = {
+  segment:       null,
+  systemId:      null,
+  diameter:      null,
+  depth:         null,
+  env:           false,
+  envNotes:      '',
+  recycler:      false,
+  recyclerNotes: '',
+  notes:         '',
+  email:         '',
+};
+
+// ─────────────────────────────────────────────
+// CALCULATION HELPERS
+// ─────────────────────────────────────────────
+function calculateSpoilVolumeLitres(holeDiameterMm, lengthM) {
+  const dM = holeDiameterMm * 0.001;
+  return Math.round((Math.PI / 4) * dM * dM * lengthM * 1000);
+}
+
+function calculateAnnularVolumeLitres(boreDiameterMm, depthM, rodDiameterMm = 90) {
+  const boreR = boreDiameterMm / 2 / 1000;
+  const rodR  = rodDiameterMm  / 2 / 1000;
+  const vol   = Math.PI * (boreR * boreR - rodR * rodR) * depthM * 1000;
+  return Math.round(Math.max(0, vol));
+}
+
+function calculateFluidVolume(segment, diameterMm, depthM, groundKey) {
+  if (segment === "hdd") {
+    const spoil = calculateSpoilVolumeLitres(diameterMm, depthM);
+    const ratio = FLUID_RATIOS[groundKey] ?? 2.0;
+    const fluid = Math.round(spoil * ratio);
+    return { volume: fluid + spoil, fluidLitres: fluid, spoilLitres: spoil, ratio };
+  }
+  const raw    = calculateAnnularVolumeLitres(diameterMm, depthM);
+  const factor = WASTE_FACTORS[groundKey] ?? 2.0;
+  return { volume: Math.round(raw * factor) };
+}
+
+function calculateProductQuantity(dosageMin, dosageMax, volumeLitres) {
+  const mid = (dosageMin + dosageMax) / 2;
+  const qty = (mid * volumeLitres) / 1000;
+  return Math.round(qty * 10) / 10;
+}
+
+function getDisplayUnit(dosageUnit) {
+  if (dosageUnit === "kg/1000L") return "kg";
+  if (dosageUnit === "L/1000L")  return "L";
+  return "mL";
+}
+
+function fmtNum(n) {
+  return n.toLocaleString('en-AU');
+}
+
+// ─────────────────────────────────────────────
+// PROGRESS
+// ─────────────────────────────────────────────
+function updateProgress(activeStep) {
+  for (let i = 1; i <= 4; i++) {
+    const ps = document.getElementById('ps' + i);
+    ps.classList.remove('active', 'completed');
+    const dot = ps.querySelector('.progress-dot');
+    if (i < activeStep) {
+      ps.classList.add('completed');
+      dot.innerHTML = '&#10003;';
+    } else if (i === activeStep) {
+      ps.classList.add('active');
+      dot.textContent = i;
+    } else {
+      dot.textContent = i;
+    }
+  }
+}
+
+// ─────────────────────────────────────────────
+// STEP 1 — SEGMENT
+// ─────────────────────────────────────────────
+const SEGMENT_ICONS = {
+  hdd:       '<svg width="32" height="32" viewBox="0 0 32 32" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 16 C4 10 10 6 16 6 S28 10 28 16"/><path d="M10 22 L22 22"/><circle cx="16" cy="22" r="4"/><path d="M16 18 L16 10"/></svg>',
+  waterwell: '<svg width="32" height="32" viewBox="0 0 32 32" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M16 4 C16 4 8 12 8 18 a8 8 0 0 0 16 0 C24 12 16 4 16 4z"/><path d="M12 20 Q16 17 20 20"/></svg>',
+  piling:    '<svg width="32" height="32" viewBox="0 0 32 32" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="12" y="4" width="8" height="24" rx="1"/><rect x="4" y="4" width="24" height="6" rx="1"/><line x1="8" y1="28" x2="24" y2="28"/></svg>',
+  geotech:   '<svg width="32" height="32" viewBox="0 0 32 32" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M16 4 L16 28"/><path d="M8 12 L24 12"/><path d="M10 20 L22 20"/><circle cx="16" cy="8" r="3"/></svg>',
+  other:     '<svg width="32" height="32" viewBox="0 0 32 32" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="16" cy="16" r="10"/><path d="M6 16 Q10 10 16 14 Q22 18 26 16"/><path d="M16 6 L16 26"/></svg>',
+};
+
+function buildStep1() {
+  const grid = document.getElementById('segmentGrid');
+  grid.innerHTML = SEGMENTS.map(s => `
+    <div class="option-card" data-seg="${s.id}" onclick="selectSegment('${s.id}', this)">
+      <span class="check-mark">&#10003;</span>
+      <span class="card-icon">${SEGMENT_ICONS[s.id]}</span>
+      <div class="card-title">${s.title}</div>
+      <div class="card-desc">${s.desc}</div>
+    </div>
+  `).join('');
+}
+
+function selectSegment(id, el) {
+  state.segment = id;
+  document.querySelectorAll('#segmentGrid .option-card').forEach(c => c.classList.remove('selected'));
+  el.classList.add('selected');
+  document.getElementById('step1Next').disabled = false;
+}
+
+function goToStep2() {
+  if (!state.segment) return;
+  showStep('step1', false);
+
+  if (state.segment === 'geotech' || state.segment === 'other') {
+    showStep('step2Fallback', true);
+    updateProgress(2);
+    return;
+  }
+
+  const systems = SYSTEMS[state.segment] || [];
+  const grid = document.getElementById('systemGrid');
+  grid.innerHTML = systems.map(s => `
+    <div class="option-card" data-sys="${s.id}" onclick="selectSystem('${s.id}', this)">
+      <span class="check-mark">&#10003;</span>
+      <div class="card-title">${s.label}</div>
+      <div class="card-tagline">${s.tagline}</div>
+    </div>
+  `).join('');
+
+  const segLabel = SEGMENTS.find(x => x.id === state.segment).title;
+  document.getElementById('step2Heading').textContent = `Select your ground condition — ${segLabel}`;
+  document.getElementById('step2Next').disabled = true;
+  state.systemId = null;
+  showStep('step2', true);
+  updateProgress(2);
+}
+
+function selectSystem(id, el) {
+  state.systemId = id;
+  document.querySelectorAll('#systemGrid .option-card').forEach(c => c.classList.remove('selected'));
+  el.classList.add('selected');
+  document.getElementById('step2Next').disabled = false;
+}
+
+// ─────────────────────────────────────────────
+// STEP 3 — SPECS
+// ─────────────────────────────────────────────
+const DIAMETER_PRESETS = [100, 150, 200, 250, 300, 355, 400, 500];
+
+function buildStep3() {
+  const container = document.getElementById('diameterPresets');
+  container.innerHTML = DIAMETER_PRESETS.map(d => `
+    <button class="preset-btn" onclick="selectDiameter(${d}, this)">${d}</button>
+  `).join('');
+
+  // depth label
+  document.getElementById('depthLabel').textContent =
+    state.segment === 'hdd' ? 'Bore length (m)' : 'Bore depth (m)';
+}
+
+function selectDiameter(val, el) {
+  document.querySelectorAll('.preset-btn').forEach(b => b.classList.remove('active'));
+  el.classList.add('active');
+  document.getElementById('boreDiameter').value = val;
+  state.diameter = val;
+  clearError('fgDiameter');
+}
+
+function onDiameterInput() {
+  const val = parseFloat(document.getElementById('boreDiameter').value);
+  state.diameter = isNaN(val) ? null : val;
+  document.querySelectorAll('.preset-btn').forEach(b => {
+    b.classList.toggle('active', parseFloat(b.textContent) === val);
+  });
+  clearError('fgDiameter');
+}
+
+function clearError(groupId) {
+  document.getElementById(groupId).classList.remove('has-error');
+}
+
+function goToStep3() {
+  if (!state.systemId) return;
+  buildStep3();
+  showStep('step2', false);
+  showStep('step3', true);
+  updateProgress(3);
+  // Reset fields
+  document.getElementById('boreDiameter').value = '';
+  document.getElementById('boreDepth').value = '';
+  document.querySelectorAll('.preset-btn').forEach(b => b.classList.remove('active'));
+  state.diameter = null;
+  state.depth = null;
+}
+
+// ─────────────────────────────────────────────
+// STEP 4 — RESULTS
+// ─────────────────────────────────────────────
+function calculateResults() {
+  // Validate
+  const dVal = parseFloat(document.getElementById('boreDiameter').value);
+  const depthVal = parseFloat(document.getElementById('boreDepth').value);
+  let valid = true;
+
+  if (!dVal || dVal < 50) {
+    document.getElementById('fgDiameter').classList.add('has-error');
+    valid = false;
+  }
+  if (!depthVal || depthVal < 0.1) {
+    document.getElementById('fgDepth').classList.add('has-error');
+    valid = false;
+  }
+  if (!valid) return;
+
+  state.diameter      = dVal;
+  state.depth         = depthVal;
+  state.env           = document.getElementById('reqEnv').checked;
+  state.envNotes      = document.getElementById('envNotesText').value.trim();
+  state.recycler      = document.getElementById('reqRecycler').checked;
+  state.recyclerNotes = document.getElementById('recyclerNotesText').value.trim();
+  state.notes         = document.getElementById('generalNotes').value.trim();
+  state.email         = document.getElementById('customerEmail').value.trim();
+
+  // Resolve rule
+  const selectedSystem = SYSTEMS[state.segment].find(s => s.id === state.systemId);
+  let ruleId = state.systemId;
+  const isLargeBore = state.diameter > 355;
+  if (state.segment === 'hdd' && isLargeBore && selectedSystem && selectedSystem.largeBoreId) {
+    ruleId = selectedSystem.largeBoreId;
+  }
+  const rule = RULES[ruleId];
+  if (!rule) { alert('Could not find rules for this selection. Please try again.'); return; }
+
+  // Filter elements
+  let elements = rule.elements.filter(el => isLargeBore || !el.largeBoreOnly);
+
+  // Volume calculation
+  const volResult = calculateFluidVolume(state.segment, state.diameter, state.depth, rule.groundCondition);
+  const totalVolume = volResult.volume;
+
+  // Product quantities
+  const products = elements.map(el => ({
+    ...el,
+    estQty: calculateProductQuantity(el.dosageMin, el.dosageMax, totalVolume),
+    displayUnit: getDisplayUnit(el.dosageUnit),
+  }));
+
+  // Warnings
+  const warnings = [];
+  if (["sticky-clay","reactive-clay"].includes(rule.groundCondition)) {
+    warnings.push("Reactive clay can swell rapidly. Have extra inhibitor product on site as a contingency.");
+  }
+
+  // Render
+  renderResults(rule, products, volResult, warnings);
+  showStep('step3', false);
+  showStep('step4', true);
+  updateProgress(4);
+  window.scrollTo({ top: 0, behavior: 'smooth' });
+
+  // Update print header
+  document.getElementById('printTitle').textContent = rule.systemName + ' — Fluid Program';
+  document.getElementById('printSubtitle').textContent =
+    `${SEGMENTS.find(s=>s.id===state.segment).title} | ` +
+    `${state.diameter}mm \u00D7 ${state.depth}m | ` +
+    `Est. ${fmtNum(totalVolume)} L total` +
+    (state.email ? ` | ${state.email}` : '');
+}
+
+function roleBadgeClass(role) {
+  const map = { base:'role-base', polymer:'role-polymer', conditioner:'role-conditioner', inhibitor:'role-inhibitor', additive:'role-additive', biocide:'role-biocide', reaming:'role-reaming' };
+  return map[role] || 'role-additive';
+}
+
+function renderResults(rule, products, volResult, warnings) {
+  const segLabel = SEGMENTS.find(s => s.id === state.segment).title;
+  const isHDD    = state.segment === 'hdd';
+  const totalVol = volResult.volume;
+
+  // Volume breakdown HTML
+  let volBreakdown = '';
+  if (isHDD && volResult.spoilLitres !== undefined) {
+    volBreakdown = `
+      <div class="volume-breakdown">
+        <span>Fluid volume breakdown:</span>
+        <span class="vb-sep">|</span>
+        <span>Spoil: <strong>${fmtNum(volResult.spoilLitres)} L</strong></span>
+        <span class="vb-sep">|</span>
+        <span>Fluid (ratio ${volResult.ratio}:1): <strong>${fmtNum(volResult.fluidLitres)} L</strong></span>
+        <span class="vb-sep">|</span>
+        <span>Total: <strong>${fmtNum(totalVol)} L</strong></span>
+      </div>`;
+  }
+
+  // Product cards HTML
+  const productCardsHTML = products.map(p => `
+    <div class="product-card">
+      <div class="product-order">${p.order}</div>
+      <div class="product-info">
+        <div class="product-name-row">
+          <span class="product-name">${p.name}</span>
+          <span class="role-badge ${roleBadgeClass(p.role)}">${p.role}</span>
+        </div>
+        <div class="product-notes">${p.notes}</div>
+      </div>
+      <div class="product-dosage">
+        <div class="dosage-qty">${p.estQty}</div>
+        <div class="dosage-unit">${p.displayUnit}</div>
+        <div class="dosage-range">${p.dosageMin}–${p.dosageMax} ${p.dosageUnit}</div>
+      </div>
+    </div>
+  `).join('');
+
+  // Mixing sequence
+  const mixingStepsHTML = products.map((p, i) => `
+    <div class="mixing-step">
+      <div class="mix-num">${i + 1}</div>
+      <div class="mix-text">${p.name}</div>
+      <div class="mix-qty">${p.estQty} ${p.displayUnit}</div>
+    </div>
+  `).join('');
+
+  // Warnings HTML
+  const warningsHTML = warnings.length
+    ? `<div class="warnings-section">${warnings.map(w => `<div class="warning-box"><span class="warning-icon">&#9888;</span><span>${w}</span></div>`).join('')}</div>`
+    : '';
+
+  const html = `
+    <div class="results-summary-bar">
+      <div class="summary-item">
+        <div class="summary-label">System</div>
+        <div class="summary-value">${rule.systemName}</div>
+      </div>
+      <div class="summary-item">
+        <div class="summary-label">Application</div>
+        <div class="summary-value">${segLabel}</div>
+      </div>
+      <div class="summary-item">
+        <div class="summary-label">Bore Specs</div>
+        <div class="summary-value">${state.diameter}mm &times; ${state.depth}m</div>
+      </div>
+      <div class="summary-item">
+        <div class="summary-label">Est. Total Fluid</div>
+        <div class="summary-value accent">${fmtNum(totalVol)} L</div>
+      </div>
+      <div class="summary-item">
+        <div class="summary-label">Products</div>
+        <div class="summary-value">${products.length}</div>
+      </div>
+    </div>
+
+    <div class="results-tagline">${rule.tagline} — ${rule.description}</div>
+
+    ${volBreakdown}
+
+    <div class="products-heading">Fluid Program — Products</div>
+    <div class="product-cards">${productCardsHTML}</div>
+
+    <div class="mixing-card">
+      <h3>Mixing Sequence</h3>
+      <div class="mixing-instruction">Always start with fresh water. Add products in the order shown below, allowing each to hydrate before adding the next.</div>
+      <div class="mixing-steps">${mixingStepsHTML}</div>
+    </div>
+
+    ${warningsHTML}
+
+    ${(state.env && state.envNotes) || (state.recycler && state.recyclerNotes) || state.notes ? `
+    <div class="results-notes-section">
+      <div class="results-notes-heading">Your notes</div>
+      ${state.env && state.envNotes ? `<div class="results-note-item"><span class="note-label">Environmental constraints:</span> ${state.envNotes}</div>` : state.env ? `<div class="results-note-item"><span class="note-label">Environmental constraints apply.</span> Contact Blick for guidance on discharge requirements and biodegradable options.</div>` : ''}
+      ${state.recycler && state.recyclerNotes ? `<div class="results-note-item"><span class="note-label">Recycler on site:</span> ${state.recyclerNotes}</div>` : state.recycler ? `<div class="results-note-item"><span class="note-label">Recycler on site.</span> Discuss fluid properties and compatibility with Blick before the job.</div>` : ''}
+      ${state.notes ? `<div class="results-note-item"><span class="note-label">Notes:</span> ${state.notes}</div>` : ''}
+    </div>` : ''}
+
+    <div class="results-notes">
+      <strong>Note:</strong> Quantities shown are mid-range estimates based on the bore volume entered. Actual usage will vary depending on ground conditions, fluid losses, and site practices. Consult your Blick representative for final fluid design and on-site optimisation.
+    </div>
+
+    <div class="results-cta">
+      <button class="btn btn-primary" onclick="window.print()">&#128438; Download Job Sheet</button>
+      <a href="contact.html${state.email ? '?email='+encodeURIComponent(state.email) : ''}" class="btn btn-secondary">Talk to a Blick Specialist</a>
+    </div>
+
+    <div class="results-footer-actions">
+      <button class="btn-text" onclick="goToStep(3)">&larr; Adjust bore specs</button>
+      <button class="btn-text" onclick="startOver()">&#8635; Start over</button>
+    </div>
+  `;
+
+  document.getElementById('resultsContainer').innerHTML = html;
+}
+
+// ─────────────────────────────────────────────
+// NAV HELPERS
+// ─────────────────────────────────────────────
+function showStep(id, show) {
+  document.getElementById(id).style.display = show ? '' : 'none';
+}
+
+function goToStep(n) {
+  hideAllSteps();
+  if (n === 1) { showStep('step1', true); updateProgress(1); }
+  if (n === 2) {
+    if (state.segment === 'geotech' || state.segment === 'other') {
+      showStep('step2Fallback', true);
+    } else {
+      showStep('step2', true);
+    }
+    updateProgress(2);
+  }
+  if (n === 3) { showStep('step3', true); updateProgress(3); }
+}
+
+function hideAllSteps() {
+  ['step1','step2','step2Fallback','step3','step4'].forEach(id => showStep(id, false));
+}
+
+function toggleConditional(id, show) {
+  document.getElementById(id).classList.toggle('visible', show);
+}
+
+function startOver() {
+  state = { segment:null, systemId:null, diameter:null, depth:null, env:false, envNotes:'', recycler:false, recyclerNotes:'', notes:'', email:'' };
+  // Reset conditional fields
+  document.getElementById('reqEnv').checked = false;
+  document.getElementById('reqRecycler').checked = false;
+  document.getElementById('envNotes').classList.remove('visible');
+  document.getElementById('recyclerNotes').classList.remove('visible');
+  document.getElementById('envNotesText').value = '';
+  document.getElementById('recyclerNotesText').value = '';
+  document.getElementById('generalNotes').value = '';
+  document.getElementById('customerEmail').value = '';
+  document.querySelectorAll('#segmentGrid .option-card').forEach(c => c.classList.remove('selected'));
+  document.getElementById('step1Next').disabled = true;
+  hideAllSteps();
+  showStep('step1', true);
+  updateProgress(1);
+  window.scrollTo({ top: 0, behavior: 'smooth' });
+}
+
+// ─────────────────────────────────────────────
+// INIT
+// ─────────────────────────────────────────────
+buildStep1();
+updateProgress(1);
+
+// Scroll-based nav
+const nav = document.getElementById('nav');
+window.addEventListener('scroll', () => nav.classList.toggle('scrolled', window.scrollY > 50));
+if (window.scrollY > 50) nav.classList.add('scrolled');
+
+// Reveal animations
+const reveals = document.querySelectorAll('.reveal');
+const revealObserver = new IntersectionObserver(
+  (entries) => entries.forEach(e => { if (e.isIntersecting) e.target.classList.add('visible'); }),
+  { threshold: 0.1, rootMargin: '0px 0px -60px 0px' }
+);
+reveals.forEach(el => revealObserver.observe(el));
+</script>
+</body>
+</html>

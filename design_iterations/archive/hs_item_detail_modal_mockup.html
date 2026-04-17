@@ -1,0 +1,480 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="dark">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Health & Safety - Item Detail Modal Mockup</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+
+  <style>
+    /* Theme System */
+    :root, [data-theme="dark"] {
+      --brand-orange: #f05323;
+      --bg-primary: #212121;
+      --bg-secondary: #2a2a2a;
+      --bg-tertiary: #1a1a1a;
+      --bg-hover: #3a3a3a;
+      --bg-overlay: rgba(0, 0, 0, 0.7);
+      --text-primary: #bcbec0;
+      --text-secondary: #a0a0a0;
+      --text-heading: #ffffff;
+      --text-muted: #707070;
+      --border-default: #58595b;
+      --border-subtle: #404040;
+      --success: #10b981;
+      --success-light: #064e3b;
+      --warning: #f59e0b;
+      --warning-light: #451a03;
+      --danger: #ef4444;
+      --danger-light: #450a0a;
+      --card-bg: #2a2a2a;
+      --card-border: #58595b;
+    }
+
+    [data-theme="light"] {
+      --brand-orange: #f05323;
+      --bg-primary: #ffffff;
+      --bg-secondary: #f9fafb;
+      --bg-tertiary: #f3f4f6;
+      --bg-hover: #e5e7eb;
+      --bg-overlay: rgba(0, 0, 0, 0.4);
+      --text-primary: #111827;
+      --text-secondary: #6b7280;
+      --text-heading: #000000;
+      --text-muted: #9ca3af;
+      --border-default: #e5e7eb;
+      --border-subtle: #f3f4f6;
+      --success: #10b981;
+      --success-light: #d1fae5;
+      --warning: #f59e0b;
+      --warning-light: #fef3c7;
+      --danger: #ef4444;
+      --danger-light: #fee2e2;
+      --card-bg: #ffffff;
+      --card-border: #e5e7eb;
+    }
+
+    * { font-family: 'Inter', sans-serif; }
+    body { background: var(--bg-primary); color: var(--text-primary); margin: 0; }
+
+    .modal-overlay {
+      position: fixed;
+      inset: 0;
+      background: var(--bg-overlay);
+      backdrop-filter: blur(4px);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      z-index: 1000;
+    }
+
+    .modal-content {
+      background: var(--card-bg);
+      border: 1px solid var(--card-border);
+      border-radius: 16px;
+      width: 100%;
+      max-width: 700px;
+      max-height: 90vh;
+      overflow: hidden;
+      display: flex;
+      flex-direction: column;
+      box-shadow: 0 20px 60px rgba(0, 0, 0, 0.4);
+    }
+
+    .modal-header {
+      padding: 20px 24px;
+      border-bottom: 1px solid var(--border-subtle);
+      display: flex;
+      align-items: flex-start;
+      justify-content: space-between;
+    }
+
+    .modal-body {
+      padding: 24px;
+      overflow-y: auto;
+      flex: 1;
+    }
+
+    .modal-footer {
+      padding: 16px 24px;
+      border-top: 1px solid var(--border-subtle);
+      background: var(--bg-tertiary);
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+
+    .badge {
+      display: inline-flex;
+      align-items: center;
+      padding: 4px 12px;
+      border-radius: 9999px;
+      font-size: 12px;
+      font-weight: 600;
+      text-transform: uppercase;
+    }
+    .badge-danger {
+      background: var(--danger-light);
+      color: var(--danger);
+    }
+
+    .btn-primary {
+      background: var(--brand-orange);
+      color: white;
+      padding: 10px 20px;
+      border-radius: 8px;
+      font-weight: 600;
+      font-size: 14px;
+      border: none;
+      cursor: pointer;
+      transition: all 0.2s;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+    .btn-primary:hover {
+      filter: brightness(1.1);
+    }
+
+    .btn-secondary {
+      background: transparent;
+      color: var(--text-primary);
+      padding: 10px 16px;
+      border-radius: 8px;
+      font-weight: 500;
+      font-size: 14px;
+      border: 1px solid var(--border-default);
+      cursor: pointer;
+      transition: all 0.2s;
+    }
+    .btn-secondary:hover {
+      background: var(--bg-hover);
+      border-color: var(--brand-orange);
+    }
+
+    .btn-ghost {
+      background: transparent;
+      color: var(--text-muted);
+      padding: 8px;
+      border-radius: 8px;
+      border: none;
+      cursor: pointer;
+      font-size: 24px;
+      line-height: 1;
+      transition: all 0.2s;
+    }
+    .btn-ghost:hover {
+      color: var(--text-heading);
+      background: var(--bg-hover);
+    }
+
+    .section-divider {
+      border-top: 1px solid var(--border-subtle);
+      margin: 20px 0;
+    }
+
+    .meta-grid {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 16px;
+    }
+
+    .meta-item {
+      display: flex;
+      flex-direction: column;
+      gap: 4px;
+    }
+    .meta-label {
+      color: var(--text-muted);
+      font-size: 12px;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+    }
+    .meta-value {
+      color: var(--text-heading);
+      font-weight: 500;
+    }
+
+    .timeline-item {
+      display: flex;
+      gap: 12px;
+      padding: 12px 0;
+      border-bottom: 1px solid var(--border-subtle);
+    }
+    .timeline-item:last-child {
+      border-bottom: none;
+    }
+    .timeline-icon {
+      width: 32px;
+      height: 32px;
+      border-radius: 50%;
+      background: var(--bg-secondary);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-shrink: 0;
+    }
+
+    .attachment-chip {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      padding: 6px 12px;
+      background: var(--bg-secondary);
+      border: 1px solid var(--border-default);
+      border-radius: 6px;
+      font-size: 13px;
+      color: var(--text-primary);
+      cursor: pointer;
+      transition: all 0.2s;
+    }
+    .attachment-chip:hover {
+      border-color: var(--brand-orange);
+      background: var(--bg-hover);
+    }
+
+    .priority-dots {
+      display: inline-flex;
+      gap: 3px;
+    }
+    .priority-dot {
+      width: 8px;
+      height: 8px;
+      border-radius: 50%;
+      background: var(--danger);
+    }
+    .priority-dot.inactive {
+      background: var(--text-muted);
+      opacity: 0.3;
+    }
+
+    textarea {
+      width: 100%;
+      background: var(--bg-secondary);
+      border: 1px solid var(--border-default);
+      border-radius: 8px;
+      padding: 12px;
+      color: var(--text-primary);
+      font-size: 14px;
+      resize: vertical;
+      min-height: 80px;
+    }
+    textarea:focus {
+      outline: none;
+      border-color: var(--brand-orange);
+      box-shadow: 0 0 0 3px rgba(240, 83, 35, 0.1);
+    }
+    textarea::placeholder {
+      color: var(--text-muted);
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Theme Toggle (outside modal for demo) -->
+  <div style="position: fixed; top: 20px; right: 20px; z-index: 1100;">
+    <button onclick="toggleTheme()" class="btn-secondary" style="display: flex; align-items: center; gap: 8px;">
+      <span>&#9790;</span>
+      <span>Toggle Theme</span>
+    </button>
+  </div>
+
+  <!-- Modal Overlay -->
+  <div class="modal-overlay">
+    <div class="modal-content">
+
+      <!-- Header -->
+      <div class="modal-header">
+        <div>
+          <div style="display: flex; align-items: center; gap: 12px; margin-bottom: 8px;">
+            <span style="font-size: 24px;">&#128203;</span>
+            <span style="color: var(--text-muted); font-size: 14px;">Follow-up Task</span>
+          </div>
+          <h1 style="color: var(--text-heading); font-size: 24px; font-weight: 700; margin: 0;">
+            Review SWMS
+          </h1>
+        </div>
+        <button class="btn-ghost">&times;</button>
+      </div>
+
+      <!-- Body -->
+      <div class="modal-body">
+
+        <!-- Status Row -->
+        <div style="display: flex; gap: 24px; margin-bottom: 24px;">
+          <div style="display: flex; align-items: center; gap: 8px;">
+            <span class="badge badge-danger">OVERDUE</span>
+          </div>
+          <div style="display: flex; align-items: center; gap: 8px;">
+            <span style="color: var(--text-muted); font-size: 14px;">Priority:</span>
+            <div class="priority-dots">
+              <span class="priority-dot"></span>
+              <span class="priority-dot"></span>
+              <span class="priority-dot"></span>
+            </div>
+            <span style="color: var(--danger); font-weight: 600; font-size: 14px;">High</span>
+          </div>
+        </div>
+
+        <!-- Metadata Grid -->
+        <div class="meta-grid">
+          <div class="meta-item">
+            <span class="meta-label">Due Date</span>
+            <span class="meta-value" style="color: var(--danger);">15 Dec 2025 (Yesterday)</span>
+          </div>
+          <div class="meta-item">
+            <span class="meta-label">Created</span>
+            <span class="meta-value">12 Dec 2025</span>
+          </div>
+          <div class="meta-item">
+            <span class="meta-label">Assigned By</span>
+            <span class="meta-value">Sarah Johnson</span>
+          </div>
+          <div class="meta-item">
+            <span class="meta-label">Assigned To</span>
+            <span class="meta-value">You</span>
+          </div>
+        </div>
+
+        <div class="section-divider"></div>
+
+        <!-- Description -->
+        <div style="margin-bottom: 24px;">
+          <h3 style="color: var(--text-heading); font-size: 14px; font-weight: 600; margin-bottom: 8px; text-transform: uppercase; letter-spacing: 0.5px;">
+            Description
+          </h3>
+          <div style="background: var(--bg-secondary); border-radius: 8px; padding: 16px; color: var(--text-primary); line-height: 1.6;">
+            Review and update the Safe Work Method Statement for the new loading dock procedures. Ensure all forklift operators are included in the sign-off process. Pay particular attention to the new traffic management requirements.
+          </div>
+        </div>
+
+        <!-- Related To -->
+        <div style="margin-bottom: 24px;">
+          <h3 style="color: var(--text-heading); font-size: 14px; font-weight: 600; margin-bottom: 8px; text-transform: uppercase; letter-spacing: 0.5px;">
+            Related To
+          </h3>
+          <a href="#" style="display: inline-flex; align-items: center; gap: 8px; color: var(--brand-orange); text-decoration: none; font-weight: 500;">
+            <span>&#128680;</span>
+            Hazard HZ-2025-042 (Forklift near-miss)
+          </a>
+        </div>
+
+        <!-- Attachments -->
+        <div style="margin-bottom: 24px;">
+          <h3 style="color: var(--text-heading); font-size: 14px; font-weight: 600; margin-bottom: 12px; text-transform: uppercase; letter-spacing: 0.5px;">
+            Attachments
+          </h3>
+          <div style="display: flex; flex-wrap: wrap; gap: 8px;">
+            <span class="attachment-chip">
+              <span>&#128196;</span> SWMS_Draft_v2.pdf
+            </span>
+            <span class="attachment-chip">
+              <span>&#128247;</span> Hazard_Photo.jpg
+            </span>
+            <button class="attachment-chip" style="border-style: dashed; color: var(--text-muted);">
+              <span>+</span> Add Attachment
+            </button>
+          </div>
+        </div>
+
+        <div class="section-divider"></div>
+
+        <!-- Activity Timeline -->
+        <div style="margin-bottom: 24px;">
+          <h3 style="color: var(--text-heading); font-size: 14px; font-weight: 600; margin-bottom: 12px; text-transform: uppercase; letter-spacing: 0.5px;">
+            Activity
+          </h3>
+
+          <div class="timeline-item">
+            <div class="timeline-icon" style="background: var(--danger-light); color: var(--danger);">
+              <span>&#128337;</span>
+            </div>
+            <div>
+              <div style="color: var(--text-heading); font-weight: 500; margin-bottom: 2px;">Status changed to OVERDUE</div>
+              <div style="color: var(--text-muted); font-size: 13px;">15 Dec 2025 &bull; Automatic</div>
+            </div>
+          </div>
+
+          <div class="timeline-item">
+            <div class="timeline-icon">
+              <span>&#128172;</span>
+            </div>
+            <div>
+              <div style="color: var(--text-heading); font-weight: 500; margin-bottom: 4px;">Sarah Johnson commented</div>
+              <div style="color: var(--text-secondary); font-size: 14px; margin-bottom: 2px;">"Please prioritize this week - we have an audit coming up."</div>
+              <div style="color: var(--text-muted); font-size: 13px;">14 Dec 2025</div>
+            </div>
+          </div>
+
+          <div class="timeline-item">
+            <div class="timeline-icon">
+              <span>&#128206;</span>
+            </div>
+            <div>
+              <div style="color: var(--text-heading); font-weight: 500; margin-bottom: 2px;">You added SWMS_Draft_v2.pdf</div>
+              <div style="color: var(--text-muted); font-size: 13px;">13 Dec 2025</div>
+            </div>
+          </div>
+
+          <div class="timeline-item">
+            <div class="timeline-icon" style="background: var(--success-light); color: var(--success);">
+              <span>+</span>
+            </div>
+            <div>
+              <div style="color: var(--text-heading); font-weight: 500; margin-bottom: 2px;">Task created by Sarah Johnson</div>
+              <div style="color: var(--text-muted); font-size: 13px;">12 Dec 2025</div>
+            </div>
+          </div>
+        </div>
+
+        <div class="section-divider"></div>
+
+        <!-- Add Note -->
+        <div>
+          <h3 style="color: var(--text-heading); font-size: 14px; font-weight: 600; margin-bottom: 12px; text-transform: uppercase; letter-spacing: 0.5px;">
+            Add Note
+          </h3>
+          <textarea placeholder="Write a note or update..."></textarea>
+          <div style="display: flex; justify-content: flex-end; margin-top: 8px;">
+            <button class="btn-secondary" style="display: flex; align-items: center; gap: 6px; font-size: 13px; padding: 8px 12px;">
+              <span>&#128206;</span> Add Attachment
+            </button>
+          </div>
+        </div>
+
+      </div>
+
+      <!-- Footer -->
+      <div class="modal-footer">
+        <div style="display: flex; gap: 8px;">
+          <select style="background: var(--bg-secondary); border: 1px solid var(--border-default); border-radius: 8px; padding: 10px 16px; color: var(--text-primary); font-size: 14px;">
+            <option>Change Status...</option>
+            <option>Open</option>
+            <option>In Progress</option>
+            <option>Closed</option>
+          </select>
+          <button class="btn-secondary">Reassign</button>
+          <button class="btn-secondary" style="color: var(--warning);">Archive</button>
+        </div>
+        <button class="btn-primary">
+          <span>&#10003;</span> Mark Complete
+        </button>
+      </div>
+
+    </div>
+  </div>
+
+  <script>
+    function toggleTheme() {
+      const html = document.documentElement;
+      const currentTheme = html.getAttribute('data-theme');
+      const newTheme = currentTheme === 'dark' ? 'light' : 'dark';
+      html.setAttribute('data-theme', newTheme);
+    }
+  </script>
+
+</body>
+</html>

@@ -1,0 +1,497 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Contact — Blick Group</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap');
+
+  *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+
+  :root {
+    --orange: #FD4F00;
+    --orange-light: #FF6B26;
+    --black: #1A1A1A;
+    --charcoal: #2D2D2D;
+    --grey-dark: #66615C;
+    --grey-mid: #A9A9A9;
+    --grey-light: #EBEAEB;
+    --off-white: #FAFAFA;
+    --white: #FFFFFF;
+    --font: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+  }
+
+  html { scroll-behavior: smooth; font-size: 16px; -webkit-font-smoothing: antialiased; -moz-osx-font-smoothing: grayscale; }
+  body { font-family: var(--font); color: var(--charcoal); background: var(--white); line-height: 1.6; overflow-x: hidden; }
+  .container { max-width: 1280px; margin: 0 auto; padding: 0 clamp(24px, 5vw, 80px); }
+
+  .reveal { opacity: 0; transform: translateY(40px); transition: opacity 0.8s cubic-bezier(0.16,1,0.3,1), transform 0.8s cubic-bezier(0.16,1,0.3,1); }
+  .reveal.visible { opacity: 1; transform: translateY(0); }
+  .stagger-1 { transition-delay: 0.1s; }
+  .stagger-2 { transition-delay: 0.2s; }
+  .stagger-3 { transition-delay: 0.3s; }
+  .stagger-4 { transition-delay: 0.4s; }
+  .stagger-5 { transition-delay: 0.5s; }
+
+  /* Nav */
+  nav { position: fixed; top: 0; left: 0; right: 0; z-index: 1000; padding: 24px 0; transition: all 0.4s cubic-bezier(0.16,1,0.3,1); background: rgba(26,26,26,0); }
+  nav.scrolled { padding: 16px 0; background: rgba(255,255,255,0.92); backdrop-filter: blur(20px); box-shadow: 0 1px 0 rgba(0,0,0,0.05); }
+  nav .container { display: flex; align-items: center; justify-content: space-between; }
+  .nav-logo { display: flex; align-items: center; gap: 12px; text-decoration: none; }
+    .nav-logo img { height: 36px; width: auto; }
+  nav:not(.scrolled) .nav-logo img { filter: brightness(0) invert(1); }
+  .nav-links { display: flex; gap: 36px; list-style: none; align-items: center; }
+  .nav-links a { text-decoration: none; color: rgba(255,255,255,0.7); font-size: 0.85rem; font-weight: 500; letter-spacing: 0.02em; transition: color 0.3s; }
+  nav.scrolled .nav-links a { color: var(--grey-dark); }
+  .nav-links a:hover { color: var(--orange) !important; }
+  .nav-cta { background: var(--orange); color: var(--white) !important; padding: 10px 24px; border-radius: 100px; font-weight: 600 !important; transition: background 0.3s, transform 0.3s !important; }
+  .nav-cta:hover { background: var(--orange-light) !important; transform: translateY(-1px); }
+
+  /* Buttons */
+  .btn { display: inline-flex; align-items: center; gap: 8px; padding: 16px 36px; border-radius: 100px; font-size: 0.9rem; font-weight: 600; text-decoration: none; transition: all 0.3s cubic-bezier(0.16,1,0.3,1); cursor: pointer; border: none; font-family: var(--font); }
+  .btn-primary { background: var(--orange); color: var(--white); box-shadow: 0 4px 24px rgba(253,79,0,0.25); }
+  .btn-primary:hover { background: var(--orange-light); transform: translateY(-2px); box-shadow: 0 8px 32px rgba(253,79,0,0.3); }
+
+  /* Section label */
+  .section-tag { display: inline-flex; align-items: center; gap: 8px; font-size: 0.75rem; font-weight: 600; letter-spacing: 0.15em; text-transform: uppercase; color: var(--orange); margin-bottom: 24px; }
+  .section-tag::before { content: ''; width: 24px; height: 2px; background: var(--orange); }
+
+  /* Page Hero */
+  .page-hero { background: var(--black); padding: 200px 0 120px; position: relative; overflow: hidden; }
+  .page-hero::before { content: ''; position: absolute; top: -200px; right: -200px; width: 700px; height: 700px; border-radius: 50%; background: radial-gradient(circle, rgba(253,79,0,0.07) 0%, transparent 70%); }
+  .page-hero::after { content: ''; position: absolute; inset: 0; background-image: linear-gradient(rgba(253,79,0,0.025) 1px, transparent 1px), linear-gradient(90deg, rgba(253,79,0,0.025) 1px, transparent 1px); background-size: 80px 80px; mask-image: radial-gradient(ellipse 80% 80% at 60% 40%, black 10%, transparent 70%); }
+  .page-hero-content { position: relative; z-index: 1; max-width: 760px; }
+  .page-hero h1 { font-size: clamp(2.6rem, 5.5vw, 4.2rem); font-weight: 800; line-height: 1.06; letter-spacing: -0.03em; color: var(--white); margin-bottom: 28px; }
+  .page-hero p { font-size: clamp(1rem, 1.6vw, 1.15rem); line-height: 1.75; color: rgba(255,255,255,0.55); max-width: 580px; }
+
+  /* Office Locations */
+  .locations { background: var(--white); padding: 100px 0; }
+  .locations-header { margin-bottom: 56px; }
+  .locations-header h2 { font-size: clamp(2rem, 3.5vw, 2.8rem); font-weight: 800; letter-spacing: -0.02em; line-height: 1.1; color: var(--black); margin-bottom: 20px; }
+  .locations-header p { font-size: 1.05rem; line-height: 1.75; color: var(--grey-dark); max-width: 600px; }
+  .locations-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 32px; }
+  .location-card { background: var(--charcoal); border-radius: 20px; padding: 48px; color: var(--white); position: relative; overflow: hidden; }
+  .location-card::before { content: ''; position: absolute; top: -80px; right: -80px; width: 240px; height: 240px; border-radius: 50%; background: rgba(253,79,0,0.06); }
+  .location-country { font-size: 0.72rem; font-weight: 700; letter-spacing: 0.16em; text-transform: uppercase; color: var(--orange); margin-bottom: 24px; display: flex; align-items: center; gap: 8px; }
+  .location-country::before { content: ''; width: 20px; height: 2px; background: var(--orange); }
+  .location-address { font-size: 1rem; line-height: 1.65; color: rgba(255,255,255,0.8); margin-bottom: 32px; }
+  .location-details { display: flex; flex-direction: column; gap: 14px; margin-bottom: 36px; }
+  .location-detail { display: flex; align-items: flex-start; gap: 14px; }
+  .location-detail-label { font-size: 0.7rem; font-weight: 600; letter-spacing: 0.08em; text-transform: uppercase; color: rgba(255,255,255,0.3); min-width: 50px; padding-top: 2px; flex-shrink: 0; }
+  .location-detail-value { display: flex; flex-direction: column; gap: 5px; }
+  .location-detail-value a { color: rgba(255,255,255,0.75); text-decoration: none; font-size: 0.92rem; transition: color 0.3s; }
+  .location-detail-value a:hover { color: var(--orange); }
+  .location-hours { font-size: 0.85rem; color: rgba(255,255,255,0.38); }
+  .location-divider { width: 100%; height: 1px; background: rgba(255,255,255,0.08); margin: 28px 0; }
+  .warehouses-heading { font-size: 0.68rem; font-weight: 700; letter-spacing: 0.12em; text-transform: uppercase; color: rgba(255,255,255,0.3); margin-bottom: 14px; }
+  .warehouses-list { display: flex; flex-wrap: wrap; gap: 8px; }
+  .warehouse-tag { font-size: 0.8rem; color: rgba(255,255,255,0.6); background: rgba(255,255,255,0.06); border: 1px solid rgba(255,255,255,0.1); border-radius: 100px; padding: 5px 14px; white-space: nowrap; }
+
+  /* Pacific */
+  .pacific { background: var(--off-white); padding: 80px 0; }
+  .pacific-header { margin-bottom: 48px; }
+  .pacific-header h2 { font-size: clamp(1.8rem, 3vw, 2.4rem); font-weight: 800; letter-spacing: -0.02em; color: var(--black); margin-bottom: 16px; }
+  .pacific-header p { font-size: 1rem; line-height: 1.7; color: var(--grey-dark); max-width: 560px; }
+  .pacific-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 32px; }
+  .pacific-block { background: var(--white); border: 1px solid var(--grey-light); border-radius: 16px; padding: 36px; }
+  .pacific-block-label { font-size: 0.7rem; font-weight: 700; letter-spacing: 0.14em; text-transform: uppercase; color: var(--grey-mid); margin-bottom: 8px; }
+  .pacific-block h3 { font-size: 1.1rem; font-weight: 700; color: var(--black); margin-bottom: 20px; }
+  .pacific-contact-item { display: flex; align-items: flex-start; gap: 10px; margin-bottom: 12px; }
+  .pacific-contact-label { font-size: 0.7rem; font-weight: 600; letter-spacing: 0.08em; text-transform: uppercase; color: var(--grey-mid); min-width: 46px; padding-top: 2px; flex-shrink: 0; }
+  .pacific-contact-value { display: flex; flex-direction: column; gap: 4px; }
+  .pacific-contact-value a { font-size: 0.88rem; color: var(--grey-dark); text-decoration: none; transition: color 0.3s; }
+  .pacific-contact-value a:hover { color: var(--orange); }
+  .pacific-islands-list { display: flex; flex-wrap: wrap; gap: 6px; margin-bottom: 20px; }
+  .pacific-island-tag { font-size: 0.78rem; color: var(--charcoal); background: var(--off-white); border: 1px solid var(--grey-light); border-radius: 100px; padding: 4px 12px; }
+  .pacific-divider { width: 100%; height: 1px; background: var(--grey-light); margin: 16px 0; }
+
+  /* Contact Form */
+  .contact-form-section { background: var(--white); padding: 100px 0; }
+  .contact-form-header { margin-bottom: 64px; }
+  .contact-form-header h2 { font-size: clamp(2rem, 3.5vw, 2.8rem); font-weight: 800; letter-spacing: -0.02em; color: var(--black); margin-bottom: 20px; }
+  .contact-form-header p { font-size: 1.05rem; line-height: 1.75; color: var(--grey-dark); max-width: 560px; }
+  .contact-layout { display: grid; grid-template-columns: 3fr 2fr; gap: 80px; align-items: start; }
+  .contact-form { display: flex; flex-direction: column; gap: 20px; }
+  .form-row { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
+  .form-field { display: flex; flex-direction: column; gap: 7px; }
+  .form-field label { font-size: 0.78rem; font-weight: 600; letter-spacing: 0.04em; text-transform: uppercase; color: var(--charcoal); }
+  .form-field input,
+  .form-field select,
+  .form-field textarea { font-family: var(--font); font-size: 0.95rem; color: var(--charcoal); background: var(--white); border: 1.5px solid var(--grey-light); border-radius: 8px; padding: 13px 16px; outline: none; transition: border-color 0.25s, box-shadow 0.25s; width: 100%; -webkit-appearance: none; appearance: none; }
+  .form-field select { background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='16' viewBox='0 0 24 24' fill='none' stroke='%2366615C' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpolyline points='6 9 12 15 18 9'%3E%3C/polyline%3E%3C/svg%3E"); background-repeat: no-repeat; background-position: right 14px center; padding-right: 40px; cursor: pointer; }
+  .form-field textarea { resize: vertical; min-height: 120px; line-height: 1.6; }
+  .form-field input::placeholder, .form-field textarea::placeholder { color: var(--grey-mid); }
+  .form-field input:focus, .form-field select:focus, .form-field textarea:focus { border-color: var(--orange); box-shadow: 0 0 0 3px rgba(253,79,0,0.09); }
+  .form-submit { display: flex; flex-direction: column; gap: 14px; margin-top: 4px; }
+  .btn-submit { width: 100%; justify-content: center; padding: 17px 36px; font-size: 0.95rem; }
+  .form-note { font-size: 0.82rem; color: var(--grey-mid); line-height: 1.6; text-align: center; }
+  .contact-sidebar { display: flex; flex-direction: column; position: sticky; top: 100px; }
+  .sidebar-block { padding: 28px 0; border-bottom: 1px solid var(--grey-light); }
+  .sidebar-block:first-child { padding-top: 0; }
+  .sidebar-block:last-child { border-bottom: none; padding-bottom: 0; }
+  .sidebar-label { font-size: 0.7rem; font-weight: 700; letter-spacing: 0.14em; text-transform: uppercase; color: var(--grey-mid); margin-bottom: 12px; }
+  .sidebar-detail { display: flex; flex-direction: column; gap: 6px; }
+  .sidebar-detail a { font-size: 0.9rem; color: var(--charcoal); text-decoration: none; transition: color 0.3s; line-height: 1.5; }
+  .sidebar-detail a:hover { color: var(--orange); }
+  .sidebar-detail span { font-size: 0.82rem; color: var(--grey-mid); }
+  .sidebar-team-note { font-size: 0.88rem; color: var(--grey-dark); line-height: 1.6; }
+  .sidebar-team-note a { color: var(--orange); text-decoration: none; font-weight: 600; }
+  .sidebar-team-note a:hover { color: var(--orange-light); }
+
+  /* Footer */
+  footer { padding: 80px 0 40px; border-top: 1px solid var(--grey-light); }
+  .footer-grid { display: grid; grid-template-columns: 2fr 1fr 1fr 1fr; gap: 64px; margin-bottom: 64px; }
+  .footer-brand p { font-size: 0.9rem; line-height: 1.7; color: var(--grey-dark); margin-top: 16px; max-width: 300px; }
+  .footer-logo { display: flex; align-items: center; gap: 12px; text-decoration: none; }
+  .footer-logo span { font-size: 1.2rem; font-weight: 800; letter-spacing: 0.08em; color: var(--black); }
+  .footer-col h4 { font-size: 0.75rem; font-weight: 700; letter-spacing: 0.12em; text-transform: uppercase; color: var(--black); margin-bottom: 20px; }
+  .footer-col ul { list-style: none; display: flex; flex-direction: column; gap: 12px; }
+  .footer-col a { text-decoration: none; color: var(--grey-dark); font-size: 0.88rem; transition: color 0.3s; }
+  .footer-col a:hover { color: var(--orange); }
+  .footer-bottom { padding-top: 32px; border-top: 1px solid var(--grey-light); display: flex; justify-content: space-between; align-items: center; font-size: 0.8rem; color: var(--grey-mid); }
+
+  /* Responsive */
+  @media (max-width: 1024px) {
+    .locations-grid, .pacific-grid { grid-template-columns: 1fr; }
+    .contact-layout { grid-template-columns: 1fr; gap: 56px; }
+    .contact-sidebar { position: static; display: grid; grid-template-columns: 1fr 1fr; gap: 0 48px; }
+    .sidebar-block:first-child { padding-top: 28px; border-top: 1px solid var(--grey-light); }
+    .footer-grid { grid-template-columns: 1fr 1fr; gap: 40px; }
+  }
+  @media (max-width: 640px) {
+    .nav-links { display: none; }
+    .form-row { grid-template-columns: 1fr; }
+    .contact-sidebar { display: flex; flex-direction: column; }
+    .footer-grid { grid-template-columns: 1fr; gap: 32px; }
+    .footer-bottom { flex-direction: column; gap: 12px; text-align: center; }
+  }
+</style>
+</head>
+<body>
+
+<!-- Nav -->
+<nav id="nav">
+  <div class="container">
+    <a href="index.html" class="nav-logo">
+      <img src="blick-logo.png" alt="Blick">
+    </a>
+    <ul class="nav-links">
+      <li><a href="index.html">Home</a></li>
+      <li><a href="products.html">Products</a></li>
+      <li><a href="services.html">Services</a></li>
+      <li><a href="team.html">Team</a></li>
+      <li><a href="contact.html" class="nav-cta">Contact Us</a></li>
+    </ul>
+  </div>
+</nav>
+
+<!-- Page Hero -->
+<section class="page-hero">
+  <div class="container">
+    <div class="page-hero-content">
+      <div class="section-tag reveal">Get in Touch</div>
+      <h1 class="reveal stagger-1">Talk to the team by your side</h1>
+      <p class="reveal stagger-2">Big job or small question &mdash; we&rsquo;re ready to help. When you contact Blick, you reach real people who know drilling, logistics, and what it takes to keep work moving.</p>
+    </div>
+  </div>
+</section>
+
+<!-- Office Locations -->
+<section class="locations">
+  <div class="container">
+    <div class="locations-header">
+      <div class="section-tag reveal">Our Offices</div>
+      <h2 class="reveal stagger-1">We&rsquo;re where you are</h2>
+      <p class="reveal stagger-2">Offices and warehouses across Australia and New Zealand, with Pacific coverage serviced through both teams.</p>
+    </div>
+    <div class="locations-grid">
+
+      <div class="location-card reveal stagger-1">
+        <div class="location-country">New Zealand</div>
+        <div class="location-address">21 Kahu Crescent<br>Te Rapa, Hamilton 3200</div>
+        <div class="location-details">
+          <div class="location-detail">
+            <span class="location-detail-label">Phone</span>
+            <div class="location-detail-value">
+              <a href="tel:+6478492366">+64 7 849 2366</a>
+            </div>
+          </div>
+          <div class="location-detail">
+            <span class="location-detail-label">Email</span>
+            <div class="location-detail-value">
+              <a href="mailto:sales@blick.group">sales@blick.group</a>
+            </div>
+          </div>
+          <div class="location-detail">
+            <span class="location-detail-label">Hours</span>
+            <div class="location-detail-value">
+              <span class="location-hours">Monday&ndash;Friday, 8:00am&ndash;4:00pm</span>
+            </div>
+          </div>
+        </div>
+        <div class="location-divider"></div>
+        <div class="warehouses-heading">Warehouses</div>
+        <div class="warehouses-list">
+          <span class="warehouse-tag">Te Rapa Hamilton</span>
+          <span class="warehouse-tag">Drury Auckland</span>
+          <span class="warehouse-tag">Mt Maunganui Tauranga</span>
+          <span class="warehouse-tag">Bromley Christchurch</span>
+        </div>
+      </div>
+
+      <div class="location-card reveal stagger-2">
+        <div class="location-country">Australia</div>
+        <div class="location-address">20 Trevi Crescent<br>Tullamarine, VIC 3043</div>
+        <div class="location-details">
+          <div class="location-detail">
+            <span class="location-detail-label">Phone</span>
+            <div class="location-detail-value">
+              <a href="tel:+61390685688">+61 3 9068 5688 &mdash; Melbourne</a>
+              <a href="tel:+61862713575">+61 8 6271 3575 &mdash; Perth</a>
+            </div>
+          </div>
+          <div class="location-detail">
+            <span class="location-detail-label">Email</span>
+            <div class="location-detail-value">
+              <a href="mailto:sales@blick.group">sales@blick.group</a>
+            </div>
+          </div>
+          <div class="location-detail">
+            <span class="location-detail-label">Hours</span>
+            <div class="location-detail-value">
+              <span class="location-hours">Monday&ndash;Friday, 8:30am&ndash;4:30pm</span>
+            </div>
+          </div>
+        </div>
+        <div class="location-divider"></div>
+        <div class="warehouses-heading">Warehouses</div>
+        <div class="warehouses-list">
+          <span class="warehouse-tag">Tullamarine VIC</span>
+          <span class="warehouse-tag">Wetherill Park NSW</span>
+          <span class="warehouse-tag">Pinkenba QLD</span>
+          <span class="warehouse-tag">Welshpool WA</span>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<!-- Pacific Islands -->
+<section class="pacific">
+  <div class="container">
+    <div class="pacific-header">
+      <div class="section-tag reveal">Pacific Islands</div>
+      <h2 class="reveal stagger-1">Pacific coverage</h2>
+      <p class="reveal stagger-2">Serviced through our AU and NZ offices with fast, reliable distribution across the Pacific region.</p>
+    </div>
+    <div class="pacific-grid">
+
+      <div class="pacific-block reveal stagger-1">
+        <div class="pacific-block-label">Serviced from Australia</div>
+        <h3>Papua New Guinea</h3>
+        <div class="pacific-contact-item">
+          <span class="pacific-contact-label">Phone</span>
+          <div class="pacific-contact-value">
+            <a href="tel:+61390685688">+61 3 9068 5688</a>
+            <a href="tel:+61862713575">+61 8 6271 3575</a>
+          </div>
+        </div>
+        <div class="pacific-divider"></div>
+        <div class="pacific-contact-item">
+          <span class="pacific-contact-label">Email</span>
+          <div class="pacific-contact-value">
+            <a href="mailto:sales@blick.group">sales@blick.group</a>
+          </div>
+        </div>
+      </div>
+
+      <div class="pacific-block reveal stagger-2">
+        <div class="pacific-block-label">Serviced from New Zealand</div>
+        <h3>Island Nations</h3>
+        <div class="pacific-islands-list">
+          <span class="pacific-island-tag">Fiji</span>
+          <span class="pacific-island-tag">Samoa</span>
+          <span class="pacific-island-tag">Tonga</span>
+          <span class="pacific-island-tag">New Caledonia</span>
+          <span class="pacific-island-tag">Vanuatu</span>
+          <span class="pacific-island-tag">Tahiti</span>
+        </div>
+        <div class="pacific-contact-item">
+          <span class="pacific-contact-label">Phone</span>
+          <div class="pacific-contact-value">
+            <a href="tel:+6478492366">+64 7 849 2366</a>
+          </div>
+        </div>
+        <div class="pacific-divider"></div>
+        <div class="pacific-contact-item">
+          <span class="pacific-contact-label">Email</span>
+          <div class="pacific-contact-value">
+            <a href="mailto:sales@blick.group">sales@blick.group</a>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<!-- Contact Form -->
+<section class="contact-form-section">
+  <div class="container">
+    <div class="contact-form-header">
+      <div class="section-tag reveal">Send a Message</div>
+      <h2 class="reveal stagger-1">Start the conversation</h2>
+      <p class="reveal stagger-2">Tell us what you&rsquo;re working on and one of our team will be in touch within one business day.</p>
+    </div>
+    <div class="contact-layout">
+
+      <form class="contact-form reveal" action="#" method="post" novalidate>
+        <div class="form-row">
+          <div class="form-field">
+            <label for="first-name">First Name</label>
+            <input type="text" id="first-name" name="first_name" placeholder="Jane" autocomplete="given-name">
+          </div>
+          <div class="form-field">
+            <label for="last-name">Last Name</label>
+            <input type="text" id="last-name" name="last_name" placeholder="Smith" autocomplete="family-name">
+          </div>
+        </div>
+        <div class="form-field">
+          <label for="company">Company</label>
+          <input type="text" id="company" name="company" placeholder="Your company name" autocomplete="organization">
+        </div>
+        <div class="form-field">
+          <label for="email">Email</label>
+          <input type="email" id="email" name="email" placeholder="jane@company.com" autocomplete="email">
+        </div>
+        <div class="form-field">
+          <label for="phone">Phone</label>
+          <input type="tel" id="phone" name="phone" placeholder="+64 or +61" autocomplete="tel">
+        </div>
+        <div class="form-field">
+          <label for="enquiry-type">What can we help with?</label>
+          <select id="enquiry-type" name="enquiry_type">
+            <option value="" disabled selected>Select a topic&hellip;</option>
+            <option value="drilling-fluids">Drilling Fluids</option>
+            <option value="hdd-trenchless">HDD &amp; Trenchless</option>
+            <option value="waterwell">Waterwell</option>
+            <option value="diamond-coring">Diamond Coring &amp; Geotech</option>
+            <option value="piling-construction">Piling &amp; Construction</option>
+            <option value="oilfield-geothermal">Oilfield &amp; Geothermal</option>
+            <option value="training-mud-school">Training / Mud School</option>
+            <option value="general">General Enquiry</option>
+          </select>
+        </div>
+        <div class="form-field">
+          <label for="message">Message</label>
+          <textarea id="message" name="message" rows="4" placeholder="Tell us about your project or question&hellip;"></textarea>
+        </div>
+        <div class="form-submit">
+          <button type="submit" class="btn btn-primary btn-submit">Send Message</button>
+          <p class="form-note">We&rsquo;ll respond within one business day. For urgent enquiries, call us directly.</p>
+        </div>
+      </form>
+
+      <aside class="contact-sidebar reveal stagger-1">
+        <div class="sidebar-block">
+          <div class="sidebar-label">New Zealand</div>
+          <div class="sidebar-detail">
+            <a href="tel:+6478492366">+64 7 849 2366</a>
+            <a href="mailto:sales@blick.group">sales@blick.group</a>
+            <span>Mon&ndash;Fri, 8:00am&ndash;4:00pm</span>
+          </div>
+        </div>
+        <div class="sidebar-block">
+          <div class="sidebar-label">Australia</div>
+          <div class="sidebar-detail">
+            <a href="tel:+61390685688">+61 3 9068 5688 &mdash; Melbourne</a>
+            <a href="tel:+61862713575">+61 8 6271 3575 &mdash; Perth</a>
+            <a href="mailto:sales@blick.group">sales@blick.group</a>
+            <span>Mon&ndash;Fri, 8:30am&ndash;4:30pm</span>
+          </div>
+        </div>
+        <div class="sidebar-block">
+          <div class="sidebar-label">Email</div>
+          <div class="sidebar-detail">
+            <a href="mailto:sales@blick.group">sales@blick.group</a>
+            <span>Response within one business day</span>
+          </div>
+        </div>
+        <div class="sidebar-block">
+          <p class="sidebar-team-note">Prefer to reach someone directly? <a href="team.html">Meet the team &rarr;</a></p>
+        </div>
+      </aside>
+
+    </div>
+  </div>
+</section>
+
+<!-- Footer -->
+<footer>
+  <div class="container">
+    <div class="footer-grid">
+      <div class="footer-brand">
+        <a href="index.html" class="footer-logo">
+          <img src="blick-logo.png" alt="Blick" style="height:32px;width:auto;">
+        </a>
+        <p>Australasia&rsquo;s leading drilling fluid solutions partner. Serving Australia, New Zealand, and the Pacific Islands.</p>
+      </div>
+      <div class="footer-col">
+        <h4>Industries</h4>
+        <ul>
+          <li><a href="services.html">HDD &amp; Trenchless</a></li>
+          <li><a href="services.html">Geotech &amp; Coring</a></li>
+          <li><a href="services.html">Waterwell</a></li>
+          <li><a href="services.html">Piling &amp; Construction</a></li>
+          <li><a href="services.html">Oilfield &amp; Geothermal</a></li>
+        </ul>
+      </div>
+      <div class="footer-col">
+        <h4>Solutions</h4>
+        <ul>
+          <li><a href="products.html">Blick Fluids</a></li>
+          <li><a href="products.html">Equipment &amp; Tooling</a></li>
+          <li><a href="products.html">Grease</a></li>
+          <li><a href="services.html">Fluid Design</a></li>
+          <li><a href="services.html">Mud Schools</a></li>
+        </ul>
+      </div>
+      <div class="footer-col">
+        <h4>Connect</h4>
+        <ul>
+          <li><a href="mailto:sales@blick.group">sales@blick.group</a></li>
+          <li><a href="tel:+6478492366">NZ: +64 7 849 2366</a></li>
+          <li><a href="tel:+61390685688">AU: +61 3 9068 5688</a></li>
+          <li><a href="team.html">The Team</a></li>
+          <li><a href="contact.html">Contact Us</a></li>
+        </ul>
+      </div>
+    </div>
+    <div class="footer-bottom">
+      <span>&copy; 2026 Blick Group. All rights reserved.</span>
+      <span>Australia &middot; New Zealand &middot; Pacific Islands</span>
+    </div>
+  </div>
+</footer>
+
+<script>
+  const reveals = document.querySelectorAll('.reveal');
+  const observer = new IntersectionObserver((entries) => {
+    entries.forEach(entry => { if (entry.isIntersecting) entry.target.classList.add('visible'); });
+  }, { threshold: 0.1, rootMargin: '0px 0px -60px 0px' });
+  reveals.forEach(el => observer.observe(el));
+
+  const nav = document.getElementById('nav');
+  window.addEventListener('scroll', () => nav.classList.toggle('scrolled', window.scrollY > 50));
+  if (window.scrollY > 50) nav.classList.add('scrolled');
+
+  document.querySelector('form.contact-form').addEventListener('submit', function(e) {
+    e.preventDefault();
+    window.location.href = 'mailto:sales@blick.group';
+  });
+</script>
+
+</body>
+</html>

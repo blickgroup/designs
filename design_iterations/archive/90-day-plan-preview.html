@@ -1,0 +1,666 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="light">
+  <head>
+    <meta charset="utf-8" />
+    <title>90-Day Plan Kanban</title>
+    <link rel="stylesheet" href="../../src/styles/themes.css" />
+    <style>
+      :root {
+        font-family: "Inter", system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI",
+          sans-serif;
+        background: var(--bg-page);
+        color: var(--text-primary);
+      }
+
+      body {
+        margin: 0;
+        padding: 32px;
+        background: var(--bg-page);
+        color: var(--text-primary);
+      }
+
+      header {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        flex-wrap: wrap;
+        gap: 16px;
+        margin-bottom: 28px;
+      }
+
+      header h1 {
+        margin: 0;
+        font-size: 22px;
+        color: var(--text-heading);
+      }
+
+      header p {
+        margin: 4px 0 0;
+        font-size: 14px;
+        color: var(--text-secondary);
+      }
+
+      .theme-toggle {
+        padding: 8px 18px;
+        border-radius: 999px;
+        border: 1px solid var(--border-default);
+        background: var(--bg-surface);
+        color: var(--text-primary);
+        cursor: pointer;
+        font-size: 14px;
+      }
+
+      .board {
+        display: grid;
+        grid-template-columns: repeat(5, minmax(200px, 1fr));
+        gap: 24px;
+        position: relative;
+      }
+
+      .board::after {
+        content: "";
+        position: absolute;
+        top: 0;
+        bottom: 0;
+        left: 0;
+        right: 0;
+        pointer-events: none;
+      }
+
+      .kanban-column {
+        position: relative;
+        display: flex;
+        flex-direction: column;
+        gap: 14px;
+        padding: 20px 16px 22px;
+        background: var(--bg-surface);
+        border-radius: 16px;
+        border: 1px solid var(--border-default);
+        box-shadow: 0 10px 25px rgba(15, 23, 42, 0.08);
+      }
+
+      .kanban-column:not(:last-child)::after {
+        content: "";
+        position: absolute;
+        top: 16px;
+        right: -12px;
+        bottom: 16px;
+        width: 2px;
+        background: var(--border-strong);
+        opacity: 0.25;
+        border-radius: 999px;
+      }
+
+      .kanban-column::before {
+        content: "";
+        position: absolute;
+        top: 0;
+        left: 20px;
+        right: 20px;
+        height: 4px;
+        border-radius: 999px;
+      }
+
+      .kanban-column[data-lane="defined"]::before {
+        background: rgba(34, 211, 238, 0.9);
+      }
+
+      .kanban-column[data-lane="in-motion"]::before {
+        background: rgba(59, 130, 246, 0.9);
+      }
+
+      .kanban-column[data-lane="implemented"]::before {
+        background: rgba(251, 191, 36, 0.95);
+      }
+
+      .kanban-column[data-lane="measured"]::before {
+        background: rgba(239, 83, 35, 0.9);
+      }
+
+      .kanban-column[data-lane="complete"]::before {
+        background: rgba(16, 185, 129, 0.9);
+      }
+
+      .column-header {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 8px;
+      }
+
+      .column-header h2 {
+        margin: 0;
+        font-size: 16px;
+        text-transform: uppercase;
+        letter-spacing: 0.14em;
+        color: var(--text-heading);
+      }
+
+      .column-count {
+        width: 28px;
+        height: 28px;
+        border-radius: 50%;
+        background: var(--bg-page);
+        border: 1px solid var(--border-default);
+        color: var(--text-secondary);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 12px;
+        font-weight: 600;
+      }
+
+      .column-guidance {
+        font-size: 12px;
+        color: var(--text-muted);
+        margin: -6px 0 4px;
+      }
+
+      .card {
+        border-radius: 14px;
+        border: 1px solid var(--border-strong);
+        background: var(--bg-surface-secondary);
+        display: flex;
+        flex-direction: column;
+        overflow: hidden;
+        box-shadow: 0 6px 16px rgba(15, 23, 42, 0.08);
+      }
+
+      details {
+        border: none;
+      }
+
+      .card summary {
+        list-style: none;
+        cursor: pointer;
+        padding: 16px 18px 14px;
+      }
+
+      .card summary::-webkit-details-marker {
+        display: none;
+      }
+
+      .card-header {
+        display: flex;
+        align-items: flex-start;
+        justify-content: space-between;
+        gap: 16px;
+      }
+
+      .stage-symbol {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        width: 48px;
+        height: 48px;
+        font-size: 28px;
+        transform: scaleX(-1);
+        background: var(--bg-surface);
+        border-radius: 14px;
+        box-shadow: 0 4px 8px rgba(15, 23, 42, 0.08) inset;
+      }
+
+      .stage-symbol.stage-late {
+        background: rgba(239, 68, 68, 0.15);
+        box-shadow: 0 0 0 2px rgba(239, 68, 68, 0.2);
+      }
+
+      .stage-symbol {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        width: 32px;
+        height: 32px;
+        margin-left: 8px;
+        font-size: 22px;
+        transform: scaleX(-1);
+      }
+
+      .card-title {
+        display: flex;
+        flex-direction: column;
+        gap: 4px;
+      }
+
+      .card-title h3 {
+        margin: 0;
+        font-size: 16px;
+        color: var(--text-heading);
+      }
+
+      .card-title span {
+        font-size: 12px;
+        color: var(--text-secondary);
+      }
+
+      .card details[open] {
+        border-top: 1px solid var(--border-default);
+        background: var(--bg-surface);
+      }
+
+      .card details[open] .card-body {
+        padding: 12px 18px 16px;
+        display: flex;
+        flex-direction: column;
+        gap: 10px;
+        font-size: 13px;
+        color: var(--text-secondary);
+      }
+
+      .card-body small {
+        font-size: 12px;
+        color: var(--text-muted);
+      }
+
+      footer {
+        margin-top: 32px;
+        font-size: 12px;
+        color: var(--text-muted);
+        display: flex;
+        gap: 12px;
+        align-items: center;
+        flex-wrap: wrap;
+      }
+
+      footer button {
+        border: 1px solid var(--border-default);
+        background: var(--bg-surface);
+        border-radius: 8px;
+        padding: 6px 12px;
+        font-size: 12px;
+        color: var(--text-secondary);
+        cursor: pointer;
+      }
+
+      @media (max-width: 1300px) {
+        .board {
+          grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+        }
+      }
+
+      @media (max-width: 900px) {
+        body {
+          padding: 24px 20px 28px;
+        }
+
+        header {
+          align-items: flex-start;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <header>
+      <div>
+        <h1>90-Day Plan Kanban</h1>
+        <p>Five swimlanes map the journey from definition to measurable outcomes. Animals mark the strategic window for each initiative.</p>
+      </div>
+      <button class="theme-toggle" onclick="toggleTheme()">Toggle theme</button>
+    </header>
+
+    <section class="board">
+      <div class="kanban-column" data-lane="defined">
+        <div class="column-header">
+          <h2>Defined</h2>
+          <span class="column-count">3</span>
+        </div>
+        <p class="column-guidance">Clarity gathered; ready for kickoff.</p>
+
+        <article class="card" data-stage="30">
+          <details>
+            <summary>
+              <div class="card-header">
+                <div class="card-title">
+                  <h3>Scope onboarding playbook</h3>
+                  <span>Owner: Maya</span>
+                </div>
+                <span class="stage-symbol" role="img" aria-label="30-day sprint rabbit">🐇</span>
+              </div>
+            </summary>
+            <div class="card-body">
+              <p>Translate discovery notes into a concise starter kit for regional teams.</p>
+              <small>Target: Day 18 · Stream: Customer Ops</small>
+            </div>
+          </details>
+        </article>
+
+        <article class="card" data-stage="30" data-slip="true">
+          <details>
+            <summary>
+              <div class="card-header">
+                <div class="card-title">
+                  <h3>Partner certification outline</h3>
+                  <span>Owner: Lee</span>
+                </div>
+                <span class="stage-symbol stage-late" role="img" aria-label="60-day camel">🐫</span>
+              </div>
+            </summary>
+            <div class="card-body">
+              <p>Rabbit sprint slipped; camel now owns expansion across partner tiers.</p>
+              <small>Rescheduled: Day 42 · Status: Spillover to 60-day cadence</small>
+            </div>
+          </details>
+        </article>
+
+        <article class="card" data-stage="60">
+          <details>
+            <summary>
+              <div class="card-header">
+                <div class="card-title">
+                  <h3>Executive comms campaign</h3>
+                  <span>Owner: Priya</span>
+                </div>
+                <span class="stage-symbol" role="img" aria-label="60-day camel">🐫</span>
+              </div>
+            </summary>
+            <div class="card-body">
+              <p>Storyboard leadership roadshow messaging with supporting visuals.</p>
+              <small>Target: Day 48 · Stream: Comms</small>
+            </div>
+          </details>
+        </article>
+      </div>
+
+      <div class="kanban-column" data-lane="in-motion">
+        <div class="column-header">
+          <h2>In Motion</h2>
+          <span class="column-count">4</span>
+        </div>
+        <p class="column-guidance">Active execution; blockers visible.</p>
+
+        <article class="card" data-stage="30">
+          <details>
+            <summary>
+              <div class="card-header">
+                <div class="card-title">
+                  <h3>Launch safety pulse survey</h3>
+                  <span>Owner: Sam</span>
+                </div>
+                <span class="stage-symbol" role="img" aria-label="30-day sprint rabbit">🐇</span>
+              </div>
+            </summary>
+            <div class="card-body">
+              <p>Weekly pulse capturing field sentiment across crews.</p>
+              <small>In market since Day 12 · Health &amp; Safety</small>
+            </div>
+          </details>
+        </article>
+
+        <article class="card" data-stage="60">
+          <details>
+            <summary>
+              <div class="card-header">
+                <div class="card-title">
+                  <h3>Integrate asset telemetry</h3>
+                  <span>Owner: Victor</span>
+                </div>
+                <span class="stage-symbol" role="img" aria-label="60-day camel">🐫</span>
+              </div>
+            </summary>
+            <div class="card-body">
+              <p>API rollout paced for crews with phased firmware updates.</p>
+              <small>Milestone: Day 44 · Platform</small>
+            </div>
+          </details>
+        </article>
+
+        <article class="card" data-stage="60" data-slip="true">
+          <details>
+            <summary>
+              <div class="card-header">
+                <div class="card-title">
+                  <h3>Field manager coaching pack</h3>
+                  <span>Owner: Alicia</span>
+                </div>
+                <span class="stage-symbol stage-late" role="img" aria-label="60-day camel">🐫</span>
+              </div>
+            </summary>
+            <div class="card-body">
+              <p>Second camel iteration approved for deeper practice scenarios.</p>
+              <small>Next checkpoint: Day 102 · Enablement</small>
+            </div>
+          </details>
+        </article>
+
+        <article class="card" data-stage="90">
+          <details>
+            <summary>
+              <div class="card-header">
+                <div class="card-title">
+                  <h3>North Star KPI instrumentation</h3>
+                  <span>Owner: Dana</span>
+                </div>
+                <span class="stage-symbol" role="img" aria-label="90-day tortoise">🐢</span>
+              </div>
+            </summary>
+            <div class="card-body">
+              <p>Analytics backbone providing multi-quarter visibility.</p>
+              <small>Phase 2 underway · Marker: Day 68</small>
+            </div>
+          </details>
+        </article>
+      </div>
+
+      <div class="kanban-column" data-lane="implemented">
+        <div class="column-header">
+          <h2>Implemented</h2>
+          <span class="column-count">3</span>
+        </div>
+        <p class="column-guidance">Build complete; awaiting validation.</p>
+
+        <article class="card" data-stage="60">
+          <details>
+            <summary>
+              <div class="card-header">
+                <div class="card-title">
+                  <h3>Incident triage dashboard</h3>
+                  <span>Owner: Josh</span>
+                </div>
+                <span class="stage-symbol" role="img" aria-label="60-day camel">🐫</span>
+              </div>
+            </summary>
+            <div class="card-body">
+              <p>Prototype live with ops leads for burn-in testing.</p>
+              <small>Deployed Day 61 · Ops Center</small>
+            </div>
+          </details>
+        </article>
+
+        <article class="card" data-stage="30" data-slip="true">
+          <details>
+            <summary>
+              <div class="card-header">
+                <div class="card-title">
+                  <h3>Mobile job hazard mapper</h3>
+                  <span>Owner: Priya</span>
+                </div>
+                <span class="stage-symbol stage-late" role="img" aria-label="90-day tortoise">🐢</span>
+              </div>
+            </summary>
+            <div class="card-body">
+              <p>Sprint uncovered scope creep; tortoise now shepherds expansion.</p>
+              <small>New target: Day 95 · Mobile</small>
+            </div>
+          </details>
+        </article>
+
+        <article class="card" data-stage="90">
+          <details>
+            <summary>
+              <div class="card-header">
+                <div class="card-title">
+                  <h3>AI-assisted audit summaries</h3>
+                  <span>Owner: Sam</span>
+                </div>
+                <span class="stage-symbol" role="img" aria-label="90-day tortoise">🐢</span>
+              </div>
+            </summary>
+            <div class="card-body">
+              <p>Gold-path scenarios cleared; compliance review pending.</p>
+              <small>Ready since Day 70 · Audit</small>
+            </div>
+          </details>
+        </article>
+      </div>
+
+      <div class="kanban-column" data-lane="measured">
+        <div class="column-header">
+          <h2>Measured</h2>
+          <span class="column-count">2</span>
+        </div>
+        <p class="column-guidance">Success metrics captured and reviewed.</p>
+
+        <article class="card" data-stage="60">
+          <details>
+            <summary>
+              <div class="card-header">
+                <div class="card-title">
+                  <h3>Predictive maintenance alerting</h3>
+                  <span>Owner: Victor</span>
+                </div>
+                <span class="stage-symbol" role="img" aria-label="60-day camel">🐫</span>
+              </div>
+            </summary>
+            <div class="card-body">
+              <p>Telemetry QA loop validating predictive signal accuracy.</p>
+              <small>Review: Day 78 · Telemetry</small>
+            </div>
+          </details>
+        </article>
+
+        <article class="card" data-stage="90" data-slip="true">
+          <details>
+            <summary>
+              <div class="card-header">
+                <div class="card-title">
+                  <h3>Quarterly culture benchmark</h3>
+                  <span>Owner: Dana</span>
+                </div>
+                <span class="stage-symbol stage-late" role="img" aria-label="90-day tortoise">🐢</span>
+              </div>
+            </summary>
+            <div class="card-body">
+              <p>Expanded sample size extends measurement into next quarter.</p>
+              <small>Next review: Day 135 · People Ops</small>
+            </div>
+          </details>
+        </article>
+      </div>
+
+      <div class="kanban-column" data-lane="complete">
+        <div class="column-header">
+          <h2>Complete</h2>
+          <span class="column-count">5</span>
+        </div>
+        <p class="column-guidance">Validated outcomes; behaviours sustained.</p>
+
+        <article class="card" data-stage="30">
+          <details>
+            <summary>
+              <div class="card-header">
+                <div class="card-title">
+                  <h3>Quick action bar redesign</h3>
+                  <span>Owner: Maya</span>
+                </div>
+                <span class="stage-symbol" role="img" aria-label="30-day sprint rabbit">🐇</span>
+              </div>
+            </summary>
+            <div class="card-body">
+              <p>Theme-compliant UI shipped with adoption proof.</p>
+              <small>Closed Day 19 · Frontend</small>
+            </div>
+          </details>
+        </article>
+
+        <article class="card" data-stage="60">
+          <details>
+            <summary>
+              <div class="card-header">
+                <div class="card-title">
+                  <h3>Service health scorecard</h3>
+                  <span>Owner: Sam</span>
+                </div>
+                <span class="stage-symbol" role="img" aria-label="60-day camel">🐫</span>
+              </div>
+            </summary>
+            <div class="card-body">
+              <p>Stable production metrics with agreed baselines.</p>
+              <small>Closed Day 73 · Reporting</small>
+            </div>
+          </details>
+        </article>
+
+        <article class="card" data-stage="30">
+          <details>
+            <summary>
+              <div class="card-header">
+                <div class="card-title">
+                  <h3>Ops onboarding refresh</h3>
+                  <span>Owner: Alicia</span>
+                </div>
+                <span class="stage-symbol" role="img" aria-label="30-day sprint rabbit">🐇</span>
+              </div>
+            </summary>
+            <div class="card-body">
+              <p>Workshops recorded and rolled out to operations.</p>
+              <small>Delivered Day 23 · Enablement</small>
+            </div>
+          </details>
+        </article>
+
+        <article class="card" data-stage="60">
+          <details>
+            <summary>
+              <div class="card-header">
+                <div class="card-title">
+                  <h3>Customer success simulator</h3>
+                  <span>Owner: Lee</span>
+                </div>
+                <span class="stage-symbol" role="img" aria-label="60-day camel">🐫</span>
+              </div>
+            </summary>
+            <div class="card-body">
+              <p>Scenario labs complete with reported adoption.</p>
+              <small>Delivered Day 66 · CX Simulation</small>
+            </div>
+          </details>
+        </article>
+
+        <article class="card" data-stage="90">
+          <details>
+            <summary>
+              <div class="card-header">
+                <div class="card-title">
+                  <h3>Leadership academy rollout</h3>
+                  <span>Owner: Dana</span>
+                </div>
+                <span class="stage-symbol" role="img" aria-label="90-day tortoise">🐢</span>
+              </div>
+            </summary>
+            <div class="card-body">
+              <p>Graduates certified across regions; program embedded.</p>
+              <small>Closed Day 88 · People Ops</small>
+            </div>
+          </details>
+        </article>
+      </div>
+    </section>
+
+    <footer>
+      <span>Legend:</span>
+      <button aria-label="30-day sprint">🐇 Sprint (30 days)</button>
+      <button aria-label="60-day cadence">🐫 Cadence (60 days)</button>
+      <button aria-label="90-day endurance">🐢 Endurance (90 days)</button>
+    </footer>
+
+    <script>
+      function toggleTheme() {
+        const root = document.documentElement;
+        root.setAttribute(
+          "data-theme",
+          root.getAttribute("data-theme") === "dark" ? "light" : "dark"
+        );
+      }
+    </script>
+  </body>
+</html>

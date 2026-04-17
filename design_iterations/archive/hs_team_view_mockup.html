@@ -1,0 +1,559 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="dark">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Health & Safety - Team View Mockup (Managers Only)</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+
+  <style>
+    /* Theme System */
+    :root, [data-theme="dark"] {
+      --brand-orange: #f05323;
+      --bg-primary: #212121;
+      --bg-secondary: #2a2a2a;
+      --bg-tertiary: #1a1a1a;
+      --bg-hover: #3a3a3a;
+      --text-primary: #bcbec0;
+      --text-secondary: #a0a0a0;
+      --text-heading: #ffffff;
+      --text-muted: #707070;
+      --border-default: #58595b;
+      --border-subtle: #404040;
+      --success: #10b981;
+      --success-light: #064e3b;
+      --warning: #f59e0b;
+      --warning-light: #451a03;
+      --danger: #ef4444;
+      --danger-light: #450a0a;
+      --card-bg: #2a2a2a;
+      --card-border: #58595b;
+    }
+
+    [data-theme="light"] {
+      --brand-orange: #f05323;
+      --bg-primary: #ffffff;
+      --bg-secondary: #f9fafb;
+      --bg-tertiary: #f3f4f6;
+      --bg-hover: #e5e7eb;
+      --text-primary: #111827;
+      --text-secondary: #6b7280;
+      --text-heading: #000000;
+      --text-muted: #9ca3af;
+      --border-default: #e5e7eb;
+      --border-subtle: #f3f4f6;
+      --success: #10b981;
+      --success-light: #d1fae5;
+      --warning: #f59e0b;
+      --warning-light: #fef3c7;
+      --danger: #ef4444;
+      --danger-light: #fee2e2;
+      --card-bg: #ffffff;
+      --card-border: #e5e7eb;
+    }
+
+    * { font-family: 'Inter', sans-serif; }
+    body { background: var(--bg-primary); color: var(--text-primary); }
+
+    .card {
+      background: var(--card-bg);
+      border: 1px solid var(--card-border);
+      border-radius: 12px;
+    }
+
+    .table-header {
+      background: var(--bg-tertiary);
+      border-bottom: 1px solid var(--border-default);
+    }
+
+    .table-row {
+      border-bottom: 1px solid var(--border-subtle);
+      transition: background 0.2s;
+    }
+    .table-row:hover {
+      background: var(--bg-hover);
+    }
+    .table-row:last-child {
+      border-bottom: none;
+    }
+
+    .expandable-section {
+      background: var(--card-bg);
+      border: 1px solid var(--card-border);
+      border-radius: 12px;
+      overflow: hidden;
+    }
+    .expandable-header {
+      padding: 16px 20px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      cursor: pointer;
+      transition: background 0.2s;
+    }
+    .expandable-header:hover {
+      background: var(--bg-hover);
+    }
+    .expandable-content {
+      border-top: 1px solid var(--border-subtle);
+      padding: 16px 20px;
+    }
+
+    .item-card {
+      background: var(--bg-secondary);
+      border: 1px solid var(--border-subtle);
+      border-radius: 8px;
+      padding: 16px;
+      margin-bottom: 12px;
+      transition: all 0.2s;
+    }
+    .item-card:hover {
+      border-color: var(--brand-orange);
+    }
+
+    .badge {
+      display: inline-flex;
+      align-items: center;
+      padding: 4px 10px;
+      border-radius: 9999px;
+      font-size: 11px;
+      font-weight: 600;
+      text-transform: uppercase;
+    }
+    .badge-danger {
+      background: var(--danger-light);
+      color: var(--danger);
+    }
+    .badge-warning {
+      background: var(--warning-light);
+      color: var(--warning);
+    }
+    .badge-success {
+      background: var(--success-light);
+      color: var(--success);
+    }
+
+    .btn-primary {
+      background: var(--brand-orange);
+      color: white;
+      padding: 8px 16px;
+      border-radius: 8px;
+      font-weight: 600;
+      font-size: 13px;
+      border: none;
+      cursor: pointer;
+      transition: all 0.2s;
+    }
+    .btn-primary:hover {
+      filter: brightness(1.1);
+    }
+
+    .btn-secondary {
+      background: transparent;
+      color: var(--text-primary);
+      padding: 8px 16px;
+      border-radius: 8px;
+      font-weight: 500;
+      font-size: 13px;
+      border: 1px solid var(--border-default);
+      cursor: pointer;
+      transition: all 0.2s;
+    }
+    .btn-secondary:hover {
+      background: var(--bg-hover);
+      border-color: var(--brand-orange);
+    }
+
+    .tab-active {
+      background: var(--brand-orange);
+      color: white;
+    }
+    .tab-inactive {
+      background: var(--bg-secondary);
+      color: var(--text-primary);
+      border: 1px solid var(--border-default);
+    }
+
+    .progress-bar {
+      height: 8px;
+      border-radius: 4px;
+      background: var(--bg-tertiary);
+      overflow: hidden;
+    }
+    .progress-bar-fill {
+      height: 100%;
+      border-radius: 4px;
+      transition: width 0.3s ease;
+    }
+
+    .avatar {
+      width: 36px;
+      height: 36px;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-weight: 600;
+      font-size: 14px;
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Theme Toggle -->
+  <div style="position: fixed; top: 20px; right: 20px; z-index: 1000;">
+    <button onclick="toggleTheme()" class="btn-secondary" style="display: flex; align-items: center; gap: 8px;">
+      <span>&#9790;</span>
+      <span>Toggle Theme</span>
+    </button>
+  </div>
+
+  <!-- Main Layout -->
+  <div style="display: flex; min-height: 100vh;">
+
+    <!-- Sidebar (simplified) -->
+    <aside style="width: 260px; background: var(--bg-tertiary); border-right: 1px solid var(--border-default); padding: 24px 16px;">
+      <div style="display: flex; align-items: center; gap: 12px; margin-bottom: 32px;">
+        <div style="width: 40px; height: 40px; background: var(--brand-orange); border-radius: 8px; display: flex; align-items: center; justify-content: center;">
+          <span style="color: white; font-weight: 700; font-size: 18px;">B</span>
+        </div>
+        <span style="color: var(--text-heading); font-weight: 700; font-size: 18px;">Blick Hub</span>
+      </div>
+
+      <nav style="display: flex; flex-direction: column; gap: 4px;">
+        <a href="#" style="padding: 12px 16px; border-radius: 8px; color: var(--text-secondary); text-decoration: none; display: flex; align-items: center; gap: 12px;">
+          <span>&#128200;</span> Dashboard
+        </a>
+        <a href="#" style="padding: 12px 16px; border-radius: 8px; color: var(--text-secondary); text-decoration: none; display: flex; align-items: center; gap: 12px;">
+          <span>&#128736;</span> Customer Rigs
+        </a>
+        <a href="#" style="padding: 12px 16px; border-radius: 8px; background: var(--brand-orange); color: white; text-decoration: none; display: flex; align-items: center; gap: 12px;">
+          <span>&#128737;</span> Health & Safety
+        </a>
+      </nav>
+    </aside>
+
+    <!-- Main Content -->
+    <main style="flex: 1; padding: 32px; max-width: 1100px;">
+
+      <!-- Header -->
+      <div style="margin-bottom: 24px;">
+        <h1 style="color: var(--text-heading); font-size: 28px; font-weight: 700; margin-bottom: 8px;">
+          Health & Safety - Team View
+        </h1>
+        <p style="color: var(--text-secondary);">Manage your team's safety compliance</p>
+      </div>
+
+      <!-- Tabs -->
+      <div style="display: flex; gap: 8px; margin-bottom: 32px;">
+        <button class="tab-inactive" style="padding: 10px 20px; border-radius: 8px; font-weight: 600; cursor: pointer;">
+          Forms
+        </button>
+        <button class="tab-inactive" style="padding: 10px 20px; border-radius: 8px; font-weight: 600; cursor: pointer;">
+          My Dashboard
+        </button>
+        <button class="tab-active" style="padding: 10px 20px; border-radius: 8px; font-weight: 600; cursor: pointer; border: none;">
+          Team
+        </button>
+      </div>
+
+      <!-- Filters -->
+      <div style="display: flex; gap: 16px; margin-bottom: 24px; flex-wrap: wrap; align-items: center;">
+        <select style="background: var(--bg-secondary); border: 1px solid var(--border-default); border-radius: 8px; padding: 10px 16px; color: var(--text-primary); font-size: 14px; min-width: 180px;">
+          <option>All Team Members</option>
+          <option>Sarah Johnson</option>
+          <option>Mike Chen</option>
+          <option>Emma Wilson</option>
+          <option>Tim Babbage</option>
+          <option>Chris Thomas</option>
+        </select>
+        <select style="background: var(--bg-secondary); border: 1px solid var(--border-default); border-radius: 8px; padding: 10px 16px; color: var(--text-primary); font-size: 14px; min-width: 140px;">
+          <option>All Status</option>
+          <option>Open</option>
+          <option>In Progress</option>
+          <option>Closed</option>
+          <option>Overdue</option>
+        </select>
+        <select style="background: var(--bg-secondary); border: 1px solid var(--border-default); border-radius: 8px; padding: 10px 16px; color: var(--text-primary); font-size: 14px; min-width: 150px;">
+          <option>Last 30 days</option>
+          <option>Last 7 days</option>
+          <option>Last 90 days</option>
+          <option>Custom range</option>
+        </select>
+        <div style="flex: 1;"></div>
+        <button class="btn-secondary" style="display: flex; align-items: center; gap: 8px;">
+          <span>&#128190;</span> Export CSV
+        </button>
+      </div>
+
+      <!-- Team Overview Table -->
+      <div class="card" style="margin-bottom: 32px;">
+        <div style="padding: 20px; border-bottom: 1px solid var(--border-subtle);">
+          <h2 style="color: var(--text-heading); font-size: 18px; font-weight: 700;">Team Overview</h2>
+        </div>
+
+        <div style="overflow-x: auto;">
+          <table style="width: 100%; border-collapse: collapse;">
+            <thead>
+              <tr class="table-header">
+                <th style="text-align: left; padding: 14px 20px; color: var(--text-muted); font-size: 12px; font-weight: 600; text-transform: uppercase; letter-spacing: 0.5px;">Staff Member</th>
+                <th style="text-align: center; padding: 14px 16px; color: var(--text-muted); font-size: 12px; font-weight: 600; text-transform: uppercase; letter-spacing: 0.5px;">Pending</th>
+                <th style="text-align: center; padding: 14px 16px; color: var(--text-muted); font-size: 12px; font-weight: 600; text-transform: uppercase; letter-spacing: 0.5px;">Overdue</th>
+                <th style="text-align: center; padding: 14px 16px; color: var(--text-muted); font-size: 12px; font-weight: 600; text-transform: uppercase; letter-spacing: 0.5px;">Completed (30d)</th>
+                <th style="text-align: center; padding: 14px 16px; color: var(--text-muted); font-size: 12px; font-weight: 600; text-transform: uppercase; letter-spacing: 0.5px;">Rate</th>
+                <th style="text-align: right; padding: 14px 20px; color: var(--text-muted); font-size: 12px; font-weight: 600; text-transform: uppercase; letter-spacing: 0.5px;">Action</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr class="table-row">
+                <td style="padding: 16px 20px;">
+                  <div style="display: flex; align-items: center; gap: 12px;">
+                    <div class="avatar" style="background: #3b82f6; color: white;">SJ</div>
+                    <span style="color: var(--text-heading); font-weight: 500;">Sarah Johnson</span>
+                  </div>
+                </td>
+                <td style="text-align: center; padding: 16px; color: var(--text-primary); font-weight: 600;">3</td>
+                <td style="text-align: center; padding: 16px;">
+                  <span style="color: var(--danger); font-weight: 600;">1</span>
+                </td>
+                <td style="text-align: center; padding: 16px; color: var(--text-primary);">12</td>
+                <td style="text-align: center; padding: 16px;">
+                  <div style="display: flex; align-items: center; gap: 8px; justify-content: center;">
+                    <div class="progress-bar" style="width: 60px;">
+                      <div class="progress-bar-fill" style="width: 92%; background: var(--success);"></div>
+                    </div>
+                    <span style="color: var(--success); font-weight: 600; font-size: 13px;">92%</span>
+                  </div>
+                </td>
+                <td style="text-align: right; padding: 16px 20px;">
+                  <button class="btn-secondary" style="font-size: 12px; padding: 6px 12px;">View</button>
+                </td>
+              </tr>
+
+              <tr class="table-row">
+                <td style="padding: 16px 20px;">
+                  <div style="display: flex; align-items: center; gap: 12px;">
+                    <div class="avatar" style="background: #8b5cf6; color: white;">MC</div>
+                    <span style="color: var(--text-heading); font-weight: 500;">Mike Chen</span>
+                  </div>
+                </td>
+                <td style="text-align: center; padding: 16px; color: var(--text-primary); font-weight: 600;">2</td>
+                <td style="text-align: center; padding: 16px; color: var(--text-muted);">0</td>
+                <td style="text-align: center; padding: 16px; color: var(--text-primary);">8</td>
+                <td style="text-align: center; padding: 16px;">
+                  <div style="display: flex; align-items: center; gap: 8px; justify-content: center;">
+                    <div class="progress-bar" style="width: 60px;">
+                      <div class="progress-bar-fill" style="width: 100%; background: var(--success);"></div>
+                    </div>
+                    <span style="color: var(--success); font-weight: 600; font-size: 13px;">100%</span>
+                  </div>
+                </td>
+                <td style="text-align: right; padding: 16px 20px;">
+                  <button class="btn-secondary" style="font-size: 12px; padding: 6px 12px;">View</button>
+                </td>
+              </tr>
+
+              <tr class="table-row">
+                <td style="padding: 16px 20px;">
+                  <div style="display: flex; align-items: center; gap: 12px;">
+                    <div class="avatar" style="background: #ec4899; color: white;">EW</div>
+                    <span style="color: var(--text-heading); font-weight: 500;">Emma Wilson</span>
+                  </div>
+                </td>
+                <td style="text-align: center; padding: 16px; color: var(--text-primary); font-weight: 600;">4</td>
+                <td style="text-align: center; padding: 16px;">
+                  <span style="color: var(--danger); font-weight: 600;">2</span>
+                </td>
+                <td style="text-align: center; padding: 16px; color: var(--text-primary);">15</td>
+                <td style="text-align: center; padding: 16px;">
+                  <div style="display: flex; align-items: center; gap: 8px; justify-content: center;">
+                    <div class="progress-bar" style="width: 60px;">
+                      <div class="progress-bar-fill" style="width: 88%; background: var(--warning);"></div>
+                    </div>
+                    <span style="color: var(--warning); font-weight: 600; font-size: 13px;">88%</span>
+                  </div>
+                </td>
+                <td style="text-align: right; padding: 16px 20px;">
+                  <button class="btn-secondary" style="font-size: 12px; padding: 6px 12px;">View</button>
+                </td>
+              </tr>
+
+              <tr class="table-row">
+                <td style="padding: 16px 20px;">
+                  <div style="display: flex; align-items: center; gap: 12px;">
+                    <div class="avatar" style="background: #14b8a6; color: white;">TB</div>
+                    <span style="color: var(--text-heading); font-weight: 500;">Tim Babbage</span>
+                  </div>
+                </td>
+                <td style="text-align: center; padding: 16px; color: var(--text-primary); font-weight: 600;">1</td>
+                <td style="text-align: center; padding: 16px; color: var(--text-muted);">0</td>
+                <td style="text-align: center; padding: 16px; color: var(--text-primary);">6</td>
+                <td style="text-align: center; padding: 16px;">
+                  <div style="display: flex; align-items: center; gap: 8px; justify-content: center;">
+                    <div class="progress-bar" style="width: 60px;">
+                      <div class="progress-bar-fill" style="width: 100%; background: var(--success);"></div>
+                    </div>
+                    <span style="color: var(--success); font-weight: 600; font-size: 13px;">100%</span>
+                  </div>
+                </td>
+                <td style="text-align: right; padding: 16px 20px;">
+                  <button class="btn-secondary" style="font-size: 12px; padding: 6px 12px;">View</button>
+                </td>
+              </tr>
+
+              <tr class="table-row">
+                <td style="padding: 16px 20px;">
+                  <div style="display: flex; align-items: center; gap: 12px;">
+                    <div class="avatar" style="background: #f59e0b; color: white;">CT</div>
+                    <span style="color: var(--text-heading); font-weight: 500;">Chris Thomas</span>
+                  </div>
+                </td>
+                <td style="text-align: center; padding: 16px; color: var(--text-primary); font-weight: 600;">0</td>
+                <td style="text-align: center; padding: 16px; color: var(--text-muted);">0</td>
+                <td style="text-align: center; padding: 16px; color: var(--text-primary);">4</td>
+                <td style="text-align: center; padding: 16px;">
+                  <div style="display: flex; align-items: center; gap: 8px; justify-content: center;">
+                    <div class="progress-bar" style="width: 60px;">
+                      <div class="progress-bar-fill" style="width: 100%; background: var(--success);"></div>
+                    </div>
+                    <span style="color: var(--success); font-weight: 600; font-size: 13px;">100%</span>
+                  </div>
+                </td>
+                <td style="text-align: right; padding: 16px 20px;">
+                  <button class="btn-secondary" style="font-size: 12px; padding: 6px 12px;">View</button>
+                </td>
+              </tr>
+
+              <!-- Total Row -->
+              <tr style="background: var(--bg-tertiary);">
+                <td style="padding: 16px 20px;">
+                  <span style="color: var(--text-heading); font-weight: 700;">TOTAL</span>
+                </td>
+                <td style="text-align: center; padding: 16px; color: var(--text-heading); font-weight: 700;">10</td>
+                <td style="text-align: center; padding: 16px;">
+                  <span style="color: var(--danger); font-weight: 700;">3</span>
+                </td>
+                <td style="text-align: center; padding: 16px; color: var(--text-heading); font-weight: 700;">45</td>
+                <td style="text-align: center; padding: 16px;">
+                  <span style="color: var(--success); font-weight: 700;">93%</span>
+                </td>
+                <td></td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+
+      <!-- Per-Person Expandable Sections -->
+      <div style="display: flex; flex-direction: column; gap: 16px;">
+
+        <!-- Sarah Johnson (Expanded) -->
+        <div class="expandable-section">
+          <div class="expandable-header">
+            <div style="display: flex; align-items: center; gap: 12px;">
+              <span style="color: var(--brand-orange);">&#9660;</span>
+              <div class="avatar" style="background: #3b82f6; color: white; width: 32px; height: 32px; font-size: 12px;">SJ</div>
+              <span style="color: var(--text-heading); font-weight: 600;">Sarah Johnson</span>
+              <span class="badge badge-danger">3 pending</span>
+              <span class="badge badge-danger">1 overdue</span>
+            </div>
+          </div>
+          <div class="expandable-content">
+
+            <!-- Overdue Item -->
+            <div class="item-card" style="border-left: 3px solid var(--danger);">
+              <div style="display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 12px;">
+                <div>
+                  <div style="display: flex; align-items: center; gap: 8px; margin-bottom: 4px;">
+                    <span style="font-size: 16px;">&#9888;&#65039;</span>
+                    <span style="color: var(--text-heading); font-weight: 600;">Review SWMS</span>
+                  </div>
+                  <div style="color: var(--text-secondary); font-size: 13px;">Assigned by: You | Due: Yesterday | Priority: High</div>
+                </div>
+                <span class="badge badge-danger">OVERDUE</span>
+              </div>
+              <div style="display: flex; gap: 8px;">
+                <button class="btn-secondary" style="font-size: 12px; padding: 6px 12px;">View</button>
+                <button class="btn-secondary" style="font-size: 12px; padding: 6px 12px;">Send Reminder</button>
+                <button class="btn-secondary" style="font-size: 12px; padding: 6px 12px;">Reassign</button>
+                <button class="btn-primary" style="font-size: 12px; padding: 6px 12px;">Mark Complete</button>
+              </div>
+            </div>
+
+            <!-- Pending Item -->
+            <div class="item-card">
+              <div style="display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 12px;">
+                <div>
+                  <div style="display: flex; align-items: center; gap: 8px; margin-bottom: 4px;">
+                    <span style="font-size: 16px;">&#128203;</span>
+                    <span style="color: var(--text-heading); font-weight: 600;">Complete hazard assessment</span>
+                  </div>
+                  <div style="color: var(--text-secondary); font-size: 13px;">Assigned by: Mike C | Due: 3 days | Priority: Medium</div>
+                </div>
+                <span class="badge badge-warning">PENDING</span>
+              </div>
+              <div style="display: flex; gap: 8px;">
+                <button class="btn-secondary" style="font-size: 12px; padding: 6px 12px;">View</button>
+                <button class="btn-secondary" style="font-size: 12px; padding: 6px 12px;">Reassign</button>
+              </div>
+            </div>
+
+          </div>
+        </div>
+
+        <!-- Mike Chen (Collapsed) -->
+        <div class="expandable-section">
+          <div class="expandable-header">
+            <div style="display: flex; align-items: center; gap: 12px;">
+              <span style="color: var(--text-muted);">&#9654;</span>
+              <div class="avatar" style="background: #8b5cf6; color: white; width: 32px; height: 32px; font-size: 12px;">MC</div>
+              <span style="color: var(--text-heading); font-weight: 600;">Mike Chen</span>
+              <span style="background: var(--bg-secondary); color: var(--text-secondary); padding: 2px 8px; border-radius: 9999px; font-size: 12px; font-weight: 600;">2 pending</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- Emma Wilson (Collapsed) -->
+        <div class="expandable-section">
+          <div class="expandable-header">
+            <div style="display: flex; align-items: center; gap: 12px;">
+              <span style="color: var(--text-muted);">&#9654;</span>
+              <div class="avatar" style="background: #ec4899; color: white; width: 32px; height: 32px; font-size: 12px;">EW</div>
+              <span style="color: var(--text-heading); font-weight: 600;">Emma Wilson</span>
+              <span class="badge badge-danger">4 pending</span>
+              <span class="badge badge-danger">2 overdue</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- Tim Babbage (Collapsed) -->
+        <div class="expandable-section">
+          <div class="expandable-header">
+            <div style="display: flex; align-items: center; gap: 12px;">
+              <span style="color: var(--text-muted);">&#9654;</span>
+              <div class="avatar" style="background: #14b8a6; color: white; width: 32px; height: 32px; font-size: 12px;">TB</div>
+              <span style="color: var(--text-heading); font-weight: 600;">Tim Babbage</span>
+              <span style="background: var(--bg-secondary); color: var(--text-secondary); padding: 2px 8px; border-radius: 9999px; font-size: 12px; font-weight: 600;">1 pending</span>
+            </div>
+          </div>
+        </div>
+
+      </div>
+
+    </main>
+  </div>
+
+  <script>
+    function toggleTheme() {
+      const html = document.documentElement;
+      const currentTheme = html.getAttribute('data-theme');
+      const newTheme = currentTheme === 'dark' ? 'light' : 'dark';
+      html.setAttribute('data-theme', newTheme);
+    }
+  </script>
+
+</body>
+</html>

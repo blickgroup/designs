@@ -1,0 +1,484 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Compass - 90-Day Plan - Blick Hub</title>
+
+    <!-- Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Montserrat:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+
+    <!-- Lucide Icons -->
+    <script src="https://unpkg.com/lucide@latest"></script>
+
+    <!-- Custom Theme -->
+    <link rel="stylesheet" href="blick_hub_white_theme_muted.css">
+
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        'brand-orange': '#f05323',
+                        'brand-dark-gray': '#58595b',
+                        'brand-light-gray': '#bcbec0',
+                        'brand-black': '#212121',
+                        'brand-charcoal': '#2a2a2a',
+                        'brand-cyan': '#22d3ee',
+                    },
+                    fontFamily: {
+                        sans: ['Inter', 'Montserrat', 'sans-serif'],
+                    },
+                }
+            }
+        }
+    </script>
+
+    <style>
+        body {
+            font-family: 'Inter', 'Montserrat', sans-serif !important;
+            letter-spacing: -0.01em;
+        }
+
+        /* Sidebar animation */
+        .sidebar {
+            transform: translateX(-100%);
+            transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        .sidebar.open {
+            transform: translateX(0);
+        }
+
+        /* Overlay animation */
+        .overlay {
+            opacity: 0;
+            pointer-events: none;
+            transition: opacity 0.2s ease-out;
+        }
+
+        .overlay.active {
+            opacity: 1;
+            pointer-events: all;
+        }
+
+        /* Nav item subtle hover */
+        .nav-item {
+            transition: all 0.15s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        .nav-item:hover {
+            background-color: #f9fafb;
+        }
+
+        .nav-item.active {
+            background-color: #fef2f2;
+            color: #f05323;
+            font-weight: 500;
+        }
+
+        /* Button animations */
+        .btn {
+            transition: all 0.15s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        .btn:hover {
+            transform: translateY(-1px);
+        }
+
+        .btn:active {
+            transform: translateY(0);
+        }
+
+        /* Badge pulse */
+        @keyframes pulse-subtle {
+            0%, 100% {
+                opacity: 1;
+            }
+            50% {
+                opacity: 0.9;
+            }
+        }
+
+        .badge-pulse {
+            animation: pulse-subtle 3s cubic-bezier(0.4, 0, 0.6, 1) infinite;
+        }
+
+        /* Tab navigation */
+        .tab-button {
+            transition: all 0.15s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        .tab-button.active {
+            background-color: #f05323;
+            color: white;
+        }
+
+        /* Deliverable card hover */
+        .deliverable-card {
+            transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        .deliverable-card:hover {
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+            transform: translateY(-2px);
+        }
+
+        /* Progress bar animation */
+        .progress-fill {
+            transition: width 0.6s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        /* Sparkler animation */
+        @keyframes sparkle {
+            0%, 100% {
+                transform: scale(1);
+                opacity: 1;
+            }
+            50% {
+                transform: scale(1.2);
+                opacity: 0.8;
+            }
+        }
+
+        .sparkle {
+            animation: sparkle 1s cubic-bezier(0.4, 0, 0.2, 1) infinite;
+        }
+    </style>
+</head>
+<body class="bg-gray-50">
+    <!-- Overlay -->
+    <div id="overlay" class="overlay fixed inset-0 bg-black bg-opacity-20 z-30" onclick="toggleSidebar()"></div>
+
+    <!-- Sidebar -->
+    <aside id="sidebar" class="sidebar fixed top-0 left-0 h-full w-64 bg-white border-r border-gray-200 z-40 flex flex-col shadow-lg">
+        <!-- Sidebar Header -->
+        <div class="flex items-center justify-between p-5 h-16 border-b border-gray-100">
+            <div class="flex items-center gap-2">
+                <div class="w-8 h-8 bg-brand-orange rounded-lg flex items-center justify-center">
+                    <span class="text-white font-bold text-sm">B</span>
+                </div>
+                <h1 class="text-lg font-semibold text-gray-900">Blick Hub</h1>
+            </div>
+            <button onclick="toggleSidebar()" class="text-gray-400 hover:text-gray-600 transition-colors">
+                <i data-lucide="x" class="w-5 h-5"></i>
+            </button>
+        </div>
+
+        <!-- Navigation -->
+        <nav class="p-3 space-y-1 flex-1">
+            <a href="#" class="nav-item block px-3 py-2.5 rounded-lg text-sm text-gray-600">
+                <div class="flex items-center gap-3">
+                    <i data-lucide="layout-dashboard" class="w-4 h-4"></i>
+                    <span>Dashboard</span>
+                </div>
+            </a>
+            <a href="#" class="nav-item block px-3 py-2.5 rounded-lg text-sm text-gray-600">
+                <div class="flex items-center gap-3">
+                    <i data-lucide="truck" class="w-4 h-4"></i>
+                    <span>Customer Rigs</span>
+                </div>
+            </a>
+            <a href="#" class="nav-item block px-3 py-2.5 rounded-lg text-sm text-gray-600 relative">
+                <div class="flex items-center gap-3">
+                    <i data-lucide="shield-check" class="w-4 h-4"></i>
+                    <span>Health & Safety</span>
+                    <span class="badge-pulse ml-auto inline-flex items-center justify-center w-5 h-5 text-xs font-semibold text-white bg-brand-orange rounded-full">
+                        3
+                    </span>
+                </div>
+            </a>
+            <a href="#" class="nav-item active block px-3 py-2.5 rounded-lg text-sm">
+                <div class="flex items-center gap-3">
+                    <i data-lucide="compass" class="w-4 h-4"></i>
+                    <span>Compass</span>
+                </div>
+            </a>
+            <a href="#" class="nav-item block px-3 py-2.5 rounded-lg text-sm text-gray-600">
+                <div class="flex items-center gap-3">
+                    <i data-lucide="bot" class="w-4 h-4"></i>
+                    <span>AI Agent</span>
+                </div>
+            </a>
+        </nav>
+
+        <!-- Sidebar Footer -->
+        <div class="p-4 border-t border-gray-100 space-y-3">
+            <div class="flex items-center gap-3 px-2">
+                <div class="w-8 h-8 bg-gray-100 text-gray-600 rounded-full flex items-center justify-center text-xs font-semibold">
+                    JS
+                </div>
+                <div class="flex-1 min-w-0">
+                    <div class="text-sm font-medium text-gray-900 truncate">John Smith</div>
+                    <div class="text-xs text-gray-500">Administrator</div>
+                </div>
+            </div>
+            <div class="text-center text-xs text-gray-400">
+                v1.4.0
+            </div>
+        </div>
+    </aside>
+
+    <!-- Main Content -->
+    <div class="min-h-screen flex flex-col">
+        <!-- Header -->
+        <header class="bg-white border-b border-gray-100 h-14 flex items-center justify-between px-5 sticky top-0 z-20">
+            <button onclick="toggleSidebar()" class="text-gray-400 hover:text-gray-600 transition-colors">
+                <i data-lucide="menu" class="w-5 h-5"></i>
+            </button>
+            <div class="flex items-center gap-3">
+                <button class="text-gray-400 hover:text-gray-600 transition-colors">
+                    <i data-lucide="bell" class="w-5 h-5"></i>
+                </button>
+                <button class="text-gray-400 hover:text-gray-600 transition-colors">
+                    <i data-lucide="sun" class="w-5 h-5"></i>
+                </button>
+            </div>
+        </header>
+
+        <!-- Main Content Area -->
+        <main class="flex-1 p-6 md:p-8">
+            <div class="max-w-7xl mx-auto w-full">
+                <!-- Page Header -->
+                <div class="mb-6">
+                    <h1 class="text-2xl font-semibold text-gray-900 mb-1">Compass</h1>
+                    <p class="text-sm text-gray-500">Strategic planning and execution</p>
+                </div>
+
+                <!-- Tab Navigation -->
+                <div class="flex gap-2 mb-6 border-b border-gray-200 pb-2">
+                    <button class="tab-button px-4 py-2 text-sm font-medium text-gray-600 rounded-lg hover:bg-gray-100">
+                        Ideas
+                    </button>
+                    <button class="tab-button active px-4 py-2 text-sm font-medium rounded-lg">
+                        90-Day Plan
+                    </button>
+                    <button class="tab-button px-4 py-2 text-sm font-medium text-gray-600 rounded-lg hover:bg-gray-100">
+                        Tickets
+                    </button>
+                </div>
+
+                <!-- 90-Day Plan Header -->
+                <div class="bg-white rounded-xl border border-gray-200 p-6 mb-6">
+                    <div class="flex items-start justify-between mb-4">
+                        <div>
+                            <h2 class="text-lg font-semibold text-gray-900 mb-1">90-Day Business Plan</h2>
+                            <p class="text-sm text-gray-500">Activities are promoted from Ideas → drag cards to update status</p>
+                        </div>
+                        <select class="px-3 py-2 border border-gray-200 rounded-lg text-sm text-gray-700 bg-white hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-brand-orange">
+                            <option>All Goals</option>
+                            <option>Market Expansion - Q4 2025</option>
+                            <option>Customer Success & Retention</option>
+                        </select>
+                    </div>
+
+                    <!-- Progress Bar -->
+                    <div class="mb-6">
+                        <div class="flex items-center justify-between mb-2">
+                            <span class="text-sm font-medium text-gray-700">Day 15 of 90</span>
+                            <span class="text-sm font-semibold text-gray-900">17%</span>
+                        </div>
+                        <div class="relative h-2 bg-gray-200 rounded-full overflow-hidden">
+                            <div class="progress-fill absolute top-0 left-0 h-full bg-gray-900 rounded-full" style="width: 17%"></div>
+                            <!-- Sparkle indicator -->
+                            <div class="absolute top-1/2 -translate-y-1/2 w-3 h-3 bg-brand-orange rounded-full sparkle" style="left: 17%; margin-left: -6px;"></div>
+                        </div>
+                    </div>
+
+                    <!-- Goal Chips -->
+                    <div class="flex flex-wrap gap-2">
+                        <div class="inline-flex items-center gap-2 px-3 py-1.5 bg-red-50 border border-red-200 rounded-lg text-sm">
+                            <div class="w-2 h-2 bg-red-500 rounded-full"></div>
+                            <span class="text-gray-900 font-medium">Market Expansion - Q4 2025</span>
+                        </div>
+                        <div class="inline-flex items-center gap-2 px-3 py-1.5 bg-orange-50 border border-orange-200 rounded-lg text-sm">
+                            <div class="w-2 h-2 bg-orange-500 rounded-full"></div>
+                            <span class="text-gray-900 font-medium">Customer Success & Retention</span>
+                        </div>
+                        <div class="inline-flex items-center gap-2 px-3 py-1.5 bg-green-50 border border-green-200 rounded-lg text-sm">
+                            <div class="w-2 h-2 bg-green-500 rounded-full"></div>
+                            <span class="text-gray-900 font-medium">Q3 2025 Completed Plan 🎉</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Kanban Board -->
+                <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-5 gap-4">
+                    <!-- To Do Column -->
+                    <div class="bg-white rounded-lg border border-gray-200 overflow-hidden">
+                        <div class="border-t-4 border-gray-500 bg-gray-100 px-4 py-3 flex items-center justify-between">
+                            <h3 class="text-sm font-semibold text-gray-900">To Do</h3>
+                            <span class="text-xs font-medium text-gray-500 bg-white px-2 py-0.5 rounded-full">1</span>
+                        </div>
+                        <div class="p-3 space-y-3">
+                            <!-- Deliverable Card -->
+                            <div class="deliverable-card bg-white border border-gray-200 rounded-lg p-3 cursor-move">
+                                <div class="flex items-start justify-between mb-2">
+                                    <h4 class="text-sm font-medium text-gray-900 leading-snug">Develop partnership with industry leader</h4>
+                                </div>
+                                <div class="mb-2">
+                                    <span class="inline-block px-2 py-0.5 bg-red-50 border border-red-200 rounded text-xs text-gray-700">Market Expansion</span>
+                                </div>
+                                <div class="flex items-center gap-2 text-xs text-gray-500">
+                                    <i data-lucide="user" class="w-3 h-3"></i>
+                                    <span>John</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- In Progress Column -->
+                    <div class="bg-white rounded-lg border border-gray-200 overflow-hidden">
+                        <div class="border-t-4 border-blue-500 bg-blue-50 px-4 py-3 flex items-center justify-between">
+                            <h3 class="text-sm font-semibold text-gray-900">In Progress</h3>
+                            <span class="text-xs font-medium text-gray-500 bg-white px-2 py-0.5 rounded-full">2</span>
+                        </div>
+                        <div class="p-3 space-y-3">
+                            <!-- Deliverable Card 1 -->
+                            <div class="deliverable-card bg-white border border-gray-200 rounded-lg p-3 cursor-move">
+                                <div class="flex items-start justify-between mb-2">
+                                    <h4 class="text-sm font-medium text-gray-900 leading-snug">Launch construction vertical pilot program</h4>
+                                    <span class="flex-shrink-0 ml-2 w-5 h-5 bg-brand-orange text-white text-xs rounded-full flex items-center justify-center font-semibold">2</span>
+                                </div>
+                                <div class="mb-2">
+                                    <span class="inline-block px-2 py-0.5 bg-red-50 border border-red-200 rounded text-xs text-gray-700">Market Expansion</span>
+                                </div>
+                                <div class="flex items-center justify-between text-xs text-gray-500">
+                                    <div class="flex items-center gap-2">
+                                        <i data-lucide="user" class="w-3 h-3"></i>
+                                        <span>Sarah</span>
+                                    </div>
+                                    <div class="flex items-center gap-1">
+                                        <i data-lucide="calendar" class="w-3 h-3"></i>
+                                        <span>11/15/25</span>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- Deliverable Card 2 -->
+                            <div class="deliverable-card bg-white border border-gray-200 rounded-lg p-3 cursor-move">
+                                <div class="flex items-start justify-between mb-2">
+                                    <h4 class="text-sm font-medium text-gray-900 leading-snug">Implement customer feedback loop</h4>
+                                </div>
+                                <div class="mb-2">
+                                    <span class="inline-block px-2 py-0.5 bg-orange-50 border border-orange-200 rounded text-xs text-gray-700">Customer Success</span>
+                                </div>
+                                <div class="flex items-center justify-between text-xs text-gray-500">
+                                    <div class="flex items-center gap-2">
+                                        <i data-lucide="user" class="w-3 h-3"></i>
+                                        <span>Mike</span>
+                                    </div>
+                                    <div class="flex items-center gap-1">
+                                        <i data-lucide="calendar" class="w-3 h-3"></i>
+                                        <span>10/30/25</span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Blocked Column -->
+                    <div class="bg-white rounded-lg border border-gray-200 overflow-hidden">
+                        <div class="border-t-4 border-red-500 bg-red-50 px-4 py-3 flex items-center justify-between">
+                            <h3 class="text-sm font-semibold text-gray-900">Blocked</h3>
+                            <span class="text-xs font-medium text-gray-500 bg-white px-2 py-0.5 rounded-full">1</span>
+                        </div>
+                        <div class="p-3 space-y-3">
+                            <!-- Deliverable Card -->
+                            <div class="deliverable-card bg-white border border-gray-200 rounded-lg p-3 cursor-move">
+                                <div class="flex items-start justify-between mb-2">
+                                    <h4 class="text-sm font-medium text-gray-900 leading-snug">Market research - construction needs</h4>
+                                    <span class="flex-shrink-0 ml-2 w-5 h-5 bg-brand-orange text-white text-xs rounded-full flex items-center justify-center font-semibold">3</span>
+                                </div>
+                                <div class="mb-2">
+                                    <span class="inline-block px-2 py-0.5 bg-red-50 border border-red-200 rounded text-xs text-gray-700">Market Expansion</span>
+                                </div>
+                                <div class="flex items-center gap-2 text-xs text-gray-500">
+                                    <i data-lucide="user" class="w-3 h-3"></i>
+                                    <span>Lisa</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Review Column -->
+                    <div class="bg-white rounded-lg border border-gray-200 overflow-hidden">
+                        <div class="border-t-4 border-orange-500 bg-orange-50 px-4 py-3 flex items-center justify-between">
+                            <h3 class="text-sm font-semibold text-gray-900">Review</h3>
+                            <span class="text-xs font-medium text-gray-500 bg-white px-2 py-0.5 rounded-full">1</span>
+                        </div>
+                        <div class="p-3 space-y-3">
+                            <!-- Deliverable Card -->
+                            <div class="deliverable-card bg-white border border-gray-200 rounded-lg p-3 cursor-move">
+                                <div class="flex items-start justify-between mb-2">
+                                    <h4 class="text-sm font-medium text-gray-900 leading-snug">Customer onboarding automation</h4>
+                                </div>
+                                <div class="mb-2">
+                                    <span class="inline-block px-2 py-0.5 bg-orange-50 border border-orange-200 rounded text-xs text-gray-700">Customer Success</span>
+                                </div>
+                                <div class="flex items-center gap-2 text-xs text-gray-500">
+                                    <i data-lucide="user" class="w-3 h-3"></i>
+                                    <span>Operations</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Done Column -->
+                    <div class="bg-white rounded-lg border border-gray-200 overflow-hidden">
+                        <div class="border-t-4 border-green-500 bg-green-50 px-4 py-3 flex items-center justify-between">
+                            <h3 class="text-sm font-semibold text-gray-900">Done</h3>
+                            <span class="text-xs font-medium text-gray-500 bg-white px-2 py-0.5 rounded-full">1</span>
+                        </div>
+                        <div class="p-3 space-y-3">
+                            <!-- Deliverable Card -->
+                            <div class="deliverable-card bg-white border border-gray-200 rounded-lg p-3 opacity-75">
+                                <div class="flex items-start justify-between mb-2">
+                                    <h4 class="text-sm font-medium text-gray-900 leading-snug line-through">Case study library for sales</h4>
+                                </div>
+                                <div class="mb-2">
+                                    <span class="inline-block px-2 py-0.5 bg-orange-50 border border-orange-200 rounded text-xs text-gray-700">Customer Success</span>
+                                </div>
+                                <div class="flex items-center gap-2 text-xs text-gray-500">
+                                    <i data-lucide="user" class="w-3 h-3"></i>
+                                    <span>Marketing</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </main>
+    </div>
+
+    <script>
+        // Initialize Lucide icons
+        lucide.createIcons();
+
+        // Sidebar toggle functionality
+        function toggleSidebar() {
+            const sidebar = document.getElementById('sidebar');
+            const overlay = document.getElementById('overlay');
+
+            sidebar.classList.toggle('open');
+            overlay.classList.toggle('active');
+        }
+
+        // Close sidebar when clicking outside
+        document.addEventListener('click', function(event) {
+            const sidebar = document.getElementById('sidebar');
+            const overlay = document.getElementById('overlay');
+            const menuButton = event.target.closest('[onclick="toggleSidebar()"]');
+
+            if (!menuButton && !sidebar.contains(event.target) && sidebar.classList.contains('open')) {
+                toggleSidebar();
+            }
+        });
+    </script>
+</body>
+</html>

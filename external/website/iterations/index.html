@@ -1,0 +1,1196 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Blick — Drilling Fluid Solutions Partner</title>
+<style>
+  /* ── Reset & Base ─────────────────────────────────── */
+  *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+
+  :root {
+    --orange: #FD4F00;
+    --orange-light: #FF6B26;
+    --black: #1A1A1A;
+    --charcoal: #2D2D2D;
+    --grey-dark: #66615C;
+    --grey-mid: #A9A9A9;
+    --grey-light: #EBEAEB;
+    --off-white: #FAFAFA;
+    --white: #FFFFFF;
+    --font: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+    --font-display: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+  }
+
+  @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap');
+
+  html {
+    scroll-behavior: smooth;
+    font-size: 16px;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+  }
+
+  body {
+    font-family: var(--font);
+    color: var(--charcoal);
+    background: var(--white);
+    line-height: 1.6;
+    overflow-x: hidden;
+  }
+
+  /* ── Utility ──────────────────────────────────────── */
+  .container {
+    max-width: 1280px;
+    margin: 0 auto;
+    padding: 0 clamp(24px, 5vw, 80px);
+  }
+
+  .reveal {
+    opacity: 0;
+    transform: translateY(40px);
+    transition: opacity 0.8s cubic-bezier(0.16, 1, 0.3, 1),
+                transform 0.8s cubic-bezier(0.16, 1, 0.3, 1);
+  }
+  .reveal.visible {
+    opacity: 1;
+    transform: translateY(0);
+  }
+
+  .stagger-1 { transition-delay: 0.1s; }
+  .stagger-2 { transition-delay: 0.2s; }
+  .stagger-3 { transition-delay: 0.3s; }
+  .stagger-4 { transition-delay: 0.4s; }
+  .stagger-5 { transition-delay: 0.5s; }
+
+  /* ── Navigation ───────────────────────────────────── */
+  nav {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    z-index: 1000;
+    padding: 24px 0;
+    transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+    background: rgba(255, 255, 255, 0);
+    backdrop-filter: blur(0px);
+  }
+  nav.scrolled {
+    padding: 16px 0;
+    background: rgba(255, 255, 255, 0.92);
+    backdrop-filter: blur(20px);
+    box-shadow: 0 1px 0 rgba(0,0,0,0.05);
+  }
+  nav .container {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+  }
+  .nav-logo {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    text-decoration: none;
+  }
+  .nav-logo img {
+    height: 36px;
+    width: auto;
+  }
+  .nav-links {
+    display: flex;
+    gap: 36px;
+    list-style: none;
+    align-items: center;
+  }
+  .nav-links a {
+    text-decoration: none;
+    color: var(--grey-dark);
+    font-size: 0.85rem;
+    font-weight: 500;
+    letter-spacing: 0.02em;
+    transition: color 0.3s;
+  }
+  .nav-links a:hover { color: var(--orange); }
+  .nav-cta {
+    background: var(--orange);
+    color: var(--white) !important;
+    padding: 10px 24px;
+    border-radius: 100px;
+    font-weight: 600 !important;
+    transition: background 0.3s, transform 0.3s !important;
+  }
+  .nav-cta:hover {
+    background: var(--orange-light) !important;
+    transform: translateY(-1px);
+  }
+
+  /* ── Hero setup line ──────────────────────────────── */
+  .hero-setup {
+    font-size: clamp(1rem, 1.8vw, 1.15rem);
+    font-weight: 500;
+    color: var(--grey-dark);
+    margin-bottom: 16px;
+    letter-spacing: -0.01em;
+    line-height: 1.4;
+  }
+
+  /* ── Hero ──────────────────────────────────────────── */
+  .hero {
+    min-height: 100vh;
+    display: flex;
+    align-items: center;
+    position: relative;
+    overflow: hidden;
+    padding: 140px 0 120px;
+  }
+  .hero-bg {
+    position: absolute;
+    inset: 0;
+    z-index: 0;
+  }
+  /* Geometric floating elements */
+  .geo {
+    position: absolute;
+    border-radius: 50%;
+    opacity: 0.06;
+    background: var(--orange);
+    animation: float 20s ease-in-out infinite;
+  }
+  .geo-1 { width: 600px; height: 600px; top: -200px; right: -150px; animation-delay: 0s; }
+  .geo-2 { width: 300px; height: 300px; bottom: -50px; left: -80px; animation-delay: -7s; opacity: 0.04; }
+  .geo-3 { width: 150px; height: 150px; top: 40%; left: 60%; animation-delay: -3s; opacity: 0.08; }
+
+  /* Geometric grid overlay */
+  .grid-overlay {
+    position: absolute;
+    inset: 0;
+    background-image:
+      linear-gradient(rgba(253, 79, 0, 0.03) 1px, transparent 1px),
+      linear-gradient(90deg, rgba(253, 79, 0, 0.03) 1px, transparent 1px);
+    background-size: 80px 80px;
+    mask-image: radial-gradient(ellipse 70% 60% at 70% 40%, black 20%, transparent 70%);
+  }
+
+  @keyframes float {
+    0%, 100% { transform: translate(0, 0) scale(1); }
+    33% { transform: translate(30px, -30px) scale(1.05); }
+    66% { transform: translate(-20px, 20px) scale(0.95); }
+  }
+
+  .hero-content {
+    position: relative;
+    z-index: 1;
+    max-width: 780px;
+  }
+  .hero-tag {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    font-size: 0.8rem;
+    font-weight: 600;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--orange);
+    margin-bottom: 32px;
+  }
+  .hero-tag::before {
+    content: '';
+    width: 32px;
+    height: 2px;
+    background: var(--orange);
+  }
+  .hero h1 {
+    font-size: clamp(2.8rem, 6vw, 4.8rem);
+    font-weight: 800;
+    line-height: 1.05;
+    letter-spacing: -0.03em;
+    color: var(--black);
+    margin-bottom: 32px;
+  }
+  .hero h1 .accent {
+    color: var(--orange);
+    position: relative;
+  }
+  .hero p {
+    font-size: clamp(1.05rem, 1.8vw, 1.2rem);
+    line-height: 1.7;
+    color: var(--grey-dark);
+    max-width: 580px;
+    margin-bottom: 48px;
+  }
+  .hero-actions {
+    display: flex;
+    gap: 16px;
+    flex-wrap: wrap;
+  }
+  .btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    padding: 16px 36px;
+    border-radius: 100px;
+    font-size: 0.9rem;
+    font-weight: 600;
+    text-decoration: none;
+    transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+    cursor: pointer;
+    border: none;
+  }
+  .btn-primary {
+    background: var(--orange);
+    color: var(--white);
+    box-shadow: 0 4px 24px rgba(253, 79, 0, 0.25);
+  }
+  .btn-primary:hover {
+    background: var(--orange-light);
+    transform: translateY(-2px);
+    box-shadow: 0 8px 32px rgba(253, 79, 0, 0.3);
+  }
+  .btn-secondary {
+    background: transparent;
+    color: var(--charcoal);
+    border: 1.5px solid var(--grey-light);
+  }
+  .btn-secondary:hover {
+    border-color: var(--orange);
+    color: var(--orange);
+    transform: translateY(-2px);
+  }
+
+  /* Floating accent bar on right side of hero */
+  .hero-visual {
+    position: absolute;
+    right: 0;
+    top: 50%;
+    transform: translateY(-50%);
+    width: 40%;
+    height: 70%;
+    z-index: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    pointer-events: none;
+  }
+  .floating-card {
+    width: 280px;
+    height: 360px;
+    background: var(--off-white);
+    border-radius: 24px;
+    border: 1px solid var(--grey-light);
+    position: absolute;
+    box-shadow: 0 24px 64px rgba(0,0,0,0.06);
+    animation: cardFloat 8s ease-in-out infinite;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 16px;
+  }
+  .floating-card::before {
+    content: '';
+    width: 48px;
+    height: 48px;
+    border-radius: 50%;
+    border: 3px solid var(--orange);
+    opacity: 0.3;
+  }
+  .floating-card::after {
+    content: '';
+    width: 80px;
+    height: 3px;
+    background: var(--grey-light);
+    border-radius: 4px;
+  }
+  .fc-1 { top: 5%; right: 15%; animation-delay: 0s; }
+  .fc-2 {
+    top: 35%;
+    right: 5%;
+    animation-delay: -2.5s;
+    width: 220px;
+    height: 280px;
+    border-radius: 20px;
+    opacity: 0.6;
+    border: 1px solid rgba(253, 79, 0, 0.1);
+  }
+
+  @keyframes cardFloat {
+    0%, 100% { transform: translateY(0) rotate(0deg); }
+    50% { transform: translateY(-20px) rotate(1deg); }
+  }
+
+  /* ── Statement Section ────────────────────────────── */
+  .statement {
+    padding: 160px 0;
+    position: relative;
+  }
+  .statement-inner {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 80px;
+    align-items: center;
+  }
+  .statement-left h2 {
+    font-size: clamp(2rem, 4vw, 3.2rem);
+    font-weight: 800;
+    line-height: 1.1;
+    letter-spacing: -0.02em;
+    color: var(--black);
+    margin-bottom: 32px;
+  }
+  .statement-left h2 .line {
+    display: block;
+  }
+  .statement-left h2 .accent { color: var(--orange); }
+  .statement-right {
+    display: flex;
+    flex-direction: column;
+    gap: 24px;
+  }
+  .statement-right p {
+    font-size: 1.05rem;
+    line-height: 1.8;
+    color: var(--grey-dark);
+  }
+  .statement-right p strong {
+    color: var(--charcoal);
+    font-weight: 600;
+  }
+  .orange-line {
+    width: 48px;
+    height: 3px;
+    background: var(--orange);
+    border-radius: 2px;
+    margin-top: 8px;
+  }
+
+  /* ── Industries Section ───────────────────────────── */
+  .industries {
+    padding: 120px 0 160px;
+    background: var(--black);
+    color: var(--white);
+    position: relative;
+    overflow: hidden;
+  }
+  .industries::before {
+    content: '';
+    position: absolute;
+    top: -200px;
+    right: -200px;
+    width: 600px;
+    height: 600px;
+    border-radius: 50%;
+    background: var(--orange);
+    opacity: 0.05;
+  }
+  .industries .section-header {
+    margin-bottom: 80px;
+  }
+  .section-tag {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    font-size: 0.75rem;
+    font-weight: 600;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    color: var(--orange);
+    margin-bottom: 24px;
+  }
+  .section-tag::before {
+    content: '';
+    width: 24px;
+    height: 2px;
+    background: var(--orange);
+  }
+  .industries h2 {
+    font-size: clamp(2rem, 4vw, 3rem);
+    font-weight: 800;
+    letter-spacing: -0.02em;
+    line-height: 1.1;
+    max-width: 600px;
+  }
+  .industries-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(340px, 1fr));
+    gap: 2px;
+  }
+  .industry-card {
+    background: rgba(255, 255, 255, 0.03);
+    border: 1px solid rgba(255, 255, 255, 0.06);
+    border-radius: 20px;
+    padding: 48px 40px;
+    transition: all 0.5s cubic-bezier(0.16, 1, 0.3, 1);
+    position: relative;
+    overflow: hidden;
+  }
+  .industry-card::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 4px;
+    height: 0;
+    background: var(--orange);
+    border-radius: 0 2px 2px 0;
+    transition: height 0.5s cubic-bezier(0.16, 1, 0.3, 1);
+  }
+  .industry-card:hover {
+    background: rgba(255, 255, 255, 0.06);
+    transform: translateY(-4px);
+    border-color: rgba(253, 79, 0, 0.15);
+  }
+  .industry-card:hover::before {
+    height: 100%;
+  }
+  .industry-card h3 {
+    font-size: 1.15rem;
+    font-weight: 700;
+    margin-bottom: 16px;
+    letter-spacing: -0.01em;
+  }
+  .industry-card p {
+    font-size: 0.92rem;
+    line-height: 1.7;
+    color: rgba(255, 255, 255, 0.55);
+  }
+  .industry-icon {
+    width: 48px;
+    height: 48px;
+    border-radius: 14px;
+    background: rgba(253, 79, 0, 0.1);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-bottom: 24px;
+  }
+  .industry-icon svg {
+    width: 22px;
+    height: 22px;
+    stroke: var(--orange);
+    fill: none;
+    stroke-width: 1.5;
+    stroke-linecap: round;
+    stroke-linejoin: round;
+  }
+
+  .industries-footer {
+    margin-top: 64px;
+    padding-top: 48px;
+    border-top: 1px solid rgba(255,255,255,0.08);
+    font-size: 1.05rem;
+    color: rgba(255,255,255,0.5);
+    line-height: 1.7;
+  }
+  .industries-footer strong {
+    color: var(--orange);
+    font-weight: 600;
+  }
+
+  /* ── What We Do ───────────────────────────────────── */
+  .what-we-do {
+    padding: 160px 0;
+    position: relative;
+    overflow: hidden;
+  }
+  .what-we-do .geo-accent {
+    position: absolute;
+    bottom: -100px;
+    left: -100px;
+    width: 400px;
+    height: 400px;
+    border: 1px solid rgba(253, 79, 0, 0.08);
+    border-radius: 50%;
+    pointer-events: none;
+  }
+  .wwd-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 80px;
+    align-items: start;
+  }
+  .wwd-left {
+    position: sticky;
+    top: 140px;
+  }
+  .wwd-left h2 {
+    font-size: clamp(2rem, 4vw, 3rem);
+    font-weight: 800;
+    letter-spacing: -0.02em;
+    line-height: 1.1;
+    color: var(--black);
+    margin-bottom: 28px;
+  }
+  .wwd-left > p {
+    font-size: 1.05rem;
+    line-height: 1.8;
+    color: var(--grey-dark);
+    margin-bottom: 24px;
+  }
+  .wwd-left .highlight-box {
+    background: var(--off-white);
+    border-left: 3px solid var(--orange);
+    padding: 28px 32px;
+    border-radius: 0 16px 16px 0;
+    margin-top: 32px;
+  }
+  .highlight-box p {
+    font-size: 1rem;
+    line-height: 1.7;
+    color: var(--charcoal);
+    font-weight: 500;
+  }
+  .wwd-right {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+  }
+  .partner-block h3 {
+    font-size: 0.8rem;
+    font-weight: 600;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--grey-mid);
+    margin-bottom: 20px;
+  }
+  .partners {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 12px;
+  }
+  .partner-pill {
+    padding: 10px 20px;
+    border-radius: 100px;
+    background: var(--off-white);
+    border: 1px solid var(--grey-light);
+    font-size: 0.85rem;
+    font-weight: 500;
+    color: var(--charcoal);
+    transition: all 0.3s;
+  }
+  .partner-pill:hover {
+    border-color: var(--orange);
+    color: var(--orange);
+    transform: translateY(-2px);
+  }
+
+  .outcome-card {
+    background: var(--off-white);
+    border-radius: 20px;
+    padding: 40px;
+    border: 1px solid var(--grey-light);
+    transition: all 0.4s;
+  }
+  .outcome-card:hover {
+    box-shadow: 0 16px 48px rgba(0,0,0,0.06);
+    transform: translateY(-2px);
+  }
+  .outcome-card h3 {
+    font-size: 1.1rem;
+    font-weight: 700;
+    color: var(--black);
+    margin-bottom: 12px;
+    letter-spacing: -0.01em;
+  }
+  .outcome-card p {
+    font-size: 0.95rem;
+    line-height: 1.7;
+    color: var(--grey-dark);
+  }
+
+  /* ── How We Think ─────────────────────────────────── */
+  .philosophy {
+    padding: 120px 0 160px;
+    background: var(--off-white);
+    position: relative;
+    overflow: hidden;
+  }
+  .philosophy::after {
+    content: '';
+    position: absolute;
+    top: 50%;
+    right: -100px;
+    width: 300px;
+    height: 300px;
+    border: 1px solid rgba(253, 79, 0, 0.06);
+    border-radius: 50%;
+    transform: translateY(-50%);
+  }
+  .philosophy-content {
+    max-width: 800px;
+    margin: 0 auto;
+    text-align: center;
+  }
+  .philosophy h2 {
+    font-size: clamp(2rem, 4vw, 3rem);
+    font-weight: 800;
+    letter-spacing: -0.02em;
+    line-height: 1.1;
+    color: var(--black);
+    margin-bottom: 40px;
+  }
+  .philosophy-quote {
+    font-size: clamp(1.3rem, 2.5vw, 1.7rem);
+    line-height: 1.5;
+    color: var(--charcoal);
+    font-weight: 400;
+    margin-bottom: 48px;
+    position: relative;
+  }
+  .philosophy-quote::before {
+    content: '';
+    display: block;
+    width: 48px;
+    height: 3px;
+    background: var(--orange);
+    margin: 0 auto 32px;
+    border-radius: 2px;
+  }
+  .philosophy-body {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 40px;
+    text-align: left;
+    margin-top: 64px;
+  }
+  .philosophy-body p {
+    font-size: 1rem;
+    line-height: 1.8;
+    color: var(--grey-dark);
+  }
+
+  /* ── Training Section ─────────────────────────────── */
+  .training {
+    padding: 160px 0;
+    position: relative;
+  }
+  .training-inner {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 80px;
+    align-items: center;
+  }
+  .training-visual {
+    position: relative;
+  }
+  .training-graphic {
+    width: 100%;
+    aspect-ratio: 4/3;
+    background: linear-gradient(135deg, var(--black) 0%, var(--charcoal) 100%);
+    border-radius: 24px;
+    position: relative;
+    overflow: hidden;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+  .training-graphic::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background-image:
+      linear-gradient(rgba(253, 79, 0, 0.08) 1px, transparent 1px),
+      linear-gradient(90deg, rgba(253, 79, 0, 0.08) 1px, transparent 1px);
+    background-size: 40px 40px;
+  }
+  .training-graphic-text {
+    position: relative;
+    z-index: 1;
+    text-align: center;
+    color: var(--white);
+  }
+  .training-graphic-text .mud-school-label {
+    font-size: 0.7rem;
+    font-weight: 600;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: var(--orange);
+    margin-bottom: 12px;
+  }
+  .training-graphic-text .mud-school-title {
+    font-size: 2rem;
+    font-weight: 800;
+    letter-spacing: -0.02em;
+  }
+  .training-float {
+    position: absolute;
+    top: -24px;
+    right: -24px;
+    width: 120px;
+    height: 120px;
+    background: var(--orange);
+    border-radius: 20px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    box-shadow: 0 12px 40px rgba(253, 79, 0, 0.3);
+    animation: cardFloat 6s ease-in-out infinite;
+  }
+  .training-float svg {
+    width: 40px;
+    height: 40px;
+    stroke: var(--white);
+    fill: none;
+    stroke-width: 1.5;
+  }
+  .training-text h2 {
+    font-size: clamp(2rem, 4vw, 3rem);
+    font-weight: 800;
+    letter-spacing: -0.02em;
+    line-height: 1.1;
+    color: var(--black);
+    margin-bottom: 28px;
+  }
+  .training-text p {
+    font-size: 1.05rem;
+    line-height: 1.8;
+    color: var(--grey-dark);
+    margin-bottom: 20px;
+  }
+
+  /* ── CTA Section ──────────────────────────────────── */
+  .cta {
+    padding: 160px 0;
+    background: var(--black);
+    position: relative;
+    overflow: hidden;
+    text-align: center;
+  }
+  .cta::before {
+    content: '';
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 800px;
+    height: 800px;
+    border-radius: 50%;
+    background: radial-gradient(circle, rgba(253, 79, 0, 0.08) 0%, transparent 70%);
+  }
+  .cta-content {
+    position: relative;
+    z-index: 1;
+  }
+  .cta h2 {
+    font-size: clamp(2.2rem, 5vw, 3.8rem);
+    font-weight: 800;
+    letter-spacing: -0.03em;
+    line-height: 1.1;
+    color: var(--white);
+    margin-bottom: 24px;
+  }
+  .cta > .container > p,
+  .cta-content > p {
+    font-size: 1.15rem;
+    color: rgba(255,255,255,0.5);
+    margin-bottom: 48px;
+    line-height: 1.6;
+  }
+  .cta-actions {
+    display: flex;
+    gap: 16px;
+    justify-content: center;
+    flex-wrap: wrap;
+  }
+  .btn-white {
+    background: var(--white);
+    color: var(--black);
+  }
+  .btn-white:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 8px 32px rgba(255,255,255,0.15);
+  }
+  .btn-ghost {
+    background: transparent;
+    color: rgba(255,255,255,0.7);
+    border: 1.5px solid rgba(255,255,255,0.15);
+  }
+  .btn-ghost:hover {
+    border-color: var(--orange);
+    color: var(--orange);
+    transform: translateY(-2px);
+  }
+
+  /* ── Footer ───────────────────────────────────────── */
+  footer {
+    padding: 80px 0 40px;
+    border-top: 1px solid var(--grey-light);
+  }
+  .footer-grid {
+    display: grid;
+    grid-template-columns: 2fr 1fr 1fr 1fr;
+    gap: 64px;
+    margin-bottom: 64px;
+  }
+  .footer-brand p {
+    font-size: 0.9rem;
+    line-height: 1.7;
+    color: var(--grey-dark);
+    margin-top: 16px;
+    max-width: 300px;
+  }
+  .footer-col h4 {
+    font-size: 0.75rem;
+    font-weight: 700;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--black);
+    margin-bottom: 20px;
+  }
+  .footer-col ul {
+    list-style: none;
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+  }
+  .footer-col a {
+    text-decoration: none;
+    color: var(--grey-dark);
+    font-size: 0.88rem;
+    transition: color 0.3s;
+  }
+  .footer-col a:hover { color: var(--orange); }
+  .footer-bottom {
+    padding-top: 32px;
+    border-top: 1px solid var(--grey-light);
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    font-size: 0.8rem;
+    color: var(--grey-mid);
+  }
+
+  /* ── Responsive ───────────────────────────────────── */
+  @media (max-width: 1024px) {
+    .hero-visual { display: none; }
+    .statement-inner,
+    .wwd-grid,
+    .training-inner,
+    .philosophy-body {
+      grid-template-columns: 1fr;
+      gap: 48px;
+    }
+    .wwd-left { position: static; }
+    .footer-grid {
+      grid-template-columns: 1fr 1fr;
+      gap: 40px;
+    }
+  }
+  @media (max-width: 640px) {
+    .nav-links { display: none; }
+    .industries-grid {
+      grid-template-columns: 1fr;
+    }
+    .footer-grid {
+      grid-template-columns: 1fr;
+      gap: 32px;
+    }
+    .footer-bottom {
+      flex-direction: column;
+      gap: 12px;
+      text-align: center;
+    }
+  }
+</style>
+</head>
+<body>
+
+<!-- ────── Navigation ────── -->
+<nav id="nav">
+  <div class="container">
+    <a href="index.html" class="nav-logo">
+      <img src="blick-logo.png" alt="Blick">
+    </a>
+    <ul class="nav-links">
+      <li><a href="products.html">Products</a></li>
+      <li><a href="services.html">Services</a></li>
+      <li><a href="team.html">Team</a></li>
+      <li><a href="contact.html" class="nav-cta">Contact Us</a></li>
+    </ul>
+  </div>
+</nav>
+
+<!-- ────── Hero ────── -->
+<section class="hero">
+  <div class="hero-bg">
+    <div class="geo geo-1"></div>
+    <div class="geo geo-2"></div>
+    <div class="geo geo-3"></div>
+    <div class="grid-overlay"></div>
+  </div>
+  <div class="container">
+    <div class="hero-content">
+      <div class="hero-tag reveal">Australasia's Drilling Partner</div>
+      <div class="hero-setup reveal stagger-1">Drilling rarely goes exactly to plan. When the ground changes, your reputation is on the line.</div>
+      <h1 class="reveal stagger-2">The difference is having <span class="accent">the right people</span> by your side</h1>
+      <p class="reveal stagger-3">We combine proven fluids with real-world expertise to help your crew adapt quickly, stay confident, and keep the job moving — turning unexpected challenges into results your clients remember.</p>
+      <div class="hero-actions reveal stagger-4">
+        <a href="#contact" class="btn btn-primary">Talk to a Blick Expert</a>
+        <a href="#what-we-do" class="btn btn-secondary">Explore Our Solutions</a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ────── Statement ────── -->
+<section class="statement">
+  <div class="container">
+    <div class="statement-inner">
+      <div class="statement-left reveal">
+        <h2>
+          <span class="line">That's when you see</span>
+          <span class="line">why having <span class="accent">Blick</span></span>
+          <span class="line">on your team matters.</span>
+        </h2>
+      </div>
+      <div class="statement-right">
+        <p class="reveal stagger-1">We combine proven fluids with real-world expertise to help your crew adapt quickly, stay confident, keep the job moving and turn unexpected challenges into results.</p>
+        <p class="reveal stagger-2">We understand drilling from every angle &mdash; the crews in the ground and the engineers and consultants behind the design.</p>
+        <p class="reveal stagger-3"><strong>Our goal is simple: when people talk about your work, they talk about how well it went.</strong></p>
+        <div class="orange-line reveal stagger-4"></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ────── Industries ────── -->
+<section class="industries" id="industries">
+  <div class="container">
+    <div class="section-header">
+      <div class="section-tag reveal">Where We Work</div>
+      <h2 class="reveal stagger-1">Supporting the industries that keep Australasia moving</h2>
+    </div>
+    <div class="industries-grid">
+
+      <div class="industry-card reveal stagger-1">
+        <div class="industry-icon">
+          <svg viewBox="0 0 24 24"><path d="M4 20h16M6 16l3-12h6l3 12M9 4h6"/><line x1="7" y1="12" x2="17" y2="12"/></svg>
+        </div>
+        <h3>HDD &amp; Trenchless</h3>
+        <p>Helping contractors and consultants design, plan, and execute trenchless crossings that stay on line and on grade.</p>
+      </div>
+
+      <div class="industry-card reveal stagger-2">
+        <div class="industry-icon">
+          <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="3"/><path d="M12 2v4m0 12v4M2 12h4m12 0h4"/><path d="M4.93 4.93l2.83 2.83m8.48 8.48l2.83 2.83M4.93 19.07l2.83-2.83m8.48-8.48l2.83-2.83"/></svg>
+        </div>
+        <h3>Geotechnical &amp; Diamond Coring</h3>
+        <p>Engineering drilling fluids that reduce torque, improve core recovery, and prove capability in complex ground.</p>
+      </div>
+
+      <div class="industry-card reveal stagger-3">
+        <div class="industry-icon">
+          <svg viewBox="0 0 24 24"><path d="M12 2v20M2 12c0-5.5 4.5-10 10-10s10 4.5 10 10-4.5 10-10 10"/><ellipse cx="12" cy="12" rx="4" ry="10"/></svg>
+        </div>
+        <h3>Waterwell &amp; Dewatering</h3>
+        <p>Balancing cleaning, stabilisation, and speed to protect hole integrity and equipment performance.</p>
+      </div>
+
+      <div class="industry-card reveal stagger-4">
+        <div class="industry-icon">
+          <svg viewBox="0 0 24 24"><rect x="3" y="10" width="18" height="12" rx="2"/><path d="M7 10V6a5 5 0 0 1 10 0v4"/><path d="M8 22v-4m8 4v-4"/></svg>
+        </div>
+        <h3>Piling, Tunnelling &amp; Construction</h3>
+        <p>Designing and supporting fluid systems that keep foundations stable and sites productive.</p>
+      </div>
+
+      <div class="industry-card reveal stagger-5">
+        <div class="industry-icon">
+          <svg viewBox="0 0 24 24"><path d="M12 2L2 7l10 5 10-5-10-5z"/><path d="M2 17l10 5 10-5"/><path d="M2 12l10 5 10-5"/></svg>
+        </div>
+        <h3>Oilfield &amp; Geothermal</h3>
+        <p>Applying water-based fluid design and on-site support to high-spec, high-pressure operations.</p>
+      </div>
+
+    </div>
+    <div class="industries-footer reveal">
+      Wherever the ground demands reliability, <strong>Blick brings it</strong> &mdash; through planning, partnership, and performance.
+    </div>
+  </div>
+</section>
+
+<!-- ────── What We Do ────── -->
+<section class="what-we-do" id="what-we-do">
+  <div class="geo-accent"></div>
+  <div class="container">
+    <div class="wwd-grid">
+      <div class="wwd-left">
+        <div class="section-tag reveal">What We Do</div>
+        <h2 class="reveal stagger-1">We help drilling teams plan, execute, and complete projects with confidence</h2>
+        <p class="reveal stagger-2">At the core of our work is <strong>Blick Fluids</strong> &mdash; engineered drilling fluids and additives built for local ground conditions and proven in the field.</p>
+        <p class="reveal stagger-3">We choose partners who share our values &mdash; people who build quality products, stand behind their work, and show up when it counts.</p>
+        <div class="highlight-box reveal stagger-4">
+          <p>Together, we deliver something simple: better outcomes, lower risk, and a smoother path to success.</p>
+        </div>
+      </div>
+      <div class="wwd-right">
+        <div class="partner-block reveal">
+          <h3>Trusted Partners</h3>
+          <div class="partners">
+            <span class="partner-pill">Melfred Borzall</span>
+            <span class="partner-pill">Jet Lube</span>
+            <span class="partner-pill">Black Diamond</span>
+            <span class="partner-pill">Dimatec</span>
+            <span class="partner-pill">Fann</span>
+            <span class="partner-pill">Grundomat</span>
+            <span class="partner-pill">MetaFLO</span>
+            <span class="partner-pill">Palmer Bit</span>
+            <span class="partner-pill">Premiere Drill Pipe</span>
+          </div>
+        </div>
+        <div class="outcome-card reveal stagger-1">
+          <h3>Blick Fluids</h3>
+          <p>Engineered drilling fluids and additives built for local ground conditions &mdash; designed, tested, and refined across Australasia.</p>
+        </div>
+        <div class="outcome-card reveal stagger-2">
+          <h3>On-Site Expertise</h3>
+          <p>Real-world support from a team that understands the ground, your equipment, and the pressure of keeping a project moving.</p>
+        </div>
+        <div class="outcome-card reveal stagger-3">
+          <h3>Fluid Design &amp; Consulting</h3>
+          <p>Custom fluid programs tailored to your geology, method, and performance requirements from the planning stage through to completion.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ────── How We Think ────── -->
+<section class="philosophy" id="philosophy">
+  <div class="container">
+    <div class="philosophy-content">
+      <div class="section-tag reveal">How We Think</div>
+      <h2 class="reveal stagger-1">Outcomes don't happen by chance</h2>
+      <div class="philosophy-quote reveal stagger-2">
+        They come from planning, communication, knowing what to do when the ground changes &mdash; and knowing that you have the right team by your side.
+      </div>
+    </div>
+    <div class="philosophy-body">
+      <p class="reveal">At Blick, we cut through complexity and focus on what matters most &mdash; getting the result right, first time.</p>
+      <p class="reveal stagger-1">We understand drilling from every angle &mdash; the crews in the ground, the engineers behind the design, the councils, and the clients.</p>
+    </div>
+  </div>
+</section>
+
+<!-- ────── Training ────── -->
+<section class="training" id="training">
+  <div class="container">
+    <div class="training-inner">
+      <div class="training-visual reveal">
+        <div class="training-graphic">
+          <div class="training-graphic-text">
+            <div class="mud-school-label">Education &amp; Development</div>
+            <div class="mud-school-title">Blick Mud Schools</div>
+          </div>
+        </div>
+        <div class="training-float">
+          <svg viewBox="0 0 24 24" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M2 3h6a4 4 0 0 1 4 4v14a3 3 0 0 0-3-3H2z"/>
+            <path d="M22 3h-6a4 4 0 0 0-4 4v14a3 3 0 0 1 3-3h7z"/>
+          </svg>
+        </div>
+      </div>
+      <div class="training-text">
+        <div class="section-tag reveal">Training &amp; Knowledge</div>
+        <h2 class="reveal stagger-1">Turning experience into better decisions</h2>
+        <p class="reveal stagger-2">Through Blick Mud Schools, we share the insight that turns experience into better decisions and stronger performance.</p>
+        <p class="reveal stagger-3">We help drillers, engineers, and consultants understand their fluids, their ground, and their options &mdash; so they can work smarter, safer, and with confidence.</p>
+        <div class="orange-line reveal stagger-4"></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ────── CTA ────── -->
+<section class="cta" id="contact">
+  <div class="container">
+    <div class="cta-content">
+      <div class="section-tag reveal">Let's Talk</div>
+      <h2 class="reveal stagger-1">Every successful project starts with the right conversation</h2>
+      <p class="reveal stagger-2">Let's talk about yours.</p>
+      <div class="cta-actions reveal stagger-3">
+        <a href="mailto:sales@blick.group" class="btn btn-white">Talk to a Blick Expert</a>
+        <a href="#what-we-do" class="btn btn-ghost">Explore Blick Fluids</a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ────── Footer ────── -->
+<footer>
+  <div class="container">
+    <div class="footer-grid">
+      <div class="footer-brand">
+        <a href="index.html" class="nav-logo">
+          <img src="blick-logo.png" alt="Blick" style="height:32px;width:auto;">
+        </a>
+        <p>Australasia's leading drilling fluid solutions partner. Serving Australia, New Zealand, and the Pacific Islands.</p>
+      </div>
+      <div class="footer-col">
+        <h4>Industries</h4>
+        <ul>
+          <li><a href="#">HDD &amp; Trenchless</a></li>
+          <li><a href="#">Geotech &amp; Coring</a></li>
+          <li><a href="#">Waterwell</a></li>
+          <li><a href="#">Piling &amp; Construction</a></li>
+          <li><a href="#">Oilfield &amp; Geothermal</a></li>
+        </ul>
+      </div>
+      <div class="footer-col">
+        <h4>Solutions</h4>
+        <ul>
+          <li><a href="#">Blick Fluids</a></li>
+          <li><a href="#">Products</a></li>
+          <li><a href="#">Fluid Design</a></li>
+          <li><a href="#">Mud Schools</a></li>
+        </ul>
+      </div>
+      <div class="footer-col">
+        <h4>Connect</h4>
+        <ul>
+          <li><a href="mailto:sales@blick.group">sales@blick.group</a></li>
+          <li><a href="tel:+6478492366">+64 7 849 2366</a></li>
+          <li><a href="tel:+61390685688">+61 3 9068 5688</a></li>
+          <li><a href="#">The Team</a></li>
+          <li><a href="#">Blog</a></li>
+        </ul>
+      </div>
+    </div>
+    <div class="footer-bottom">
+      <span>&copy; 2026 Blick Group. All rights reserved.</span>
+      <span>Australia &middot; New Zealand &middot; Pacific Islands</span>
+    </div>
+  </div>
+</footer>
+
+<script>
+  // ── Scroll reveal ──
+  const reveals = document.querySelectorAll('.reveal');
+  const observer = new IntersectionObserver((entries) => {
+    entries.forEach(entry => {
+      if (entry.isIntersecting) {
+        entry.target.classList.add('visible');
+      }
+    });
+  }, { threshold: 0.1, rootMargin: '0px 0px -60px 0px' });
+  reveals.forEach(el => observer.observe(el));
+
+  // ── Nav scroll effect ──
+  const nav = document.getElementById('nav');
+  window.addEventListener('scroll', () => {
+    nav.classList.toggle('scrolled', window.scrollY > 50);
+  });
+
+  // ── Smooth anchor links ──
+  document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+    anchor.addEventListener('click', function(e) {
+      e.preventDefault();
+      const target = document.querySelector(this.getAttribute('href'));
+      if (target) {
+        target.scrollIntoView({ behavior: 'smooth', block: 'start' });
+      }
+    });
+  });
+</script>
+
+</body>
+</html>

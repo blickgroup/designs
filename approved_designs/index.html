@@ -1,0 +1,285 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Blick Hub - Approved Designs Gallery</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+
+  <style>
+    * {
+      font-family: 'Inter', sans-serif;
+    }
+
+    .design-card {
+      transition: all 0.2s ease-in-out;
+    }
+
+    .design-card:hover {
+      transform: translateY(-4px);
+      box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
+    }
+
+    .design-preview {
+      border: 2px solid #e5e7eb;
+      background: #f9fafb;
+      min-height: 300px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .design-preview iframe {
+      width: 100%;
+      height: 300px;
+      border: none;
+      pointer-events: none;
+    }
+
+    .badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.375rem;
+      padding: 0.25rem 0.75rem;
+      font-size: 0.75rem;
+      font-weight: 600;
+      border-radius: 9999px;
+    }
+
+    .badge-approved {
+      background-color: #d1fae5;
+      color: #065f46;
+    }
+
+    .badge-version {
+      background-color: #dbeafe;
+      color: #1e40af;
+    }
+  </style>
+</head>
+<body class="bg-gray-50 min-h-screen">
+
+  <!-- Header -->
+  <header class="bg-white border-b-2 border-gray-200 sticky top-0 z-50">
+    <div class="max-w-7xl mx-auto px-6 py-6">
+      <div class="flex items-center justify-between">
+        <div>
+          <h1 class="text-3xl font-bold text-gray-900">Approved Designs Gallery</h1>
+          <p class="text-sm text-gray-600 mt-1">Current approved design mockups for Blick Hub implementation</p>
+        </div>
+        <div class="flex items-center gap-4">
+          <span class="text-sm text-gray-500">Last Updated: <strong>Oct 16, 2024</strong></span>
+          <a href="../DESIGN_STANDARDS.md" class="px-4 py-2 bg-gray-900 text-white rounded-lg text-sm font-semibold hover:bg-gray-800 transition">
+            =� Design Standards
+          </a>
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <!-- Main Content -->
+  <main class="max-w-7xl mx-auto px-6 py-12">
+
+    <!-- Info Banner -->
+    <div class="bg-orange-50 border-l-4 border-[#f05323] p-6 rounded-lg mb-8">
+      <div class="flex items-start gap-4">
+        <svg class="w-6 h-6 text-[#f05323] flex-shrink-0 mt-0.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+        </svg>
+        <div>
+          <h3 class="text-lg font-semibold text-orange-900 mb-2">=� Design Implementation Guidelines</h3>
+          <ul class="text-sm text-orange-800 space-y-1">
+            <li><strong> USE THESE DESIGNS:</strong> All files in this folder are approved for implementation</li>
+            <li><strong>L DON'T USE:</strong> Files in <code>design_iterations/</code> are drafts only</li>
+            <li><strong>=� Standards:</strong> See <a href="../DESIGN_STANDARDS.md" class="underline font-semibold">DESIGN_STANDARDS.md</a> for requirements</li>
+            <li><strong><� All designs include:</strong> Light/Dark/Split view toggle, CSS variables, WCAG annotations</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+
+    <!-- Stats Overview -->
+    <div class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-12">
+      <div class="bg-white rounded-xl border-2 border-gray-200 p-6">
+        <div class="flex items-center justify-between mb-2">
+          <span class="text-sm font-medium text-gray-500 uppercase tracking-wide">Total Designs</span>
+          <svg class="w-5 h-5 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 5a1 1 0 011-1h14a1 1 0 011 1v2a1 1 0 01-1 1H5a1 1 0 01-1-1V5zM4 13a1 1 0 011-1h6a1 1 0 011 1v6a1 1 0 01-1 1H5a1 1 0 01-1-1v-6zM16 13a1 1 0 011-1h2a1 1 0 011 1v6a1 1 0 01-1 1h-2a1 1 0 01-1-1v-6z" />
+          </svg>
+        </div>
+        <div class="text-3xl font-bold text-gray-900" id="total-count">1</div>
+      </div>
+
+      <div class="bg-white rounded-xl border-2 border-gray-200 p-6">
+        <div class="flex items-center justify-between mb-2">
+          <span class="text-sm font-medium text-gray-500 uppercase tracking-wide">Latest Version</span>
+          <svg class="w-5 h-5 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 7h.01M7 3h5c.512 0 1.024.195 1.414.586l7 7a2 2 0 010 2.828l-7 7a2 2 0 01-2.828 0l-7-7A1.994 1.994 0 013 12V7a4 4 0 014-4z" />
+          </svg>
+        </div>
+        <div class="text-3xl font-bold text-gray-900">v1.0.0</div>
+      </div>
+
+      <div class="bg-white rounded-xl border-2 border-gray-200 p-6">
+        <div class="flex items-center justify-between mb-2">
+          <span class="text-sm font-medium text-gray-500 uppercase tracking-wide">Last Updated</span>
+          <svg class="w-5 h-5 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z" />
+          </svg>
+        </div>
+        <div class="text-lg font-semibold text-gray-900">Oct 16, 2024</div>
+      </div>
+    </div>
+
+    <!-- Design Cards Grid -->
+    <div class="grid grid-cols-1 gap-8" id="designs-container">
+
+      <!-- Design Card: Component Reference -->
+      <div class="design-card bg-white rounded-xl border-2 border-gray-200 overflow-hidden">
+        <div class="p-6 border-b-2 border-gray-100">
+          <div class="flex items-start justify-between mb-4">
+            <div>
+              <h2 class="text-2xl font-bold text-gray-900 mb-2">Component Reference</h2>
+              <p class="text-sm text-gray-600">Complete UI component library with light/dark theme examples</p>
+            </div>
+            <div class="flex gap-2">
+              <span class="badge badge-approved">
+                <svg class="w-3 h-3" fill="currentColor" viewBox="0 0 20 20">
+                  <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd" />
+                </svg>
+                Approved
+              </span>
+              <span class="badge badge-version">v1.0.0</span>
+            </div>
+          </div>
+
+          <div class="flex flex-wrap gap-6 text-sm">
+            <div>
+              <span class="text-gray-500">File:</span>
+              <code class="ml-2 text-gray-900 bg-gray-100 px-2 py-1 rounded font-mono text-xs">component_reference_v1.0.0.html</code>
+            </div>
+            <div>
+              <span class="text-gray-500">Approved:</span>
+              <span class="ml-2 text-gray-900 font-semibold">Oct 16, 2024</span>
+            </div>
+            <div>
+              <span class="text-gray-500">Components:</span>
+              <span class="ml-2 text-gray-900 font-semibold">8 categories</span>
+            </div>
+          </div>
+        </div>
+
+        <div class="p-6 bg-gray-50">
+          <div class="design-preview rounded-lg overflow-hidden mb-4">
+            <iframe src="component_reference_v1.0.0.html" title="Component Reference Preview"></iframe>
+          </div>
+
+          <div class="mb-4">
+            <h3 class="text-sm font-semibold text-gray-700 mb-3">Includes:</h3>
+            <div class="grid grid-cols-2 md:grid-cols-4 gap-2">
+              <span class="text-xs bg-white border border-gray-200 rounded px-3 py-2 text-gray-700">Typography</span>
+              <span class="text-xs bg-white border border-gray-200 rounded px-3 py-2 text-gray-700">Buttons</span>
+              <span class="text-xs bg-white border border-gray-200 rounded px-3 py-2 text-gray-700">Form Inputs</span>
+              <span class="text-xs bg-white border border-gray-200 rounded px-3 py-2 text-gray-700">Cards</span>
+              <span class="text-xs bg-white border border-gray-200 rounded px-3 py-2 text-gray-700">Badges & Tags</span>
+              <span class="text-xs bg-white border border-gray-200 rounded px-3 py-2 text-gray-700">Alerts</span>
+              <span class="text-xs bg-white border border-gray-200 rounded px-3 py-2 text-gray-700">Tables</span>
+              <span class="text-xs bg-white border border-gray-200 rounded px-3 py-2 text-gray-700">Modals</span>
+            </div>
+          </div>
+
+          <div class="mb-4 p-4 bg-blue-50 border border-blue-200 rounded-lg">
+            <h4 class="text-sm font-semibold text-blue-900 mb-2">( Features:</h4>
+            <ul class="text-xs text-blue-800 space-y-1">
+              <li> Light/Dark/Split view toggle</li>
+              <li> CSS custom properties (all colors use variables)</li>
+              <li> WCAG AA compliant (4.5:1+ contrast ratios)</li>
+              <li> Orange primary, Gray secondary (no cyan in light mode)</li>
+            </ul>
+          </div>
+
+          <div class="flex gap-3">
+            <a href="./component_reference_v1.0.0.html" target="_blank"
+               class="flex-1 px-4 py-3 bg-[#f05323] text-white rounded-lg text-sm font-semibold text-center hover:bg-opacity-90 transition">
+              View Interactive Design (Light/Dark/Split)
+            </a>
+            <button onclick="copyPath('component_reference_v1.0.0.html')"
+                    class="px-4 py-3 bg-gray-200 text-gray-700 rounded-lg text-sm font-semibold hover:bg-gray-300 transition">
+              Copy File Path
+            </button>
+          </div>
+        </div>
+      </div>
+
+      <!-- Placeholder for future designs -->
+      <div class="bg-white rounded-xl border-2 border-dashed border-gray-300 p-12 text-center">
+        <svg class="w-16 h-16 text-gray-400 mx-auto mb-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4" />
+        </svg>
+        <h3 class="text-lg font-semibold text-gray-600 mb-2">More Designs Coming Soon</h3>
+        <p class="text-sm text-gray-500">New approved designs will appear here automatically</p>
+      </div>
+
+    </div>
+
+  </main>
+
+  <!-- Footer -->
+  <footer class="bg-white border-t-2 border-gray-200 mt-16">
+    <div class="max-w-7xl mx-auto px-6 py-8">
+      <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+        <div>
+          <h4 class="font-semibold text-gray-900 mb-3">=� File Structure</h4>
+          <ul class="text-sm text-gray-600 space-y-1">
+            <li><code>approved_designs/</code> - Current approved versions</li>
+            <li><code>design_iterations/</code> - Work-in-progress drafts</li>
+            <li><code>archived_designs/</code> - Previous versions</li>
+          </ul>
+        </div>
+        <div>
+          <h4 class="font-semibold text-gray-900 mb-3">=� Documentation</h4>
+          <ul class="text-sm text-gray-600 space-y-1">
+            <li><a href="../DESIGN_STANDARDS.md" class="hover:text-[#f05323] transition">DESIGN_STANDARDS.md</a></li>
+            <li><a href="../../modules/FRONTEND.md" class="hover:text-[#f05323] transition">FRONTEND.md</a></li>
+            <li><a href="../../modules/CLAUDE_AGENT_PLAYBOOKS.md" class="hover:text-[#f05323] transition">CLAUDE_AGENT_PLAYBOOKS.md</a></li>
+          </ul>
+        </div>
+        <div>
+          <h4 class="font-semibold text-gray-900 mb-3"><� Design Process</h4>
+          <ul class="text-sm text-gray-600 space-y-1">
+            <li>1. Create design in design_iterations/</li>
+            <li>2. Review with UX/UI Coach</li>
+            <li>3. Approve with ./scripts/approve-design.sh</li>
+            <li>4. Implement from approved_designs/</li>
+          </ul>
+        </div>
+      </div>
+      <div class="mt-8 pt-6 border-t border-gray-200 text-center text-sm text-gray-500">
+        <p>Blick Hub Design System " Last Updated: October 16, 2024 " Version Control: SemVer</p>
+      </div>
+    </div>
+  </footer>
+
+  <script>
+    function copyPath(filename) {
+      const path = `./`;
+      navigator.clipboard.writeText(path).then(() => {
+        alert(` Copied to clipboard:\n${path}`);
+      });
+    }
+
+    // Auto-update design count
+    window.addEventListener('DOMContentLoaded', () => {
+      const designCards = document.querySelectorAll('.design-card');
+      const totalCount = document.getElementById('total-count');
+      if (totalCount && designCards.length > 0) {
+        totalCount.textContent = designCards.length;
+      }
+    });
+  </script>
+
+</body>
+</html>

@@ -1,0 +1,855 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Blick Hub - Complete UI Component Reference (Light & Dark)</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+
+  <style>
+    /* ==========================================
+       THEME SYSTEM - CSS VARIABLES
+       ========================================== */
+
+    /* DARK THEME (Default) */
+    :root,
+    [data-theme="dark"] {
+      /* Brand Colors */
+      --brand-orange: #f05323;
+      --brand-cyan: #22d3ee;  /* Optional accent - use sparingly */
+
+      /* Background Colors */
+      --bg-primary: #212121;
+      --bg-secondary: #2a2a2a;
+      --bg-tertiary: #1a1a1a;
+      --bg-hover: #3a3a3a;
+
+      /* Text Colors */
+      --text-primary: #bcbec0;
+      --text-secondary: #a0a0a0;
+      --text-heading: #ffffff;
+      --text-muted: #707070;
+
+      /* Border Colors */
+      --border-default: #58595b;
+      --border-subtle: #404040;
+      --border-hover: #707070;
+
+      /* Interactive States - ORANGE PRIMARY */
+      --interactive-primary: #f05323;
+      --interactive-secondary: #bcbec0;
+      --interactive-accent: #22d3ee;  /* Optional cyan for highlights */
+      --focus-ring: #f05323;  /* ORANGE - brand consistency */
+      --error-bg: #991b1b;
+      --error-text: #fca5a5;
+      --success-bg: #065f46;
+      --success-text: #6ee7b7;
+
+      /* Component-Specific */
+      --input-bg: #2a2a2a;
+      --input-border: #58595b;
+      --input-text: #ffffff;
+      --input-placeholder: #a0a0a0;
+
+      --button-primary-bg: #f05323;
+      --button-primary-text: #ffffff;
+      --button-secondary-bg: transparent;
+      --button-secondary-text: #bcbec0;
+      --button-secondary-border: #bcbec0;  /* GRAY - not cyan */
+
+      --card-bg: #2a2a2a;
+      --card-border: #58595b;
+      --card-hover-border: #f05323;
+
+      /* Badge Colors - Cyan acceptable in dark */
+      --badge-bg: #1e293b;
+      --badge-text: #22d3ee;
+      --badge-border: #475569;
+
+      /* Shadows */
+      --shadow-sm: 0 1px 2px 0 rgba(0, 0, 0, 0.3);
+      --shadow-md: 0 4px 6px -1px rgba(0, 0, 0, 0.4);
+      --shadow-lg: 0 10px 15px -3px rgba(0, 0, 0, 0.5);
+    }
+
+    /* LIGHT THEME */
+    [data-theme="light"] {
+      /* Brand Colors */
+      --brand-orange: #f05323;
+      /* NO CYAN IN LIGHT MODE - removes accessibility issues */
+
+      /* Background Colors */
+      --bg-primary: #ffffff;
+      --bg-secondary: #f9fafb;
+      --bg-tertiary: #f3f4f6;
+      --bg-hover: #e5e7eb;
+
+      /* Text Colors */
+      --text-primary: #111827;
+      --text-secondary: #6b7280;
+      --text-heading: #000000;
+      --text-muted: #9ca3af;
+
+      /* Border Colors */
+      --border-default: #e5e7eb;
+      --border-subtle: #f3f4f6;
+      --border-hover: #d1d5db;
+
+      /* Interactive States - ORANGE PRIMARY */
+      --interactive-primary: #f05323;
+      --interactive-secondary: #6b7280;
+      --interactive-accent: #f05323;  /* USE ORANGE - no cyan */
+      --focus-ring: #f05323;  /* ORANGE - WCAG compliant */
+      --error-bg: #fef2f2;
+      --error-text: #dc2626;
+      --success-bg: #f0fdf4;
+      --success-text: #16a34a;
+
+      /* Component-Specific */
+      --input-bg: #ffffff;
+      --input-border: #d1d5db;
+      --input-text: #111827;
+      --input-placeholder: #9ca3af;
+
+      --button-primary-bg: #f05323;
+      --button-primary-text: #ffffff;
+      --button-secondary-bg: transparent;
+      --button-secondary-text: #111827;
+      --button-secondary-border: #d1d5db;  /* GRAY - not cyan */
+
+      --card-bg: #f9fafb;
+      --card-border: #e5e7eb;
+      --card-hover-border: #f05323;
+
+      /* Badge Colors - Neutral gray theme */
+      --badge-bg: #f3f4f6;      /* Gray-100 */
+      --badge-text: #374151;    /* Gray-700 */
+      --badge-border: #d1d5db;  /* Gray-300 */
+
+      /* Shadows */
+      --shadow-sm: 0 1px 2px 0 rgba(0, 0, 0, 0.05);
+      --shadow-md: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+      --shadow-lg: 0 10px 15px -3px rgba(0, 0, 0, 0.15);
+    }
+
+    * {
+      font-family: 'Inter', sans-serif;
+      transition: background-color 0.2s, border-color 0.2s, color 0.2s;
+    }
+
+    .theme-section {
+      background-color: var(--bg-primary);
+      min-height: 100vh;
+    }
+
+    .component-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 0;
+    }
+
+    @media (max-width: 1280px) {
+      .component-grid {
+        grid-template-columns: 1fr;
+      }
+    }
+
+    .theme-panel {
+      padding: 3rem;
+      border-right: 2px solid var(--border-default);
+    }
+
+    .theme-panel:last-child {
+      border-right: none;
+    }
+
+    .section-divider {
+      margin: 3rem 0;
+      border-top: 2px solid var(--border-default);
+    }
+  </style>
+</head>
+<body class="bg-gray-100">
+
+  <!-- Header with Theme Toggle -->
+  <div class="sticky top-0 z-50 bg-white border-b-2 border-gray-200 px-6 py-4">
+    <div class="max-w-7xl mx-auto flex items-center justify-between">
+      <div>
+        <h1 class="text-2xl font-bold text-gray-900">Blick Hub - Complete UI Component Reference</h1>
+        <p class="text-sm text-gray-600 mt-1">Side-by-side comparison of Dark and Light themes</p>
+      </div>
+      <div class="flex items-center gap-4">
+        <span class="text-sm font-medium text-gray-700">View Mode:</span>
+        <button onclick="switchView('split')" id="btn-split" class="px-4 py-2 bg-gray-900 text-white rounded-md text-sm font-semibold">
+          Split View
+        </button>
+        <button onclick="switchView('dark')" id="btn-dark" class="px-4 py-2 bg-gray-200 text-gray-700 rounded-md text-sm font-semibold">
+          Dark Only
+        </button>
+        <button onclick="switchView('light')" id="btn-light" class="px-4 py-2 bg-gray-200 text-gray-700 rounded-md text-sm font-semibold">
+          Light Only
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Main Content -->
+  <div id="content-area" class="component-grid">
+
+    <!-- DARK THEME PANEL -->
+    <div data-theme="dark" class="theme-section theme-panel" id="dark-panel">
+      <div class="mb-8">
+        <h2 class="text-3xl font-bold text-[var(--brand-orange)] mb-2">Dark Theme</h2>
+        <p class="text-sm text-[var(--text-muted)]">Current state using hardcoded classes (bg-brand-charcoal, etc.)</p>
+      </div>
+
+      <!-- 1. Typography -->
+      <section class="mb-12">
+        <h3 class="text-2xl font-bold text-[var(--brand-orange)] mb-6">Typography</h3>
+        <div class="space-y-4">
+          <h1 class="text-4xl font-bold text-[var(--text-heading)]">Heading 1</h1>
+          <h2 class="text-3xl font-bold text-[var(--text-heading)]">Heading 2</h2>
+          <h3 class="text-2xl font-semibold text-[var(--text-heading)]">Heading 3</h3>
+          <p class="text-base text-[var(--text-primary)]">Primary paragraph text (body copy)</p>
+          <p class="text-sm text-[var(--text-secondary)]">Secondary text (muted body copy)</p>
+          <p class="text-xs text-[var(--text-muted)]">Muted text (labels, captions)</p>
+        </div>
+      </section>
+
+      <div class="section-divider"></div>
+
+      <!-- 2. Buttons -->
+      <section class="mb-12">
+        <h3 class="text-2xl font-bold text-[var(--brand-orange)] mb-6">Buttons</h3>
+        <div class="flex flex-wrap gap-4">
+          <button class="px-6 py-3 rounded-md font-semibold transition-colors"
+                  style="background-color: var(--button-primary-bg); color: var(--button-primary-text);">
+            Primary Button
+          </button>
+          <button class="px-6 py-3 rounded-md font-semibold border-2 transition-colors"
+                  style="border-color: var(--button-secondary-border); color: var(--button-secondary-text);">
+            Secondary Button
+          </button>
+          <button class="px-6 py-3 rounded-md font-semibold transition-colors"
+                  style="background-color: var(--bg-hover); color: var(--text-primary);">
+            Neutral Button
+          </button>
+          <button class="px-6 py-3 rounded-md font-semibold bg-gray-600 text-gray-400 cursor-not-allowed" disabled>
+            Disabled Button
+          </button>
+        </div>
+      </section>
+
+      <div class="section-divider"></div>
+
+      <!-- 3. Form Inputs -->
+      <section class="mb-12">
+        <h3 class="text-2xl font-bold text-[var(--brand-orange)] mb-6">Form Inputs</h3>
+        <div class="space-y-6 max-w-md">
+          <!-- Text Input -->
+          <div>
+            <label class="block text-sm font-medium mb-2" style="color: var(--text-muted);">
+              Text Input <span class="text-red-400">*</span>
+            </label>
+            <input
+              type="text"
+              placeholder="Enter text..."
+              class="w-full rounded-md py-2 px-3 focus:outline-none focus:ring-2"
+              style="background-color: var(--input-bg); border: 1px solid var(--input-border); color: var(--input-text); box-shadow: var(--shadow-sm);"
+            />
+          </div>
+
+          <!-- Dropdown -->
+          <div>
+            <label class="block text-sm font-medium mb-2" style="color: var(--text-muted);">
+              Dropdown Select
+            </label>
+            <select
+              class="w-full rounded-md py-2 px-3 focus:outline-none focus:ring-2"
+              style="background-color: var(--input-bg); border: 1px solid var(--input-border); color: var(--input-text);"
+            >
+              <option>Select option...</option>
+              <option>Option 1</option>
+              <option>Option 2</option>
+              <option>Option 3</option>
+            </select>
+          </div>
+
+          <!-- Textarea -->
+          <div>
+            <label class="block text-sm font-medium mb-2" style="color: var(--text-muted);">
+              Textarea
+            </label>
+            <textarea
+              rows="4"
+              placeholder="Enter notes..."
+              class="w-full rounded-md py-2 px-3 focus:outline-none focus:ring-2"
+              style="background-color: var(--input-bg); border: 1px solid var(--input-border); color: var(--input-text);"
+            ></textarea>
+          </div>
+
+          <!-- Radio Buttons -->
+          <div>
+            <label class="block text-sm font-medium mb-2" style="color: var(--text-muted);">
+              Radio Buttons
+            </label>
+            <div class="flex gap-6">
+              <label class="flex items-center gap-2 cursor-pointer">
+                <input type="radio" name="radio-dark" class="w-4 h-4" style="accent-color: var(--interactive-primary);" checked />
+                <span style="color: var(--text-heading);">Yes</span>
+              </label>
+              <label class="flex items-center gap-2 cursor-pointer">
+                <input type="radio" name="radio-dark" class="w-4 h-4" style="accent-color: var(--interactive-primary);" />
+                <span style="color: var(--text-heading);">No</span>
+              </label>
+              <label class="flex items-center gap-2 cursor-pointer">
+                <input type="radio" name="radio-dark" class="w-4 h-4" style="accent-color: var(--interactive-primary);" />
+                <span style="color: var(--text-heading);">N/A</span>
+              </label>
+            </div>
+          </div>
+
+          <!-- Checkboxes -->
+          <div>
+            <label class="block text-sm font-medium mb-2" style="color: var(--text-muted);">
+              Checkboxes
+            </label>
+            <div class="space-y-2">
+              <label class="flex items-center gap-2 cursor-pointer">
+                <input type="checkbox" class="w-4 h-4" style="accent-color: var(--interactive-primary);" checked />
+                <span style="color: var(--text-primary);">Option 1</span>
+              </label>
+              <label class="flex items-center gap-2 cursor-pointer">
+                <input type="checkbox" class="w-4 h-4" style="accent-color: var(--interactive-primary);" />
+                <span style="color: var(--text-primary);">Option 2</span>
+              </label>
+              <label class="flex items-center gap-2 cursor-pointer">
+                <input type="checkbox" class="w-4 h-4" style="accent-color: var(--interactive-primary);" />
+                <span style="color: var(--text-primary);">Option 3</span>
+              </label>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <div class="section-divider"></div>
+
+      <!-- 4. Cards -->
+      <section class="mb-12">
+        <h3 class="text-2xl font-bold text-[var(--brand-orange)] mb-6">Cards & Panels</h3>
+        <div class="space-y-4">
+          <!-- Basic Card -->
+          <div class="rounded-lg p-6 border-2 transition-colors"
+               style="background-color: var(--card-bg); border-color: var(--card-border);">
+            <h4 class="text-lg font-bold mb-2" style="color: var(--text-heading);">Card Title</h4>
+            <p class="text-sm" style="color: var(--text-primary);">
+              This is a basic card component with standard padding and border radius.
+            </p>
+          </div>
+
+          <!-- Card with Hover -->
+          <div class="rounded-lg p-6 border-2 cursor-pointer transition-all hover:shadow-lg"
+               style="background-color: var(--card-bg); border-color: var(--card-border);"
+               onmouseenter="this.style.borderColor='var(--card-hover-border)'"
+               onmouseleave="this.style.borderColor='var(--card-border)'">
+            <h4 class="text-lg font-bold mb-2" style="color: var(--text-heading);">Hoverable Card</h4>
+            <p class="text-sm" style="color: var(--text-primary);">
+              Hover over this card to see the border color change to brand orange.
+            </p>
+          </div>
+        </div>
+      </section>
+
+      <div class="section-divider"></div>
+
+      <!-- 5. Badges & Tags -->
+      <section class="mb-12">
+        <h3 class="text-2xl font-bold text-[var(--brand-orange)] mb-6">Badges & Tags</h3>
+        <div class="flex flex-wrap gap-4">
+          <span class="px-3 py-1 bg-green-600 text-white text-sm font-semibold rounded-full">Active</span>
+          <span class="px-3 py-1 bg-red-600 text-white text-sm font-semibold rounded-full">Archived</span>
+          <span class="px-3 py-1 bg-yellow-600 text-white text-sm font-semibold rounded-full">Pending</span>
+          <span class="px-3 py-1 bg-blue-600 text-white text-sm font-semibold rounded-full">In Progress</span>
+          <code class="px-3 py-1.5 rounded text-sm font-mono font-semibold border" style="background-color: var(--badge-bg); color: var(--badge-text); border-color: var(--badge-border);">
+            JT-1560
+          </code>
+          <code class="px-3 py-1.5 rounded text-sm font-mono font-semibold border" style="background-color: var(--badge-bg); color: var(--badge-text); border-color: var(--badge-border);">
+            JT-4242
+          </code>
+        </div>
+      </section>
+
+      <div class="section-divider"></div>
+
+      <!-- 6. Alerts -->
+      <section class="mb-12">
+        <h3 class="text-2xl font-bold text-[var(--brand-orange)] mb-6">Alert Messages</h3>
+        <div class="space-y-4">
+          <div class="py-3 px-4 rounded-md flex items-center justify-between"
+               style="background-color: var(--error-bg); color: var(--error-text);">
+            <span class="text-sm font-semibold">Error: Failed to load data. Please try again.</span>
+            <button class="ml-4 hover:opacity-80 font-bold">✕</button>
+          </div>
+          <div class="py-3 px-4 rounded-md flex items-center justify-between"
+               style="background-color: var(--success-bg); color: var(--success-text);">
+            <span class="text-sm font-semibold">Success: Configuration saved successfully!</span>
+            <button class="ml-4 hover:opacity-80 font-bold">✕</button>
+          </div>
+          <div class="bg-yellow-900 text-yellow-200 py-3 px-4 rounded-md flex items-center justify-between">
+            <span class="text-sm font-semibold">Warning: This action cannot be undone.</span>
+            <button class="ml-4 hover:opacity-80 font-bold">✕</button>
+          </div>
+        </div>
+      </section>
+
+      <div class="section-divider"></div>
+
+      <!-- 7. Tables -->
+      <section class="mb-12">
+        <h3 class="text-2xl font-bold text-[var(--brand-orange)] mb-6">Table</h3>
+        <div class="overflow-x-auto rounded-lg border-2" style="border-color: var(--border-default);">
+          <table class="w-full">
+            <thead style="background-color: var(--bg-tertiary);">
+              <tr>
+                <th class="px-4 py-3 text-left text-sm font-semibold" style="color: var(--text-heading);">Customer</th>
+                <th class="px-4 py-3 text-left text-sm font-semibold" style="color: var(--text-heading);">Rig Model</th>
+                <th class="px-4 py-3 text-left text-sm font-semibold" style="color: var(--text-heading);">Status</th>
+              </tr>
+            </thead>
+            <tbody style="background-color: var(--bg-secondary);">
+              <tr class="border-t" style="border-color: var(--border-default);">
+                <td class="px-4 py-3 text-sm" style="color: var(--text-primary);">Parkinson</td>
+                <td class="px-4 py-3 text-sm" style="color: var(--text-primary);">Holland (JT922)</td>
+                <td class="px-4 py-3"><span class="px-2 py-1 bg-green-600 text-white text-xs font-semibold rounded">Active</span></td>
+              </tr>
+              <tr class="border-t" style="border-color: var(--border-default);">
+                <td class="px-4 py-3 text-sm" style="color: var(--text-primary);">Holland</td>
+                <td class="px-4 py-3 text-sm" style="color: var(--text-primary);">Holland (JT922)</td>
+                <td class="px-4 py-3"><span class="px-2 py-1 bg-green-600 text-white text-xs font-semibold rounded">Active</span></td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </section>
+
+      <div class="section-divider"></div>
+
+      <!-- 8. Modal Example -->
+      <section class="mb-12">
+        <h3 class="text-2xl font-bold text-[var(--brand-orange)] mb-6">Modal / Dialog</h3>
+        <div class="rounded-lg border-2 max-w-2xl" style="background-color: var(--bg-secondary); border-color: var(--border-default);">
+          <!-- Modal Header -->
+          <div class="flex items-center justify-between p-6 border-b" style="border-color: var(--border-default);">
+            <h3 class="text-xl font-bold" style="color: var(--text-heading);">Edit Rig Configuration</h3>
+            <button class="text-3xl leading-none p-1" style="color: var(--text-muted);">&times;</button>
+          </div>
+          <!-- Modal Body -->
+          <div class="p-6 space-y-4">
+            <div>
+              <label class="block text-sm font-medium mb-2" style="color: var(--text-muted);">Customer Name</label>
+              <input
+                type="text"
+                value="Parkinson"
+                class="w-full rounded-md py-2 px-3"
+                style="background-color: var(--input-bg); border: 1px solid var(--input-border); color: var(--input-text);"
+              />
+            </div>
+            <div>
+              <label class="block text-sm font-medium mb-2" style="color: var(--text-muted);">Rig Model</label>
+              <select
+                class="w-full rounded-md py-2 px-3"
+                style="background-color: var(--input-bg); border: 1px solid var(--input-border); color: var(--input-text);"
+              >
+                <option>Holland (JT922)</option>
+                <option>DML 1200</option>
+                <option>CS14</option>
+              </select>
+            </div>
+          </div>
+          <!-- Modal Footer -->
+          <div class="flex justify-end gap-4 p-6 border-t" style="border-color: var(--border-default);">
+            <button class="px-6 py-2 rounded-md font-semibold transition-colors"
+                    style="background-color: var(--bg-hover); color: var(--text-primary);">
+              Cancel
+            </button>
+            <button class="px-6 py-2 rounded-md font-semibold transition-colors"
+                    style="background-color: var(--button-primary-bg); color: var(--button-primary-text);">
+              Save Changes
+            </button>
+          </div>
+        </div>
+      </section>
+
+    </div>
+
+    <!-- LIGHT THEME PANEL -->
+    <div data-theme="light" class="theme-section theme-panel" id="light-panel">
+      <div class="mb-8">
+        <h2 class="text-3xl font-bold text-[var(--brand-orange)] mb-2">Light Theme</h2>
+        <p class="text-sm text-[var(--text-muted)]">Future state after migration to CSS variables</p>
+      </div>
+
+      <!-- 1. Typography -->
+      <section class="mb-12">
+        <h3 class="text-2xl font-bold text-[var(--brand-orange)] mb-6">Typography</h3>
+        <div class="space-y-4">
+          <h1 class="text-4xl font-bold text-[var(--text-heading)]">Heading 1</h1>
+          <h2 class="text-3xl font-bold text-[var(--text-heading)]">Heading 2</h2>
+          <h3 class="text-2xl font-semibold text-[var(--text-heading)]">Heading 3</h3>
+          <p class="text-base text-[var(--text-primary)]">Primary paragraph text (body copy)</p>
+          <p class="text-sm text-[var(--text-secondary)]">Secondary text (muted body copy)</p>
+          <p class="text-xs text-[var(--text-muted)]">Muted text (labels, captions)</p>
+        </div>
+      </section>
+
+      <div class="section-divider"></div>
+
+      <!-- 2. Buttons -->
+      <section class="mb-12">
+        <h3 class="text-2xl font-bold text-[var(--brand-orange)] mb-6">Buttons</h3>
+        <div class="flex flex-wrap gap-4">
+          <button class="px-6 py-3 rounded-md font-semibold transition-colors"
+                  style="background-color: var(--button-primary-bg); color: var(--button-primary-text);">
+            Primary Button
+          </button>
+          <button class="px-6 py-3 rounded-md font-semibold border-2 transition-colors"
+                  style="border-color: var(--button-secondary-border); color: var(--button-secondary-text);">
+            Secondary Button
+          </button>
+          <button class="px-6 py-3 rounded-md font-semibold transition-colors"
+                  style="background-color: var(--bg-hover); color: var(--text-primary);">
+            Neutral Button
+          </button>
+          <button class="px-6 py-3 rounded-md font-semibold bg-gray-300 text-gray-500 cursor-not-allowed" disabled>
+            Disabled Button
+          </button>
+        </div>
+      </section>
+
+      <div class="section-divider"></div>
+
+      <!-- 3. Form Inputs -->
+      <section class="mb-12">
+        <h3 class="text-2xl font-bold text-[var(--brand-orange)] mb-6">Form Inputs</h3>
+        <div class="space-y-6 max-w-md">
+          <!-- Text Input -->
+          <div>
+            <label class="block text-sm font-medium mb-2" style="color: var(--text-muted);">
+              Text Input <span class="text-red-600">*</span>
+            </label>
+            <input
+              type="text"
+              placeholder="Enter text..."
+              class="w-full rounded-md py-2 px-3 focus:outline-none focus:ring-2"
+              style="background-color: var(--input-bg); border: 1px solid var(--input-border); color: var(--input-text); box-shadow: var(--shadow-sm);"
+            />
+          </div>
+
+          <!-- Dropdown -->
+          <div>
+            <label class="block text-sm font-medium mb-2" style="color: var(--text-muted);">
+              Dropdown Select
+            </label>
+            <select
+              class="w-full rounded-md py-2 px-3 focus:outline-none focus:ring-2"
+              style="background-color: var(--input-bg); border: 1px solid var(--input-border); color: var(--input-text);"
+            >
+              <option>Select option...</option>
+              <option>Option 1</option>
+              <option>Option 2</option>
+              <option>Option 3</option>
+            </select>
+          </div>
+
+          <!-- Textarea -->
+          <div>
+            <label class="block text-sm font-medium mb-2" style="color: var(--text-muted);">
+              Textarea
+            </label>
+            <textarea
+              rows="4"
+              placeholder="Enter notes..."
+              class="w-full rounded-md py-2 px-3 focus:outline-none focus:ring-2"
+              style="background-color: var(--input-bg); border: 1px solid var(--input-border); color: var(--input-text);"
+            ></textarea>
+          </div>
+
+          <!-- Radio Buttons -->
+          <div>
+            <label class="block text-sm font-medium mb-2" style="color: var(--text-muted);">
+              Radio Buttons
+            </label>
+            <div class="flex gap-6">
+              <label class="flex items-center gap-2 cursor-pointer">
+                <input type="radio" name="radio-light" class="w-4 h-4" style="accent-color: var(--interactive-primary);" checked />
+                <span style="color: var(--text-heading);">Yes</span>
+              </label>
+              <label class="flex items-center gap-2 cursor-pointer">
+                <input type="radio" name="radio-light" class="w-4 h-4" style="accent-color: var(--interactive-primary);" />
+                <span style="color: var(--text-heading);">No</span>
+              </label>
+              <label class="flex items-center gap-2 cursor-pointer">
+                <input type="radio" name="radio-light" class="w-4 h-4" style="accent-color: var(--interactive-primary);" />
+                <span style="color: var(--text-heading);">N/A</span>
+              </label>
+            </div>
+          </div>
+
+          <!-- Checkboxes -->
+          <div>
+            <label class="block text-sm font-medium mb-2" style="color: var(--text-muted);">
+              Checkboxes
+            </label>
+            <div class="space-y-2">
+              <label class="flex items-center gap-2 cursor-pointer">
+                <input type="checkbox" class="w-4 h-4" style="accent-color: var(--interactive-primary);" checked />
+                <span style="color: var(--text-primary);">Option 1</span>
+              </label>
+              <label class="flex items-center gap-2 cursor-pointer">
+                <input type="checkbox" class="w-4 h-4" style="accent-color: var(--interactive-primary);" />
+                <span style="color: var(--text-primary);">Option 2</span>
+              </label>
+              <label class="flex items-center gap-2 cursor-pointer">
+                <input type="checkbox" class="w-4 h-4" style="accent-color: var(--interactive-primary);" />
+                <span style="color: var(--text-primary);">Option 3</span>
+              </label>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <div class="section-divider"></div>
+
+      <!-- 4. Cards -->
+      <section class="mb-12">
+        <h3 class="text-2xl font-bold text-[var(--brand-orange)] mb-6">Cards & Panels</h3>
+        <div class="space-y-4">
+          <!-- Basic Card -->
+          <div class="rounded-lg p-6 border-2 transition-colors"
+               style="background-color: var(--card-bg); border-color: var(--card-border);">
+            <h4 class="text-lg font-bold mb-2" style="color: var(--text-heading);">Card Title</h4>
+            <p class="text-sm" style="color: var(--text-primary);">
+              This is a basic card component with standard padding and border radius.
+            </p>
+          </div>
+
+          <!-- Card with Hover -->
+          <div class="rounded-lg p-6 border-2 cursor-pointer transition-all hover:shadow-lg"
+               style="background-color: var(--card-bg); border-color: var(--card-border);"
+               onmouseenter="this.style.borderColor='var(--card-hover-border)'"
+               onmouseleave="this.style.borderColor='var(--card-border)'">
+            <h4 class="text-lg font-bold mb-2" style="color: var(--text-heading);">Hoverable Card</h4>
+            <p class="text-sm" style="color: var(--text-primary);">
+              Hover over this card to see the border color change to brand orange.
+            </p>
+          </div>
+        </div>
+      </section>
+
+      <div class="section-divider"></div>
+
+      <!-- 5. Badges & Tags -->
+      <section class="mb-12">
+        <h3 class="text-2xl font-bold text-[var(--brand-orange)] mb-6">Badges & Tags</h3>
+        <div class="flex flex-wrap gap-4">
+          <span class="px-3 py-1 bg-green-600 text-white text-sm font-semibold rounded-full">Active</span>
+          <span class="px-3 py-1 bg-red-600 text-white text-sm font-semibold rounded-full">Archived</span>
+          <span class="px-3 py-1 bg-yellow-600 text-white text-sm font-semibold rounded-full">Pending</span>
+          <span class="px-3 py-1 bg-blue-600 text-white text-sm font-semibold rounded-full">In Progress</span>
+          <code class="px-3 py-1.5 rounded text-sm font-mono font-semibold border" style="background-color: var(--badge-bg); color: var(--badge-text); border-color: var(--badge-border);">
+            JT-1560
+          </code>
+          <code class="px-3 py-1.5 rounded text-sm font-mono font-semibold border" style="background-color: var(--badge-bg); color: var(--badge-text); border-color: var(--badge-border);">
+            JT-4242
+          </code>
+        </div>
+      </section>
+
+      <div class="section-divider"></div>
+
+      <!-- 6. Alerts -->
+      <section class="mb-12">
+        <h3 class="text-2xl font-bold text-[var(--brand-orange)] mb-6">Alert Messages</h3>
+        <div class="space-y-4">
+          <div class="py-3 px-4 rounded-md flex items-center justify-between"
+               style="background-color: var(--error-bg); color: var(--error-text);">
+            <span class="text-sm font-semibold">Error: Failed to load data. Please try again.</span>
+            <button class="ml-4 hover:opacity-80 font-bold">✕</button>
+          </div>
+          <div class="py-3 px-4 rounded-md flex items-center justify-between"
+               style="background-color: var(--success-bg); color: var(--success-text);">
+            <span class="text-sm font-semibold">Success: Configuration saved successfully!</span>
+            <button class="ml-4 hover:opacity-80 font-bold">✕</button>
+          </div>
+          <div class="bg-yellow-100 text-yellow-800 py-3 px-4 rounded-md flex items-center justify-between">
+            <span class="text-sm font-semibold">Warning: This action cannot be undone.</span>
+            <button class="ml-4 hover:opacity-80 font-bold">✕</button>
+          </div>
+        </div>
+      </section>
+
+      <div class="section-divider"></div>
+
+      <!-- 7. Tables -->
+      <section class="mb-12">
+        <h3 class="text-2xl font-bold text-[var(--brand-orange)] mb-6">Table</h3>
+        <div class="overflow-x-auto rounded-lg border-2" style="border-color: var(--border-default);">
+          <table class="w-full">
+            <thead style="background-color: var(--bg-tertiary);">
+              <tr>
+                <th class="px-4 py-3 text-left text-sm font-semibold" style="color: var(--text-heading);">Customer</th>
+                <th class="px-4 py-3 text-left text-sm font-semibold" style="color: var(--text-heading);">Rig Model</th>
+                <th class="px-4 py-3 text-left text-sm font-semibold" style="color: var(--text-heading);">Status</th>
+              </tr>
+            </thead>
+            <tbody style="background-color: var(--bg-secondary);">
+              <tr class="border-t" style="border-color: var(--border-default);">
+                <td class="px-4 py-3 text-sm" style="color: var(--text-primary);">Parkinson</td>
+                <td class="px-4 py-3 text-sm" style="color: var(--text-primary);">Holland (JT922)</td>
+                <td class="px-4 py-3"><span class="px-2 py-1 bg-green-600 text-white text-xs font-semibold rounded">Active</span></td>
+              </tr>
+              <tr class="border-t" style="border-color: var(--border-default);">
+                <td class="px-4 py-3 text-sm" style="color: var(--text-primary);">Holland</td>
+                <td class="px-4 py-3 text-sm" style="color: var(--text-primary);">Holland (JT922)</td>
+                <td class="px-4 py-3"><span class="px-2 py-1 bg-green-600 text-white text-xs font-semibold rounded">Active</span></td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </section>
+
+      <div class="section-divider"></div>
+
+      <!-- 8. Modal Example -->
+      <section class="mb-12">
+        <h3 class="text-2xl font-bold text-[var(--brand-orange)] mb-6">Modal / Dialog</h3>
+        <div class="rounded-lg border-2 max-w-2xl" style="background-color: var(--bg-secondary); border-color: var(--border-default); box-shadow: var(--shadow-lg);">
+          <!-- Modal Header -->
+          <div class="flex items-center justify-between p-6 border-b" style="border-color: var(--border-default);">
+            <h3 class="text-xl font-bold" style="color: var(--text-heading);">Edit Rig Configuration</h3>
+            <button class="text-3xl leading-none p-1" style="color: var(--text-muted);">&times;</button>
+          </div>
+          <!-- Modal Body -->
+          <div class="p-6 space-y-4">
+            <div>
+              <label class="block text-sm font-medium mb-2" style="color: var(--text-muted);">Customer Name</label>
+              <input
+                type="text"
+                value="Parkinson"
+                class="w-full rounded-md py-2 px-3"
+                style="background-color: var(--input-bg); border: 1px solid var(--input-border); color: var(--input-text);"
+              />
+            </div>
+            <div>
+              <label class="block text-sm font-medium mb-2" style="color: var(--text-muted);">Rig Model</label>
+              <select
+                class="w-full rounded-md py-2 px-3"
+                style="background-color: var(--input-bg); border: 1px solid var(--input-border); color: var(--input-text);"
+              >
+                <option>Holland (JT922)</option>
+                <option>DML 1200</option>
+                <option>CS14</option>
+              </select>
+            </div>
+          </div>
+          <!-- Modal Footer -->
+          <div class="flex justify-end gap-4 p-6 border-t" style="border-color: var(--border-default);">
+            <button class="px-6 py-2 rounded-md font-semibold transition-colors"
+                    style="background-color: var(--bg-hover); color: var(--text-primary);">
+              Cancel
+            </button>
+            <button class="px-6 py-2 rounded-md font-semibold transition-colors"
+                    style="background-color: var(--button-primary-bg); color: var(--button-primary-text);">
+              Save Changes
+            </button>
+          </div>
+        </div>
+      </section>
+
+    </div>
+
+  </div>
+
+  <!-- Footer Note -->
+  <div class="bg-white border-t-2 border-gray-200 px-6 py-8">
+    <div class="max-w-7xl mx-auto">
+      <h3 class="text-xl font-bold text-gray-900 mb-3">📋 Component Reference Guide</h3>
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-6 text-sm text-gray-700">
+        <div>
+          <h4 class="font-semibold text-gray-900 mb-2">Dark Theme (Left Panel)</h4>
+          <ul class="list-disc list-inside space-y-1">
+            <li>Current implementation with hardcoded Tailwind classes</li>
+            <li>Uses classes like <code class="bg-gray-100 px-2 py-0.5 rounded text-xs">bg-brand-charcoal</code></li>
+            <li>Colors defined in Tailwind config</li>
+            <li>After migration: will use CSS variables instead</li>
+          </ul>
+        </div>
+        <div>
+          <h4 class="font-semibold text-gray-900 mb-2">Light Theme (Right Panel)</h4>
+          <ul class="list-disc list-inside space-y-1">
+            <li>Future state after CSS variable migration</li>
+            <li>Uses variables like <code class="bg-gray-100 px-2 py-0.5 rounded text-xs">var(--bg-primary)</code></li>
+            <li>Same visual appearance, different implementation</li>
+            <li>Enables seamless theme switching</li>
+          </ul>
+        </div>
+      </div>
+      <div class="mt-6 p-4 bg-orange-50 border-l-4 border-[#f05323] rounded">
+        <p class="text-sm text-orange-900">
+          <strong>✅ CORRECTED COLOR SCHEME:</strong> This reference now shows the <strong>proper brand-consistent</strong> color usage.
+        </p>
+        <ul class="mt-3 text-sm text-orange-900 space-y-2">
+          <li><strong>✅ Orange (#f05323)</strong> - Primary actions, focus rings, section headings (brand color)</li>
+          <li><strong>✅ Gray</strong> - Secondary buttons, borders, structure (neutral hierarchy)</li>
+          <li><strong>❌ Cyan removed from light mode</strong> - Fixes WCAG accessibility failures (2.6:1 contrast)</li>
+          <li><strong>⚠️ Cyan in dark mode only</strong> - Optional for product code badges (8.2:1 contrast)</li>
+        </ul>
+        <p class="mt-3 text-sm text-orange-900">
+          <strong>Migration Impact:</strong> Zero visual disruption in dark mode. Light mode now WCAG compliant with proper orange/gray hierarchy.
+        </p>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    function switchView(mode) {
+      const contentArea = document.getElementById('content-area');
+      const darkPanel = document.getElementById('dark-panel');
+      const lightPanel = document.getElementById('light-panel');
+      const btnSplit = document.getElementById('btn-split');
+      const btnDark = document.getElementById('btn-dark');
+      const btnLight = document.getElementById('btn-light');
+
+      // Reset button styles
+      [btnSplit, btnDark, btnLight].forEach(btn => {
+        btn.classList.remove('bg-gray-900', 'text-white');
+        btn.classList.add('bg-gray-200', 'text-gray-700');
+      });
+
+      if (mode === 'split') {
+        contentArea.classList.add('component-grid');
+        darkPanel.style.display = 'block';
+        lightPanel.style.display = 'block';
+        btnSplit.classList.remove('bg-gray-200', 'text-gray-700');
+        btnSplit.classList.add('bg-gray-900', 'text-white');
+      } else if (mode === 'dark') {
+        contentArea.classList.remove('component-grid');
+        darkPanel.style.display = 'block';
+        lightPanel.style.display = 'none';
+        btnDark.classList.remove('bg-gray-200', 'text-gray-700');
+        btnDark.classList.add('bg-gray-900', 'text-white');
+      } else if (mode === 'light') {
+        contentArea.classList.remove('component-grid');
+        darkPanel.style.display = 'none';
+        lightPanel.style.display = 'block';
+        btnLight.classList.remove('bg-gray-200', 'text-gray-700');
+        btnLight.classList.add('bg-gray-900', 'text-white');
+      }
+    }
+  </script>
+
+</body>
+</html>

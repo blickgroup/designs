@@ -1,0 +1,401 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Blick Website — Design Review</title>
+<style>
+  *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+  :root {
+    --orange: #FD4F00;
+    --black: #1A1A1A;
+    --charcoal: #2D2D2D;
+    --grey-dark: #66615C;
+    --grey-mid: #A9A9A9;
+    --grey-light: #EBEAEB;
+    --off-white: #FAFAFA;
+    --white: #FFFFFF;
+    --font: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+  }
+  @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap');
+
+  body {
+    font-family: var(--font);
+    background: var(--off-white);
+    color: var(--charcoal);
+    min-height: 100vh;
+  }
+
+  header {
+    background: var(--black);
+    padding: 40px 48px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+  }
+  .logo {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+  }
+  .logo img { height: 32px; width: auto; filter: brightness(0) invert(1); }
+  .header-label {
+    font-size: 0.75rem;
+    font-weight: 600;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    color: rgba(255,255,255,0.4);
+  }
+
+  main {
+    max-width: 1100px;
+    margin: 0 auto;
+    padding: 60px 48px;
+  }
+
+  .intro {
+    margin-bottom: 56px;
+  }
+  .intro h1 {
+    font-size: 1.8rem;
+    font-weight: 800;
+    letter-spacing: -0.02em;
+    color: var(--black);
+    margin-bottom: 10px;
+  }
+  .intro p {
+    font-size: 0.95rem;
+    color: var(--grey-dark);
+    line-height: 1.6;
+  }
+
+  .section-label {
+    font-size: 0.7rem;
+    font-weight: 700;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    color: var(--orange);
+    margin-bottom: 20px;
+  }
+
+  .page-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+    gap: 20px;
+    margin-bottom: 60px;
+  }
+
+  .page-card {
+    background: var(--white);
+    border: 1.5px solid var(--grey-light);
+    border-radius: 16px;
+    overflow: hidden;
+    text-decoration: none;
+    color: inherit;
+    transition: all 0.25s cubic-bezier(0.16, 1, 0.3, 1);
+    display: block;
+  }
+  .page-card:hover {
+    border-color: var(--orange);
+    transform: translateY(-3px);
+    box-shadow: 0 12px 40px rgba(0,0,0,0.08);
+  }
+  .card-preview {
+    height: 160px;
+    background: var(--charcoal);
+    position: relative;
+    overflow: hidden;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+  .card-preview::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background-image:
+      linear-gradient(rgba(253, 79, 0, 0.08) 1px, transparent 1px),
+      linear-gradient(90deg, rgba(253, 79, 0, 0.08) 1px, transparent 1px);
+    background-size: 30px 30px;
+  }
+  .card-preview .preview-label {
+    position: relative;
+    z-index: 1;
+    font-size: 0.7rem;
+    font-weight: 600;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: rgba(255,255,255,0.35);
+  }
+  .card-preview.done {
+    background: linear-gradient(135deg, var(--black) 0%, #2d1a0a 100%);
+  }
+  .card-preview.done .preview-label { color: rgba(253,79,0,0.6); }
+  .card-preview.pending {
+    background: var(--off-white);
+    border-bottom: 1.5px solid var(--grey-light);
+  }
+  .card-preview.pending .preview-label { color: var(--grey-mid); }
+
+  .card-body {
+    padding: 24px;
+  }
+  .card-status {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    font-size: 0.7rem;
+    font-weight: 600;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    margin-bottom: 10px;
+  }
+  .card-status.ready { color: #22c55e; }
+  .card-status.planned { color: var(--grey-mid); }
+  .card-status::before {
+    content: '';
+    width: 6px;
+    height: 6px;
+    border-radius: 50%;
+    background: currentColor;
+  }
+  .card-body h2 {
+    font-size: 1.1rem;
+    font-weight: 700;
+    color: var(--black);
+    margin-bottom: 6px;
+  }
+  .card-body .slug {
+    font-size: 0.8rem;
+    color: var(--grey-mid);
+    font-family: monospace;
+    margin-bottom: 12px;
+  }
+  .card-body p {
+    font-size: 0.85rem;
+    color: var(--grey-dark);
+    line-height: 1.55;
+  }
+  .card-footer {
+    padding: 16px 24px;
+    border-top: 1px solid var(--grey-light);
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+  }
+  .open-btn {
+    font-size: 0.8rem;
+    font-weight: 600;
+    color: var(--orange);
+    display: flex;
+    align-items: center;
+    gap: 6px;
+  }
+  .open-btn svg {
+    width: 14px;
+    height: 14px;
+    stroke: currentColor;
+    fill: none;
+    stroke-width: 2;
+    stroke-linecap: round;
+    stroke-linejoin: round;
+  }
+  .page-card.planned-card {
+    opacity: 0.6;
+    pointer-events: none;
+  }
+
+  .divider {
+    height: 1px;
+    background: var(--grey-light);
+    margin: 48px 0;
+  }
+
+  footer {
+    text-align: center;
+    padding: 32px;
+    font-size: 0.8rem;
+    color: var(--grey-mid);
+    border-top: 1px solid var(--grey-light);
+  }
+</style>
+</head>
+<body>
+
+<header>
+  <div class="logo">
+    <img src="blick-logo.png" alt="Blick">
+  </div>
+  <div class="header-label">Design Review — Internal</div>
+</header>
+
+<main>
+  <div class="intro">
+    <h1>Website Prototype Pages</h1>
+    <p>Click any ready page to open it in your browser. Pages link to each other via the nav.<br>Bookmark this file for quick access.</p>
+  </div>
+
+  <div class="section-label">Ready to review</div>
+  <div class="page-grid">
+
+    <a href="index.html" class="page-card" target="_blank">
+      <div class="card-preview done">
+        <div class="preview-label">Homepage</div>
+      </div>
+      <div class="card-body">
+        <div class="card-status ready">Ready</div>
+        <h2>Homepage</h2>
+        <div class="slug">/</div>
+        <p>Hero, industries, what we do, philosophy, training, CTA.</p>
+      </div>
+      <div class="card-footer">
+        <span class="open-btn">Open page <svg viewBox="0 0 24 24"><path d="M7 17L17 7M17 7H7M17 7v10"/></svg></span>
+      </div>
+    </a>
+
+    <a href="products.html" class="page-card" target="_blank">
+      <div class="card-preview done">
+        <div class="preview-label">Products</div>
+      </div>
+      <div class="card-body">
+        <div class="card-status ready">Ready</div>
+        <h2>Products</h2>
+        <div class="slug">/products</div>
+        <p>Blick Fluids, Equipment &amp; Tooling, Grease — organised by range with industry anchors.</p>
+      </div>
+      <div class="card-footer">
+        <span class="open-btn">Open page <svg viewBox="0 0 24 24"><path d="M7 17L17 7M17 7H7M17 7v10"/></svg></span>
+      </div>
+    </a>
+
+    <a href="services.html" class="page-card" target="_blank">
+      <div class="card-preview done">
+        <div class="preview-label">Services</div>
+      </div>
+      <div class="card-body">
+        <div class="card-status ready">Ready</div>
+        <h2>Services</h2>
+        <div class="slug">/services</div>
+        <p>How we work — Tender, Planning, Execution, Review. Industry expertise.</p>
+      </div>
+      <div class="card-footer">
+        <span class="open-btn">Open page <svg viewBox="0 0 24 24"><path d="M7 17L17 7M17 7H7M17 7v10"/></svg></span>
+      </div>
+    </a>
+
+    <a href="team.html" class="page-card" target="_blank">
+      <div class="card-preview done">
+        <div class="preview-label">Team</div>
+      </div>
+      <div class="card-body">
+        <div class="card-status ready">Ready</div>
+        <h2>Team</h2>
+        <div class="slug">/team</div>
+        <p>Full team profiles — names, roles, locations, contacts. Company history.</p>
+      </div>
+      <div class="card-footer">
+        <span class="open-btn">Open page <svg viewBox="0 0 24 24"><path d="M7 17L17 7M17 7H7M17 7v10"/></svg></span>
+      </div>
+    </a>
+
+    <a href="contact.html" class="page-card" target="_blank">
+      <div class="card-preview done">
+        <div class="preview-label">Contact</div>
+      </div>
+      <div class="card-body">
+        <div class="card-status ready">Ready</div>
+        <h2>Contact</h2>
+        <div class="slug">/contact</div>
+        <p>AU + NZ offices, warehouse locations, Pacific coverage, contact form.</p>
+      </div>
+      <div class="card-footer">
+        <span class="open-btn">Open page <svg viewBox="0 0 24 24"><path d="M7 17L17 7M17 7H7M17 7v10"/></svg></span>
+      </div>
+    </a>
+
+    <a href="fluid-calculator.html" class="page-card" target="_blank">
+      <div class="card-preview done">
+        <div class="preview-label">Fluid Selector</div>
+      </div>
+      <div class="card-body">
+        <div class="card-status ready">Ready</div>
+        <h2>Fluid Selector</h2>
+        <div class="slug">/fluid-selector</div>
+        <p>4-step wizard: application → ground → bore specs → complete fluid program with volumes and mixing order.</p>
+      </div>
+      <div class="card-footer">
+        <span class="open-btn">Open page <svg viewBox="0 0 24 24"><path d="M7 17L17 7M17 7H7M17 7v10"/></svg></span>
+      </div>
+    </a>
+
+    <a href="carry-flow.html" class="page-card" target="_blank">
+      <div class="card-preview done">
+        <div class="preview-label">Carry Flow</div>
+      </div>
+      <div class="card-body">
+        <div class="card-status ready">Ready</div>
+        <h2>Carry Flow — Product Page</h2>
+        <div class="slug">/products/fluids/carry-flow</div>
+        <p>Individual product page template: overview, dosage, technical specs, all fluid programs it appears in, mixing guide, downloads.</p>
+      </div>
+      <div class="card-footer">
+        <span class="open-btn">Open page <svg viewBox="0 0 24 24"><path d="M7 17L17 7M17 7H7M17 7v10"/></svg></span>
+      </div>
+    </a>
+
+  </div>
+
+  <div class="divider"></div>
+
+  <div class="section-label">Planned — not yet designed</div>
+  <div class="page-grid">
+
+    <div class="page-card planned-card">
+      <div class="card-preview pending"><div class="preview-label">Coming soon</div></div>
+      <div class="card-body">
+        <div class="card-status planned">Planned</div>
+        <h2>Fluid Selector</h2>
+        <div class="slug">/fluid-selector</div>
+        <p>Interactive wizard — ground conditions → fluid recommendation in 5 steps.</p>
+      </div>
+    </div>
+
+    <div class="page-card planned-card">
+      <div class="card-preview pending"><div class="preview-label">Coming soon</div></div>
+      <div class="card-body">
+        <div class="card-status planned">Planned</div>
+        <h2>Knowledge Hub</h2>
+        <div class="slug">/knowledge</div>
+        <p>Filterable guides, comparisons, troubleshooting articles.</p>
+      </div>
+    </div>
+
+    <div class="page-card planned-card">
+      <div class="card-preview pending"><div class="preview-label">Coming soon</div></div>
+      <div class="card-body">
+        <div class="card-status planned">Planned</div>
+        <h2>Mud School</h2>
+        <div class="slug">/mud-school</div>
+        <p>Training overview, who it's for, upcoming dates.</p>
+      </div>
+    </div>
+
+    <div class="page-card planned-card">
+      <div class="card-preview pending"><div class="preview-label">Coming soon</div></div>
+      <div class="card-body">
+        <div class="card-status planned">Planned</div>
+        <h2>SDS Library</h2>
+        <div class="slug">/sds</div>
+        <p>Searchable safety data sheet downloads by product.</p>
+      </div>
+    </div>
+
+  </div>
+</main>
+
+<footer>
+  Blick Group — Internal design review only &middot; Not for distribution
+</footer>
+
+</body>
+</html>

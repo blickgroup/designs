@@ -1,0 +1,1549 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Products — Blick</title>
+<style>
+  /* ── Reset & Base ─────────────────────────────────── */
+  *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+
+  :root {
+    --orange: #FD4F00;
+    --orange-light: #FF6B26;
+    --black: #1A1A1A;
+    --charcoal: #2D2D2D;
+    --grey-dark: #66615C;
+    --grey-mid: #A9A9A9;
+    --grey-light: #EBEAEB;
+    --off-white: #FAFAFA;
+    --white: #FFFFFF;
+    --font: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+  }
+
+  @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap');
+
+  html {
+    scroll-behavior: smooth;
+    font-size: 16px;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+  }
+
+  body {
+    font-family: var(--font);
+    color: var(--charcoal);
+    background: var(--white);
+    line-height: 1.6;
+    overflow-x: hidden;
+  }
+
+  /* ── Utility ──────────────────────────────────────── */
+  .container {
+    max-width: 1280px;
+    margin: 0 auto;
+    padding: 0 clamp(24px, 5vw, 80px);
+  }
+
+  .reveal {
+    opacity: 0;
+    transform: translateY(40px);
+    transition: opacity 0.8s cubic-bezier(0.16, 1, 0.3, 1),
+                transform 0.8s cubic-bezier(0.16, 1, 0.3, 1);
+  }
+  .reveal.visible {
+    opacity: 1;
+    transform: translateY(0);
+  }
+
+  .stagger-1 { transition-delay: 0.1s; }
+  .stagger-2 { transition-delay: 0.2s; }
+  .stagger-3 { transition-delay: 0.3s; }
+  .stagger-4 { transition-delay: 0.4s; }
+  .stagger-5 { transition-delay: 0.5s; }
+
+  /* ── Navigation ───────────────────────────────────── */
+  nav {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    z-index: 1000;
+    padding: 24px 0;
+    transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+    background: rgba(255, 255, 255, 0.92);
+    backdrop-filter: blur(20px);
+    box-shadow: 0 1px 0 rgba(0,0,0,0.05);
+  }
+  nav.scrolled {
+    padding: 16px 0;
+  }
+  nav .container {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+  }
+  .nav-logo {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    text-decoration: none;
+  }
+  .nav-logo img {
+    height: 36px;
+    width: auto;
+  }
+  .nav-links {
+    display: flex;
+    gap: 36px;
+    list-style: none;
+    align-items: center;
+  }
+  .nav-links a {
+    text-decoration: none;
+    color: var(--grey-dark);
+    font-size: 0.85rem;
+    font-weight: 500;
+    letter-spacing: 0.02em;
+    transition: color 0.3s;
+  }
+  .nav-links a:hover { color: var(--orange); }
+  .nav-links a.active { color: var(--orange); }
+  .nav-cta {
+    background: var(--orange);
+    color: var(--white) !important;
+    padding: 10px 24px;
+    border-radius: 100px;
+    font-weight: 600 !important;
+    transition: background 0.3s, transform 0.3s !important;
+  }
+  .nav-cta:hover {
+    background: var(--orange-light) !important;
+    transform: translateY(-1px);
+  }
+
+  /* ── Buttons ──────────────────────────────────────── */
+  .btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    padding: 16px 36px;
+    border-radius: 100px;
+    font-size: 0.9rem;
+    font-weight: 600;
+    text-decoration: none;
+    transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+    cursor: pointer;
+    border: none;
+  }
+  .btn-primary {
+    background: var(--orange);
+    color: var(--white);
+    box-shadow: 0 4px 24px rgba(253, 79, 0, 0.25);
+  }
+  .btn-primary:hover {
+    background: var(--orange-light);
+    transform: translateY(-2px);
+    box-shadow: 0 8px 32px rgba(253, 79, 0, 0.3);
+  }
+  .btn-secondary {
+    background: transparent;
+    color: var(--charcoal);
+    border: 1.5px solid var(--grey-light);
+  }
+  .btn-secondary:hover {
+    border-color: var(--orange);
+    color: var(--orange);
+    transform: translateY(-2px);
+  }
+  .btn-white {
+    background: var(--white);
+    color: var(--black);
+  }
+  .btn-white:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 8px 32px rgba(255,255,255,0.15);
+  }
+  .btn-ghost {
+    background: transparent;
+    color: rgba(255,255,255,0.7);
+    border: 1.5px solid rgba(255,255,255,0.15);
+  }
+  .btn-ghost:hover {
+    border-color: var(--orange);
+    color: var(--orange);
+    transform: translateY(-2px);
+  }
+  .btn-dark {
+    background: var(--black);
+    color: var(--white);
+  }
+  .btn-dark:hover {
+    background: var(--charcoal);
+    transform: translateY(-2px);
+    box-shadow: 0 8px 32px rgba(0,0,0,0.15);
+  }
+  .btn-sm {
+    padding: 12px 28px;
+    font-size: 0.85rem;
+  }
+
+  /* ── Shared ───────────────────────────────────────── */
+  .section-tag {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    font-size: 0.75rem;
+    font-weight: 600;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    color: var(--orange);
+    margin-bottom: 24px;
+  }
+  .section-tag::before {
+    content: '';
+    width: 24px;
+    height: 2px;
+    background: var(--orange);
+  }
+  .orange-line {
+    width: 48px;
+    height: 3px;
+    background: var(--orange);
+    border-radius: 2px;
+  }
+
+  /* ── Geometric elements ───────────────────────────── */
+  .geo {
+    position: absolute;
+    border-radius: 50%;
+    opacity: 0.06;
+    background: var(--orange);
+    animation: float 20s ease-in-out infinite;
+    pointer-events: none;
+  }
+  @keyframes float {
+    0%, 100% { transform: translate(0, 0) scale(1); }
+    33% { transform: translate(30px, -30px) scale(1.05); }
+    66% { transform: translate(-20px, 20px) scale(0.95); }
+  }
+  @keyframes cardFloat {
+    0%, 100% { transform: translateY(0) rotate(0deg); }
+    50% { transform: translateY(-20px) rotate(1deg); }
+  }
+
+  /* ── Page Hero ────────────────────────────────────── */
+  .page-hero {
+    padding: 180px 0 120px;
+    position: relative;
+    overflow: hidden;
+  }
+  .page-hero .geo-1 {
+    width: 500px;
+    height: 500px;
+    top: -150px;
+    right: -100px;
+  }
+  .page-hero .geo-2 {
+    width: 250px;
+    height: 250px;
+    bottom: -80px;
+    left: -60px;
+    opacity: 0.04;
+    animation-delay: -7s;
+  }
+  .page-hero .grid-overlay {
+    position: absolute;
+    inset: 0;
+    background-image:
+      linear-gradient(rgba(253, 79, 0, 0.02) 1px, transparent 1px),
+      linear-gradient(90deg, rgba(253, 79, 0, 0.02) 1px, transparent 1px);
+    background-size: 80px 80px;
+    mask-image: radial-gradient(ellipse 60% 70% at 80% 30%, black 20%, transparent 70%);
+    pointer-events: none;
+  }
+  .page-hero-content {
+    position: relative;
+    z-index: 1;
+    max-width: 720px;
+  }
+  .page-hero h1 {
+    font-size: clamp(2.8rem, 5.5vw, 4.2rem);
+    font-weight: 800;
+    line-height: 1.05;
+    letter-spacing: -0.03em;
+    color: var(--black);
+    margin-bottom: 28px;
+  }
+  .page-hero h1 .accent { color: var(--orange); }
+  .page-hero-content > p {
+    font-size: clamp(1.02rem, 1.6vw, 1.12rem);
+    line-height: 1.8;
+    color: var(--grey-dark);
+    margin-bottom: 20px;
+  }
+  .page-hero-content > p:last-of-type {
+    margin-bottom: 0;
+  }
+
+  /* ── Anchor navigation strip ──────────────────────── */
+  .product-nav {
+    position: sticky;
+    top: 76px;
+    z-index: 900;
+    background: rgba(255,255,255,0.94);
+    backdrop-filter: blur(16px);
+    border-bottom: 1px solid var(--grey-light);
+    padding: 0;
+  }
+  .product-nav .container {
+    display: flex;
+    gap: 0;
+    overflow-x: auto;
+    -ms-overflow-style: none;
+    scrollbar-width: none;
+  }
+  .product-nav .container::-webkit-scrollbar { display: none; }
+  .product-nav-link {
+    padding: 20px 32px;
+    font-size: 0.85rem;
+    font-weight: 600;
+    color: var(--grey-dark);
+    text-decoration: none;
+    white-space: nowrap;
+    position: relative;
+    transition: color 0.3s;
+  }
+  .product-nav-link::after {
+    content: '';
+    position: absolute;
+    bottom: 0;
+    left: 32px;
+    right: 32px;
+    height: 2px;
+    background: var(--orange);
+    transform: scaleX(0);
+    transition: transform 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+  }
+  .product-nav-link:hover {
+    color: var(--orange);
+  }
+  .product-nav-link:hover::after,
+  .product-nav-link.active::after {
+    transform: scaleX(1);
+  }
+  .product-nav-link.active {
+    color: var(--orange);
+  }
+
+  /* ══════════════════════════════════════════════════
+     BLICK FLUIDS — Hero/Feature section
+     ══════════════════════════════════════════════════ */
+  .fluids-section {
+    padding: 140px 0 0;
+    position: relative;
+    overflow: hidden;
+  }
+  .fluids-section .geo-bg {
+    position: absolute;
+    top: -200px;
+    right: -200px;
+    width: 700px;
+    height: 700px;
+    border-radius: 50%;
+    background: var(--orange);
+    opacity: 0.03;
+    pointer-events: none;
+  }
+
+  .fluids-hero {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 80px;
+    align-items: center;
+    margin-bottom: 120px;
+  }
+  .fluids-hero-text h2 {
+    font-size: clamp(2.2rem, 4vw, 3.2rem);
+    font-weight: 800;
+    letter-spacing: -0.02em;
+    line-height: 1.08;
+    color: var(--black);
+    margin-bottom: 12px;
+  }
+  .fluids-hero-text .sub {
+    font-size: 1.15rem;
+    font-weight: 500;
+    color: var(--orange);
+    margin-bottom: 32px;
+    letter-spacing: -0.01em;
+  }
+  .fluids-hero-text p {
+    font-size: 1.02rem;
+    line-height: 1.8;
+    color: var(--grey-dark);
+    margin-bottom: 18px;
+  }
+  .fluids-hero-text .emphasis {
+    font-weight: 600;
+    color: var(--charcoal);
+    font-style: italic;
+  }
+
+  /* Fluids visual — abstract graphic */
+  .fluids-visual {
+    position: relative;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+  .fluids-graphic {
+    width: 100%;
+    aspect-ratio: 1;
+    max-width: 480px;
+    position: relative;
+  }
+  .fluids-graphic .ring {
+    position: absolute;
+    border-radius: 50%;
+    border: 1.5px solid var(--grey-light);
+    transition: all 0.6s cubic-bezier(0.16, 1, 0.3, 1);
+  }
+  .fluids-graphic:hover .ring {
+    border-color: rgba(253, 79, 0, 0.15);
+  }
+  .fluids-graphic .ring-1 {
+    inset: 0;
+    animation: float 18s ease-in-out infinite;
+  }
+  .fluids-graphic .ring-2 {
+    inset: 12%;
+    border-color: rgba(253, 79, 0, 0.12);
+    animation: float 14s ease-in-out infinite reverse;
+  }
+  .fluids-graphic .ring-3 {
+    inset: 24%;
+    border-style: dashed;
+    border-color: rgba(253, 79, 0, 0.08);
+    animation: float 22s ease-in-out infinite;
+  }
+  .fluids-graphic .core {
+    position: absolute;
+    inset: 35%;
+    border-radius: 50%;
+    background: linear-gradient(135deg, var(--orange) 0%, var(--orange-light) 100%);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
+    box-shadow: 0 20px 60px rgba(253, 79, 0, 0.2);
+    animation: cardFloat 8s ease-in-out infinite;
+  }
+  .fluids-graphic .core-label {
+    font-size: 0.6rem;
+    font-weight: 600;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: rgba(255,255,255,0.7);
+    margin-bottom: 4px;
+  }
+  .fluids-graphic .core-text {
+    font-size: 1.3rem;
+    font-weight: 800;
+    color: var(--white);
+    letter-spacing: -0.02em;
+  }
+
+  /* Orbit nodes */
+  .orbit-node {
+    position: absolute;
+    width: 52px;
+    height: 52px;
+    border-radius: 14px;
+    background: var(--white);
+    border: 1px solid var(--grey-light);
+    box-shadow: 0 8px 24px rgba(0,0,0,0.06);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 2;
+    transition: all 0.4s;
+  }
+  .orbit-node:hover {
+    border-color: var(--orange);
+    transform: scale(1.08);
+    box-shadow: 0 12px 32px rgba(253, 79, 0, 0.12);
+  }
+  .orbit-node svg {
+    width: 22px;
+    height: 22px;
+    stroke: var(--orange);
+    fill: none;
+    stroke-width: 1.5;
+    stroke-linecap: round;
+    stroke-linejoin: round;
+  }
+  .orbit-node-1 { top: 5%; left: 50%; transform: translateX(-50%); }
+  .orbit-node-2 { top: 50%; right: 0; transform: translateY(-50%); }
+  .orbit-node-3 { bottom: 5%; left: 50%; transform: translateX(-50%); }
+  .orbit-node-4 { top: 50%; left: 0; transform: translateY(-50%); }
+
+  /* ── Fluids categories ────────────────────────────── */
+  .fluids-categories {
+    padding: 100px 0 140px;
+    background: var(--off-white);
+    position: relative;
+  }
+  .fluids-categories::before {
+    content: '';
+    position: absolute;
+    bottom: -100px;
+    left: -100px;
+    width: 400px;
+    height: 400px;
+    border: 1px solid rgba(253, 79, 0, 0.05);
+    border-radius: 50%;
+    pointer-events: none;
+  }
+  .cats-header {
+    margin-bottom: 64px;
+  }
+  .cats-header h3 {
+    font-size: clamp(1.6rem, 3vw, 2.2rem);
+    font-weight: 800;
+    letter-spacing: -0.02em;
+    color: var(--black);
+  }
+  .cats-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 24px;
+  }
+  .cat-card {
+    background: var(--white);
+    border: 1px solid var(--grey-light);
+    border-radius: 24px;
+    padding: 48px 40px 44px;
+    position: relative;
+    overflow: hidden;
+    transition: all 0.5s cubic-bezier(0.16, 1, 0.3, 1);
+  }
+  .cat-card::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 3px;
+    background: var(--orange);
+    transform: scaleX(0);
+    transform-origin: left;
+    transition: transform 0.5s cubic-bezier(0.16, 1, 0.3, 1);
+  }
+  .cat-card:hover {
+    transform: translateY(-6px);
+    box-shadow: 0 24px 64px rgba(0,0,0,0.07);
+    border-color: transparent;
+  }
+  .cat-card:hover::before {
+    transform: scaleX(1);
+  }
+  .cat-card-icon {
+    width: 56px;
+    height: 56px;
+    border-radius: 16px;
+    background: rgba(253, 79, 0, 0.06);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-bottom: 28px;
+  }
+  .cat-card-icon svg {
+    width: 26px;
+    height: 26px;
+    stroke: var(--orange);
+    fill: none;
+    stroke-width: 1.5;
+    stroke-linecap: round;
+    stroke-linejoin: round;
+  }
+  .cat-card h4 {
+    font-size: 1.15rem;
+    font-weight: 700;
+    color: var(--black);
+    margin-bottom: 14px;
+    letter-spacing: -0.01em;
+  }
+  .cat-card p {
+    font-size: 0.92rem;
+    line-height: 1.75;
+    color: var(--grey-dark);
+  }
+
+  .fluids-note {
+    margin-top: 48px;
+    padding: 32px 40px;
+    background: var(--white);
+    border-left: 3px solid var(--orange);
+    border-radius: 0 16px 16px 0;
+    font-size: 0.95rem;
+    line-height: 1.7;
+    color: var(--charcoal);
+  }
+
+  .fluids-cta {
+    margin-top: 40px;
+    display: flex;
+    gap: 16px;
+    flex-wrap: wrap;
+  }
+
+  /* ══════════════════════════════════════════════════
+     EQUIPMENT & TOOLING
+     ══════════════════════════════════════════════════ */
+  .tooling-section {
+    padding: 140px 0;
+    position: relative;
+    overflow: hidden;
+  }
+  .tooling-section .geo-accent {
+    position: absolute;
+    top: 100px;
+    right: -120px;
+    width: 350px;
+    height: 350px;
+    border: 1px solid rgba(253, 79, 0, 0.06);
+    border-radius: 50%;
+    pointer-events: none;
+  }
+
+  .tooling-intro {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 80px;
+    align-items: start;
+    margin-bottom: 100px;
+  }
+  .tooling-intro-text h2 {
+    font-size: clamp(2.2rem, 4vw, 3.2rem);
+    font-weight: 800;
+    letter-spacing: -0.02em;
+    line-height: 1.08;
+    color: var(--black);
+    margin-bottom: 12px;
+  }
+  .tooling-intro-text .sub {
+    font-size: 1.1rem;
+    font-weight: 500;
+    color: var(--orange);
+    margin-bottom: 28px;
+  }
+  .tooling-intro-text p {
+    font-size: 1.02rem;
+    line-height: 1.8;
+    color: var(--grey-dark);
+    margin-bottom: 16px;
+  }
+
+  /* Tooling visual — floating cards */
+  .tooling-visual {
+    position: relative;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    min-height: 400px;
+  }
+  .tool-float-card {
+    position: absolute;
+    background: var(--off-white);
+    border: 1px solid var(--grey-light);
+    border-radius: 20px;
+    padding: 32px 28px;
+    box-shadow: 0 16px 48px rgba(0,0,0,0.05);
+    transition: all 0.4s;
+    max-width: 240px;
+  }
+  .tool-float-card:hover {
+    transform: translateY(-6px) !important;
+    box-shadow: 0 24px 64px rgba(0,0,0,0.08);
+    border-color: rgba(253, 79, 0, 0.15);
+  }
+  .tool-float-card h5 {
+    font-size: 0.92rem;
+    font-weight: 700;
+    color: var(--black);
+    margin-bottom: 8px;
+  }
+  .tool-float-card p {
+    font-size: 0.82rem;
+    line-height: 1.6;
+    color: var(--grey-dark);
+  }
+  .tool-float-card .tfc-icon {
+    width: 40px;
+    height: 40px;
+    border-radius: 12px;
+    background: rgba(253, 79, 0, 0.08);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-bottom: 16px;
+  }
+  .tool-float-card .tfc-icon svg {
+    width: 20px;
+    height: 20px;
+    stroke: var(--orange);
+    fill: none;
+    stroke-width: 1.5;
+    stroke-linecap: round;
+    stroke-linejoin: round;
+  }
+  .tfc-1 {
+    top: 0;
+    left: 10%;
+    animation: cardFloat 7s ease-in-out infinite;
+  }
+  .tfc-2 {
+    top: 30%;
+    right: 0;
+    animation: cardFloat 9s ease-in-out infinite;
+    animation-delay: -3s;
+  }
+  .tfc-3 {
+    bottom: 0;
+    left: 20%;
+    animation: cardFloat 8s ease-in-out infinite;
+    animation-delay: -5s;
+  }
+
+  /* Tooling detail cards */
+  .tooling-details {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 24px;
+  }
+  .tool-detail-card {
+    background: var(--off-white);
+    border: 1px solid var(--grey-light);
+    border-radius: 24px;
+    padding: 48px 36px 40px;
+    position: relative;
+    overflow: hidden;
+    transition: all 0.5s cubic-bezier(0.16, 1, 0.3, 1);
+  }
+  .tool-detail-card::after {
+    content: '';
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    height: 3px;
+    background: var(--orange);
+    transform: scaleX(0);
+    transform-origin: right;
+    transition: transform 0.5s cubic-bezier(0.16, 1, 0.3, 1);
+  }
+  .tool-detail-card:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 20px 56px rgba(0,0,0,0.06);
+    border-color: transparent;
+  }
+  .tool-detail-card:hover::after {
+    transform: scaleX(1);
+    transform-origin: left;
+  }
+  .tool-detail-card .td-badge {
+    display: inline-flex;
+    padding: 6px 14px;
+    border-radius: 100px;
+    background: rgba(253, 79, 0, 0.08);
+    color: var(--orange);
+    font-size: 0.72rem;
+    font-weight: 600;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    margin-bottom: 20px;
+  }
+  .tool-detail-card h4 {
+    font-size: 1.2rem;
+    font-weight: 700;
+    color: var(--black);
+    margin-bottom: 14px;
+    letter-spacing: -0.01em;
+  }
+  .tool-detail-card p {
+    font-size: 0.92rem;
+    line-height: 1.75;
+    color: var(--grey-dark);
+  }
+
+  .tooling-cta {
+    margin-top: 56px;
+    text-align: center;
+  }
+
+  /* ══════════════════════════════════════════════════
+     GREASE / JET LUBE
+     ══════════════════════════════════════════════════ */
+  .grease-section {
+    padding: 140px 0;
+    background: var(--black);
+    color: var(--white);
+    position: relative;
+    overflow: hidden;
+  }
+  .grease-section::before {
+    content: '';
+    position: absolute;
+    top: -250px;
+    left: -250px;
+    width: 700px;
+    height: 700px;
+    border-radius: 50%;
+    background: var(--orange);
+    opacity: 0.04;
+    pointer-events: none;
+  }
+  .grease-section::after {
+    content: '';
+    position: absolute;
+    bottom: -150px;
+    right: -150px;
+    width: 400px;
+    height: 400px;
+    border: 1px solid rgba(253, 79, 0, 0.08);
+    border-radius: 50%;
+    pointer-events: none;
+  }
+
+  .grease-header {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 80px;
+    align-items: start;
+    margin-bottom: 80px;
+  }
+  .grease-header-text h2 {
+    font-size: clamp(2.2rem, 4vw, 3.2rem);
+    font-weight: 800;
+    letter-spacing: -0.02em;
+    line-height: 1.08;
+    margin-bottom: 12px;
+  }
+  .grease-header-text .sub {
+    font-size: 1.1rem;
+    font-weight: 500;
+    color: var(--orange);
+    margin-bottom: 28px;
+  }
+  .grease-header-text p {
+    font-size: 1.02rem;
+    line-height: 1.8;
+    color: rgba(255,255,255,0.6);
+  }
+  .grease-header-visual {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+  /* Shield graphic */
+  .shield-graphic {
+    width: 220px;
+    height: 260px;
+    position: relative;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+  .shield-graphic .shield-outline {
+    position: absolute;
+    inset: 0;
+    border: 2px solid rgba(253, 79, 0, 0.2);
+    border-radius: 50% 50% 50% 50% / 40% 40% 60% 60%;
+    animation: float 12s ease-in-out infinite;
+  }
+  .shield-graphic .shield-inner {
+    position: absolute;
+    inset: 20%;
+    border: 1px dashed rgba(253, 79, 0, 0.12);
+    border-radius: 50% 50% 50% 50% / 40% 40% 60% 60%;
+    animation: float 16s ease-in-out infinite reverse;
+  }
+  .shield-graphic .shield-core {
+    width: 72px;
+    height: 72px;
+    border-radius: 50%;
+    background: rgba(253, 79, 0, 0.12);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 1;
+  }
+  .shield-graphic .shield-core svg {
+    width: 32px;
+    height: 32px;
+    stroke: var(--orange);
+    fill: none;
+    stroke-width: 1.5;
+    stroke-linecap: round;
+    stroke-linejoin: round;
+  }
+
+  .grease-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 24px;
+    margin-bottom: 56px;
+  }
+  .grease-card {
+    background: rgba(255, 255, 255, 0.04);
+    border: 1px solid rgba(255, 255, 255, 0.07);
+    border-radius: 20px;
+    padding: 44px 36px 40px;
+    transition: all 0.5s cubic-bezier(0.16, 1, 0.3, 1);
+    position: relative;
+    overflow: hidden;
+  }
+  .grease-card::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 0;
+    height: 3px;
+    background: var(--orange);
+    transition: width 0.5s cubic-bezier(0.16, 1, 0.3, 1);
+  }
+  .grease-card:hover {
+    background: rgba(255, 255, 255, 0.07);
+    transform: translateY(-4px);
+    border-color: rgba(253, 79, 0, 0.15);
+  }
+  .grease-card:hover::before {
+    width: 100%;
+  }
+  .grease-card h4 {
+    font-size: 1.1rem;
+    font-weight: 700;
+    margin-bottom: 14px;
+  }
+  .grease-card p {
+    font-size: 0.92rem;
+    line-height: 1.75;
+    color: rgba(255,255,255,0.5);
+  }
+  .grease-card .gc-icon {
+    width: 44px;
+    height: 44px;
+    border-radius: 12px;
+    background: rgba(253, 79, 0, 0.1);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-bottom: 24px;
+  }
+  .grease-card .gc-icon svg {
+    width: 20px;
+    height: 20px;
+    stroke: var(--orange);
+    fill: none;
+    stroke-width: 1.5;
+    stroke-linecap: round;
+    stroke-linejoin: round;
+  }
+
+  .grease-footer {
+    padding-top: 48px;
+    border-top: 1px solid rgba(255,255,255,0.07);
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    flex-wrap: wrap;
+    gap: 24px;
+  }
+  .grease-footer p {
+    font-size: 1rem;
+    color: rgba(255,255,255,0.5);
+    line-height: 1.7;
+    max-width: 560px;
+  }
+
+  /* ══════════════════════════════════════════════════
+     CLOSING PROMISE
+     ══════════════════════════════════════════════════ */
+  .promise {
+    padding: 140px 0;
+    position: relative;
+    overflow: hidden;
+    text-align: center;
+  }
+  .promise .geo-ring {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 500px;
+    height: 500px;
+    border: 1px solid rgba(253, 79, 0, 0.05);
+    border-radius: 50%;
+    pointer-events: none;
+  }
+  .promise-content {
+    position: relative;
+    z-index: 1;
+    max-width: 680px;
+    margin: 0 auto;
+  }
+  .promise h2 {
+    font-size: clamp(1.8rem, 3.5vw, 2.6rem);
+    font-weight: 800;
+    letter-spacing: -0.02em;
+    line-height: 1.15;
+    color: var(--black);
+    margin-bottom: 24px;
+  }
+  .promise p {
+    font-size: 1.08rem;
+    line-height: 1.8;
+    color: var(--grey-dark);
+    margin-bottom: 40px;
+  }
+
+  /* ══════════════════════════════════════════════════
+     CTA
+     ══════════════════════════════════════════════════ */
+  .cta {
+    padding: 140px 0;
+    background: var(--off-white);
+    position: relative;
+    overflow: hidden;
+    text-align: center;
+  }
+  .cta .geo-glow {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 600px;
+    height: 600px;
+    border-radius: 50%;
+    background: radial-gradient(circle, rgba(253, 79, 0, 0.05) 0%, transparent 70%);
+    pointer-events: none;
+  }
+  .cta-content {
+    position: relative;
+    z-index: 1;
+  }
+  .cta h2 {
+    font-size: clamp(2rem, 4vw, 3rem);
+    font-weight: 800;
+    letter-spacing: -0.02em;
+    line-height: 1.1;
+    color: var(--black);
+    margin-bottom: 20px;
+  }
+  .cta-content > p {
+    font-size: 1.08rem;
+    color: var(--grey-dark);
+    margin-bottom: 40px;
+  }
+  .cta-actions {
+    display: flex;
+    gap: 16px;
+    justify-content: center;
+    flex-wrap: wrap;
+  }
+
+  /* ── Footer ───────────────────────────────────────── */
+  footer {
+    padding: 80px 0 40px;
+    border-top: 1px solid var(--grey-light);
+  }
+  .footer-grid {
+    display: grid;
+    grid-template-columns: 2fr 1fr 1fr 1fr;
+    gap: 64px;
+    margin-bottom: 64px;
+  }
+  .footer-brand p {
+    font-size: 0.9rem;
+    line-height: 1.7;
+    color: var(--grey-dark);
+    margin-top: 16px;
+    max-width: 300px;
+  }
+  .footer-col h4 {
+    font-size: 0.75rem;
+    font-weight: 700;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--black);
+    margin-bottom: 20px;
+  }
+  .footer-col ul {
+    list-style: none;
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+  }
+  .footer-col a {
+    text-decoration: none;
+    color: var(--grey-dark);
+    font-size: 0.88rem;
+    transition: color 0.3s;
+  }
+  .footer-col a:hover { color: var(--orange); }
+  .footer-bottom {
+    padding-top: 32px;
+    border-top: 1px solid var(--grey-light);
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    font-size: 0.8rem;
+    color: var(--grey-mid);
+  }
+
+  /* ── Responsive ───────────────────────────────────── */
+  @media (max-width: 1024px) {
+    .fluids-hero,
+    .tooling-intro,
+    .grease-header {
+      grid-template-columns: 1fr;
+      gap: 48px;
+    }
+    .fluids-visual { display: none; }
+    .grease-header-visual { display: none; }
+    .tooling-visual { display: none; }
+    .cats-grid,
+    .tooling-details,
+    .grease-grid {
+      grid-template-columns: 1fr 1fr;
+    }
+    .footer-grid {
+      grid-template-columns: 1fr 1fr;
+      gap: 40px;
+    }
+  }
+  @media (max-width: 640px) {
+    .nav-links { display: none; }
+    .cats-grid,
+    .tooling-details,
+    .grease-grid {
+      grid-template-columns: 1fr;
+    }
+    .product-nav-link {
+      padding: 16px 20px;
+      font-size: 0.8rem;
+    }
+    .grease-footer {
+      flex-direction: column;
+      text-align: center;
+    }
+    .footer-grid {
+      grid-template-columns: 1fr;
+      gap: 32px;
+    }
+    .footer-bottom {
+      flex-direction: column;
+      gap: 12px;
+      text-align: center;
+    }
+  }
+</style>
+</head>
+<body>
+
+<!-- ════════ Navigation ════════ -->
+<nav id="nav">
+  <div class="container">
+    <a href="index.html" class="nav-logo">
+      <img src="blick-logo.png" alt="Blick">
+    </a>
+    <ul class="nav-links">
+      <li><a href="index.html">Home</a></li>
+      <li><a href="products.html" class="active">Products</a></li>
+      <li><a href="services.html">Services</a></li>
+      <li><a href="team.html">Team</a></li>
+      <li><a href="contact.html" class="nav-cta">Contact Us</a></li>
+    </ul>
+  </div>
+</nav>
+
+<!-- ════════ Page Hero ════════ -->
+<section class="page-hero">
+  <div class="geo geo-1"></div>
+  <div class="geo geo-2"></div>
+  <div class="grid-overlay"></div>
+  <div class="container">
+    <div class="page-hero-content">
+      <div class="section-tag reveal">Products</div>
+      <h1 class="reveal stagger-1">The products behind <span class="accent">better outcomes.</span></h1>
+      <p class="reveal stagger-2">The quality of your work is shaped by the tools and partners you choose. At Blick, we make sure the products you need are not only the right ones &mdash; they're ready when you are.</p>
+      <p class="reveal stagger-3">Our fluids are stocked locally across Australia and New Zealand, backed by logistics that move fast when the ground changes. Every product we supply has been tested, supported, and chosen to help your team work faster, safer, and with fewer surprises.</p>
+      <p class="reveal stagger-4">From engineered fluids to world-class HDD tooling and thread compounds, everything we supply carries the same promise: quality and reliability, delivered on time, every time.</p>
+    </div>
+  </div>
+</section>
+
+<!-- ════════ Product Anchor Nav ════════ -->
+<div class="product-nav" id="productNav">
+  <div class="container">
+    <a href="#fluids" class="product-nav-link active" data-section="fluids">Blick Fluids</a>
+    <a href="#tooling" class="product-nav-link" data-section="tooling">Equipment &amp; Tooling</a>
+    <a href="#jetlube" class="product-nav-link" data-section="jetlube">Grease &amp; Compounds</a>
+  </div>
+</div>
+
+<!-- ══════════════════════════════════════════════════
+     BLICK FLUIDS
+     ══════════════════════════════════════════════════ -->
+<section class="fluids-section" id="fluids">
+  <div class="geo-bg"></div>
+  <div class="container">
+
+    <!-- Hero split -->
+    <div class="fluids-hero">
+      <div class="fluids-hero-text">
+        <div class="section-tag reveal">Core Product Range</div>
+        <h2 class="reveal stagger-1">Blick Fluids</h2>
+        <div class="sub reveal stagger-2">Engineered for local ground. Proven in the field.</div>
+        <p class="reveal stagger-3">Blick Fluids are designed and tested for the conditions drillers face across Australasia. They stabilise holes, manage solids, and keep rigs performing at their best &mdash; whether you're crossing under a city street or drilling 200 metres into basalt.</p>
+        <p class="reveal stagger-4">Every blend is developed with the insight of our field team and refined by feedback from contractors and engineers who use them every day.</p>
+        <p class="emphasis reveal stagger-5">It's not about the chemistry alone &mdash; it's about confidence in what's going downhole.</p>
+      </div>
+
+      <!-- Abstract orbital graphic -->
+      <div class="fluids-visual reveal">
+        <div class="fluids-graphic">
+          <div class="ring ring-1"></div>
+          <div class="ring ring-2"></div>
+          <div class="ring ring-3"></div>
+          <div class="core">
+            <span class="core-label">Blick</span>
+            <span class="core-text">Fluids</span>
+          </div>
+          <!-- Orbit nodes -->
+          <div class="orbit-node orbit-node-1">
+            <svg viewBox="0 0 24 24"><path d="M12 2v20M2 12h20"/><circle cx="12" cy="12" r="4"/></svg>
+          </div>
+          <div class="orbit-node orbit-node-2">
+            <svg viewBox="0 0 24 24"><path d="M4 20h16M6 16l3-12h6l3 12"/></svg>
+          </div>
+          <div class="orbit-node orbit-node-3">
+            <svg viewBox="0 0 24 24"><path d="M12 2L2 7l10 5 10-5-10-5z"/><path d="M2 17l10 5 10-5"/></svg>
+          </div>
+          <div class="orbit-node orbit-node-4">
+            <svg viewBox="0 0 24 24"><path d="M20 7l-8 4-8-4m16 0v10l-8 4m8-14L12 3 4 7m0 0v10l8 4"/></svg>
+          </div>
+        </div>
+      </div>
+    </div>
+
+  </div>
+
+  <!-- Categories -->
+  <div class="fluids-categories">
+    <div class="container">
+      <div class="cats-header">
+        <div class="section-tag reveal">Categories</div>
+        <h3 class="reveal stagger-1">Three ranges. One standard.</h3>
+      </div>
+      <div class="cats-grid">
+
+        <div class="cat-card reveal stagger-1">
+          <div class="cat-card-icon">
+            <svg viewBox="0 0 24 24"><path d="M12 2v20"/><path d="M2 12c0-5.5 4.5-10 10-10s10 4.5 10 10"/><path d="M22 12c0 5.5-4.5 10-10 10s-10-4.5-10-10"/></svg>
+          </div>
+          <h4>Core Fluids</h4>
+          <p>High-performance bentonite and polymer systems for consistent hole stability across every drilling method and ground condition.</p>
+        </div>
+
+        <div class="cat-card reveal stagger-2">
+          <div class="cat-card-icon">
+            <svg viewBox="0 0 24 24"><path d="M4 14h4v8H4z"/><path d="M10 10h4v12h-4z"/><path d="M16 6h4v16h-4z"/></svg>
+          </div>
+          <h4>Additives &amp; Conditioners</h4>
+          <p>PACs, stabilisers, and dispersants that fine-tune performance and reduce waste &mdash; giving you precise control downhole.</p>
+        </div>
+
+        <div class="cat-card reveal stagger-3">
+          <div class="cat-card-icon">
+            <svg viewBox="0 0 24 24"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
+          </div>
+          <h4>Specialty Products</h4>
+          <p>Environmental and disposal solutions like MetaFLO that turn liquid waste into stackable solids &mdash; simplifying compliance on site.</p>
+        </div>
+
+      </div>
+
+      <div class="fluids-note reveal">
+        Each product page includes technical data, SDS, and Product Sheets &mdash; everything you need to plan, quote, and execute with confidence.
+      </div>
+
+      <div class="fluids-cta reveal">
+        <a href="#" class="btn btn-primary">Explore Blick Fluids</a>
+        <a href="#" class="btn btn-secondary">Download SDS &amp; Product Sheets</a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ══════════════════════════════════════════════════
+     EQUIPMENT & TOOLING
+     ══════════════════════════════════════════════════ -->
+<section class="tooling-section" id="tooling">
+  <div class="geo-accent"></div>
+  <div class="container">
+
+    <div class="tooling-intro">
+      <div class="tooling-intro-text">
+        <div class="section-tag reveal">Equipment &amp; Tooling</div>
+        <h2 class="reveal stagger-1">Equipment &amp; Tooling</h2>
+        <div class="sub reveal stagger-2">Reliable tools. Local support.</div>
+        <p class="reveal stagger-3">Your tooling determines how the job runs &mdash; speed, precision, and how much you trust the next joint in the string.</p>
+        <p class="reveal stagger-4">Blick partners with world-class manufacturers to bring equipment that performs when it counts, supported by people who understand the pressures in the field.</p>
+      </div>
+
+      <!-- Floating tool cards -->
+      <div class="tooling-visual reveal">
+        <div class="tool-float-card tfc-1">
+          <div class="tfc-icon">
+            <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="3"/><path d="M12 2v4m0 12v4M2 12h4m12 0h4"/></svg>
+          </div>
+          <h5>HDD Tools</h5>
+          <p>Melfred Borzall reamers, bits, and housings</p>
+        </div>
+        <div class="tool-float-card tfc-2">
+          <div class="tfc-icon">
+            <svg viewBox="0 0 24 24"><path d="M4 20h16M6 16l3-12h6l3 12M9 4h6"/></svg>
+          </div>
+          <h5>Drill Rods</h5>
+          <p>Thread quality and toughness for every application</p>
+        </div>
+        <div class="tool-float-card tfc-3">
+          <div class="tfc-icon">
+            <svg viewBox="0 0 24 24"><path d="M12 2L2 7l10 5 10-5-10-5z"/><path d="M2 17l10 5 10-5"/><path d="M2 12l10 5 10-5"/></svg>
+          </div>
+          <h5>Bits &amp; DTH</h5>
+          <p>Components for the region's toughest ground</p>
+        </div>
+      </div>
+    </div>
+
+    <!-- Detail cards -->
+    <div class="tooling-details">
+
+      <div class="tool-detail-card reveal stagger-1">
+        <span class="td-badge">Partner</span>
+        <h4>Melfred Borzall HDD Tools</h4>
+        <p>The global leader in HDD tooling &mdash; engineered in California, supported locally by Blick. Built for productivity, reliability, and value, every reamer, bit, and housing is backed by our in-country advice and after-sales support.</p>
+      </div>
+
+      <div class="tool-detail-card reveal stagger-2">
+        <span class="td-badge">Precision</span>
+        <h4>Drill Rods &amp; Collars</h4>
+        <p>Built for longevity and precision. Our rods and adaptors are selected for thread quality and toughness, reducing wear and downtime across HDD, geotech, and waterwell applications.</p>
+      </div>
+
+      <div class="tool-detail-card reveal stagger-3">
+        <span class="td-badge">Performance</span>
+        <h4>Bits &amp; Accessories</h4>
+        <p>From down-the-hole hammers to coring bits and stabilisers, Blick supplies proven components designed to handle the region's toughest ground conditions.</p>
+      </div>
+
+    </div>
+
+    <div class="tooling-cta reveal">
+      <a href="#" class="btn btn-dark">Talk to Us About Tooling Options</a>
+    </div>
+
+  </div>
+</section>
+
+<!-- ══════════════════════════════════════════════════
+     GREASE / JET LUBE
+     ══════════════════════════════════════════════════ -->
+<section class="grease-section" id="jetlube">
+  <div class="container">
+
+    <div class="grease-header">
+      <div class="grease-header-text">
+        <div class="section-tag reveal">Grease &amp; Compounds</div>
+        <h2 class="reveal stagger-1">Grease</h2>
+        <div class="sub reveal stagger-2">Protection that performs.</div>
+        <p class="reveal stagger-3">When you rely on threaded connections, sealing surfaces, and high-temperature joints, failure isn't an option. Blick supplies the full range of Jet Lube compounds trusted worldwide for performance, environmental compliance, and reliability.</p>
+      </div>
+
+      <div class="grease-header-visual reveal">
+        <div class="shield-graphic">
+          <div class="shield-outline"></div>
+          <div class="shield-inner"></div>
+          <div class="shield-core">
+            <svg viewBox="0 0 24 24"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="grease-grid">
+
+      <div class="grease-card reveal stagger-1">
+        <div class="gc-icon">
+          <svg viewBox="0 0 24 24"><path d="M14.7 6.3a1 1 0 0 0 0 1.4l1.6 1.6a1 1 0 0 0 1.4 0l3.77-3.77a6 6 0 0 1-7.94 7.94l-6.91 6.91a2.12 2.12 0 0 1-3-3l6.91-6.91a6 6 0 0 1 7.94-7.94l-3.76 3.76z"/></svg>
+        </div>
+        <h4>Thread Compounds</h4>
+        <p>Premium anti-seize and makeup lubricants for drill strings, collars, and casing &mdash; protecting connections under extreme torque and pressure.</p>
+      </div>
+
+      <div class="grease-card reveal stagger-2">
+        <div class="gc-icon">
+          <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><path d="M12 8v4l3 3"/></svg>
+        </div>
+        <h4>Valve &amp; Sealing Compounds</h4>
+        <p>Products for high-pressure sealing and assembly &mdash; ensuring leak-free performance across critical systems and equipment.</p>
+      </div>
+
+      <div class="grease-card reveal stagger-3">
+        <div class="gc-icon">
+          <svg viewBox="0 0 24 24"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
+        </div>
+        <h4>Specialty Grease</h4>
+        <p>High-temperature, food-grade, and environmentally responsible lubricants for critical components where reliability is non-negotiable.</p>
+      </div>
+
+    </div>
+
+    <div class="grease-footer">
+      <p>Because protecting equipment is more than maintenance &mdash; it's part of delivering a job that runs right from start to finish.</p>
+      <a href="#" class="btn btn-ghost">View Jet Lube Range</a>
+    </div>
+
+  </div>
+</section>
+
+<!-- ══════════════════════════════════════════════════
+     CLOSING PROMISE
+     ══════════════════════════════════════════════════ -->
+<section class="promise">
+  <div class="geo-ring"></div>
+  <div class="container">
+    <div class="promise-content">
+      <div class="section-tag reveal">A Better Product Story</div>
+      <h2 class="reveal stagger-1">We choose partners who share our values</h2>
+      <p class="reveal stagger-2">People who build quality products, stand behind their work, and show up when it counts. That's why every item we supply fits into one simple promise: better outcomes, lower risk, and a smoother path to success.</p>
+      <div class="orange-line reveal stagger-3" style="margin: 0 auto;"></div>
+    </div>
+  </div>
+</section>
+
+<!-- ══════════════════════════════════════════════════
+     CTA
+     ══════════════════════════════════════════════════ -->
+<section class="cta">
+  <div class="geo-glow"></div>
+  <div class="container">
+    <div class="cta-content">
+      <div class="section-tag reveal">Let's Talk</div>
+      <h2 class="reveal stagger-1">Every successful project starts with the right conversation</h2>
+      <p class="reveal stagger-2">Let's talk about yours.</p>
+      <div class="cta-actions reveal stagger-3">
+        <a href="mailto:sales@blick.group" class="btn btn-primary">Talk to a Blick Expert</a>
+        <a href="#fluids" class="btn btn-secondary">Explore Blick Fluids</a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ════════ Footer ════════ -->
+<footer>
+  <div class="container">
+    <div class="footer-grid">
+      <div class="footer-brand">
+        <a href="index.html" class="nav-logo">
+          <img src="blick-logo.png" alt="Blick" style="height:32px;width:auto;">
+    </a>
+        <p>Australasia's leading drilling fluid solutions partner. Serving Australia, New Zealand, and the Pacific Islands.</p>
+      </div>
+      <div class="footer-col">
+        <h4>Products</h4>
+        <ul>
+          <li><a href="#fluids">Blick Fluids</a></li>
+          <li><a href="#tooling">Equipment &amp; Tooling</a></li>
+          <li><a href="#jetlube">Grease &amp; Compounds</a></li>
+        </ul>
+      </div>
+      <div class="footer-col">
+        <h4>Company</h4>
+        <ul>
+          <li><a href="index.html#industries">Industries</a></li>
+          <li><a href="index.html#philosophy">Our Approach</a></li>
+          <li><a href="index.html#training">Mud Schools</a></li>
+        </ul>
+      </div>
+      <div class="footer-col">
+        <h4>Connect</h4>
+        <ul>
+          <li><a href="mailto:sales@blick.group">sales@blick.group</a></li>
+          <li><a href="tel:+6478492366">+64 7 849 2366</a></li>
+          <li><a href="tel:+61390685688">+61 3 9068 5688</a></li>
+        </ul>
+      </div>
+    </div>
+    <div class="footer-bottom">
+      <span>&copy; 2026 Blick Group. All rights reserved.</span>
+      <span>Australia &middot; New Zealand &middot; Pacific Islands</span>
+    </div>
+  </div>
+</footer>
+
+<script>
+  // ── Scroll reveal ──
+  const reveals = document.querySelectorAll('.reveal');
+  const observer = new IntersectionObserver((entries) => {
+    entries.forEach(entry => {
+      if (entry.isIntersecting) {
+        entry.target.classList.add('visible');
+      }
+    });
+  }, { threshold: 0.1, rootMargin: '0px 0px -60px 0px' });
+  reveals.forEach(el => observer.observe(el));
+
+  // ── Nav scroll effect ──
+  const nav = document.getElementById('nav');
+  window.addEventListener('scroll', () => {
+    nav.classList.toggle('scrolled', window.scrollY > 50);
+  });
+
+  // ── Smooth anchor links ──
+  document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+    anchor.addEventListener('click', function(e) {
+      e.preventDefault();
+      const target = document.querySelector(this.getAttribute('href'));
+      if (target) {
+        const offset = 140; // nav + product-nav height
+        const top = target.getBoundingClientRect().top + window.pageYOffset - offset;
+        window.scrollTo({ top, behavior: 'smooth' });
+      }
+    });
+  });
+
+  // ── Product nav active state on scroll ──
+  const sections = document.querySelectorAll('.fluids-section, .tooling-section, .grease-section');
+  const navLinks = document.querySelectorAll('.product-nav-link');
+
+  const sectionObserver = new IntersectionObserver((entries) => {
+    entries.forEach(entry => {
+      if (entry.isIntersecting) {
+        const id = entry.target.id;
+        navLinks.forEach(link => {
+          link.classList.toggle('active', link.getAttribute('data-section') === id);
+        });
+      }
+    });
+  }, { threshold: 0.15, rootMargin: '-20% 0px -60% 0px' });
+
+  sections.forEach(s => sectionObserver.observe(s));
+</script>
+
+</body>
+</html>

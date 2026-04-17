@@ -1,0 +1,932 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="light">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Compass 90-Day Plan V5 - Compact Timeline</title>
+  <link rel="stylesheet" href="../../src/styles/themes.css" />
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <style>
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    :root {
+      font-family: "Inter", system-ui, -apple-system, sans-serif;
+    }
+
+    body {
+      background: var(--bg-page);
+      color: var(--text-primary);
+      min-height: 100vh;
+      padding: 24px;
+    }
+
+    /* Theme Toggle */
+    .theme-controls {
+      position: fixed;
+      top: 16px;
+      right: 16px;
+      display: flex;
+      gap: 8px;
+      z-index: 1000;
+    }
+
+    .theme-btn {
+      padding: 8px 16px;
+      border-radius: 8px;
+      border: 1px solid var(--border-default);
+      background: var(--bg-surface);
+      color: var(--text-primary);
+      font-size: 12px;
+      font-weight: 600;
+      cursor: pointer;
+      transition: all 0.2s;
+    }
+
+    .theme-btn:hover, .theme-btn.active {
+      background: var(--primary);
+      color: white;
+      border-color: var(--primary);
+    }
+
+    /* Main Container */
+    .compass-container {
+      max-width: 1400px;
+      margin: 0 auto;
+      display: flex;
+      flex-direction: column;
+      gap: 16px;
+    }
+
+    /* Plan Navigation Header */
+    .plan-nav-header {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 32px;
+      padding: 16px 24px;
+      background: var(--bg-surface);
+      border-radius: 12px;
+      border: 1px solid var(--border-default);
+    }
+
+    .nav-arrow {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      width: 40px;
+      height: 40px;
+      border: 1px solid var(--border-default);
+      border-radius: 8px;
+      background: var(--bg-page);
+      color: var(--text-primary);
+      font-size: 18px;
+      cursor: pointer;
+      transition: all 0.2s ease;
+    }
+
+    .nav-arrow:hover:not(:disabled) {
+      background: var(--primary);
+      color: white;
+      border-color: var(--primary);
+    }
+
+    .nav-arrow:disabled {
+      opacity: 0.3;
+      cursor: not-allowed;
+    }
+
+    .plan-title-section {
+      text-align: center;
+      min-width: 240px;
+    }
+
+    .plan-status-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      padding: 4px 10px;
+      border-radius: 16px;
+      font-size: 10px;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+      margin-bottom: 4px;
+    }
+
+    .plan-status-badge.active {
+      background: linear-gradient(135deg, #3B82F6 0%, #6366F1 100%);
+      color: white;
+    }
+
+    .plan-title {
+      font-size: 1.75rem;
+      font-weight: 800;
+      color: var(--text-heading);
+    }
+
+    .plan-dates {
+      font-size: 12px;
+      color: var(--text-secondary);
+      margin-top: 2px;
+    }
+
+    /* ============================================
+       COMPACT FUN TIMELINE
+       ============================================ */
+    .compact-timeline {
+      background: var(--bg-surface);
+      border-radius: 12px;
+      padding: 14px 20px;
+      border: 1px solid var(--border-default);
+    }
+
+    .timeline-row {
+      display: flex;
+      align-items: center;
+      gap: 16px;
+    }
+
+    .timeline-stats {
+      display: flex;
+      gap: 16px;
+      flex-shrink: 0;
+    }
+
+    .timeline-stat {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      font-size: 13px;
+      color: var(--text-secondary);
+      white-space: nowrap;
+    }
+
+    .timeline-stat strong {
+      color: var(--text-heading);
+      font-weight: 700;
+    }
+
+    .timeline-stat.success strong {
+      color: #10B981;
+    }
+
+    /* The Race Track - Compact */
+    .race-track {
+      flex: 1;
+      position: relative;
+      height: 44px;
+      background: var(--bg-page);
+      border-radius: 22px;
+      border: 1px solid var(--border-default);
+      display: flex;
+      align-items: center;
+      overflow: hidden;
+    }
+
+    /* Cycle sections as background */
+    .cycle-sections {
+      position: absolute;
+      inset: 0;
+      display: flex;
+    }
+
+    .cycle-section {
+      flex: 1;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      border-right: 1px dashed var(--border-default);
+      font-size: 10px;
+      font-weight: 600;
+      color: var(--text-muted);
+      text-transform: uppercase;
+      letter-spacing: 0.03em;
+    }
+
+    .cycle-section:last-child {
+      border-right: none;
+    }
+
+    .cycle-section.current {
+      background: rgba(99, 102, 241, 0.06);
+      color: var(--primary);
+    }
+
+    .cycle-section.completed {
+      background: rgba(16, 185, 129, 0.06);
+      color: #10B981;
+    }
+
+    /* Progress bar inside track */
+    .progress-fill {
+      position: absolute;
+      left: 0;
+      top: 0;
+      bottom: 0;
+      background: linear-gradient(90deg,
+        rgba(99, 102, 241, 0.15) 0%,
+        rgba(16, 185, 129, 0.15) 100%
+      );
+      border-radius: 22px 0 0 22px;
+      transition: width 0.5s ease-out;
+    }
+
+    /* Start and End markers */
+    .track-marker {
+      position: absolute;
+      top: 50%;
+      transform: translateY(-50%);
+      font-size: 18px;
+      z-index: 2;
+    }
+
+    .track-marker.start {
+      left: 8px;
+    }
+
+    .track-marker.end {
+      right: 8px;
+    }
+
+    /* The Mascot */
+    .mascot {
+      position: absolute;
+      top: 50%;
+      transform: translateY(-50%);
+      font-size: 28px;
+      z-index: 3;
+      transition: left 0.5s ease-out;
+      filter: drop-shadow(0 2px 4px rgba(0,0,0,0.15));
+      animation: wiggle 0.4s ease-in-out infinite;
+    }
+
+    @keyframes wiggle {
+      0%, 100% { transform: translateY(-50%) rotate(-3deg); }
+      50% { transform: translateY(-55%) rotate(3deg); }
+    }
+
+    /* Goal Filter Bar */
+    .goal-filter-bar {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      padding: 10px 14px;
+      background: var(--bg-surface);
+      border-radius: 10px;
+      border: 1px solid var(--border-default);
+      flex-wrap: wrap;
+    }
+
+    .filter-label {
+      font-size: 12px;
+      font-weight: 600;
+      color: var(--text-secondary);
+    }
+
+    .goal-chips {
+      display: flex;
+      gap: 6px;
+      flex-wrap: wrap;
+      flex: 1;
+    }
+
+    .goal-chip {
+      display: flex;
+      align-items: center;
+      gap: 5px;
+      padding: 6px 10px;
+      border: 1px solid var(--border-default);
+      border-radius: 16px;
+      background: var(--bg-page);
+      font-size: 11px;
+      font-weight: 500;
+      color: var(--text-primary);
+      cursor: pointer;
+      transition: all 0.2s ease;
+    }
+
+    .goal-chip:hover {
+      border-color: var(--primary);
+    }
+
+    .goal-chip.active {
+      background: rgba(99, 102, 241, 0.08);
+      border-color: var(--primary);
+      font-weight: 600;
+    }
+
+    .chip-count {
+      background: var(--bg-surface-secondary, var(--bg-secondary));
+      padding: 2px 5px;
+      border-radius: 8px;
+      font-size: 9px;
+      font-weight: 700;
+      color: var(--text-muted);
+    }
+
+    /* Kanban Board - 4 Columns */
+    .kanban-board {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 12px;
+      min-height: 500px;
+    }
+
+    .kanban-column {
+      display: flex;
+      flex-direction: column;
+      background: var(--bg-surface);
+      border-radius: 10px;
+      min-width: 0;
+      overflow: hidden;
+      border: 1px solid var(--border-default);
+    }
+
+    .column-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 12px 14px;
+      border-bottom: 3px solid var(--column-color);
+    }
+
+    .column-header[data-column="backlog"] { --column-color: #9CA3AF; }
+    .column-header[data-column="in-progress"] { --column-color: #3B82F6; }
+    .column-header[data-column="blocked"] { --column-color: #EF4444; }
+    .column-header[data-column="done"] { --column-color: #10B981; }
+
+    .column-title {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .column-icon {
+      font-size: 16px;
+    }
+
+    .column-title h3 {
+      font-size: 13px;
+      font-weight: 700;
+      color: var(--text-heading);
+    }
+
+    .column-count {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      min-width: 24px;
+      height: 24px;
+      padding: 0 6px;
+      background: var(--bg-page);
+      border-radius: 12px;
+      font-size: 11px;
+      font-weight: 700;
+      color: var(--text-secondary);
+    }
+
+    .column-content {
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+      padding: 12px;
+      flex: 1;
+      overflow-y: auto;
+    }
+
+    /* Deliverable Card */
+    .deliverable-card {
+      position: relative;
+      background: var(--bg-page);
+      border-radius: 8px;
+      padding: 12px;
+      border: 1px solid var(--border-strong, var(--border-default));
+      cursor: pointer;
+      transition: all 0.2s ease;
+      box-shadow: 0 1px 2px rgba(0, 0, 0, 0.04);
+    }
+
+    .deliverable-card:hover {
+      border-color: var(--primary);
+      transform: translateY(-2px);
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+    }
+
+    .deliverable-card.sticky-warning {
+      border-color: #F59E0B;
+      background: linear-gradient(135deg, var(--bg-page) 0%, rgba(245, 158, 11, 0.04) 100%);
+    }
+
+    /* Carry Badge */
+    .carry-badge {
+      position: absolute;
+      top: -7px;
+      right: 10px;
+      display: flex;
+      align-items: center;
+      gap: 3px;
+      padding: 3px 7px;
+      background: var(--bg-surface);
+      border: 1px solid var(--border-default);
+      border-radius: 8px;
+      font-size: 9px;
+      font-weight: 600;
+      color: var(--text-secondary);
+    }
+
+    .carry-badge.sticky {
+      background: linear-gradient(135deg, #F59E0B 0%, #EF4444 100%);
+      border-color: transparent;
+      color: white;
+    }
+
+    /* Goal Tag */
+    .goal-tag {
+      display: inline-flex;
+      align-items: center;
+      gap: 4px;
+      padding: 3px 6px;
+      border: 1px solid;
+      border-radius: 4px;
+      font-size: 9px;
+      font-weight: 600;
+      margin-bottom: 8px;
+    }
+
+    .goal-tag[data-goal="expansion"] {
+      background: rgba(99, 102, 241, 0.08);
+      border-color: rgba(99, 102, 241, 0.25);
+      color: #6366F1;
+    }
+
+    .goal-tag[data-goal="customer"] {
+      background: rgba(16, 185, 129, 0.08);
+      border-color: rgba(16, 185, 129, 0.25);
+      color: #10B981;
+    }
+
+    .goal-tag[data-goal="innovation"] {
+      background: rgba(245, 158, 11, 0.08);
+      border-color: rgba(245, 158, 11, 0.25);
+      color: #D97706;
+    }
+
+    .goal-tag[data-goal="excellence"] {
+      background: rgba(236, 72, 153, 0.08);
+      border-color: rgba(236, 72, 153, 0.25);
+      color: #EC4899;
+    }
+
+    .card-title {
+      font-size: 12px;
+      font-weight: 600;
+      color: var(--text-heading);
+      margin-bottom: 10px;
+      line-height: 1.4;
+    }
+
+    .card-meta {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 6px;
+    }
+
+    .meta-left {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      flex-wrap: wrap;
+    }
+
+    .assignee-chip {
+      display: flex;
+      align-items: center;
+      gap: 5px;
+      padding: 3px 6px 3px 3px;
+      background: var(--bg-surface);
+      border: 1px solid var(--border-default);
+      border-radius: 12px;
+      font-size: 10px;
+      font-weight: 500;
+      color: var(--text-primary);
+    }
+
+    .assignee-avatar {
+      width: 18px;
+      height: 18px;
+      border-radius: 50%;
+      background: linear-gradient(135deg, #6366F1 0%, #8B5CF6 100%);
+      color: white;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 8px;
+      font-weight: 700;
+    }
+
+    .due-date-chip {
+      display: flex;
+      align-items: center;
+      gap: 3px;
+      padding: 3px 6px;
+      background: var(--bg-surface);
+      border: 1px solid var(--border-default);
+      border-radius: 4px;
+      font-size: 9px;
+      font-weight: 500;
+      color: var(--text-secondary);
+    }
+
+    .due-date-chip.overdue {
+      background: rgba(239, 68, 68, 0.08);
+      border-color: rgba(239, 68, 68, 0.25);
+      color: #EF4444;
+    }
+
+    .priority-dot {
+      width: 8px;
+      height: 8px;
+      border-radius: 50%;
+      flex-shrink: 0;
+    }
+
+    .priority-dot.critical {
+      background: #EF4444;
+      box-shadow: 0 0 6px rgba(239, 68, 68, 0.5);
+    }
+
+    .priority-dot.high { background: #F59E0B; }
+    .priority-dot.medium { background: #3B82F6; }
+    .priority-dot.low { background: #9CA3AF; }
+
+    /* Kudos Button */
+    .kudos-button {
+      position: absolute;
+      bottom: -8px;
+      left: 50%;
+      transform: translateX(-50%);
+      display: flex;
+      align-items: center;
+      gap: 4px;
+      padding: 4px 8px;
+      background: var(--bg-surface);
+      border: 1px solid var(--border-default);
+      border-radius: 10px;
+      font-size: 10px;
+      font-weight: 600;
+      color: var(--text-secondary);
+      cursor: pointer;
+      transition: all 0.2s ease;
+      opacity: 0;
+    }
+
+    .deliverable-card:hover .kudos-button {
+      opacity: 1;
+    }
+
+    .kudos-button:hover {
+      background: linear-gradient(135deg, #F59E0B 0%, #EF4444 100%);
+      border-color: transparent;
+      color: white;
+      transform: translateX(-50%) scale(1.05);
+    }
+
+    /* Responsive */
+    @media (max-width: 1200px) {
+      .kanban-board {
+        grid-template-columns: repeat(2, 1fr);
+      }
+    }
+
+    @media (max-width: 768px) {
+      .kanban-board {
+        grid-template-columns: 1fr;
+      }
+
+      .timeline-row {
+        flex-direction: column;
+        gap: 10px;
+      }
+
+      .race-track {
+        width: 100%;
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Theme Controls -->
+  <div class="theme-controls">
+    <button class="theme-btn active" onclick="setTheme('light')">Light</button>
+    <button class="theme-btn" onclick="setTheme('dark')">Dark</button>
+  </div>
+
+  <div class="compass-container">
+
+    <!-- Plan Navigation Header -->
+    <div class="plan-nav-header">
+      <button class="nav-arrow" title="Previous Plan">←</button>
+      <div class="plan-title-section">
+        <div class="plan-status-badge active">
+          <span>●</span>
+          <span>Active</span>
+        </div>
+        <h1 class="plan-title">Q1 2026</h1>
+        <p class="plan-dates">1 Jan – 31 Mar 2026</p>
+      </div>
+      <button class="nav-arrow" title="Next Plan">→</button>
+    </div>
+
+    <!-- COMPACT FUN TIMELINE -->
+    <div class="compact-timeline">
+      <div class="timeline-row">
+        <div class="timeline-stats">
+          <div class="timeline-stat">
+            📅 Day <strong>15</strong>/90
+          </div>
+          <div class="timeline-stat success">
+            🎯 <strong>1</strong>/7 done
+          </div>
+        </div>
+
+        <div class="race-track">
+          <!-- Progress fill -->
+          <div class="progress-fill" style="width: 16.7%"></div>
+
+          <!-- Cycle sections -->
+          <div class="cycle-sections">
+            <div class="cycle-section current">Cycle 1</div>
+            <div class="cycle-section">Cycle 2</div>
+            <div class="cycle-section">Cycle 3</div>
+          </div>
+
+          <!-- Start and End markers -->
+          <span class="track-marker start">🏁</span>
+          <span class="track-marker end">🏆</span>
+
+          <!-- The Mascot -->
+          <div class="mascot" style="left: calc(16.7% + 10px)">🚀</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Goal Filter Bar -->
+    <div class="goal-filter-bar">
+      <div class="filter-label">Filter:</div>
+      <div class="goal-chips">
+        <button class="goal-chip active">All</button>
+        <button class="goal-chip" data-goal="expansion">
+          <span>🚀</span>
+          <span>Market Expansion</span>
+          <span class="chip-count">2</span>
+        </button>
+        <button class="goal-chip" data-goal="customer">
+          <span>💚</span>
+          <span>Customer Success</span>
+          <span class="chip-count">2</span>
+        </button>
+        <button class="goal-chip" data-goal="innovation">
+          <span>💡</span>
+          <span>Innovation</span>
+          <span class="chip-count">2</span>
+        </button>
+        <button class="goal-chip" data-goal="excellence">
+          <span>⚙️</span>
+          <span>Excellence</span>
+          <span class="chip-count">1</span>
+        </button>
+      </div>
+    </div>
+
+    <!-- Kanban Board - 4 Columns -->
+    <div class="kanban-board">
+
+      <!-- Backlog Column -->
+      <div class="kanban-column">
+        <div class="column-header" data-column="backlog">
+          <div class="column-title">
+            <span class="column-icon">📋</span>
+            <h3>Backlog</h3>
+          </div>
+          <span class="column-count">2</span>
+        </div>
+        <div class="column-content">
+          <article class="deliverable-card">
+            <div class="carry-badge">→ 1x</div>
+            <div class="goal-tag" data-goal="expansion">
+              <span>🚀</span>
+              <span>Market Expansion</span>
+            </div>
+            <h4 class="card-title">Partner with industry leader</h4>
+            <div class="card-meta">
+              <div class="meta-left">
+                <div class="assignee-chip">
+                  <div class="assignee-avatar">JD</div>
+                  <span>John</span>
+                </div>
+              </div>
+              <div class="priority-dot high" title="High"></div>
+            </div>
+            <button class="kudos-button">✨ 2</button>
+          </article>
+
+          <article class="deliverable-card">
+            <div class="goal-tag" data-goal="customer">
+              <span>💚</span>
+              <span>Customer Success</span>
+            </div>
+            <h4 class="card-title">NPS survey implementation</h4>
+            <div class="card-meta">
+              <div class="meta-left">
+                <div class="assignee-chip">
+                  <div class="assignee-avatar">DK</div>
+                  <span>David</span>
+                </div>
+              </div>
+              <div class="priority-dot low" title="Low"></div>
+            </div>
+            <button class="kudos-button">✨ 1</button>
+          </article>
+        </div>
+      </div>
+
+      <!-- In Progress Column -->
+      <div class="kanban-column">
+        <div class="column-header" data-column="in-progress">
+          <div class="column-title">
+            <span class="column-icon">🔥</span>
+            <h3>In Progress</h3>
+          </div>
+          <span class="column-count">3</span>
+        </div>
+        <div class="column-content">
+          <article class="deliverable-card">
+            <div class="goal-tag" data-goal="expansion">
+              <span>🚀</span>
+              <span>Market Expansion</span>
+            </div>
+            <h4 class="card-title">Launch construction vertical pilot</h4>
+            <div class="card-meta">
+              <div class="meta-left">
+                <div class="assignee-chip">
+                  <div class="assignee-avatar">SM</div>
+                  <span>Sarah</span>
+                </div>
+                <div class="due-date-chip">15 Feb</div>
+              </div>
+              <div class="priority-dot critical" title="Critical"></div>
+            </div>
+            <button class="kudos-button">✨ 5</button>
+          </article>
+
+          <article class="deliverable-card">
+            <div class="goal-tag" data-goal="customer">
+              <span>💚</span>
+              <span>Customer Success</span>
+            </div>
+            <h4 class="card-title">Customer feedback portal v2</h4>
+            <div class="card-meta">
+              <div class="meta-left">
+                <div class="assignee-chip">
+                  <div class="assignee-avatar">MR</div>
+                  <span>Mike</span>
+                </div>
+                <div class="due-date-chip">30 Jan</div>
+              </div>
+              <div class="priority-dot high" title="High"></div>
+            </div>
+            <button class="kudos-button">✨ 8</button>
+          </article>
+
+          <article class="deliverable-card">
+            <div class="goal-tag" data-goal="innovation">
+              <span>💡</span>
+              <span>Innovation</span>
+            </div>
+            <h4 class="card-title">Mobile app beta release</h4>
+            <div class="card-meta">
+              <div class="meta-left">
+                <div class="assignee-chip">
+                  <div class="assignee-avatar">SL</div>
+                  <span>Sophie</span>
+                </div>
+                <div class="due-date-chip">28 Feb</div>
+              </div>
+              <div class="priority-dot critical" title="Critical"></div>
+            </div>
+            <button class="kudos-button">✨ 7</button>
+          </article>
+        </div>
+      </div>
+
+      <!-- Blocked Column -->
+      <div class="kanban-column">
+        <div class="column-header" data-column="blocked">
+          <div class="column-title">
+            <span class="column-icon">🚧</span>
+            <h3>Blocked</h3>
+          </div>
+          <span class="column-count">1</span>
+        </div>
+        <div class="column-content">
+          <article class="deliverable-card sticky-warning">
+            <div class="carry-badge sticky">⚠ 2x</div>
+            <div class="goal-tag" data-goal="innovation">
+              <span>💡</span>
+              <span>Innovation</span>
+            </div>
+            <h4 class="card-title">AI-powered analytics dashboard</h4>
+            <div class="card-meta">
+              <div class="meta-left">
+                <div class="assignee-chip">
+                  <div class="assignee-avatar">AX</div>
+                  <span>Alex</span>
+                </div>
+                <div class="due-date-chip overdue">20 Jan ⚠</div>
+              </div>
+              <div class="priority-dot high" title="High"></div>
+            </div>
+            <button class="kudos-button">✨ 12</button>
+          </article>
+        </div>
+      </div>
+
+      <!-- Done Column -->
+      <div class="kanban-column">
+        <div class="column-header" data-column="done">
+          <div class="column-title">
+            <span class="column-icon">🎉</span>
+            <h3>Done</h3>
+          </div>
+          <span class="column-count">1</span>
+        </div>
+        <div class="column-content">
+          <article class="deliverable-card">
+            <div class="goal-tag" data-goal="excellence">
+              <span>⚙️</span>
+              <span>Excellence</span>
+            </div>
+            <h4 class="card-title">Automate onboarding workflow</h4>
+            <div class="card-meta">
+              <div class="meta-left">
+                <div class="assignee-chip">
+                  <div class="assignee-avatar">EM</div>
+                  <span>Emma</span>
+                </div>
+              </div>
+              <div class="priority-dot medium" title="Medium"></div>
+            </div>
+            <button class="kudos-button">✨ 15</button>
+          </article>
+        </div>
+      </div>
+
+    </div>
+
+  </div>
+
+  <script>
+    function setTheme(theme) {
+      document.documentElement.setAttribute('data-theme', theme);
+      document.querySelectorAll('.theme-btn').forEach(btn => btn.classList.remove('active'));
+      event.target.classList.add('active');
+    }
+
+    document.querySelectorAll('.goal-chip').forEach(chip => {
+      chip.addEventListener('click', function() {
+        document.querySelectorAll('.goal-chip').forEach(c => c.classList.remove('active'));
+        this.classList.add('active');
+      });
+    });
+
+    // Update mascot based on progress
+    function updateProgress(percent) {
+      const fill = document.querySelector('.progress-fill');
+      const mascot = document.querySelector('.mascot');
+
+      fill.style.width = percent + '%';
+      mascot.style.left = `calc(${percent}% + 10px)`;
+
+      // Change mascot based on cycle
+      if (percent < 33) {
+        mascot.textContent = '🚀';
+      } else if (percent < 66) {
+        mascot.textContent = '💪';
+      } else if (percent < 100) {
+        mascot.textContent = '🏃';
+      } else {
+        mascot.textContent = '🏆';
+      }
+    }
+  </script>
+
+</body>
+</html>

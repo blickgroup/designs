@@ -1,0 +1,420 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="dark">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=375, initial-scale=1.0, maximum-scale=1.0">
+  <title>Health & Safety - Mobile View Mockup</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+
+  <style>
+    /* Theme System */
+    :root, [data-theme="dark"] {
+      --brand-orange: #f05323;
+      --bg-primary: #212121;
+      --bg-secondary: #2a2a2a;
+      --bg-tertiary: #1a1a1a;
+      --bg-hover: #3a3a3a;
+      --text-primary: #bcbec0;
+      --text-secondary: #a0a0a0;
+      --text-heading: #ffffff;
+      --text-muted: #707070;
+      --border-default: #58595b;
+      --border-subtle: #404040;
+      --success: #10b981;
+      --success-light: #064e3b;
+      --warning: #f59e0b;
+      --warning-light: #451a03;
+      --danger: #ef4444;
+      --danger-light: #450a0a;
+      --card-bg: #2a2a2a;
+      --card-border: #58595b;
+    }
+
+    [data-theme="light"] {
+      --brand-orange: #f05323;
+      --bg-primary: #ffffff;
+      --bg-secondary: #f9fafb;
+      --bg-tertiary: #f3f4f6;
+      --bg-hover: #e5e7eb;
+      --text-primary: #111827;
+      --text-secondary: #6b7280;
+      --text-heading: #000000;
+      --text-muted: #9ca3af;
+      --border-default: #e5e7eb;
+      --border-subtle: #f3f4f6;
+      --success: #10b981;
+      --success-light: #d1fae5;
+      --warning: #f59e0b;
+      --warning-light: #fef3c7;
+      --danger: #ef4444;
+      --danger-light: #fee2e2;
+      --card-bg: #ffffff;
+      --card-border: #e5e7eb;
+    }
+
+    * { font-family: 'Inter', sans-serif; box-sizing: border-box; }
+    body {
+      background: var(--bg-primary);
+      color: var(--text-primary);
+      margin: 0;
+      max-width: 375px;
+      margin: 0 auto;
+      border-left: 1px solid var(--border-default);
+      border-right: 1px solid var(--border-default);
+      min-height: 100vh;
+    }
+
+    .notification-banner {
+      background: var(--danger-light);
+      border-bottom: 1px solid var(--danger);
+      padding: 12px 16px;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      cursor: pointer;
+      transition: all 0.2s;
+    }
+    .notification-banner:hover {
+      background: var(--danger);
+    }
+    .notification-banner:hover .notification-text {
+      color: white;
+    }
+    .notification-text {
+      color: var(--danger);
+      font-weight: 600;
+      font-size: 14px;
+    }
+
+    .stat-card-mobile {
+      background: var(--card-bg);
+      border: 1px solid var(--card-border);
+      border-radius: 12px;
+      padding: 16px;
+      min-width: 100px;
+      flex-shrink: 0;
+      text-align: center;
+    }
+
+    .stat-scroll {
+      display: flex;
+      gap: 12px;
+      overflow-x: auto;
+      padding: 0 16px 8px;
+      scrollbar-width: none;
+      -ms-overflow-style: none;
+    }
+    .stat-scroll::-webkit-scrollbar {
+      display: none;
+    }
+
+    .expandable-section {
+      background: var(--card-bg);
+      border: 1px solid var(--card-border);
+      border-radius: 12px;
+      overflow: hidden;
+      margin: 0 16px 12px;
+    }
+    .expandable-header {
+      padding: 14px 16px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      cursor: pointer;
+      transition: background 0.2s;
+    }
+    .expandable-header:hover {
+      background: var(--bg-hover);
+    }
+    .expandable-content {
+      border-top: 1px solid var(--border-subtle);
+      padding: 12px 16px;
+    }
+
+    .item-card-mobile {
+      background: var(--bg-secondary);
+      border: 1px solid var(--border-subtle);
+      border-radius: 8px;
+      padding: 14px;
+      margin-bottom: 10px;
+    }
+
+    .badge {
+      display: inline-flex;
+      align-items: center;
+      padding: 3px 8px;
+      border-radius: 9999px;
+      font-size: 10px;
+      font-weight: 600;
+      text-transform: uppercase;
+    }
+    .badge-danger {
+      background: var(--danger-light);
+      color: var(--danger);
+    }
+    .badge-warning {
+      background: var(--warning-light);
+      color: var(--warning);
+    }
+
+    .btn-primary-mobile {
+      background: var(--brand-orange);
+      color: white;
+      padding: 10px 14px;
+      border-radius: 8px;
+      font-weight: 600;
+      font-size: 13px;
+      border: none;
+      cursor: pointer;
+      flex: 1;
+    }
+
+    .btn-secondary-mobile {
+      background: transparent;
+      color: var(--text-primary);
+      padding: 10px 14px;
+      border-radius: 8px;
+      font-weight: 500;
+      font-size: 13px;
+      border: 1px solid var(--border-default);
+      cursor: pointer;
+      flex: 1;
+    }
+
+    .tab-active {
+      background: var(--brand-orange);
+      color: white;
+      border: none;
+    }
+    .tab-inactive {
+      background: var(--bg-secondary);
+      color: var(--text-primary);
+      border: 1px solid var(--border-default);
+    }
+
+    .mobile-header {
+      background: var(--bg-tertiary);
+      border-bottom: 1px solid var(--border-default);
+      padding: 16px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      position: sticky;
+      top: 0;
+      z-index: 100;
+    }
+
+    .priority-dot {
+      width: 6px;
+      height: 6px;
+      border-radius: 50%;
+      display: inline-block;
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Theme Toggle (for demo) -->
+  <div style="position: fixed; top: 12px; right: 12px; z-index: 1100;">
+    <button onclick="toggleTheme()" style="background: var(--bg-secondary); border: 1px solid var(--border-default); border-radius: 6px; padding: 6px 10px; color: var(--text-primary); font-size: 12px; cursor: pointer;">
+      &#9790; Theme
+    </button>
+  </div>
+
+  <!-- Notification Banner (Critical Items) -->
+  <div class="notification-banner">
+    <span style="font-size: 18px;">&#9888;&#65039;</span>
+    <span class="notification-text">2 urgent items need action</span>
+    <span style="color: var(--danger); margin-left: auto;">&#10095;</span>
+  </div>
+
+  <!-- Mobile Header -->
+  <div class="mobile-header">
+    <div style="display: flex; align-items: center; gap: 12px;">
+      <button style="background: none; border: none; color: var(--text-primary); font-size: 20px; cursor: pointer;">&#9776;</button>
+      <span style="color: var(--text-heading); font-weight: 700; font-size: 18px;">Health & Safety</span>
+    </div>
+  </div>
+
+  <!-- Content -->
+  <div style="padding-top: 16px;">
+
+    <!-- Tabs -->
+    <div style="display: flex; gap: 8px; padding: 0 16px; margin-bottom: 20px;">
+      <button class="tab-inactive" style="padding: 10px 16px; border-radius: 8px; font-weight: 600; font-size: 14px; cursor: pointer; flex: 1;">
+        Forms
+      </button>
+      <button class="tab-active" style="padding: 10px 16px; border-radius: 8px; font-weight: 600; font-size: 14px; cursor: pointer; flex: 1;">
+        Dashboard
+      </button>
+    </div>
+
+    <!-- Summary Stats (Horizontal Scroll) -->
+    <div class="stat-scroll">
+      <div class="stat-card-mobile">
+        <div style="font-size: 20px; margin-bottom: 4px;">&#128203;</div>
+        <div style="font-size: 24px; font-weight: 700; color: var(--text-heading);">5</div>
+        <div style="font-size: 11px; color: var(--text-muted);">Follow-ups</div>
+        <div style="display: flex; gap: 4px; justify-content: center; margin-top: 6px;">
+          <span class="priority-dot" style="background: var(--danger);"></span>
+          <span class="priority-dot" style="background: var(--danger);"></span>
+          <span style="font-size: 10px; color: var(--text-muted);">2 over</span>
+        </div>
+      </div>
+
+      <div class="stat-card-mobile">
+        <div style="font-size: 20px; margin-bottom: 4px;">&#128221;</div>
+        <div style="font-size: 24px; font-weight: 700; color: var(--text-heading);">12</div>
+        <div style="font-size: 11px; color: var(--text-muted);">Forms</div>
+        <div style="display: flex; gap: 4px; justify-content: center; margin-top: 6px;">
+          <span class="priority-dot" style="background: var(--warning);"></span>
+          <span style="font-size: 10px; color: var(--text-muted);">1 failed</span>
+        </div>
+      </div>
+
+      <div class="stat-card-mobile">
+        <div style="font-size: 20px; margin-bottom: 4px;">&#127891;</div>
+        <div style="font-size: 24px; font-weight: 700; color: var(--text-heading);">4</div>
+        <div style="font-size: 11px; color: var(--text-muted);">Training</div>
+        <div style="display: flex; gap: 4px; justify-content: center; margin-top: 6px;">
+          <span class="priority-dot" style="background: var(--danger);"></span>
+          <span style="font-size: 10px; color: var(--text-muted);">1 exp</span>
+        </div>
+      </div>
+
+      <div class="stat-card-mobile">
+        <div style="font-size: 20px; margin-bottom: 4px;">&#128680;</div>
+        <div style="font-size: 24px; font-weight: 700; color: var(--text-heading);">1</div>
+        <div style="font-size: 11px; color: var(--text-muted);">Incidents</div>
+      </div>
+    </div>
+
+    <!-- Expandable Sections -->
+    <div style="margin-top: 16px;">
+
+      <!-- Follow-ups TO Me (Expanded) -->
+      <div class="expandable-section">
+        <div class="expandable-header">
+          <div style="display: flex; align-items: center; gap: 10px;">
+            <span style="color: var(--brand-orange);">&#9660;</span>
+            <span style="color: var(--text-heading); font-weight: 600; font-size: 14px;">Follow-ups TO Me</span>
+            <span class="badge badge-danger">5</span>
+          </div>
+        </div>
+        <div class="expandable-content">
+
+          <!-- Item 1 -->
+          <div class="item-card-mobile">
+            <div style="display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 8px;">
+              <div style="display: flex; align-items: center; gap: 6px;">
+                <span style="font-size: 14px;">&#9888;&#65039;</span>
+                <span style="color: var(--text-heading); font-weight: 600; font-size: 14px;">Review SWMS</span>
+              </div>
+              <span class="badge badge-danger">OVERDUE</span>
+            </div>
+            <div style="color: var(--text-muted); font-size: 12px; margin-bottom: 10px;">
+              High Priority &bull; Due: Yesterday
+            </div>
+            <div style="display: flex; gap: 8px;">
+              <button class="btn-primary-mobile">Complete</button>
+              <button class="btn-secondary-mobile">View</button>
+            </div>
+          </div>
+
+          <!-- Item 2 -->
+          <div class="item-card-mobile">
+            <div style="display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 8px;">
+              <div style="display: flex; align-items: center; gap: 6px;">
+                <span style="font-size: 14px;">&#128203;</span>
+                <span style="color: var(--text-heading); font-weight: 600; font-size: 14px;">Update procedures</span>
+              </div>
+              <span class="badge badge-warning">DUE SOON</span>
+            </div>
+            <div style="color: var(--text-muted); font-size: 12px; margin-bottom: 10px;">
+              Medium Priority &bull; Due: Tomorrow
+            </div>
+            <div style="display: flex; gap: 8px;">
+              <button class="btn-primary-mobile">Complete</button>
+              <button class="btn-secondary-mobile">View</button>
+            </div>
+          </div>
+
+          <a href="#" style="display: block; text-align: center; color: var(--brand-orange); font-weight: 600; text-decoration: none; font-size: 13px; padding-top: 8px;">
+            Show All 5 &rarr;
+          </a>
+
+        </div>
+      </div>
+
+      <!-- Follow-ups I Created (Collapsed) -->
+      <div class="expandable-section">
+        <div class="expandable-header">
+          <div style="display: flex; align-items: center; gap: 10px;">
+            <span style="color: var(--text-muted);">&#9654;</span>
+            <span style="color: var(--text-heading); font-weight: 600; font-size: 14px;">Follow-ups I Created</span>
+            <span style="background: var(--bg-secondary); color: var(--text-secondary); padding: 2px 6px; border-radius: 9999px; font-size: 11px; font-weight: 600;">3</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- Follow-ups Delegated to Me (Collapsed) -->
+      <div class="expandable-section">
+        <div class="expandable-header">
+          <div style="display: flex; align-items: center; gap: 10px;">
+            <span style="color: var(--text-muted);">&#9654;</span>
+            <span style="color: var(--text-heading); font-weight: 600; font-size: 14px;">Delegated to Me</span>
+            <span style="background: var(--bg-secondary); color: var(--text-secondary); padding: 2px 6px; border-radius: 9999px; font-size: 11px; font-weight: 600;">2</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- My Submitted Forms (Collapsed) -->
+      <div class="expandable-section">
+        <div class="expandable-header">
+          <div style="display: flex; align-items: center; gap: 10px;">
+            <span style="color: var(--text-muted);">&#9654;</span>
+            <span style="color: var(--text-heading); font-weight: 600; font-size: 14px;">My Submitted Forms</span>
+            <span style="background: var(--bg-secondary); color: var(--text-secondary); padding: 2px 6px; border-radius: 9999px; font-size: 11px; font-weight: 600;">12</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- My Training (Collapsed) -->
+      <div class="expandable-section">
+        <div class="expandable-header">
+          <div style="display: flex; align-items: center; gap: 10px;">
+            <span style="color: var(--text-muted);">&#9654;</span>
+            <span style="color: var(--text-heading); font-weight: 600; font-size: 14px;">My Training</span>
+            <span style="background: var(--bg-secondary); color: var(--text-secondary); padding: 2px 6px; border-radius: 9999px; font-size: 11px; font-weight: 600;">4</span>
+          </div>
+        </div>
+      </div>
+
+    </div>
+
+    <!-- Note about Water Cooler -->
+    <div style="margin: 24px 16px; padding: 16px; background: var(--bg-secondary); border: 1px dashed var(--border-default); border-radius: 8px; text-align: center;">
+      <div style="color: var(--text-muted); font-size: 13px;">
+        &#128161; Water Cooler panel hidden on mobile
+      </div>
+      <div style="color: var(--text-muted); font-size: 12px; margin-top: 4px;">
+        Critical items appear in notification banner above &#8593;
+      </div>
+    </div>
+
+  </div>
+
+  <script>
+    function toggleTheme() {
+      const html = document.documentElement;
+      const currentTheme = html.getAttribute('data-theme');
+      const newTheme = currentTheme === 'dark' ? 'light' : 'dark';
+      html.setAttribute('data-theme', newTheme);
+    }
+  </script>
+
+</body>
+</html>

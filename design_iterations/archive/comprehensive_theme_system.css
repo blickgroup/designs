@@ -1,0 +1,399 @@
+/**
+ * Blick Hub Comprehensive Theme System
+ * Light & Dark mode with improved button and form designs
+ */
+
+/* ============================================
+   LIGHT THEME
+   ============================================ */
+[data-theme="light"] {
+  /* Core Colors */
+  --primary: #f05323;          /* Blick Orange */
+  --primary-hover: #d63911;
+  --primary-light: #fff5f2;
+
+  --secondary: #22d3ee;         /* Blick Cyan */
+  --secondary-hover: #0ea5c7;
+  --secondary-light: #ecfeff;
+
+  /* Backgrounds */
+  --bg-page: #f8fafc;           /* Slight gray tint instead of pure white */
+  --bg-surface: #ffffff;        /* Cards, modals */
+  --bg-surface-secondary: #f1f5f9;  /* Secondary containers */
+  --bg-overlay: rgba(0, 0, 0, 0.3);
+
+  /* Text */
+  --text-primary: #1e293b;
+  --text-secondary: #64748b;
+  --text-muted: #94a3b8;
+  --text-inverse: #ffffff;
+
+  /* Borders */
+  --border-default: #e2e8f0;
+  --border-strong: #cbd5e1;
+  --border-subtle: #f1f5f9;
+
+  /* Buttons - Gradient & depth approach */
+  --btn-primary-bg: linear-gradient(135deg, #f05323 0%, #e8471a 100%);
+  --btn-primary-shadow: 0 2px 4px rgba(240, 83, 35, 0.2);
+  --btn-primary-hover-shadow: 0 4px 8px rgba(240, 83, 35, 0.3);
+
+  --btn-secondary-bg: #ffffff;
+  --btn-secondary-border: #e2e8f0;
+  --btn-secondary-text: #475569;
+  --btn-secondary-shadow: 0 1px 2px rgba(0, 0, 0, 0.05);
+
+  --btn-dark-bg: #1e293b;
+  --btn-dark-hover-bg: #0f172a;
+
+  /* Forms */
+  --input-bg: #ffffff;
+  --input-border: #cbd5e1;
+  --input-border-focus: #f05323;
+  --input-shadow-focus: 0 0 0 3px rgba(240, 83, 35, 0.1);
+
+  /* Cards */
+  --card-bg: #ffffff;
+  --card-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+  --card-hover-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+
+  /* Status Colors */
+  --success: #10b981;
+  --success-light: #d1fae5;
+  --warning: #f59e0b;
+  --warning-light: #fef3c7;
+  --danger: #ef4444;
+  --danger-light: #fee2e2;
+}
+
+/* ============================================
+   DARK THEME
+   ============================================ */
+[data-theme="dark"] {
+  /* Core Colors */
+  --primary: #f05323;
+  --primary-hover: #ff6a3d;
+  --primary-light: #2a1611;
+
+  --secondary: #22d3ee;
+  --secondary-hover: #38dff7;
+  --secondary-light: #0e2a30;
+
+  /* Backgrounds */
+  --bg-page: #0f0f0f;           /* Very dark, not pure black */
+  --bg-surface: #1a1a1a;        /* Slightly lighter for cards */
+  --bg-surface-secondary: #262626;  /* For nested elements */
+  --bg-overlay: rgba(0, 0, 0, 0.7);
+
+  /* Text */
+  --text-primary: #e2e8f0;
+  --text-secondary: #94a3b8;
+  --text-muted: #64748b;
+  --text-inverse: #0f172a;
+
+  /* Borders */
+  --border-default: #2d2d2d;
+  --border-strong: #404040;
+  --border-subtle: #1f1f1f;
+
+  /* Buttons - Modern glass morphism approach */
+  --btn-primary-bg: linear-gradient(135deg, #f05323 0%, #ff6a3d 100%);
+  --btn-primary-shadow: 0 4px 12px rgba(240, 83, 35, 0.3);
+  --btn-primary-hover-shadow: 0 6px 20px rgba(240, 83, 35, 0.4);
+
+  --btn-secondary-bg: rgba(255, 255, 255, 0.05);
+  --btn-secondary-border: rgba(255, 255, 255, 0.1);
+  --btn-secondary-text: #e2e8f0;
+  --btn-secondary-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
+
+  --btn-dark-bg: rgba(255, 255, 255, 0.1);
+  --btn-dark-hover-bg: rgba(255, 255, 255, 0.15);
+
+  /* Forms */
+  --input-bg: #262626;
+  --input-border: #404040;
+  --input-border-focus: #f05323;
+  --input-shadow-focus: 0 0 0 3px rgba(240, 83, 35, 0.2);
+
+  /* Cards */
+  --card-bg: #1a1a1a;
+  --card-shadow: 0 2px 8px rgba(0, 0, 0, 0.3);
+  --card-hover-shadow: 0 8px 16px rgba(0, 0, 0, 0.4);
+
+  /* Status Colors */
+  --success: #10b981;
+  --success-light: #064e3b;
+  --warning: #f59e0b;
+  --warning-light: #451a03;
+  --danger: #ef4444;
+  --danger-light: #450a0a;
+}
+
+/* ============================================
+   BUTTON STYLES
+   ============================================ */
+
+/* Primary Button - Gradient with depth */
+.btn-primary {
+  background: var(--btn-primary-bg);
+  color: var(--text-inverse);
+  border: none;
+  padding: 10px 20px;
+  border-radius: 8px;
+  font-weight: 600;
+  box-shadow: var(--btn-primary-shadow);
+  transition: all 0.2s ease;
+  position: relative;
+  overflow: hidden;
+}
+
+.btn-primary:hover {
+  transform: translateY(-1px);
+  box-shadow: var(--btn-primary-hover-shadow);
+}
+
+.btn-primary:active {
+  transform: translateY(0);
+}
+
+/* Secondary Button - Subtle with border */
+.btn-secondary {
+  background: var(--btn-secondary-bg);
+  color: var(--btn-secondary-text);
+  border: 1px solid var(--btn-secondary-border);
+  padding: 10px 20px;
+  border-radius: 8px;
+  font-weight: 500;
+  box-shadow: var(--btn-secondary-shadow);
+  backdrop-filter: blur(8px);
+  transition: all 0.2s ease;
+}
+
+.btn-secondary:hover {
+  background: var(--bg-surface-secondary);
+  border-color: var(--border-strong);
+}
+
+/* Dark Action Buttons (Health & Safety style) */
+.btn-action-dark {
+  background: var(--btn-dark-bg);
+  color: #ffffff;
+  border: 2px solid transparent;
+  border-radius: 12px;
+  padding: 24px;
+  transition: all 0.3s ease;
+  position: relative;
+}
+
+.btn-action-dark:hover {
+  background: var(--btn-dark-hover-bg);
+  border-color: var(--primary);
+  transform: scale(1.02);
+}
+
+.btn-action-dark.orange-accent {
+  border-left: 4px solid var(--primary);
+}
+
+/* Ghost Button */
+.btn-ghost {
+  background: transparent;
+  color: var(--text-primary);
+  border: 1px solid var(--border-default);
+  padding: 10px 20px;
+  border-radius: 8px;
+  transition: all 0.2s ease;
+}
+
+.btn-ghost:hover {
+  background: var(--bg-surface-secondary);
+  border-color: var(--border-strong);
+}
+
+/* ============================================
+   FORM STYLES
+   ============================================ */
+
+.input-field {
+  background: var(--input-bg);
+  border: 1px solid var(--input-border);
+  color: var(--text-primary);
+  padding: 10px 14px;
+  border-radius: 8px;
+  transition: all 0.2s ease;
+}
+
+.input-field:focus {
+  border-color: var(--input-border-focus);
+  box-shadow: var(--input-shadow-focus);
+  outline: none;
+}
+
+.input-field::placeholder {
+  color: var(--text-muted);
+}
+
+/* ============================================
+   MODAL STYLES
+   ============================================ */
+
+.modal-overlay {
+  background: var(--bg-overlay);
+  backdrop-filter: blur(4px);
+}
+
+.modal-content {
+  background: var(--bg-surface);
+  border: 1px solid var(--border-default);
+  border-radius: 16px;
+  box-shadow: 0 20px 40px rgba(0, 0, 0, 0.2);
+}
+
+.modal-header {
+  border-bottom: 1px solid var(--border-subtle);
+  padding: 20px 24px;
+}
+
+.modal-body {
+  padding: 24px;
+  background: var(--bg-surface);
+}
+
+.modal-footer {
+  border-top: 1px solid var(--border-subtle);
+  padding: 16px 24px;
+  background: var(--bg-surface-secondary);
+  border-radius: 0 0 16px 16px;
+}
+
+/* ============================================
+   CARD STYLES
+   ============================================ */
+
+.card {
+  background: var(--card-bg);
+  border: 1px solid var(--border-default);
+  border-radius: 12px;
+  box-shadow: var(--card-shadow);
+  transition: all 0.2s ease;
+}
+
+.card:hover {
+  box-shadow: var(--card-hover-shadow);
+  transform: translateY(-2px);
+}
+
+.card-clickable {
+  cursor: pointer;
+}
+
+.card-clickable:hover {
+  border-color: var(--primary);
+}
+
+/* ============================================
+   INSPECTION CARDS (Health & Safety)
+   ============================================ */
+
+.inspection-card {
+  background: var(--bg-surface);
+  border: 1px solid var(--border-default);
+  border-radius: 12px;
+  padding: 16px 20px;
+  transition: all 0.2s ease;
+  position: relative;
+  overflow: hidden;
+}
+
+.inspection-card::before {
+  content: '';
+  position: absolute;
+  left: 0;
+  top: 0;
+  bottom: 0;
+  width: 4px;
+  background: var(--primary);
+  opacity: 0;
+  transition: opacity 0.2s ease;
+}
+
+.inspection-card:hover::before {
+  opacity: 1;
+}
+
+.inspection-card:hover {
+  background: var(--bg-surface-secondary);
+  transform: translateX(4px);
+}
+
+/* ============================================
+   RIG CARDS
+   ============================================ */
+
+.rig-card {
+  background: var(--bg-surface);
+  border: 1px solid var(--border-default);
+  border-radius: 8px;
+  padding: 20px;
+  transition: all 0.2s ease;
+}
+
+.rig-card:hover {
+  border-color: var(--primary);
+  box-shadow: var(--card-hover-shadow);
+}
+
+.rig-card-label {
+  color: var(--text-muted);
+  font-size: 12px;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  margin-bottom: 4px;
+}
+
+.rig-card-value {
+  color: var(--text-primary);
+  font-weight: 600;
+  font-size: 16px;
+}
+
+/* ============================================
+   BADGE STYLES
+   ============================================ */
+
+.badge {
+  display: inline-flex;
+  align-items: center;
+  padding: 4px 10px;
+  border-radius: 9999px;
+  font-size: 12px;
+  font-weight: 600;
+}
+
+.badge-success {
+  background: var(--success-light);
+  color: var(--success);
+  border: 1px solid var(--success);
+}
+
+.badge-warning {
+  background: var(--warning-light);
+  color: var(--warning);
+  border: 1px solid var(--warning);
+}
+
+.badge-danger {
+  background: var(--danger-light);
+  color: var(--danger);
+  border: 1px solid var(--danger);
+}
+
+/* ============================================
+   TRANSITIONS
+   ============================================ */
+
+* {
+  transition-property: background-color, border-color, color, fill, stroke, box-shadow;
+  transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
+  transition-duration: 200ms;
+}

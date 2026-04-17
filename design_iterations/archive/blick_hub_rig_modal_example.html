@@ -1,0 +1,664 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="light">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Blick Hub - Rig Modal Example (Light Mode)</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <script src="https://unpkg.com/lucide@latest/dist/umd/lucide.min.js"></script>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        * {
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Inter', system-ui, -apple-system, sans-serif;
+            background: #f8fafc;
+            color: #1e293b;
+            margin: 0;
+            padding: 20px;
+        }
+
+        /* IMPROVED DROPDOWN STYLING - DIFFERENT FROM DARK MODE */
+        .dropdown-field {
+            background: #ffffff; /* Pure white background */
+            border: 2px solid #cbd5e1; /* Thicker, more visible border */
+            color: #1e293b; /* Dark text */
+            padding: 11px 40px 11px 14px; /* More padding */
+            border-radius: 10px; /* More rounded */
+            width: 100%;
+            transition: all 0.2s ease;
+            font-size: 14px;
+            font-weight: 500; /* Slightly bolder text */
+            appearance: none;
+            cursor: pointer;
+            /* Custom chevron icon - BLUE tint for light mode */
+            background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='24' height='24' viewBox='0 0 24 24' fill='none' stroke='%233b82f6' stroke-width='2.5' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpolyline points='6 9 12 15 18 9'%3E%3C/polyline%3E%3C/svg%3E");
+            background-repeat: no-repeat;
+            background-position: right 10px center;
+            background-size: 20px;
+            box-shadow: 0 1px 3px rgba(0, 0, 0, 0.08); /* Subtle shadow */
+        }
+
+        .dropdown-field:hover {
+            border-color: #94a3b8;
+            background-color: #f8fafc; /* Slight tint on hover */
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+        }
+
+        .dropdown-field:focus {
+            border-color: #f05323;
+            background-color: #ffffff;
+            box-shadow: 0 0 0 4px rgba(240, 83, 35, 0.12); /* Bigger glow */
+            outline: none;
+        }
+
+        /* MODAL OVERLAY */
+        .modal-overlay {
+            position: fixed;
+            inset: 0;
+            background: rgba(0, 0, 0, 0.4);
+            backdrop-filter: blur(4px);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            z-index: 1000;
+            padding: 20px;
+        }
+
+        /* MODAL CONTENT */
+        .modal-content {
+            background: #ffffff;
+            border-radius: 16px;
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.2);
+            max-width: 900px;
+            width: 100%;
+            max-height: 90vh;
+            overflow: hidden;
+            display: flex;
+            flex-direction: column;
+        }
+
+        /* MODAL HEADER */
+        .modal-header {
+            padding: 24px;
+            border-bottom: 2px solid #e2e8f0;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            background: linear-gradient(to bottom, #ffffff, #f8fafc);
+        }
+
+        .modal-title {
+            font-size: 22px;
+            font-weight: 700;
+            color: #0f172a;
+            margin: 0;
+        }
+
+        .modal-subtitle {
+            font-size: 14px;
+            color: #64748b;
+            margin-top: 4px;
+        }
+
+        .close-button {
+            background: transparent;
+            border: none;
+            color: #64748b;
+            cursor: pointer;
+            font-size: 24px;
+            padding: 4px 8px;
+            border-radius: 6px;
+            transition: all 0.2s ease;
+        }
+
+        .close-button:hover {
+            background: #f1f5f9;
+            color: #1e293b;
+        }
+
+        /* MODAL BODY */
+        .modal-body {
+            padding: 24px;
+            overflow-y: auto;
+            flex: 1;
+        }
+
+        /* TABS */
+        .tabs {
+            display: flex;
+            border-bottom: 2px solid #e2e8f0;
+            gap: 0;
+            margin-bottom: 24px;
+        }
+
+        .tab-button {
+            background: transparent;
+            border: none;
+            color: #64748b;
+            padding: 12px 24px;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            font-weight: 600;
+            border-bottom: 3px solid transparent;
+            margin-bottom: -2px;
+            font-size: 15px;
+        }
+
+        .tab-button:hover {
+            color: #1e293b;
+            background: #f8fafc;
+        }
+
+        .tab-button.active {
+            color: #f05323;
+            border-bottom-color: #f05323;
+        }
+
+        /* FORM SECTIONS */
+        .section-title {
+            font-size: 16px;
+            font-weight: 700;
+            color: #22d3ee;
+            margin: 0 0 16px 0;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        .section {
+            margin-bottom: 32px;
+        }
+
+        .form-row {
+            display: grid;
+            grid-template-columns: 200px 1fr;
+            gap: 16px;
+            align-items: start;
+            margin-bottom: 16px;
+        }
+
+        .form-label {
+            font-size: 14px;
+            font-weight: 600;
+            color: #475569;
+            text-align: right;
+            padding-top: 12px;
+        }
+
+        .form-control {
+            flex: 1;
+        }
+
+        /* INPUT FIELDS */
+        .input-field {
+            background: #ffffff;
+            border: 2px solid #cbd5e1;
+            color: #1e293b;
+            padding: 10px 14px;
+            border-radius: 8px;
+            width: 100%;
+            transition: all 0.2s ease;
+            font-size: 14px;
+            box-shadow: 0 1px 3px rgba(0, 0, 0, 0.08);
+        }
+
+        .input-field:focus {
+            border-color: #f05323;
+            box-shadow: 0 0 0 4px rgba(240, 83, 35, 0.12);
+            outline: none;
+        }
+
+        /* READ-ONLY VALUES */
+        .readonly-value {
+            background: #f1f5f9;
+            border: 2px solid #e2e8f0;
+            color: #475569;
+            padding: 10px 14px;
+            border-radius: 8px;
+            font-size: 14px;
+            min-height: 42px;
+            display: flex;
+            align-items: center;
+        }
+
+        /* PRODUCT CODE BADGE */
+        .product-code {
+            background: #dbeafe;
+            color: #1e40af;
+            padding: 6px 12px;
+            border-radius: 6px;
+            font-family: 'Monaco', 'Courier New', monospace;
+            font-size: 13px;
+            font-weight: 700;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            display: inline-block;
+            margin-right: 8px;
+            border: 1px solid #93c5fd;
+        }
+
+        .product-code:hover {
+            background: #bfdbfe;
+            border-color: #60a5fa;
+            transform: translateY(-1px);
+        }
+
+        .product-code:active {
+            transform: translateY(0);
+        }
+
+        /* TOOL/ACCESSORY CARDS */
+        .tool-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(350px, 1fr));
+            gap: 16px;
+            margin-top: 16px;
+        }
+
+        .tool-card {
+            background: #ffffff;
+            border: 2px solid #e2e8f0;
+            border-radius: 10px;
+            padding: 16px;
+            transition: all 0.2s ease;
+        }
+
+        .tool-card:hover {
+            border-color: #f05323;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+            transform: translateY(-2px);
+        }
+
+        .tool-label {
+            font-size: 13px;
+            font-weight: 600;
+            color: #64748b;
+            margin-bottom: 8px;
+            text-transform: uppercase;
+            letter-spacing: 0.3px;
+        }
+
+        .tool-value {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            flex-wrap: wrap;
+        }
+
+        .tool-name {
+            font-size: 15px;
+            color: #1e293b;
+            font-weight: 500;
+        }
+
+        /* QUANTITY BADGE */
+        .quantity-badge {
+            background: rgba(240, 83, 35, 0.1);
+            color: #f05323;
+            padding: 4px 10px;
+            border-radius: 6px;
+            font-size: 12px;
+            font-weight: 700;
+            border: 1px solid rgba(240, 83, 35, 0.2);
+        }
+
+        /* MODAL FOOTER */
+        .modal-footer {
+            padding: 20px 24px;
+            border-top: 2px solid #e2e8f0;
+            display: flex;
+            justify-content: flex-end;
+            gap: 12px;
+            background: linear-gradient(to top, #ffffff, #f8fafc);
+        }
+
+        .btn-close {
+            background: #ffffff;
+            color: #475569;
+            border: 2px solid #cbd5e1;
+            padding: 10px 24px;
+            border-radius: 8px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            font-size: 14px;
+        }
+
+        .btn-close:hover {
+            background: #f8fafc;
+            border-color: #94a3b8;
+        }
+
+        /* SUBSECTION HEADERS */
+        .subsection-header {
+            font-size: 15px;
+            font-weight: 700;
+            color: #0f172a;
+            margin: 24px 0 12px 0;
+            padding-bottom: 8px;
+            border-bottom: 2px solid #e2e8f0;
+        }
+    </style>
+</head>
+<body>
+    <div style="text-align: center; margin-bottom: 20px;">
+        <h1 style="color: #f05323; font-size: 28px; font-weight: 700; margin: 0 0 8px 0;">Rig Configuration Example</h1>
+        <p style="color: #64748b; margin: 0;">Real rig from dev with Tools & Accessories</p>
+    </div>
+
+    <!-- MODAL -->
+    <div class="modal-overlay">
+        <div class="modal-content">
+            <!-- HEADER -->
+            <div class="modal-header">
+                <div>
+                    <h2 class="modal-title">Parkinson & Holland Limited</h2>
+                    <p class="modal-subtitle">Rig: JT922</p>
+                </div>
+                <button class="close-button" onclick="alert('Close modal')">×</button>
+            </div>
+
+            <!-- TABS -->
+            <div style="padding: 0 24px; padding-top: 20px;">
+                <div class="tabs">
+                    <button class="tab-button active" onclick="switchTab('tools', this)">
+                        <i data-lucide="wrench" style="width: 16px; height: 16px; display: inline-block; vertical-align: middle; margin-right: 6px;"></i>
+                        Tools
+                    </button>
+                    <button class="tab-button" onclick="switchTab('accessories', this)">
+                        <i data-lucide="package" style="width: 16px; height: 16px; display: inline-block; vertical-align: middle; margin-right: 6px;"></i>
+                        Accessories
+                    </button>
+                </div>
+            </div>
+
+            <!-- BODY -->
+            <div class="modal-body">
+                <!-- TOOLS TAB -->
+                <div id="tools-tab">
+                    <!-- General Information Section -->
+                    <div class="section">
+                        <h3 class="section-title">General Information</h3>
+
+                        <div class="form-row">
+                            <label class="form-label">Customer</label>
+                            <div class="form-control">
+                                <div class="readonly-value">Parkinson & Holland Limited</div>
+                            </div>
+                        </div>
+
+                        <div class="form-row">
+                            <label class="form-label">Rig Model</label>
+                            <div class="form-control">
+                                <div class="readonly-value">
+                                    <span class="product-code" title="Click to copy">JT922</span>
+                                    <span>Jumbo T4 (Atlas Copco)</span>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="form-row">
+                            <label class="form-label">Rig Name</label>
+                            <div class="form-control">
+                                <div class="readonly-value">
+                                    <span style="font-style: italic; color: #94a3b8;">Not set</span>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="form-row">
+                            <label class="form-label">Notes</label>
+                            <div class="form-control">
+                                <div class="readonly-value">
+                                    Customer prefers deliveries on Wednesdays. Contact Dave for site access.
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Tools Section -->
+                    <div class="section">
+                        <h3 class="section-title">Tools Configuration</h3>
+
+                        <div class="tool-grid">
+                            <div class="tool-card">
+                                <div class="tool-label">Drive Chuck</div>
+                                <div class="tool-value">
+                                    <span class="product-code" title="Click to copy">DC-8892</span>
+                                    <span class="tool-name">Dual Tube Chuck 114mm</span>
+                                </div>
+                                <div style="margin-top: 8px;">
+                                    <span class="quantity-badge">Qty: 2</span>
+                                </div>
+                            </div>
+
+                            <div class="tool-card">
+                                <div class="tool-label">Sub Saver</div>
+                                <div class="tool-value">
+                                    <span class="product-code" title="Click to copy">SS-1203</span>
+                                    <span class="tool-name">Sub Saver T45/T51</span>
+                                </div>
+                                <div style="margin-top: 8px;">
+                                    <span class="quantity-badge">Qty: 4</span>
+                                </div>
+                            </div>
+
+                            <div class="tool-card">
+                                <div class="tool-label">Drill Rod</div>
+                                <div class="tool-value">
+                                    <span class="product-code" title="Click to copy">DR-5566</span>
+                                    <span class="tool-name">Extension Rod T45 3660mm</span>
+                                </div>
+                                <div style="margin-top: 8px;">
+                                    <span class="quantity-badge">Qty: 12</span>
+                                </div>
+                            </div>
+
+                            <div class="tool-card">
+                                <div class="tool-label">Lead Rod</div>
+                                <div class="tool-value">
+                                    <span class="product-code" title="Click to copy">LR-3344</span>
+                                    <span class="tool-name">Lead Rod T45 4000mm</span>
+                                </div>
+                                <div style="margin-top: 8px;">
+                                    <span class="quantity-badge">Qty: 6</span>
+                                </div>
+                            </div>
+
+                            <div class="tool-card">
+                                <div class="tool-label">Collar</div>
+                                <div class="tool-value">
+                                    <span class="product-code" title="Click to copy">CL-7788</span>
+                                    <span class="tool-name">Drill Collar T51 178mm</span>
+                                </div>
+                                <div style="margin-top: 8px;">
+                                    <span class="quantity-badge">Qty: 3</span>
+                                </div>
+                            </div>
+
+                            <div class="tool-card">
+                                <div class="tool-label">Adaptor</div>
+                                <div class="tool-value">
+                                    <span class="product-code" title="Click to copy">AD-9901</span>
+                                    <span class="tool-name">Thread Adaptor T45-T51</span>
+                                </div>
+                                <div style="margin-top: 8px;">
+                                    <span class="quantity-badge">Qty: 2</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- ACCESSORIES TAB (Hidden by default) -->
+                <div id="accessories-tab" style="display: none;">
+                    <div class="section">
+                        <h3 class="section-title">Accessories Configuration</h3>
+
+                        <!-- Jaws Section -->
+                        <h4 class="subsection-header">Jaws</h4>
+                        <div class="tool-grid">
+                            <div class="tool-card">
+                                <div class="tool-label">Top Jaw Insert 1</div>
+                                <div class="tool-value">
+                                    <span class="product-code" title="Click to copy">JAWS-001</span>
+                                    <span class="tool-name">Jaw Insert Standard 114mm</span>
+                                </div>
+                                <div style="margin-top: 8px;">
+                                    <span class="quantity-badge">Qty: 4</span>
+                                </div>
+                            </div>
+
+                            <div class="tool-card">
+                                <div class="tool-label">Top Jaw Insert 2</div>
+                                <div class="tool-value">
+                                    <span class="product-code" title="Click to copy">JAWS-002</span>
+                                    <span class="tool-name">Jaw Insert Heavy Duty 127mm</span>
+                                </div>
+                                <div style="margin-top: 8px;">
+                                    <span class="quantity-badge">Qty: 2</span>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Rod Wipers Section -->
+                        <h4 class="subsection-header">Rod Wipers</h4>
+                        <div class="tool-grid">
+                            <div class="tool-card">
+                                <div class="tool-label">Dual Rod Wiper</div>
+                                <div class="tool-value">
+                                    <span class="product-code" title="Click to copy">RW-DUAL-55</span>
+                                    <span class="tool-name">Dual Wiper Assembly T45</span>
+                                </div>
+                                <div style="margin-top: 8px;">
+                                    <span class="quantity-badge">Qty: 6</span>
+                                </div>
+                            </div>
+
+                            <div class="tool-card">
+                                <div class="tool-label">Solid Rod Wiper</div>
+                                <div class="tool-value">
+                                    <span class="product-code" title="Click to copy">RW-SOLID-33</span>
+                                    <span class="tool-name">Solid Wiper Ring T51</span>
+                                </div>
+                                <div style="margin-top: 8px;">
+                                    <span class="quantity-badge">Qty: 8</span>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Bolts Section -->
+                        <h4 class="subsection-header">Bolts</h4>
+                        <div class="tool-grid">
+                            <div class="tool-card">
+                                <div class="tool-label">Blade Bolt</div>
+                                <div class="tool-value">
+                                    <span class="product-code" title="Click to copy">BB-M16-80</span>
+                                    <span class="tool-name">Hex Bolt M16x80mm Grade 8.8</span>
+                                </div>
+                                <div style="margin-top: 8px;">
+                                    <span class="quantity-badge">Qty: 24</span>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Blades Section -->
+                        <h4 class="subsection-header">Blades</h4>
+                        <div class="tool-grid">
+                            <div class="tool-card">
+                                <div class="tool-label">Blade 1</div>
+                                <div class="tool-value">
+                                    <span class="product-code" title="Click to copy">BLADE-ST-200</span>
+                                    <span class="tool-name">Stabilizer Blade 200mm</span>
+                                </div>
+                                <div style="margin-top: 8px;">
+                                    <span class="quantity-badge">Qty: 3</span>
+                                </div>
+                            </div>
+
+                            <div class="tool-card">
+                                <div class="tool-label">Blade 2</div>
+                                <div class="tool-value">
+                                    <span class="product-code" title="Click to copy">BLADE-ST-250</span>
+                                    <span class="tool-name">Stabilizer Blade 250mm Heavy</span>
+                                </div>
+                                <div style="margin-top: 8px;">
+                                    <span class="quantity-badge">Qty: 2</span>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Housing Section -->
+                        <h4 class="subsection-header">Other Accessories</h4>
+                        <div class="tool-grid">
+                            <div class="tool-card">
+                                <div class="tool-label">Housing</div>
+                                <div class="tool-value">
+                                    <span class="product-code" title="Click to copy">HS-2211</span>
+                                    <span class="tool-name">Drill Housing Assembly</span>
+                                </div>
+                                <div style="margin-top: 8px;">
+                                    <span class="quantity-badge">Qty: 1</span>
+                                </div>
+                            </div>
+
+                            <div class="tool-card">
+                                <div class="tool-label">Grease</div>
+                                <div class="tool-value">
+                                    <span class="product-code" title="Click to copy">GR-EP2-5KG</span>
+                                    <span class="tool-name">Lithium EP2 Grease 5kg</span>
+                                </div>
+                                <div style="margin-top: 8px;">
+                                    <span class="quantity-badge">Qty: 4</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- FOOTER -->
+            <div class="modal-footer">
+                <button class="btn-close">Close</button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        lucide.createIcons();
+
+        function switchTab(tabName, buttonElement) {
+            // Hide all tabs
+            document.getElementById('tools-tab').style.display = 'none';
+            document.getElementById('accessories-tab').style.display = 'none';
+
+            // Remove active class from all buttons
+            document.querySelectorAll('.tab-button').forEach(btn => btn.classList.remove('active'));
+
+            // Show selected tab
+            document.getElementById(tabName + '-tab').style.display = 'block';
+
+            // Add active class to clicked button
+            buttonElement.classList.add('active');
+        }
+
+        // Product code copy functionality
+        document.querySelectorAll('.product-code').forEach(code => {
+            code.addEventListener('click', function() {
+                const text = this.textContent;
+                navigator.clipboard.writeText(text).then(() => {
+                    const original = this.textContent;
+                    this.textContent = 'Copied!';
+                    this.style.background = '#86efac';
+                    setTimeout(() => {
+                        this.textContent = original;
+                        this.style.background = '#dbeafe';
+                    }, 1500);
+                });
+            });
+        });
+    </script>
+</body>
+</html>

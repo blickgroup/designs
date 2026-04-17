@@ -1,0 +1,1156 @@
+<!-- V2: Current Implementation — dark hero, coverage card, recipe metaphor, full range cross-reference -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Carry Flow — Stabilisers — Blick</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+<style>
+/* ── Reset & Tokens ─────────────────────────────── */
+*, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+
+:root {
+  --orange: #FD4F00;
+  --orange-light: #FF6B26;
+  --black: #1A1A1A;
+  --charcoal: #2D2D2D;
+  --grey-dark: #66615C;
+  --grey-mid: #A9A9A9;
+  --grey-light: #EBEAEB;
+  --off-white: #FAFAFA;
+  --white: #FFFFFF;
+  --font: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+  --ease-smooth: cubic-bezier(0.16, 1, 0.3, 1);
+  --radius-sm: 12px;
+  --radius-md: 16px;
+  --radius-lg: 20px;
+  --radius-xl: 24px;
+  --radius-pill: 100px;
+  --shadow-sm: 0 8px 24px rgba(0,0,0,0.06);
+  --shadow-md: 0 16px 48px rgba(0,0,0,0.06);
+  --shadow-orange: 0 4px 24px rgba(253,79,0,0.25);
+
+  /* Category colors */
+  --cat-stabilisers: #FD4F00;
+  --cat-clay: #E91E8C;
+  --cat-bentonite: #4CAF50;
+  --cat-filtration: #FFC107;
+  --cat-lcm: #009688;
+  --cat-support: #7C4DFF;
+
+  /* Segment colors */
+  --seg-hdd: #FD4F00;
+  --seg-waterwell: #2196F3;
+  --seg-piling: #4CAF50;
+}
+
+html {
+  scroll-behavior: smooth;
+  font-size: 16px;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+body {
+  font-family: var(--font);
+  color: var(--charcoal);
+  background: var(--white);
+  line-height: 1.6;
+  overflow-x: hidden;
+}
+
+/* ── Utility ──────────────────────────────────────── */
+.container {
+  max-width: 1280px;
+  margin: 0 auto;
+  padding: 0 clamp(24px, 5vw, 80px);
+}
+
+.section-tag {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 0.75rem;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--grey-dark);
+  margin-bottom: 16px;
+}
+.section-tag::before {
+  content: '';
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: var(--orange);
+}
+
+.reveal {
+  opacity: 0;
+  transform: translateY(40px);
+  transition: opacity 0.8s var(--ease-smooth), transform 0.8s var(--ease-smooth);
+}
+.reveal.visible {
+  opacity: 1;
+  transform: translateY(0);
+}
+.stagger-1 { transition-delay: 0.1s; }
+.stagger-2 { transition-delay: 0.2s; }
+.stagger-3 { transition-delay: 0.3s; }
+.stagger-4 { transition-delay: 0.4s; }
+.stagger-5 { transition-delay: 0.5s; }
+
+/* ── Navigation ───────────────────────────────────── */
+nav {
+  position: fixed;
+  top: 0; left: 0; right: 0;
+  z-index: 1000;
+  padding: 24px 0;
+  transition: all 0.4s var(--ease-smooth);
+  background: rgba(26, 26, 26, 0.92);
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+}
+nav.scrolled {
+  padding: 16px 0;
+}
+nav .container {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+.nav-logo {
+  font-size: 1.5rem;
+  font-weight: 800;
+  color: var(--white);
+  text-decoration: none;
+  letter-spacing: -0.02em;
+}
+.nav-links {
+  display: flex;
+  gap: 32px;
+  list-style: none;
+}
+.nav-links a {
+  color: rgba(255,255,255,0.8);
+  text-decoration: none;
+  font-size: 0.9rem;
+  font-weight: 500;
+  transition: color 0.3s ease;
+}
+.nav-links a:hover {
+  color: var(--orange);
+}
+
+/* ── 1. Dark Hero ─────────────────────────────────── */
+@keyframes heroFadeIn {
+  from { opacity: 0; transform: translateY(30px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+@keyframes geoFloat {
+  0%, 100% { transform: translate(0, 0) rotate(0deg); }
+  50% { transform: translate(10px, -15px) rotate(3deg); }
+}
+
+.hero {
+  position: relative;
+  background: var(--black);
+  padding: 160px 0 100px;
+  overflow: hidden;
+  min-height: 480px;
+}
+.hero-geo {
+  position: absolute;
+  top: 60px; right: -60px;
+  width: 400px; height: 400px;
+  border-radius: 50%;
+  background: radial-gradient(circle, rgba(253,79,0,0.12) 0%, transparent 70%);
+  animation: geoFloat 8s ease-in-out infinite;
+  pointer-events: none;
+}
+.hero-breadcrumb {
+  animation: heroFadeIn 0.8s var(--ease-smooth) 0.1s both;
+  margin-bottom: 20px;
+}
+.hero-breadcrumb a,
+.hero-breadcrumb span {
+  font-size: 0.85rem;
+  color: rgba(255,255,255,0.5);
+  text-decoration: none;
+}
+.hero-breadcrumb a:hover { color: var(--orange); }
+.hero-breadcrumb .sep { margin: 0 8px; }
+.hero-breadcrumb .current { color: rgba(255,255,255,0.8); }
+
+.hero-badge {
+  animation: heroFadeIn 0.8s var(--ease-smooth) 0.2s both;
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 6px 16px;
+  border-radius: var(--radius-pill);
+  font-size: 0.75rem;
+  font-weight: 700;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  margin-bottom: 20px;
+  background: rgba(253,79,0,0.15);
+  color: var(--cat-stabilisers);
+  border: 1px solid rgba(253,79,0,0.25);
+}
+.hero-badge .dot {
+  width: 8px; height: 8px;
+  border-radius: 50%;
+  background: var(--cat-stabilisers);
+}
+
+.hero h1 {
+  animation: heroFadeIn 0.8s var(--ease-smooth) 0.3s both;
+  font-size: clamp(2.5rem, 5vw, 3.5rem);
+  font-weight: 800;
+  color: var(--white);
+  letter-spacing: -0.03em;
+  line-height: 1.1;
+  margin-bottom: 20px;
+}
+.hero-desc {
+  animation: heroFadeIn 0.8s var(--ease-smooth) 0.4s both;
+  font-size: 1.1rem;
+  color: rgba(255,255,255,0.6);
+  max-width: 640px;
+  line-height: 1.7;
+}
+
+/* ── 2. Overview + Benefits ───────────────────────── */
+.overview {
+  padding: 100px 0;
+  background: var(--white);
+}
+.overview-grid {
+  display: grid;
+  grid-template-columns: 1.2fr 1fr;
+  gap: 48px;
+  align-items: start;
+}
+.overview-text h2 {
+  font-size: 1.8rem;
+  font-weight: 700;
+  color: var(--black);
+  margin-bottom: 24px;
+  letter-spacing: -0.02em;
+}
+.overview-text p {
+  color: var(--grey-dark);
+  font-size: 1rem;
+  line-height: 1.8;
+  margin-bottom: 16px;
+}
+.benefits-card {
+  background: var(--off-white);
+  border: 1px solid var(--grey-light);
+  border-radius: var(--radius-lg);
+  padding: 32px;
+}
+.benefits-card h3 {
+  font-size: 1rem;
+  font-weight: 700;
+  color: var(--black);
+  margin-bottom: 24px;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+  font-size: 0.8rem;
+}
+.benefit-item {
+  display: flex;
+  align-items: flex-start;
+  gap: 14px;
+  margin-bottom: 18px;
+}
+.benefit-item:last-child { margin-bottom: 0; }
+.benefit-icon {
+  flex-shrink: 0;
+  width: 28px; height: 28px;
+  border-radius: 8px;
+  background: rgba(253,79,0,0.1);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-top: 2px;
+}
+.benefit-icon svg {
+  width: 14px; height: 14px;
+  stroke: var(--cat-stabilisers);
+  stroke-width: 2.5;
+  fill: none;
+}
+.benefit-item span {
+  font-size: 0.95rem;
+  color: var(--charcoal);
+  line-height: 1.5;
+}
+
+/* ── 3. Specs + Downloads ─────────────────────────── */
+.specs-section {
+  padding: 100px 0;
+  background: var(--off-white);
+}
+.specs-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 32px;
+}
+.specs-card, .downloads-card {
+  background: var(--white);
+  border: 1px solid var(--grey-light);
+  border-radius: var(--radius-lg);
+  padding: 32px;
+}
+.specs-card h3, .downloads-card h3 {
+  font-size: 0.8rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+  color: var(--black);
+  margin-bottom: 24px;
+}
+.spec-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+  padding: 14px 0;
+  border-bottom: 1px solid var(--grey-light);
+}
+.spec-row:last-child { border-bottom: none; }
+.spec-label {
+  font-size: 0.9rem;
+  color: var(--grey-dark);
+  font-weight: 500;
+}
+.spec-value {
+  font-size: 0.9rem;
+  color: var(--black);
+  font-weight: 600;
+  text-align: right;
+  max-width: 55%;
+}
+
+.download-btn {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  width: 100%;
+  padding: 16px 20px;
+  background: var(--off-white);
+  border: 1px solid var(--grey-light);
+  border-radius: var(--radius-sm);
+  text-decoration: none;
+  color: var(--charcoal);
+  font-size: 0.9rem;
+  font-weight: 600;
+  transition: all 0.3s ease;
+  margin-bottom: 12px;
+  cursor: pointer;
+}
+.download-btn:last-child { margin-bottom: 0; }
+.download-btn:hover {
+  background: rgba(253,79,0,0.06);
+  border-color: var(--orange);
+  color: var(--orange);
+}
+.download-btn:hover svg { stroke: var(--orange); }
+.download-btn svg {
+  width: 20px; height: 20px;
+  stroke: var(--grey-dark);
+  stroke-width: 2;
+  fill: none;
+  flex-shrink: 0;
+  transition: stroke 0.3s ease;
+}
+.download-btn .dl-meta {
+  font-size: 0.75rem;
+  color: var(--grey-mid);
+  font-weight: 400;
+  margin-left: auto;
+}
+
+/* ── 4. Coverage Card ─────────────────────────────── */
+.coverage-section {
+  padding: 100px 0;
+  background: var(--white);
+}
+.coverage-section h2 {
+  font-size: 1.8rem;
+  font-weight: 700;
+  color: var(--black);
+  margin-bottom: 12px;
+  letter-spacing: -0.02em;
+}
+.coverage-section .subtitle {
+  color: var(--grey-dark);
+  font-size: 1rem;
+  margin-bottom: 48px;
+  max-width: 560px;
+}
+.coverage-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 24px;
+}
+.coverage-card {
+  background: var(--off-white);
+  border: 1px solid var(--grey-light);
+  border-radius: var(--radius-lg);
+  padding: 28px;
+}
+.coverage-header {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin-bottom: 20px;
+}
+.coverage-icon {
+  width: 40px; height: 40px;
+  border-radius: 10px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.coverage-icon svg {
+  width: 20px; height: 20px;
+  stroke-width: 2;
+  fill: none;
+}
+.coverage-header .label {
+  font-size: 1rem;
+  font-weight: 700;
+  color: var(--black);
+}
+.coverage-badge {
+  margin-left: auto;
+  font-size: 0.8rem;
+  font-weight: 700;
+  padding: 4px 12px;
+  border-radius: var(--radius-pill);
+}
+.progress-bar {
+  height: 6px;
+  border-radius: 3px;
+  background: var(--grey-light);
+  margin-bottom: 20px;
+  overflow: hidden;
+}
+.progress-fill {
+  height: 100%;
+  border-radius: 3px;
+  transition: width 0.6s var(--ease-smooth);
+}
+.ground-list {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+.ground-item {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  font-size: 0.85rem;
+  color: var(--charcoal);
+}
+.ground-dot {
+  width: 10px; height: 10px;
+  border-radius: 50%;
+  flex-shrink: 0;
+}
+.ground-dot.filled { /* color set inline */ }
+.ground-dot.empty {
+  background: transparent;
+  border: 2px solid var(--grey-mid);
+}
+.ground-item.uncovered { color: var(--grey-mid); }
+
+.coverage-link {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  margin-top: 18px;
+  font-size: 0.85rem;
+  font-weight: 600;
+  text-decoration: none;
+  transition: gap 0.3s ease;
+}
+.coverage-link:hover { gap: 10px; }
+
+/* ── 5. Recipe / Works Well With ──────────────────── */
+.recipe-section {
+  padding: 100px 0;
+  background: var(--off-white);
+}
+.recipe-section h2 {
+  font-size: 1.8rem;
+  font-weight: 700;
+  color: var(--black);
+  margin-bottom: 12px;
+  letter-spacing: -0.02em;
+}
+.recipe-section .subtitle {
+  color: var(--grey-dark);
+  font-size: 1rem;
+  margin-bottom: 48px;
+  max-width: 600px;
+}
+.recipe-list {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+.recipe-card {
+  display: flex;
+  align-items: center;
+  gap: 20px;
+  background: var(--white);
+  border: 1px solid var(--grey-light);
+  border-radius: var(--radius-md);
+  padding: 24px 28px;
+  text-decoration: none;
+  color: inherit;
+  transition: all 0.3s ease;
+  cursor: pointer;
+}
+.recipe-card:hover {
+  border-color: var(--grey-mid);
+  box-shadow: var(--shadow-sm);
+}
+.recipe-card.foundation {
+  border-left: 4px solid var(--cat-bentonite);
+}
+.recipe-card-body {
+  flex: 1;
+}
+.recipe-role {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 0.7rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  margin-bottom: 6px;
+}
+.recipe-role .dot {
+  width: 6px; height: 6px;
+  border-radius: 50%;
+}
+.recipe-card-body .name {
+  font-size: 1.1rem;
+  font-weight: 700;
+  color: var(--black);
+  margin-bottom: 4px;
+}
+.recipe-card-body .desc {
+  font-size: 0.9rem;
+  color: var(--grey-dark);
+  line-height: 1.5;
+}
+.recipe-card .arrow {
+  flex-shrink: 0;
+  width: 32px; height: 32px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--grey-mid);
+  transition: color 0.3s ease, transform 0.3s ease;
+}
+.recipe-card:hover .arrow {
+  color: var(--orange);
+  transform: translateX(4px);
+}
+.recipe-card .arrow svg {
+  width: 20px; height: 20px;
+  stroke: currentColor;
+  stroke-width: 2;
+  fill: none;
+}
+
+/* ── 6. Full Range Cross-Reference ────────────────── */
+.crossref-section {
+  padding: 100px 0;
+  background: var(--black);
+}
+.crossref-section h2 {
+  font-size: 1.8rem;
+  font-weight: 700;
+  color: var(--white);
+  margin-bottom: 12px;
+  letter-spacing: -0.02em;
+}
+.crossref-section .subtitle {
+  color: rgba(255,255,255,0.5);
+  font-size: 1rem;
+  margin-bottom: 48px;
+}
+.crossref-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 24px;
+}
+.crossref-cat {
+  border-left: 3px solid;
+  padding-left: 20px;
+}
+.crossref-cat-header {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-bottom: 16px;
+}
+.crossref-dot {
+  width: 8px; height: 8px;
+  border-radius: 50%;
+}
+.crossref-cat-name {
+  font-size: 0.75rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  color: rgba(255,255,255,0.5);
+}
+.crossref-list {
+  list-style: none;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+.crossref-item {
+  font-size: 0.9rem;
+  color: rgba(255,255,255,0.65);
+  font-weight: 500;
+  padding: 6px 0;
+  transition: color 0.3s ease;
+  cursor: pointer;
+}
+.crossref-item:hover { color: var(--white); }
+.crossref-item.current {
+  color: var(--orange);
+  font-weight: 700;
+}
+.crossref-item .brand-tag {
+  font-size: 0.7rem;
+  font-weight: 600;
+  color: rgba(255,255,255,0.3);
+  margin-left: 6px;
+}
+
+/* ── 7. CTA ───────────────────────────────────────── */
+.cta-section {
+  padding: 120px 0;
+  background: var(--white);
+  text-align: center;
+  position: relative;
+  overflow: hidden;
+}
+.cta-glow {
+  position: absolute;
+  top: 50%; left: 50%;
+  transform: translate(-50%, -50%);
+  width: 500px; height: 500px;
+  border-radius: 50%;
+  background: radial-gradient(circle, rgba(253,79,0,0.08) 0%, transparent 70%);
+  pointer-events: none;
+}
+.cta-section h2 {
+  font-size: clamp(1.8rem, 3.5vw, 2.4rem);
+  font-weight: 800;
+  color: var(--black);
+  margin-bottom: 16px;
+  letter-spacing: -0.03em;
+  position: relative;
+}
+.cta-section .desc {
+  font-size: 1.05rem;
+  color: var(--grey-dark);
+  max-width: 520px;
+  margin: 0 auto 40px;
+  line-height: 1.7;
+  position: relative;
+}
+.cta-buttons {
+  display: flex;
+  gap: 16px;
+  justify-content: center;
+  position: relative;
+}
+.btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 16px 32px;
+  border-radius: var(--radius-pill);
+  font-size: 0.95rem;
+  font-weight: 600;
+  text-decoration: none;
+  transition: all 0.3s ease;
+  cursor: pointer;
+  border: none;
+}
+.btn-primary {
+  background: var(--orange);
+  color: var(--white);
+  box-shadow: var(--shadow-orange);
+}
+.btn-primary:hover {
+  background: var(--orange-light);
+  transform: translateY(-2px);
+  box-shadow: 0 8px 32px rgba(253,79,0,0.35);
+}
+.btn-secondary {
+  background: var(--off-white);
+  color: var(--charcoal);
+  border: 1px solid var(--grey-light);
+}
+.btn-secondary:hover {
+  border-color: var(--grey-mid);
+  background: var(--white);
+}
+
+/* ── Footer ───────────────────────────────────────── */
+footer {
+  padding: 48px 0;
+  background: var(--black);
+  text-align: center;
+}
+footer p {
+  color: rgba(255,255,255,0.35);
+  font-size: 0.8rem;
+}
+
+/* ── Responsive ───────────────────────────────────── */
+@media (max-width: 1024px) {
+  .overview-grid { grid-template-columns: 1fr; }
+  .specs-grid { grid-template-columns: 1fr; }
+  .coverage-grid { grid-template-columns: 1fr; }
+  .crossref-grid { grid-template-columns: repeat(2, 1fr); }
+}
+
+@media (max-width: 640px) {
+  .hero { padding: 140px 0 80px; }
+  .hero h1 { font-size: 2rem; }
+  .nav-links { display: none; }
+  .crossref-grid { grid-template-columns: 1fr; }
+  .cta-buttons { flex-direction: column; align-items: center; }
+  .spec-row { flex-direction: column; gap: 4px; }
+  .spec-value { text-align: left; max-width: 100%; }
+  .recipe-card { flex-direction: column; align-items: flex-start; }
+  .recipe-card .arrow { align-self: flex-end; }
+}
+</style>
+</head>
+<body>
+
+<!-- ── Navigation ─────────────────────────────────── -->
+<nav>
+  <div class="container">
+    <a href="#" class="nav-logo">Blick</a>
+    <ul class="nav-links">
+      <li><a href="#">Products</a></li>
+      <li><a href="#">Fluid Selector</a></li>
+      <li><a href="#">Services</a></li>
+      <li><a href="#">About</a></li>
+      <li><a href="#">Contact</a></li>
+    </ul>
+  </div>
+</nav>
+
+<!-- ── 1. Dark Hero ───────────────────────────────── -->
+<section class="hero">
+  <div class="hero-geo"></div>
+  <div class="container">
+    <div class="hero-breadcrumb">
+      <a href="#">Products</a><span class="sep">/</span>
+      <a href="#">Stabilisers</a><span class="sep">/</span>
+      <span class="current">Carry Flow</span>
+    </div>
+    <div class="hero-badge">
+      <span class="dot"></span>
+      Stabilisers
+    </div>
+    <h1>Carry Flow</h1>
+    <p class="hero-desc">Coated xanthan gum polymer for suspension, carrying power, and borehole cleaning in water-based drilling fluids.</p>
+  </div>
+</section>
+
+<!-- ── 2. Overview + Benefits ─────────────────────── -->
+<section class="overview">
+  <div class="container">
+    <div class="overview-grid">
+      <div class="overview-text reveal">
+        <div class="section-tag">Product Overview</div>
+        <h2>What Carry Flow does</h2>
+        <p>Carry Flow is a powdered xanthan gum with a coating that makes it easier to mix. It improves suspension, carrying power, and borehole cleaning in water-based drilling fluids — freshwater, seawater, salt, and brine.</p>
+        <p>When the pumps stop, it builds a gel and holds cuttings up. When you start pumping, it loosens up and moves. At low flow, it stays thick enough to keep cuttings suspended until you're circulating again.</p>
+        <p>Carry Flow is the most used polymer in the Blick Fluids range — it appears in more fluid systems than any other product.</p>
+      </div>
+      <div class="benefits-card reveal stagger-2">
+        <h3>Key Benefits</h3>
+        <div class="benefit-item">
+          <div class="benefit-icon">
+            <svg viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg>
+          </div>
+          <span>Superior cuttings suspension and transport</span>
+        </div>
+        <div class="benefit-item">
+          <div class="benefit-icon">
+            <svg viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg>
+          </div>
+          <span>Coated powder for easy, lump-free mixing</span>
+        </div>
+        <div class="benefit-item">
+          <div class="benefit-icon">
+            <svg viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg>
+          </div>
+          <span>Works in freshwater, seawater, and brine</span>
+        </div>
+        <div class="benefit-item">
+          <div class="benefit-icon">
+            <svg viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg>
+          </div>
+          <span>Gels at rest, flows when pumping — holds cuttings in place</span>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ── 3. Specs + Downloads ───────────────────────── -->
+<section class="specs-section">
+  <div class="container">
+    <div class="section-tag reveal">Technical Details</div>
+    <div class="specs-grid">
+      <div class="specs-card reveal stagger-1">
+        <h3>Specifications</h3>
+        <div class="spec-row">
+          <span class="spec-label">Appearance</span>
+          <span class="spec-value">White to off-white powder</span>
+        </div>
+        <div class="spec-row">
+          <span class="spec-label">Specific Gravity</span>
+          <span class="spec-value">1.6</span>
+        </div>
+        <div class="spec-row">
+          <span class="spec-label">Bulk Density</span>
+          <span class="spec-value">800 kg/m&sup3;</span>
+        </div>
+        <div class="spec-row">
+          <span class="spec-label">Recommended Treatment</span>
+          <span class="spec-value">1 to 6 kg/m&sup3; (0.35 to 2.1 lb/bbl). Add slowly through the hopper.</span>
+        </div>
+        <div class="spec-row">
+          <span class="spec-label">Packaging</span>
+          <span class="spec-value">15kg pails</span>
+        </div>
+      </div>
+      <div class="downloads-card reveal stagger-2">
+        <h3>Downloads</h3>
+        <a href="#" class="download-btn">
+          <svg viewBox="0 0 24 24"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/></svg>
+          Safety Data Sheet (SDS)
+          <span class="dl-meta">PDF</span>
+        </a>
+        <a href="#" class="download-btn">
+          <svg viewBox="0 0 24 24"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/></svg>
+          Product Sheet
+          <span class="dl-meta">PDF</span>
+        </a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ── 4. Coverage Card ───────────────────────────── -->
+<section class="coverage-section">
+  <div class="container">
+    <div class="section-tag reveal">Core Fluid Systems</div>
+    <h2 class="reveal">Where Carry Flow is used</h2>
+    <p class="subtitle reveal">Ground conditions covered by Carry Flow across drilling segments.</p>
+
+    <div class="coverage-grid">
+      <!-- HDD -->
+      <div class="coverage-card reveal stagger-1">
+        <div class="coverage-header">
+          <div class="coverage-icon" style="background: rgba(253,79,0,0.1);">
+            <svg viewBox="0 0 24 24" style="stroke: var(--seg-hdd);">
+              <circle cx="12" cy="12" r="10"/><path d="M2 12h20"/>
+              <path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10"/>
+            </svg>
+          </div>
+          <span class="label">HDD</span>
+          <span class="coverage-badge" style="background: rgba(253,79,0,0.1); color: var(--seg-hdd);">4 / 5</span>
+        </div>
+        <div class="progress-bar">
+          <div class="progress-fill" style="width: 80%; background: var(--seg-hdd);"></div>
+        </div>
+        <div class="ground-list">
+          <div class="ground-item">
+            <span class="ground-dot filled" style="background: var(--seg-hdd);"></span>
+            Sticky Clay
+          </div>
+          <div class="ground-item">
+            <span class="ground-dot filled" style="background: var(--seg-hdd);"></span>
+            Sand Gravel &amp; Firm
+          </div>
+          <div class="ground-item">
+            <span class="ground-dot filled" style="background: var(--seg-hdd);"></span>
+            Heavy Rock &amp; Gravel
+          </div>
+          <div class="ground-item">
+            <span class="ground-dot filled" style="background: var(--seg-hdd);"></span>
+            Large Diameter Sand/Rock
+          </div>
+          <div class="ground-item uncovered">
+            <span class="ground-dot empty"></span>
+            Non-Reactive (Large)
+          </div>
+        </div>
+        <a href="#" class="coverage-link" style="color: var(--seg-hdd);">
+          Open fluid selector
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg>
+        </a>
+      </div>
+
+      <!-- Waterwell -->
+      <div class="coverage-card reveal stagger-2">
+        <div class="coverage-header">
+          <div class="coverage-icon" style="background: rgba(33,150,243,0.1);">
+            <svg viewBox="0 0 24 24" style="stroke: var(--seg-waterwell);">
+              <path d="M12 2v20"/><path d="M2 12h20"/>
+              <circle cx="12" cy="12" r="4"/>
+            </svg>
+          </div>
+          <span class="label">Waterwell</span>
+          <span class="coverage-badge" style="background: rgba(33,150,243,0.1); color: var(--seg-waterwell);">2 / 4</span>
+        </div>
+        <div class="progress-bar">
+          <div class="progress-fill" style="width: 50%; background: var(--seg-waterwell);"></div>
+        </div>
+        <div class="ground-list">
+          <div class="ground-item">
+            <span class="ground-dot filled" style="background: var(--seg-waterwell);"></span>
+            Sand
+          </div>
+          <div class="ground-item">
+            <span class="ground-dot filled" style="background: var(--seg-waterwell);"></span>
+            Reactive Clay
+          </div>
+          <div class="ground-item uncovered">
+            <span class="ground-dot empty"></span>
+            Heavy Lifting
+          </div>
+          <div class="ground-item uncovered">
+            <span class="ground-dot empty"></span>
+            Hole Cleaning (Foam)
+          </div>
+        </div>
+        <a href="#" class="coverage-link" style="color: var(--seg-waterwell);">
+          Open fluid selector
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg>
+        </a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ── 5. Recipe / Works Well With ─────────────────── -->
+<section class="recipe-section">
+  <div class="container">
+    <div class="section-tag reveal">Fluid System</div>
+    <h2 class="reveal">Build your fluid system with Carry Flow</h2>
+    <p class="subtitle reveal">Products commonly used alongside Carry Flow in drilling fluid systems.</p>
+
+    <div class="recipe-list">
+      <!-- Carry Max -->
+      <a href="#" class="recipe-card reveal stagger-1">
+        <div class="recipe-card-body">
+          <div class="recipe-role" style="color: var(--cat-stabilisers);">
+            <span class="dot" style="background: var(--cat-stabilisers);"></span>
+            Carrying Capacity
+          </div>
+          <div class="name">Carry Max</div>
+          <div class="desc">High-yield polymer for maximum carrying capacity and cuttings suspension in heavy ground conditions.</div>
+        </div>
+        <div class="arrow">
+          <svg viewBox="0 0 24 24"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg>
+        </div>
+      </a>
+
+      <!-- Carry Foam -->
+      <a href="#" class="recipe-card reveal stagger-2">
+        <div class="recipe-card-body">
+          <div class="recipe-role" style="color: var(--cat-stabilisers);">
+            <span class="dot" style="background: var(--cat-stabilisers);"></span>
+            Carrying Capacity
+          </div>
+          <div class="name">Carry Foam</div>
+          <div class="desc">Foaming surfactant for lightweight cuttings transport and hole cleaning in large diameter or dry conditions.</div>
+        </div>
+        <div class="arrow">
+          <svg viewBox="0 0 24 24"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg>
+        </div>
+      </a>
+
+      <!-- Max Bore (foundation) -->
+      <a href="#" class="recipe-card foundation reveal stagger-3">
+        <div class="recipe-card-body">
+          <div class="recipe-role" style="color: var(--cat-bentonite);">
+            <span class="dot" style="background: var(--cat-bentonite);"></span>
+            The Foundation
+          </div>
+          <div class="name">Max Bore <span style="font-size: 0.75rem; font-weight: 500; color: var(--grey-mid); margin-left: 6px;">Wyo Ben</span></div>
+          <div class="desc">Premium Wyoming bentonite for building the base fluid system — provides viscosity, fluid loss control, and borehole stability.</div>
+        </div>
+        <div class="arrow">
+          <svg viewBox="0 0 24 24"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg>
+        </div>
+      </a>
+    </div>
+  </div>
+</section>
+
+<!-- ── 6. Full Range Cross-Reference ──────────────── -->
+<section class="crossref-section">
+  <div class="container">
+    <div class="section-tag reveal" style="color: rgba(255,255,255,0.5);">Complete Range</div>
+    <h2 class="reveal">Blick Fluids product range</h2>
+    <p class="subtitle reveal">All products across 6 categories. Carry Flow is highlighted.</p>
+
+    <div class="crossref-grid">
+      <!-- Clay Adjustment -->
+      <div class="crossref-cat reveal stagger-1" style="border-color: var(--cat-clay);">
+        <div class="crossref-cat-header">
+          <span class="crossref-dot" style="background: var(--cat-clay);"></span>
+          <span class="crossref-cat-name">Clay Adjustment</span>
+        </div>
+        <ul class="crossref-list">
+          <li class="crossref-item">Clay Control</li>
+          <li class="crossref-item">Clay Dissolve</li>
+          <li class="crossref-item">Detergent</li>
+          <li class="crossref-item">Swell Stop Liquid</li>
+          <li class="crossref-item">Swell Stop Dry</li>
+          <li class="crossref-item">Torque Down</li>
+        </ul>
+      </div>
+
+      <!-- Stabilisers -->
+      <div class="crossref-cat reveal stagger-2" style="border-color: var(--cat-stabilisers);">
+        <div class="crossref-cat-header">
+          <span class="crossref-dot" style="background: var(--cat-stabilisers);"></span>
+          <span class="crossref-cat-name">Stabilisers</span>
+        </div>
+        <ul class="crossref-list">
+          <li class="crossref-item current">Carry Flow</li>
+          <li class="crossref-item">Carry Max</li>
+          <li class="crossref-item">Carry Foam</li>
+        </ul>
+      </div>
+
+      <!-- Bentonite -->
+      <div class="crossref-cat reveal stagger-3" style="border-color: var(--cat-bentonite);">
+        <div class="crossref-cat-header">
+          <span class="crossref-dot" style="background: var(--cat-bentonite);"></span>
+          <span class="crossref-cat-name">Bentonite</span>
+        </div>
+        <ul class="crossref-list">
+          <li class="crossref-item">HDD Gel</li>
+          <li class="crossref-item">Construct Gel</li>
+          <li class="crossref-item">Bentonite Plug</li>
+          <li class="crossref-item">Max Bore <span class="brand-tag">Wyo Ben</span></li>
+          <li class="crossref-item">Max Gel <span class="brand-tag">Wyo Ben</span></li>
+        </ul>
+      </div>
+
+      <!-- Filtration Control -->
+      <div class="crossref-cat reveal stagger-1" style="border-color: var(--cat-filtration);">
+        <div class="crossref-cat-header">
+          <span class="crossref-dot" style="background: var(--cat-filtration);"></span>
+          <span class="crossref-cat-name">Filtration Control</span>
+        </div>
+        <ul class="crossref-list">
+          <li class="crossref-item">Filter Low</li>
+          <li class="crossref-item">Filter High</li>
+        </ul>
+      </div>
+
+      <!-- LCM -->
+      <div class="crossref-cat reveal stagger-2" style="border-color: var(--cat-lcm);">
+        <div class="crossref-cat-header">
+          <span class="crossref-dot" style="background: var(--cat-lcm);"></span>
+          <span class="crossref-cat-name">LCM</span>
+        </div>
+        <ul class="crossref-list">
+          <li class="crossref-item">Loss Swell</li>
+          <li class="crossref-item">One Stop</li>
+        </ul>
+      </div>
+
+      <!-- Support Chemicals -->
+      <div class="crossref-cat reveal stagger-3" style="border-color: var(--cat-support);">
+        <div class="crossref-cat-header">
+          <span class="crossref-dot" style="background: var(--cat-support);"></span>
+          <span class="crossref-cat-name">Support Chemicals</span>
+        </div>
+        <ul class="crossref-list">
+          <li class="crossref-item">Biocide 75</li>
+          <li class="crossref-item">Defoam</li>
+          <li class="crossref-item">Soda Ash</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ── 7. CTA ─────────────────────────────────────── -->
+<section class="cta-section">
+  <div class="cta-glow"></div>
+  <div class="container">
+    <h2 class="reveal">Need help choosing the right fluid system?</h2>
+    <p class="desc reveal stagger-1">Our fluid selector tool recommends the right products for your ground conditions, drilling method, and bore size.</p>
+    <div class="cta-buttons reveal stagger-2">
+      <a href="#" class="btn btn-primary">Open Fluid Selector</a>
+      <a href="#" class="btn btn-secondary">Contact Us</a>
+    </div>
+  </div>
+</section>
+
+<!-- ── Footer ─────────────────────────────────────── -->
+<footer>
+  <div class="container">
+    <p>&copy; 2026 Blick Group. All rights reserved.</p>
+  </div>
+</footer>
+
+<!-- ── Scripts ────────────────────────────────────── -->
+<script>
+// Scroll reveal (IntersectionObserver)
+document.addEventListener('DOMContentLoaded', () => {
+  const reveals = document.querySelectorAll('.reveal');
+  const observer = new IntersectionObserver((entries) => {
+    entries.forEach(entry => {
+      if (entry.isIntersecting) {
+        entry.target.classList.add('visible');
+        observer.unobserve(entry.target);
+      }
+    });
+  }, { threshold: 0.1, rootMargin: '0px 0px -40px 0px' });
+
+  reveals.forEach(el => observer.observe(el));
+
+  // Nav scroll state
+  const nav = document.querySelector('nav');
+  window.addEventListener('scroll', () => {
+    nav.classList.toggle('scrolled', window.scrollY > 40);
+  });
+});
+</script>
+</body>
+</html>

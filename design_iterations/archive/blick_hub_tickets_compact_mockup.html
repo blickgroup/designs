@@ -1,0 +1,660 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Blick Hub - Tickets (Compact Layout)</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Montserrat:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        :root {
+            /* Dark Theme Colors */
+            --bg-primary: #0a0a0a;
+            --bg-secondary: #1a1a1a;
+            --bg-elevated: #222222;
+            --bg-hover: #2a2a2a;
+            --input-bg: #1a1a1a;
+
+            --text-heading: #ededed;
+            --text-primary: #d4d4d4;
+            --text-secondary: #a3a3a3;
+            --text-tertiary: #737373;
+            --text-muted: #525252;
+
+            --primary: #f05323;
+            --primary-hover: #d94718;
+
+            --border-default: #333333;
+
+            --status-red: #ef4444;
+            --status-orange: #f97316;
+            --status-blue: #3b82f6;
+            --status-green: #22c55e;
+            --status-purple: #a855f7;
+        }
+
+        body {
+            font-family: 'Inter', 'Montserrat', sans-serif;
+            background-color: var(--bg-primary);
+            color: var(--text-primary);
+            line-height: 1.5;
+        }
+
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 2rem;
+        }
+
+        /* Header Section */
+        .tickets-header {
+            display: flex;
+            flex-direction: column;
+            gap: 1rem;
+            margin-bottom: 2rem;
+        }
+
+        .tickets-header-top {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            gap: 1rem;
+        }
+
+        .tickets-header h1 {
+            font-size: 1.75rem;
+            font-weight: 600;
+            color: var(--text-heading);
+            margin: 0;
+        }
+
+        .btn-primary {
+            padding: 0.625rem 1.25rem;
+            background-color: var(--primary);
+            color: white;
+            border: none;
+            border-radius: 6px;
+            font-size: 0.875rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .btn-primary:hover {
+            background-color: var(--primary-hover);
+            transform: translateY(-1px);
+        }
+
+        .btn-icon {
+            font-size: 1.25rem;
+            line-height: 1;
+        }
+
+        /* Controls Row */
+        .tickets-controls {
+            display: flex;
+            gap: 0.75rem;
+            align-items: center;
+            flex-wrap: wrap;
+        }
+
+        .search-input {
+            flex: 1;
+            min-width: 250px;
+            padding: 0.625rem 1rem;
+            background-color: var(--input-bg);
+            color: var(--text-heading);
+            border: 1px solid var(--border-default);
+            border-radius: 6px;
+            font-size: 0.875rem;
+            transition: all 0.2s ease;
+        }
+
+        .search-input:focus {
+            outline: none;
+            border-color: var(--primary);
+            background-color: var(--bg-elevated);
+        }
+
+        .search-input::placeholder {
+            color: var(--text-muted);
+        }
+
+        .filter-select {
+            padding: 0.625rem 1rem;
+            background-color: var(--input-bg);
+            color: var(--text-heading);
+            border: 1px solid var(--border-default);
+            border-radius: 6px;
+            font-size: 0.875rem;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            min-width: 140px;
+        }
+
+        .filter-select:hover {
+            background-color: var(--bg-hover);
+            border-color: var(--primary);
+        }
+
+        .tickets-count {
+            font-size: 0.8125rem;
+            color: var(--text-muted);
+        }
+
+        /* Tickets List */
+        .tickets-list {
+            display: flex;
+            flex-direction: column;
+            gap: 0.75rem;
+        }
+
+        /* Ticket Card - Compact Horizontal Layout */
+        .ticket-card {
+            background-color: var(--bg-secondary);
+            border-radius: 8px;
+            padding: 1rem 1.25rem;
+            border: 1px solid var(--border-default);
+            transition: all 0.2s ease;
+            cursor: pointer;
+        }
+
+        .ticket-card:hover {
+            background-color: var(--bg-elevated);
+            border-color: var(--primary);
+            transform: translateX(4px);
+            box-shadow: 0 2px 12px rgba(240, 83, 35, 0.1);
+        }
+
+        .ticket-card.live {
+            border-left: 3px solid var(--status-green);
+        }
+
+        .ticket-card.archived {
+            opacity: 0.6;
+        }
+
+        .ticket-card-inner {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            gap: 1.5rem;
+        }
+
+        .ticket-left {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            gap: 0.5rem;
+            min-width: 0;
+        }
+
+        .ticket-right {
+            flex-shrink: 0;
+        }
+
+        /* Title Row */
+        .ticket-title-row {
+            display: flex;
+            align-items: center;
+            gap: 0.625rem;
+        }
+
+        .category-icon {
+            font-size: 1.25rem;
+            line-height: 1;
+            flex-shrink: 0;
+        }
+
+        .ticket-title {
+            font-size: 1rem;
+            font-weight: 600;
+            color: var(--text-heading);
+            flex: 1;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            white-space: nowrap;
+        }
+
+        .follow-up-badge {
+            background-color: var(--primary);
+            color: white;
+            padding: 0.125rem 0.5rem;
+            border-radius: 12px;
+            font-size: 0.6875rem;
+            font-weight: 700;
+            flex-shrink: 0;
+            min-width: 1.25rem;
+            text-align: center;
+        }
+
+        /* Badges Row */
+        .ticket-badges {
+            display: flex;
+            gap: 0.5rem;
+            flex-wrap: wrap;
+            align-items: center;
+        }
+
+        .badge {
+            padding: 0.1875rem 0.5rem;
+            border-radius: 4px;
+            font-size: 0.6875rem;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.025em;
+        }
+
+        .badge-category {
+            background-color: var(--bg-hover);
+            color: var(--text-secondary);
+            font-weight: 500;
+        }
+
+        .badge-location {
+            background-color: var(--bg-hover);
+            color: var(--text-tertiary);
+            font-size: 0.625rem;
+            font-weight: 500;
+        }
+
+        .badge-priority {
+            color: white;
+            font-weight: 700;
+        }
+
+        .badge-status {
+            color: white;
+            font-weight: 600;
+        }
+
+        /* Meta Row */
+        .ticket-meta {
+            display: flex;
+            gap: 1rem;
+            flex-wrap: wrap;
+            align-items: center;
+        }
+
+        .meta-item {
+            font-size: 0.75rem;
+            color: var(--text-muted);
+            display: flex;
+            align-items: center;
+            gap: 0.25rem;
+        }
+
+        .meta-label {
+            font-weight: 500;
+            color: var(--text-tertiary);
+        }
+
+        /* View Details Button */
+        .view-details-btn {
+            padding: 0.5rem 1rem;
+            background-color: transparent;
+            color: var(--primary);
+            border: 1px solid var(--primary);
+            border-radius: 6px;
+            font-size: 0.875rem;
+            font-weight: 500;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            white-space: nowrap;
+        }
+
+        .view-details-btn:hover {
+            background-color: var(--primary);
+            color: white;
+            transform: translateX(2px);
+        }
+
+        /* Empty State */
+        .empty-state {
+            text-align: center;
+            padding: 4rem 2rem;
+            color: var(--text-muted);
+        }
+
+        .empty-icon {
+            font-size: 4rem;
+            margin-bottom: 1rem;
+            opacity: 0.5;
+        }
+
+        .empty-state h3 {
+            font-size: 1.25rem;
+            font-weight: 600;
+            color: var(--text-secondary);
+            margin-bottom: 0.5rem;
+        }
+
+        .empty-state p {
+            font-size: 0.875rem;
+            color: var(--text-muted);
+        }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            .container {
+                padding: 1rem;
+            }
+
+            .tickets-header-top {
+                flex-direction: column;
+                align-items: flex-start;
+            }
+
+            .btn-primary {
+                width: 100%;
+                justify-content: center;
+            }
+
+            .tickets-controls {
+                flex-direction: column;
+                width: 100%;
+            }
+
+            .search-input,
+            .filter-select {
+                width: 100%;
+            }
+
+            .ticket-card-inner {
+                flex-direction: column;
+                align-items: flex-start;
+                gap: 1rem;
+            }
+
+            .ticket-right {
+                width: 100%;
+            }
+
+            .view-details-btn {
+                width: 100%;
+            }
+
+            .ticket-title {
+                white-space: normal;
+                line-height: 1.4;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <!-- Header Section -->
+        <div class="tickets-header">
+            <div class="tickets-header-top">
+                <h1>Tickets</h1>
+                <button class="btn-primary">
+                    <span class="btn-icon">+</span>
+                    Submit Ticket
+                </button>
+            </div>
+
+            <div class="tickets-controls">
+                <input type="text" class="search-input" placeholder="Search tickets...">
+                <select class="filter-select">
+                    <option>All Statuses</option>
+                    <option>Submitted</option>
+                    <option>Backlog</option>
+                    <option>In Progress</option>
+                    <option>Testing</option>
+                    <option>Live</option>
+                    <option>Archived</option>
+                </select>
+                <select class="filter-select">
+                    <option>All Priorities</option>
+                    <option>Urgent</option>
+                    <option>High</option>
+                    <option>Medium</option>
+                    <option>Low</option>
+                </select>
+                <select class="filter-select">
+                    <option>All Categories</option>
+                    <option>Bug</option>
+                    <option>Enhancement</option>
+                    <option>Feature Request</option>
+                    <option>Question</option>
+                </select>
+                <select class="filter-select">
+                    <option>Newest First</option>
+                    <option>Oldest First</option>
+                    <option>Priority</option>
+                    <option>Status</option>
+                </select>
+            </div>
+
+            <div class="tickets-count">Showing 5 tickets</div>
+        </div>
+
+        <!-- Tickets List -->
+        <div class="tickets-list">
+            <!-- Ticket 1 - Urgent Bug -->
+            <div class="ticket-card">
+                <div class="ticket-card-inner">
+                    <div class="ticket-left">
+                        <div class="ticket-title-row">
+                            <span class="category-icon">🐛</span>
+                            <h3 class="ticket-title">Login page not loading on Safari</h3>
+                            <span class="follow-up-badge" title="2 follow-ups">2</span>
+                        </div>
+                        <div class="ticket-badges">
+                            <span class="badge badge-category">Bug</span>
+                            <span class="badge badge-location">Hub</span>
+                            <span class="badge badge-priority" style="background-color: #ef4444;">URGENT</span>
+                            <span class="badge badge-status" style="background-color: #737373;">SUBMITTED</span>
+                        </div>
+                        <div class="ticket-meta">
+                            <span class="meta-item">
+                                <span class="meta-label">From:</span> Customer Support
+                            </span>
+                            <span class="meta-item">
+                                <span class="meta-label">Created:</span> Oct 12, 2025
+                            </span>
+                        </div>
+                    </div>
+                    <div class="ticket-right">
+                        <button class="view-details-btn">View Details →</button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Ticket 2 - Medium Feature Request -->
+            <div class="ticket-card">
+                <div class="ticket-card-inner">
+                    <div class="ticket-left">
+                        <div class="ticket-title-row">
+                            <span class="category-icon">🚀</span>
+                            <h3 class="ticket-title">Request: Bulk export feature</h3>
+                        </div>
+                        <div class="ticket-badges">
+                            <span class="badge badge-category">Feature Request</span>
+                            <span class="badge badge-location">Rig Service</span>
+                            <span class="badge badge-priority" style="background-color: #3b82f6;">MEDIUM</span>
+                            <span class="badge badge-status" style="background-color: #3b82f6;">BACKLOG</span>
+                        </div>
+                        <div class="ticket-meta">
+                            <span class="meta-item">
+                                <span class="meta-label">From:</span> John D.
+                            </span>
+                            <span class="meta-item">
+                                <span class="meta-label">To:</span> Sarah
+                            </span>
+                            <span class="meta-item">
+                                <span class="meta-label">Created:</span> Oct 10, 2025
+                            </span>
+                        </div>
+                    </div>
+                    <div class="ticket-right">
+                        <button class="view-details-btn">View Details →</button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Ticket 3 - High Priority Bug (In Progress) -->
+            <div class="ticket-card">
+                <div class="ticket-card-inner">
+                    <div class="ticket-left">
+                        <div class="ticket-title-row">
+                            <span class="category-icon">🐛</span>
+                            <h3 class="ticket-title">Dashboard performance slow</h3>
+                            <span class="follow-up-badge" title="1 follow-up">1</span>
+                        </div>
+                        <div class="ticket-badges">
+                            <span class="badge badge-category">Bug</span>
+                            <span class="badge badge-location">Hub</span>
+                            <span class="badge badge-priority" style="background-color: #f97316;">HIGH</span>
+                            <span class="badge badge-status" style="background-color: #f97316;">IN PROGRESS</span>
+                        </div>
+                        <div class="ticket-meta">
+                            <span class="meta-item">
+                                <span class="meta-label">From:</span> Mike C.
+                            </span>
+                            <span class="meta-item">
+                                <span class="meta-label">To:</span> Tech Team B
+                            </span>
+                            <span class="meta-item">
+                                <span class="meta-label">Created:</span> Oct 8, 2025
+                            </span>
+                        </div>
+                    </div>
+                    <div class="ticket-right">
+                        <button class="view-details-btn">View Details →</button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Ticket 4 - Low Priority Enhancement (Live) -->
+            <div class="ticket-card live">
+                <div class="ticket-card-inner">
+                    <div class="ticket-left">
+                        <div class="ticket-title-row">
+                            <span class="category-icon">✨</span>
+                            <h3 class="ticket-title">Add tooltips to navigation</h3>
+                        </div>
+                        <div class="ticket-badges">
+                            <span class="badge badge-category">Enhancement</span>
+                            <span class="badge badge-location">Hub</span>
+                            <span class="badge badge-priority" style="background-color: #737373;">LOW</span>
+                            <span class="badge badge-status" style="background-color: #22c55e;">LIVE</span>
+                        </div>
+                        <div class="ticket-meta">
+                            <span class="meta-item">
+                                <span class="meta-label">From:</span> Lisa A.
+                            </span>
+                            <span class="meta-item">
+                                <span class="meta-label">To:</span> John
+                            </span>
+                            <span class="meta-item">
+                                <span class="meta-label">Created:</span> Sep 25, 2025
+                            </span>
+                            <span class="meta-item">
+                                <span class="meta-label">Resolved:</span> Oct 5, 2025
+                            </span>
+                        </div>
+                    </div>
+                    <div class="ticket-right">
+                        <button class="view-details-btn">View Details →</button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Ticket 5 - Question -->
+            <div class="ticket-card">
+                <div class="ticket-card-inner">
+                    <div class="ticket-left">
+                        <div class="ticket-title-row">
+                            <span class="category-icon">❓</span>
+                            <h3 class="ticket-title">How do I export data from Health & Safety reports?</h3>
+                        </div>
+                        <div class="ticket-badges">
+                            <span class="badge badge-category">Question</span>
+                            <span class="badge badge-location">Health & Safety Service</span>
+                            <span class="badge badge-priority" style="background-color: #737373;">LOW</span>
+                            <span class="badge badge-status" style="background-color: #a855f7;">TESTING</span>
+                        </div>
+                        <div class="ticket-meta">
+                            <span class="meta-item">
+                                <span class="meta-label">From:</span> Sarah M.
+                            </span>
+                            <span class="meta-item">
+                                <span class="meta-label">To:</span> Support Team
+                            </span>
+                            <span class="meta-item">
+                                <span class="meta-label">Created:</span> Oct 14, 2025
+                            </span>
+                        </div>
+                    </div>
+                    <div class="ticket-right">
+                        <button class="view-details-btn">View Details →</button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Ticket 6 - Enhancement (Compass Service) -->
+            <div class="ticket-card">
+                <div class="ticket-card-inner">
+                    <div class="ticket-left">
+                        <div class="ticket-title-row">
+                            <span class="category-icon">✨</span>
+                            <h3 class="ticket-title">Add filtering options to 90-Day Plan view</h3>
+                        </div>
+                        <div class="ticket-badges">
+                            <span class="badge badge-category">Enhancement</span>
+                            <span class="badge badge-location">Compass Service</span>
+                            <span class="badge badge-priority" style="background-color: #f97316;">HIGH</span>
+                            <span class="badge badge-status" style="background-color: #3b82f6;">BACKLOG</span>
+                        </div>
+                        <div class="ticket-meta">
+                            <span class="meta-item">
+                                <span class="meta-label">From:</span> Operations Manager
+                            </span>
+                            <span class="meta-item">
+                                <span class="meta-label">Created:</span> Oct 15, 2025
+                            </span>
+                        </div>
+                    </div>
+                    <div class="ticket-right">
+                        <button class="view-details-btn">View Details →</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Add hover effects and interactions
+        document.querySelectorAll('.ticket-card').forEach(card => {
+            card.addEventListener('click', (e) => {
+                if (!e.target.classList.contains('view-details-btn')) {
+                    console.log('Ticket clicked:', card.querySelector('.ticket-title').textContent);
+                }
+            });
+        });
+
+        document.querySelectorAll('.view-details-btn').forEach(btn => {
+            btn.addEventListener('click', (e) => {
+                e.stopPropagation();
+                const title = btn.closest('.ticket-card').querySelector('.ticket-title').textContent;
+                alert('Opening ticket detail page for:\n\n' + title);
+            });
+        });
+
+        document.querySelector('.btn-primary').addEventListener('click', () => {
+            alert('Submit Ticket modal will open here');
+        });
+    </script>
+</body>
+</html>

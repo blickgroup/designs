@@ -1,0 +1,1749 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="dark">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Blick Hub - Admin</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+
+  <style>
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    :root { font-family: "Inter", system-ui, -apple-system, sans-serif; }
+
+    /* Theme System */
+    :root, [data-theme="dark"] {
+      --brand-orange: #f05323;
+      --primary: #f05323;
+      --bg-page: #212121;
+      --bg-surface: #2a2a2a;
+      --bg-secondary: #1a1a1a;
+      --bg-hover: #3a3a3a;
+      --text-primary: #bcbec0;
+      --text-secondary: #a0a0a0;
+      --text-heading: #ffffff;
+      --text-muted: #707070;
+      --border-default: #58595b;
+      --border-subtle: #404040;
+      --success: #10b981;
+      --success-light: #064e3b;
+      --warning: #f59e0b;
+      --warning-light: #451a03;
+      --danger: #ef4444;
+      --danger-light: #450a0a;
+    }
+
+    [data-theme="light"] {
+      --brand-orange: #f05323;
+      --primary: #f05323;
+      --bg-page: #f9fafb;
+      --bg-surface: #ffffff;
+      --bg-secondary: #f3f4f6;
+      --bg-hover: #e5e7eb;
+      --text-primary: #111827;
+      --text-secondary: #6b7280;
+      --text-heading: #000000;
+      --text-muted: #9ca3af;
+      --border-default: #e5e7eb;
+      --border-subtle: #f3f4f6;
+      --success: #10b981;
+      --success-light: #d1fae5;
+      --warning: #f59e0b;
+      --warning-light: #fef3c7;
+      --danger: #ef4444;
+      --danger-light: #fee2e2;
+    }
+
+    body {
+      background: var(--bg-page);
+      color: var(--text-primary);
+      min-height: 100vh;
+    }
+
+    /* Dev Environment Banner */
+    .dev-banner {
+      background: #eab308;
+      color: #000;
+      text-align: center;
+      padding: 6px 16px;
+      font-size: 12px;
+      font-weight: 600;
+      letter-spacing: 0.5px;
+    }
+
+    /* Main Header */
+    .main-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 12px 16px;
+      background: var(--bg-page);
+    }
+
+    .header-left {
+      display: flex;
+      align-items: center;
+      gap: 16px;
+    }
+
+    .hamburger-btn {
+      display: flex;
+      flex-direction: column;
+      gap: 4px;
+      padding: 8px;
+      background: transparent;
+      border: none;
+      cursor: pointer;
+    }
+
+    .hamburger-btn span {
+      display: block;
+      width: 20px;
+      height: 2px;
+      background: var(--text-primary);
+      border-radius: 1px;
+    }
+
+    .logo {
+      font-size: 20px;
+      font-weight: 700;
+      color: var(--text-heading);
+    }
+
+    .header-right {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+
+    .icon-btn {
+      width: 36px;
+      height: 36px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      background: transparent;
+      border: none;
+      color: var(--text-muted);
+      cursor: pointer;
+      border-radius: 8px;
+      transition: all 0.2s;
+    }
+
+    .icon-btn:hover {
+      background: var(--bg-hover);
+      color: var(--text-primary);
+    }
+
+    .icon-btn svg {
+      width: 20px;
+      height: 20px;
+    }
+
+    /* Tab Navigation - Pill Style */
+    .tab-nav {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      padding: 8px 16px 16px 16px;
+      background: var(--bg-page);
+    }
+
+    .tab-pill {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      padding: 10px 16px;
+      border: none;
+      background: transparent;
+      color: var(--text-secondary);
+      font-size: 14px;
+      font-weight: 500;
+      cursor: pointer;
+      border-radius: 50px;
+      transition: all 0.2s;
+    }
+
+    .tab-pill:hover {
+      background: var(--bg-hover);
+      color: var(--text-primary);
+    }
+
+    .tab-pill.active {
+      background: var(--primary);
+      color: white;
+    }
+
+    .tab-pill .tab-icon {
+      font-size: 16px;
+      line-height: 1;
+    }
+
+    .tab-pill .alert-dot {
+      width: 8px;
+      height: 8px;
+      background: var(--danger);
+      border-radius: 50%;
+      margin-left: 4px;
+    }
+
+    .tab-pill.active .alert-dot {
+      background: white;
+    }
+
+    /* Page Container */
+    .page-container {
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 0 16px 24px 16px;
+    }
+
+    /* Page sections */
+    .page-section {
+      display: none;
+    }
+
+    .page-section.active {
+      display: block;
+    }
+
+    /* Page Header */
+    .page-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-start;
+      margin-bottom: 20px;
+      padding-top: 8px;
+    }
+
+    .page-header h1 {
+      font-size: 1.25rem;
+      font-weight: 700;
+      color: var(--text-heading);
+    }
+
+    .page-header p {
+      color: var(--text-secondary);
+      font-size: 13px;
+      margin-top: 2px;
+    }
+
+    /* Cards */
+    .card {
+      background: var(--bg-surface);
+      border: 1px solid var(--border-default);
+      border-radius: 12px;
+      padding: 20px;
+    }
+
+    .card-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 16px;
+    }
+
+    .card-header h2 {
+      font-size: 1rem;
+      font-weight: 600;
+      color: var(--text-heading);
+    }
+
+    /* Buttons */
+    .btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      padding: 10px 16px;
+      border-radius: 8px;
+      font-size: 13px;
+      font-weight: 600;
+      cursor: pointer;
+      transition: all 0.2s;
+      border: none;
+    }
+
+    .btn-primary {
+      background: var(--primary);
+      color: white;
+    }
+
+    .btn-primary:hover {
+      opacity: 0.9;
+    }
+
+    .btn-secondary {
+      background: var(--bg-hover);
+      color: var(--text-primary);
+      border: 1px solid var(--border-default);
+    }
+
+    .btn-secondary:hover {
+      border-color: var(--primary);
+    }
+
+    .btn-sm {
+      padding: 6px 12px;
+      font-size: 12px;
+    }
+
+    /* Form Elements */
+    .form-group {
+      margin-bottom: 16px;
+    }
+
+    .form-label {
+      display: block;
+      font-size: 12px;
+      font-weight: 600;
+      color: var(--text-muted);
+      margin-bottom: 6px;
+    }
+
+    .form-input, .form-select {
+      width: 100%;
+      padding: 10px 12px;
+      border-radius: 8px;
+      border: 1px solid var(--border-default);
+      background: var(--bg-surface);
+      color: var(--text-primary);
+      font-size: 13px;
+    }
+
+    .form-input:focus, .form-select:focus {
+      outline: none;
+      border-color: var(--primary);
+    }
+
+    /* Step Wizard */
+    .wizard-steps {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      margin-bottom: 24px;
+    }
+
+    .wizard-step {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .step-number {
+      width: 28px;
+      height: 28px;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 12px;
+      font-weight: 700;
+    }
+
+    .step-number.completed {
+      background: var(--success);
+      color: white;
+    }
+
+    .step-number.current {
+      background: var(--primary);
+      color: white;
+    }
+
+    .step-number.pending {
+      background: var(--bg-hover);
+      color: var(--text-muted);
+    }
+
+    .step-label {
+      font-size: 12px;
+      font-weight: 600;
+    }
+
+    .step-label.completed { color: var(--success); }
+    .step-label.current { color: var(--primary); }
+    .step-label.pending { color: var(--text-muted); }
+
+    .step-connector {
+      flex: 1;
+      height: 2px;
+      background: var(--border-default);
+      max-width: 60px;
+    }
+
+    /* Onboarding Checklist */
+    .checklist {
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+    }
+
+    .checklist-header,
+    .checklist-row {
+      display: grid;
+      grid-template-columns: 2fr 1.2fr 1fr 0.8fr 0.9fr;
+      gap: 12px;
+      align-items: center;
+    }
+
+    .checklist-header {
+      font-size: 11px;
+      font-weight: 600;
+      color: var(--text-muted);
+      text-transform: uppercase;
+      padding: 8px 0;
+      border-bottom: 1px solid var(--border-default);
+    }
+
+    .checklist-row {
+      padding: 10px 0;
+      border-bottom: 1px solid var(--border-subtle);
+    }
+
+    .checklist-task {
+      display: flex;
+      flex-direction: column;
+      gap: 4px;
+    }
+
+    .checklist-label {
+      font-size: 13px;
+      color: var(--text-heading);
+      font-weight: 600;
+    }
+
+    .checklist-meta {
+      font-size: 12px;
+      color: var(--text-muted);
+    }
+
+    .status-select {
+      width: 100%;
+      padding: 8px 10px;
+      border-radius: 8px;
+      border: 1px solid var(--border-default);
+      background: var(--bg-surface);
+      color: var(--text-primary);
+      font-size: 13px;
+    }
+
+    .toggle {
+      width: 38px;
+      height: 20px;
+      background: var(--bg-hover);
+      border-radius: 999px;
+      position: relative;
+      border: 1px solid var(--border-default);
+    }
+
+    .toggle::after {
+      content: "";
+      position: absolute;
+      top: 2px;
+      left: 2px;
+      width: 14px;
+      height: 14px;
+      border-radius: 50%;
+      background: var(--text-muted);
+      transition: transform 0.2s ease;
+    }
+
+    .toggle.active {
+      background: rgba(16, 185, 129, 0.2);
+      border-color: transparent;
+    }
+
+    .toggle.active::after {
+      transform: translateX(18px);
+      background: var(--success);
+    }
+
+    /* Table */
+    .data-table {
+      width: 100%;
+      border-collapse: collapse;
+    }
+
+    .data-table th {
+      text-align: left;
+      padding: 12px 16px;
+      font-size: 11px;
+      font-weight: 600;
+      text-transform: uppercase;
+      color: var(--text-muted);
+      background: var(--bg-secondary);
+      border-bottom: 1px solid var(--border-default);
+    }
+
+    .data-table td {
+      padding: 12px 16px;
+      font-size: 13px;
+      border-bottom: 1px solid var(--border-subtle);
+      color: var(--text-primary);
+    }
+
+    .data-table tr:hover td {
+      background: var(--bg-hover);
+    }
+
+    /* Badges */
+    .badge {
+      display: inline-flex;
+      align-items: center;
+      padding: 4px 10px;
+      border-radius: 12px;
+      font-size: 11px;
+      font-weight: 600;
+    }
+
+    .badge-success { background: var(--success-light); color: var(--success); }
+    .badge-warning { background: var(--warning-light); color: var(--warning); }
+    .badge-danger { background: var(--danger-light); color: var(--danger); }
+    .badge-neutral { background: var(--bg-hover); color: var(--text-muted); }
+
+    /* Alert Box */
+    .alert {
+      padding: 14px 16px;
+      border-radius: 8px;
+      margin-bottom: 20px;
+      display: flex;
+      gap: 12px;
+      align-items: flex-start;
+    }
+
+    .alert-warning {
+      background: var(--warning-light);
+      border-left: 3px solid var(--warning);
+    }
+
+    .alert-warning .alert-icon { color: var(--warning); font-size: 20px; }
+    .alert-warning .alert-title { color: var(--warning); font-weight: 600; font-size: 14px; }
+    .alert-warning .alert-text { color: var(--warning); font-size: 13px; margin-top: 2px; }
+
+    /* User Avatar */
+    .avatar {
+      width: 28px;
+      height: 28px;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 11px;
+      font-weight: 600;
+      color: white;
+    }
+
+    /* Filter Bar */
+    .filter-bar {
+      display: flex;
+      gap: 12px;
+      margin-bottom: 16px;
+      flex-wrap: wrap;
+    }
+
+    .filter-bar .form-select,
+    .filter-bar .form-input {
+      width: auto;
+      min-width: 150px;
+    }
+
+    .filter-bar .search-input {
+      flex: 1;
+      min-width: 200px;
+      max-width: 280px;
+    }
+
+    /* Theme toggle in header */
+    .theme-toggle {
+      display: flex;
+      background: var(--bg-hover);
+      border-radius: 6px;
+      padding: 2px;
+    }
+
+    .theme-toggle button {
+      padding: 6px 10px;
+      border: none;
+      background: transparent;
+      color: var(--text-muted);
+      font-size: 11px;
+      font-weight: 600;
+      cursor: pointer;
+      border-radius: 4px;
+      transition: all 0.2s;
+    }
+
+    .theme-toggle button.active {
+      background: var(--bg-surface);
+      color: var(--text-primary);
+    }
+  </style>
+</head>
+
+<body>
+
+  <!-- Dev Environment Banner (optional - remove for prod) -->
+  <div class="dev-banner">
+    ! &nbsp; DEVELOPMENT ENVIRONMENT &nbsp; !
+  </div>
+
+  <!-- Main Header -->
+  <header class="main-header">
+    <div class="header-left">
+      <button class="hamburger-btn">
+        <span></span>
+        <span></span>
+        <span></span>
+      </button>
+      <div class="logo">Blick Hub</div>
+    </div>
+    <div class="header-right">
+      <div class="theme-toggle">
+        <button class="active" onclick="setTheme('dark', this)">Dark</button>
+        <button onclick="setTheme('light', this)">Light</button>
+      </div>
+      <button class="icon-btn">
+        <svg fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 002.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 001.065 2.572c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 00-1.066 2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 00-2.572 1.065c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 00-2.573-1.066c-1.543.94-3.31-.826-2.37-2.37a1.724 1.724 0 00-1.065-2.572c-1.756-.426-1.756-2.924 0-3.35a1.724 1.724 0 001.066-2.573c-.94-1.543.826-3.31 2.37-2.37.996.608 2.296.07 2.572-1.065z"></path>
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"></path>
+        </svg>
+      </button>
+    </div>
+  </header>
+
+  <!-- Tab Navigation - Pill Style -->
+  <nav class="tab-nav">
+    <button class="tab-pill active" onclick="showTab('onboarding', this)">
+      <span class="tab-icon">&#128075;</span>
+      Staff Onboarding
+    </button>
+    <button class="tab-pill" onclick="showTab('offboarding', this)">
+      <span class="tab-icon">&#128100;</span>
+      Staff Offboarding
+      <span class="alert-dot"></span>
+    </button>
+    <button class="tab-pill" onclick="showTab('vehicles', this)">
+      <span class="tab-icon">&#128663;</span>
+      Vehicles
+    </button>
+    <button class="tab-pill" onclick="showTab('forklifts', this)">
+      <span class="tab-icon">&#128737;</span>
+      Forklifts
+    </button>
+    <button class="tab-pill" onclick="showTab('sites', this)">
+      <span class="tab-icon">&#127970;</span>
+      Sites
+    </button>
+  </nav>
+
+  <div class="page-container">
+
+    <!-- ============================================
+         TAB 1: STAFF ONBOARDING
+         ============================================ -->
+    <section id="tab-onboarding" class="page-section active">
+      <div class="page-header">
+        <div>
+          <h1>Staff Onboarding</h1>
+          <p>Add new staff, assign vehicles, and track onboarding follow-ups</p>
+        </div>
+        <div></div>
+      </div>
+
+      <!-- Add New Staff -->
+      <div class="card" style="margin-bottom: 20px; border-left: 3px solid var(--primary);">
+        <div class="card-header">
+          <div style="display: flex; align-items: center; gap: 8px;">
+            <span style="color: var(--primary); font-size: 18px;">&#128100;</span>
+            <h2 style="color: var(--text-heading);">Add New Staff Member</h2>
+          </div>
+          <button class="btn btn-primary btn-sm">Create Onboarding</button>
+        </div>
+        <p style="font-size: 13px; color: var(--text-muted); margin-bottom: 16px;">
+          Start onboarding by entering the new staff details. Follow-up tasks will be assigned below.
+        </p>
+        <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 12px;">
+          <div class="form-group">
+            <label class="form-label">Full Name</label>
+            <input class="form-input" placeholder="Jane Doe">
+          </div>
+          <div class="form-group">
+            <label class="form-label">Start Date</label>
+            <input class="form-input" type="date" value="2026-02-17">
+            <div style="font-size: 11px; color: var(--text-muted); margin-top: 6px;">
+              Due dates cannot be earlier than 2 working days before start date.
+            </div>
+          </div>
+        </div>
+        <div style="margin-top: 12px; font-size: 12px; color: var(--text-muted);">
+          Checklist appears immediately after creating onboarding. Google Workspace fields will populate once the account exists.
+        </div>
+      </div>
+
+      <!-- Onboarding In Progress -->
+      <div class="card">
+        <div class="card-header">
+          <h2>In Progress: Emma Wilson</h2>
+          <span class="badge" style="background: #3b82f6; color: white;">Step 3 of 4</span>
+        </div>
+
+        <!-- Step Indicators -->
+        <div class="wizard-steps">
+          <div class="wizard-step">
+            <div class="step-number completed">&#10003;</div>
+            <span class="step-label completed">User Details</span>
+          </div>
+          <div class="step-connector"></div>
+          <div class="wizard-step">
+            <div class="step-number completed">&#10003;</div>
+            <span class="step-label completed">Assign Resources</span>
+          </div>
+          <div class="step-connector"></div>
+          <div class="wizard-step">
+            <div class="step-number current">3</div>
+            <span class="step-label current">Checklist</span>
+          </div>
+          <div class="step-connector"></div>
+          <div class="wizard-step">
+            <div class="step-number pending">4</div>
+            <span class="step-label pending">Confirm</span>
+          </div>
+        </div>
+
+        <!-- User Details Summary -->
+        <div style="background: var(--bg-secondary); border-radius: 8px; padding: 16px; margin-bottom: 20px;">
+          <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 16px;">
+            <div>
+              <div style="font-size: 11px; color: var(--text-muted); text-transform: uppercase; margin-bottom: 4px;">Name</div>
+              <div style="font-weight: 600; color: var(--text-heading);">Emma Wilson</div>
+            </div>
+            <div>
+              <div style="font-size: 11px; color: var(--text-muted); text-transform: uppercase; margin-bottom: 4px;">Start Date</div>
+              <div style="color: var(--text-primary);">Feb 17, 2026</div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Resource Assignment -->
+        <div style="margin-bottom: 20px;">
+          <h3 style="font-size: 14px; font-weight: 600; color: var(--text-heading); margin-bottom: 12px;">Assign Resources</h3>
+
+          <div style="display: grid; gap: 12px;">
+            <!-- Vehicle Assignment -->
+            <div style="background: var(--bg-secondary); border-radius: 8px; padding: 16px; display: flex; justify-content: space-between; align-items: center;">
+              <div style="display: flex; align-items: center; gap: 12px;">
+                <span style="font-size: 24px;">&#128663;</span>
+                <div>
+                  <div style="font-weight: 600; color: var(--text-heading);">Vehicle</div>
+                  <div style="font-size: 12px; color: var(--text-muted);">Assign a company vehicle</div>
+                </div>
+              </div>
+              <select class="form-select" style="width: 200px;">
+                <option>No vehicle required</option>
+                <option>XYZ789 - Ford Ranger (Unassigned)</option>
+                <option>GHI321 - Toyota Corolla (Unassigned)</option>
+              </select>
+            </div>
+          </div>
+        </div>
+
+        <!-- Onboarding Checklist -->
+        <div style="margin-bottom: 20px;">
+          <h3 style="font-size: 14px; font-weight: 600; color: var(--text-heading); margin-bottom: 12px;">Onboarding Checklist</h3>
+          <p style="font-size: 12px; color: var(--text-muted); margin-bottom: 12px;">Assign owners and set due dates for each task. Status updates here drive progress.</p>
+
+          <div class="checklist">
+            <div class="checklist-header">
+              <span>Task</span>
+              <span>Assignee</span>
+              <span>Due Date</span>
+              <span>Active</span>
+              <span>Status</span>
+            </div>
+
+            <div class="checklist-row">
+              <div class="checklist-task">
+                <span class="checklist-label">Employee Details Sent</span>
+                <span class="checklist-meta">Prerequisite: collect personal and payroll details</span>
+              </div>
+              <select class="form-select">
+                <option selected>hr@blick.group</option>
+                <option>finance@blick.group</option>
+                <option>ops@blick.group</option>
+              </select>
+              <input class="form-input" type="date" value="2026-02-07">
+              <div class="toggle active" title="Active"></div>
+              <select class="status-select">
+                <option selected>Pending</option>
+                <option>In Progress</option>
+                <option>Done</option>
+              </select>
+            </div>
+
+            <div class="checklist-row">
+              <div class="checklist-task">
+                <span class="checklist-label">Contract Sent</span>
+                <span class="checklist-meta">Prerequisite: employment agreement issued</span>
+              </div>
+              <select class="form-select">
+                <option selected>hr@blick.group</option>
+                <option>legal@blick.group</option>
+                <option>ops@blick.group</option>
+              </select>
+              <input class="form-input" type="date" value="2026-02-08">
+              <div class="toggle active" title="Active"></div>
+              <select class="status-select">
+                <option selected>Pending</option>
+                <option>In Progress</option>
+                <option>Done</option>
+              </select>
+            </div>
+
+            <div class="checklist-row">
+              <div class="checklist-task">
+                <span class="checklist-label">Health &amp; Safety Handbook Sent</span>
+                <span class="checklist-meta">Prerequisite: policies and induction material</span>
+              </div>
+              <select class="form-select">
+                <option selected>hse@blick.group</option>
+                <option>hr@blick.group</option>
+                <option>ops@blick.group</option>
+              </select>
+              <input class="form-input" type="date" value="2026-02-09">
+              <div class="toggle active" title="Active"></div>
+              <select class="status-select">
+                <option selected>Pending</option>
+                <option>In Progress</option>
+                <option>Done</option>
+              </select>
+            </div>
+
+            <div class="checklist-row">
+              <div class="checklist-task">
+                <span class="checklist-label">Google Suite Access</span>
+                <span class="checklist-meta">Create account and set temp password</span>
+              </div>
+              <select class="form-select">
+                <option selected>it@blick.group</option>
+                <option>ops@blick.group</option>
+                <option>finance@blick.group</option>
+                <option>hse@blick.group</option>
+              </select>
+              <input class="form-input" type="date" value="2026-02-10">
+              <div class="toggle active" title="Active"></div>
+              <select class="status-select">
+                <option>Pending</option>
+                <option selected>In Progress</option>
+                <option>Done</option>
+              </select>
+            </div>
+
+            <div class="checklist-row">
+              <div class="checklist-task">
+                <span class="checklist-label">Access to Drives</span>
+                <span class="checklist-meta">Sales, shared ops, and client drive access</span>
+              </div>
+              <select class="form-select">
+                <option>it@blick.group</option>
+                <option selected>sarah.jones@blick.group</option>
+                <option>ops@blick.group</option>
+              </select>
+              <input class="form-input" type="date" value="2026-02-12">
+              <div class="toggle active" title="Active"></div>
+              <select class="status-select">
+                <option>Pending</option>
+                <option>In Progress</option>
+                <option selected>Done</option>
+              </select>
+            </div>
+
+            <div class="checklist-row">
+              <div class="checklist-task">
+                <span class="checklist-label">Add to Groups</span>
+                <span class="checklist-meta">Sales, Marketing, Reporting, All Staff</span>
+              </div>
+              <select class="form-select">
+                <option selected>it@blick.group</option>
+                <option>ops@blick.group</option>
+                <option>hr@blick.group</option>
+              </select>
+              <input class="form-input" type="date" value="2026-02-12">
+              <div class="toggle active" title="Active"></div>
+              <select class="status-select">
+                <option>Pending</option>
+                <option selected>In Progress</option>
+                <option>Done</option>
+              </select>
+            </div>
+
+            <div class="checklist-row">
+              <div class="checklist-task">
+                <span class="checklist-label">Adding apps to Phone</span>
+                <span class="checklist-meta">Required onboarding apps</span>
+              </div>
+              <select class="form-select">
+                <option>ops@blick.group</option>
+                <option selected>it@blick.group</option>
+                <option>hse@blick.group</option>
+              </select>
+              <input class="form-input" type="date" value="2026-02-13">
+              <div class="toggle active" title="Active"></div>
+              <select class="status-select">
+                <option selected>Pending</option>
+                <option>In Progress</option>
+                <option>Done</option>
+              </select>
+            </div>
+
+            <div class="checklist-row">
+              <div class="checklist-task">
+                <span class="checklist-label">Authy</span>
+                <span class="checklist-meta">Issue SIM and configure Authy</span>
+              </div>
+              <select class="form-select">
+                <option selected>ops@blick.group</option>
+                <option>it@blick.group</option>
+                <option>hse@blick.group</option>
+              </select>
+              <input class="form-input" type="date" value="2026-02-14">
+              <div class="toggle active" title="Active"></div>
+              <select class="status-select">
+                <option selected>Pending</option>
+                <option>In Progress</option>
+                <option>Done</option>
+              </select>
+            </div>
+
+            <div class="checklist-row">
+              <div class="checklist-task">
+                <span class="checklist-label">H&amp;S Forms</span>
+                <span class="checklist-meta">Induction forms and compliance</span>
+              </div>
+              <select class="form-select">
+                <option selected>hse@blick.group</option>
+                <option>ops@blick.group</option>
+                <option>it@blick.group</option>
+              </select>
+              <input class="form-input" type="date" value="2026-02-16">
+              <div class="toggle active" title="Active"></div>
+              <select class="status-select">
+                <option>Pending</option>
+                <option selected>In Progress</option>
+                <option>Done</option>
+              </select>
+            </div>
+
+            <div class="checklist-row">
+              <div class="checklist-task">
+                <span class="checklist-label">Set up Signature</span>
+                <span class="checklist-meta">Email signature template applied</span>
+              </div>
+              <select class="form-select">
+                <option>it@blick.group</option>
+                <option selected>marketing@blick.group</option>
+                <option>ops@blick.group</option>
+              </select>
+              <input class="form-input" type="date" value="2026-02-15">
+              <div class="toggle active" title="Active"></div>
+              <select class="status-select">
+                <option selected>Pending</option>
+                <option>In Progress</option>
+                <option>Done</option>
+              </select>
+            </div>
+
+            <div class="checklist-row">
+              <div class="checklist-task">
+                <span class="checklist-label">Add to Chat Groups</span>
+                <span class="checklist-meta">Operations + Sales channels</span>
+              </div>
+              <select class="form-select">
+                <option selected>ops@blick.group</option>
+                <option>it@blick.group</option>
+                <option>marketing@blick.group</option>
+              </select>
+              <input class="form-input" type="date" value="2026-02-15">
+              <div class="toggle active" title="Active"></div>
+              <select class="status-select">
+                <option selected>Pending</option>
+                <option>In Progress</option>
+                <option>Done</option>
+              </select>
+            </div>
+
+            <div class="checklist-row">
+              <div class="checklist-task">
+                <span class="checklist-label">Add to Email Blick Group</span>
+                <span class="checklist-meta">All-staff distribution group</span>
+              </div>
+              <select class="form-select">
+                <option selected>it@blick.group</option>
+                <option>ops@blick.group</option>
+                <option>marketing@blick.group</option>
+              </select>
+              <input class="form-input" type="date" value="2026-02-15">
+              <div class="toggle active" title="Active"></div>
+              <select class="status-select">
+                <option>Pending</option>
+                <option selected>In Progress</option>
+                <option>Done</option>
+              </select>
+            </div>
+
+            <div class="checklist-row">
+              <div class="checklist-task">
+                <span class="checklist-label">Copper Access</span>
+                <span class="checklist-meta">Create user and assign permissions</span>
+              </div>
+              <select class="form-select">
+                <option>ops@blick.group</option>
+                <option selected>it@blick.group</option>
+                <option>sales@blick.group</option>
+              </select>
+              <input class="form-input" type="date" value="2026-02-16">
+              <div class="toggle active" title="Active"></div>
+              <select class="status-select">
+                <option selected>Pending</option>
+                <option>In Progress</option>
+                <option>Done</option>
+              </select>
+            </div>
+
+            <div class="checklist-row">
+              <div class="checklist-task">
+                <span class="checklist-label">Migrate Customers/Suppliers</span>
+                <span class="checklist-meta">Reassign account ownership</span>
+              </div>
+              <select class="form-select">
+                <option selected>sales@blick.group</option>
+                <option>ops@blick.group</option>
+                <option>it@blick.group</option>
+              </select>
+              <input class="form-input" type="date" value="2026-02-20">
+              <div class="toggle active" title="Active"></div>
+              <select class="status-select">
+                <option selected>Pending</option>
+                <option>In Progress</option>
+                <option>Done</option>
+              </select>
+            </div>
+
+            <div class="checklist-row">
+              <div class="checklist-task">
+                <span class="checklist-label">Unleashed Access</span>
+                <span class="checklist-meta">Create user and assign roles</span>
+              </div>
+              <select class="form-select">
+                <option selected>ops@blick.group</option>
+                <option>it@blick.group</option>
+                <option>sales@blick.group</option>
+              </select>
+              <input class="form-input" type="date" value="2026-02-18">
+              <div class="toggle active" title="Active"></div>
+              <select class="status-select">
+                <option>Pending</option>
+                <option selected>In Progress</option>
+                <option>Done</option>
+              </select>
+            </div>
+
+            <div class="checklist-row">
+              <div class="checklist-task">
+                <span class="checklist-label">Migrate Customers</span>
+                <span class="checklist-meta">Update Unleashed ownership</span>
+              </div>
+              <select class="form-select">
+                <option selected>ops@blick.group</option>
+                <option>sales@blick.group</option>
+                <option>it@blick.group</option>
+              </select>
+              <input class="form-input" type="date" value="2026-02-20">
+              <div class="toggle active" title="Active"></div>
+              <select class="status-select">
+                <option selected>Pending</option>
+                <option>In Progress</option>
+                <option>Done</option>
+              </select>
+            </div>
+
+            <div class="checklist-row">
+              <div class="checklist-task">
+                <span class="checklist-label">Aircall Access</span>
+                <span class="checklist-meta">Create user and assign extension</span>
+              </div>
+              <select class="form-select">
+                <option selected>it@blick.group</option>
+                <option>ops@blick.group</option>
+                <option>sales@blick.group</option>
+              </select>
+              <input class="form-input" type="date" value="2026-02-18">
+              <div class="toggle active" title="Active"></div>
+              <select class="status-select">
+                <option selected>Pending</option>
+                <option>In Progress</option>
+                <option>Done</option>
+              </select>
+            </div>
+
+            <div class="checklist-row">
+              <div class="checklist-task">
+                <span class="checklist-label">Set up In-Call Groups</span>
+                <span class="checklist-meta">Add to inbound/outbound groups</span>
+              </div>
+              <select class="form-select">
+                <option selected>ops@blick.group</option>
+                <option>it@blick.group</option>
+                <option>sales@blick.group</option>
+              </select>
+              <input class="form-input" type="date" value="2026-02-19">
+              <div class="toggle active" title="Active"></div>
+              <select class="status-select">
+                <option>Pending</option>
+                <option selected>In Progress</option>
+                <option>Done</option>
+              </select>
+            </div>
+
+            <div class="checklist-row">
+              <div class="checklist-task">
+                <span class="checklist-label">Set App Access</span>
+                <span class="checklist-meta">Provision app permissions</span>
+              </div>
+              <select class="form-select">
+                <option selected>it@blick.group</option>
+                <option>ops@blick.group</option>
+                <option>sales@blick.group</option>
+              </select>
+              <input class="form-input" type="date" value="2026-02-19">
+              <div class="toggle active" title="Active"></div>
+              <select class="status-select">
+                <option selected>Pending</option>
+                <option>In Progress</option>
+                <option>Done</option>
+              </select>
+            </div>
+
+            <div class="checklist-row">
+              <div class="checklist-task">
+                <span class="checklist-label">Xero Access (Holidays + Payroll)</span>
+                <span class="checklist-meta">Add employee and pay rate details</span>
+              </div>
+              <select class="form-select">
+                <option selected>finance@blick.group</option>
+                <option>hr@blick.group</option>
+                <option>ops@blick.group</option>
+              </select>
+              <input class="form-input" type="date" value="2026-02-15">
+              <div class="toggle active" title="Active"></div>
+              <select class="status-select">
+                <option selected>Pending</option>
+                <option>In Progress</option>
+                <option>Done</option>
+              </select>
+            </div>
+
+            <div class="checklist-row">
+              <div class="checklist-task">
+                <span class="checklist-label">1Password Access</span>
+                <span class="checklist-meta">Vault access and recovery settings</span>
+              </div>
+              <select class="form-select">
+                <option selected>it@blick.group</option>
+                <option>ops@blick.group</option>
+                <option>hr@blick.group</option>
+              </select>
+              <input class="form-input" type="date" value="2026-02-17">
+              <div class="toggle active" title="Active"></div>
+              <select class="status-select">
+                <option selected>Pending</option>
+                <option>In Progress</option>
+                <option>Done</option>
+              </select>
+            </div>
+
+            <div class="checklist-row">
+              <div class="checklist-task">
+                <span class="checklist-label">Fuel Card (Z Card) Allocation</span>
+                <span class="checklist-meta">Issue card and set limits</span>
+              </div>
+              <select class="form-select">
+                <option selected>ops@blick.group</option>
+                <option>finance@blick.group</option>
+                <option>it@blick.group</option>
+              </select>
+              <input class="form-input" type="date" value="2026-02-20">
+              <div class="toggle active" title="Active"></div>
+              <select class="status-select">
+                <option>Pending</option>
+                <option>In Progress</option>
+                <option selected>Done</option>
+              </select>
+            </div>
+
+            <div class="checklist-row">
+              <div class="checklist-task">
+                <span class="checklist-label">Credit Card (if applicable)</span>
+                <span class="checklist-meta">Request and assign corporate card</span>
+              </div>
+              <select class="form-select">
+                <option selected>finance@blick.group</option>
+                <option>ops@blick.group</option>
+                <option>it@blick.group</option>
+              </select>
+              <input class="form-input" type="date" value="2026-02-22">
+              <div class="toggle" title="Inactive"></div>
+              <select class="status-select">
+                <option selected>Pending</option>
+                <option>In Progress</option>
+                <option>Done</option>
+              </select>
+            </div>
+          </div>
+        </div>
+
+        <!-- Action Buttons -->
+        <div style="display: flex; justify-content: space-between; align-items: center;">
+          <button class="btn btn-secondary">&larr; Back</button>
+          <div style="display: flex; gap: 12px;">
+            <button class="btn btn-secondary">Save Draft</button>
+            <button class="btn btn-primary">Continue &rarr;</button>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ============================================
+         TAB 2: STAFF OFFBOARDING
+         ============================================ -->
+    <section id="tab-offboarding" class="page-section">
+      <div class="page-header">
+        <div>
+          <h1>Staff Offboarding</h1>
+          <p>Deactivate departing staff while preserving historical data</p>
+        </div>
+        <div style="display: flex; gap: 12px; align-items: center;">
+          <div style="text-align: right;">
+            <div style="font-size: 11px; color: var(--text-muted);">Last synced</div>
+            <div style="font-size: 12px; color: var(--text-primary);">5 mins ago</div>
+          </div>
+          <button class="btn btn-secondary" onclick="syncGoogle()">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <path d="M23 4v6h-6M1 20v-6h6M3.51 9a9 9 0 0114.85-3.36L23 10M1 14l4.64 4.36A9 9 0 0020.49 15"/>
+            </svg>
+            Sync Google
+          </button>
+        </div>
+      </div>
+
+      <!-- Removed Users Detected -->
+      <div class="card" style="margin-bottom: 20px; border-left: 3px solid var(--danger);">
+        <div class="card-header">
+          <div style="display: flex; align-items: center; gap: 8px;">
+            <span style="color: var(--danger); font-size: 18px;">&#10134;</span>
+            <h2 style="color: var(--danger);">Removed Users Detected</h2>
+          </div>
+          <span class="badge badge-danger">1 removed</span>
+        </div>
+        <p style="font-size: 13px; color: var(--text-muted); margin-bottom: 16px;">
+          These users were removed from Google Workspace and need to be offboarded from Blick Hub.
+        </p>
+        <div style="display: grid; gap: 12px;">
+          <!-- Removed User -->
+          <div style="background: var(--danger-light); border-radius: 8px; padding: 16px; display: flex; justify-content: space-between; align-items: center;">
+            <div style="display: flex; align-items: center; gap: 12px;">
+              <div class="avatar" style="background: var(--danger);">JS</div>
+              <div>
+                <div style="font-weight: 600; color: var(--text-heading);">John Smith</div>
+                <div style="font-size: 12px; color: var(--text-muted);">john.smith@blick.group &bull; Operations &bull; Removed Jan 28</div>
+                <div style="font-size: 12px; color: var(--danger); margin-top: 4px;">&#9888; Has 5 open follow-ups and 1 assigned vehicle</div>
+              </div>
+            </div>
+            <button class="btn btn-primary btn-sm" style="background: var(--danger);">Start Offboarding</button>
+          </div>
+        </div>
+      </div>
+
+      <!-- Pending Alert -->
+      <div class="alert alert-warning">
+        <span class="alert-icon">&#9888;</span>
+        <div>
+          <div class="alert-title">Pending Offboard: John Smith</div>
+          <p class="alert-text">Last day: Feb 14, 2026. Has 5 open follow-ups and 1 assigned vehicle.</p>
+        </div>
+      </div>
+
+      <!-- Offboarding Wizard -->
+      <div class="card">
+        <div class="card-header">
+          <h2>Offboarding: John Smith</h2>
+          <span class="badge badge-warning">In Progress</span>
+        </div>
+
+        <!-- Step Indicators -->
+        <div class="wizard-steps">
+          <div class="wizard-step">
+            <div class="step-number completed">&#10003;</div>
+            <span class="step-label completed">Select User</span>
+          </div>
+          <div class="step-connector"></div>
+          <div class="wizard-step">
+            <div class="step-number current">2</div>
+            <span class="step-label current">Review & Reassign</span>
+          </div>
+          <div class="step-connector"></div>
+          <div class="wizard-step">
+            <div class="step-number pending">3</div>
+            <span class="step-label pending">Confirm</span>
+          </div>
+        </div>
+
+        <!-- Items to Reassign -->
+        <div style="background: var(--bg-secondary); border-radius: 8px; padding: 16px; margin-bottom: 20px;">
+          <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 12px;">
+            <span style="font-weight: 600; color: var(--text-heading); font-size: 14px;">Items Assigned to John Smith</span>
+            <span style="font-size: 12px; color: var(--text-muted);">6 items</span>
+          </div>
+
+          <table class="data-table">
+            <thead>
+              <tr>
+                <th style="width: 30px;"><input type="checkbox" checked></th>
+                <th>Type</th>
+                <th>Item</th>
+                <th>Status</th>
+                <th>Due</th>
+                <th>Reassign To</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td><input type="checkbox" checked></td>
+                <td><span class="badge" style="background: #3b82f6; color: white;">Vehicle</span></td>
+                <td>ABC123 (Toyota Hilux)</td>
+                <td><span class="badge badge-success">Assigned</span></td>
+                <td style="color: var(--text-muted);">-</td>
+                <td>
+                  <select class="form-select" style="width: 150px;">
+                    <option>Select person...</option>
+                    <option>Sarah Jones</option>
+                    <option>Mike Wilson</option>
+                    <option>-- Unassigned --</option>
+                  </select>
+                </td>
+              </tr>
+              <tr>
+                <td><input type="checkbox" checked></td>
+                <td><span class="badge badge-warning">Follow-up</span></td>
+                <td>Review safety signage at Site A</td>
+                <td><span class="badge badge-warning">Open</span></td>
+                <td style="color: var(--danger);">Overdue</td>
+                <td>
+                  <select class="form-select" style="width: 150px;">
+                    <option>Select person...</option>
+                    <option selected>Sarah Jones</option>
+                    <option>Mike Wilson</option>
+                  </select>
+                </td>
+              </tr>
+              <tr>
+                <td><input type="checkbox" checked></td>
+                <td><span class="badge badge-warning">Follow-up</span></td>
+                <td>Complete hazard control for HZ-2024-089</td>
+                <td><span class="badge" style="background: #3b82f6; color: white;">In Progress</span></td>
+                <td>Feb 28</td>
+                <td>
+                  <select class="form-select" style="width: 150px;">
+                    <option>Select person...</option>
+                    <option>Sarah Jones</option>
+                    <option selected>Mike Wilson</option>
+                  </select>
+                </td>
+              </tr>
+              <tr>
+                <td><input type="checkbox" checked></td>
+                <td><span class="badge" style="background: #8b5cf6; color: white;">Ticket</span></td>
+                <td>JT-1892: Fix login timeout issue</td>
+                <td><span class="badge" style="background: #3b82f6; color: white;">In Progress</span></td>
+                <td style="color: var(--text-muted);">-</td>
+                <td>
+                  <select class="form-select" style="width: 150px;">
+                    <option>Select person...</option>
+                    <option selected>Sarah Jones</option>
+                    <option>Mike Wilson</option>
+                  </select>
+                </td>
+              </tr>
+              <tr>
+                <td><input type="checkbox" checked></td>
+                <td><span class="badge badge-success">Idea</span></td>
+                <td>Automate weekly safety reports</td>
+                <td><span class="badge" style="background: #3b82f6; color: white;">In Execution</span></td>
+                <td>Mar 15</td>
+                <td>
+                  <select class="form-select" style="width: 150px;">
+                    <option>Select person...</option>
+                    <option>Sarah Jones</option>
+                    <option selected>Mike Wilson</option>
+                  </select>
+                </td>
+              </tr>
+              <tr>
+                <td><input type="checkbox" checked></td>
+                <td><span class="badge badge-warning">Follow-up</span></td>
+                <td>Schedule forklift maintenance review</td>
+                <td><span class="badge badge-warning">Open</span></td>
+                <td>Mar 1</td>
+                <td>
+                  <select class="form-select" style="width: 150px;">
+                    <option>Select person...</option>
+                    <option selected>Sarah Jones</option>
+                    <option>Mike Wilson</option>
+                  </select>
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+
+        <!-- Action Buttons -->
+        <div style="display: flex; justify-content: space-between; align-items: center;">
+          <button class="btn btn-secondary">&larr; Back</button>
+          <div style="display: flex; gap: 12px;">
+            <button class="btn btn-secondary">Save Draft</button>
+            <button class="btn btn-primary">Continue &rarr;</button>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ============================================
+         TAB 2: VEHICLES
+         ============================================ -->
+    <section id="tab-vehicles" class="page-section">
+      <div class="page-header">
+        <div>
+          <h1>Vehicles</h1>
+          <p>Manage fleet vehicle assignments</p>
+        </div>
+        <button class="btn btn-primary">+ Add Vehicle</button>
+      </div>
+
+      <!-- Filters -->
+      <div class="filter-bar">
+        <select class="form-select">
+          <option>All Statuses</option>
+          <option>Assigned</option>
+          <option>Unassigned</option>
+          <option>Decommissioned</option>
+        </select>
+        <select class="form-select">
+          <option>All Types</option>
+          <option>Car</option>
+          <option>Ute</option>
+          <option>Van</option>
+          <option>Truck</option>
+        </select>
+        <input type="text" class="form-input search-input" placeholder="Search by rego, driver...">
+      </div>
+
+      <!-- Vehicles Table -->
+      <div class="card" style="padding: 0; overflow: hidden;">
+        <table class="data-table">
+          <thead>
+            <tr>
+              <th>Registration</th>
+              <th>Vehicle</th>
+              <th>Assigned To</th>
+              <th>Status</th>
+              <th>WOF/Rego Expiry</th>
+              <th>Actions</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td style="font-family: monospace; font-weight: 600; color: var(--text-heading);">ABC123</td>
+              <td>Toyota Hilux SR5 (2022)</td>
+              <td>
+                <div style="display: flex; align-items: center; gap: 8px;">
+                  <div class="avatar" style="background: #3b82f6;">JS</div>
+                  John Smith
+                </div>
+              </td>
+              <td><span class="badge badge-success">Assigned</span></td>
+              <td>Mar 15, 2026</td>
+              <td>
+                <button class="btn btn-secondary btn-sm">Reassign</button>
+              </td>
+            </tr>
+            <tr>
+              <td style="font-family: monospace; font-weight: 600; color: var(--text-heading);">XYZ789</td>
+              <td>Ford Ranger XLT (2023)</td>
+              <td style="color: var(--text-muted); font-style: italic;">Unassigned</td>
+              <td><span class="badge badge-warning">Unassigned</span></td>
+              <td>Apr 22, 2026</td>
+              <td>
+                <button class="btn btn-primary btn-sm">Assign</button>
+              </td>
+            </tr>
+            <tr>
+              <td style="font-family: monospace; font-weight: 600; color: var(--text-heading);">DEF456</td>
+              <td>Nissan Navara (2021)</td>
+              <td>
+                <div style="display: flex; align-items: center; gap: 8px;">
+                  <div class="avatar" style="background: #8b5cf6;">SJ</div>
+                  Sarah Jones
+                </div>
+              </td>
+              <td><span class="badge badge-success">Assigned</span></td>
+              <td style="color: var(--danger);">Jan 10, 2026 (Expired!)</td>
+              <td>
+                <button class="btn btn-secondary btn-sm">Reassign</button>
+              </td>
+            </tr>
+            <tr style="opacity: 0.6;">
+              <td style="font-family: monospace; font-weight: 600; color: var(--text-muted);">OLD001</td>
+              <td style="color: var(--text-muted);">Toyota Corolla (2015)</td>
+              <td style="color: var(--text-muted);">-</td>
+              <td><span class="badge badge-neutral">Decommissioned</span></td>
+              <td style="color: var(--text-muted);">-</td>
+              <td>
+                <button class="btn btn-secondary btn-sm">View History</button>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </section>
+
+    <!-- ============================================
+         TAB 3: FORKLIFTS
+         ============================================ -->
+    <section id="tab-forklifts" class="page-section">
+      <div class="page-header">
+        <div>
+          <h1>Forklifts</h1>
+          <p>Manage forklift equipment</p>
+        </div>
+        <button class="btn btn-primary">+ Add Forklift</button>
+      </div>
+
+      <!-- Filters -->
+      <div class="filter-bar">
+        <select class="form-select">
+          <option>All Statuses</option>
+          <option>Active</option>
+          <option>Maintenance</option>
+          <option>Decommissioned</option>
+        </select>
+        <select class="form-select">
+          <option>All Sites</option>
+          <option>Auckland Warehouse</option>
+          <option>Wellington Depot</option>
+          <option>Christchurch Site</option>
+        </select>
+        <input type="text" class="form-input search-input" placeholder="Search by ID, location...">
+      </div>
+
+      <!-- Forklifts Table -->
+      <div class="card" style="padding: 0; overflow: hidden;">
+        <table class="data-table">
+          <thead>
+            <tr>
+              <th>Forklift ID</th>
+              <th>Model</th>
+              <th>Location</th>
+              <th>Status</th>
+              <th>Last Inspection</th>
+              <th>Actions</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td style="font-family: monospace; font-weight: 600; color: var(--text-heading);">FL-001</td>
+              <td>Toyota 8FGU25</td>
+              <td>Auckland Warehouse</td>
+              <td><span class="badge badge-success">Active</span></td>
+              <td>Jan 15, 2026</td>
+              <td>
+                <button class="btn btn-secondary btn-sm">Edit</button>
+              </td>
+            </tr>
+            <tr>
+              <td style="font-family: monospace; font-weight: 600; color: var(--text-heading);">FL-002</td>
+              <td>Hyster H50FT</td>
+              <td>Auckland Warehouse</td>
+              <td><span class="badge badge-warning">Maintenance</span></td>
+              <td style="color: var(--warning);">Dec 20, 2025</td>
+              <td>
+                <button class="btn btn-secondary btn-sm">Edit</button>
+              </td>
+            </tr>
+            <tr>
+              <td style="font-family: monospace; font-weight: 600; color: var(--text-heading);">FL-003</td>
+              <td>Crown FC5200</td>
+              <td>Wellington Depot</td>
+              <td><span class="badge badge-success">Active</span></td>
+              <td>Jan 22, 2026</td>
+              <td>
+                <button class="btn btn-secondary btn-sm">Edit</button>
+              </td>
+            </tr>
+            <tr style="opacity: 0.6;">
+              <td style="font-family: monospace; font-weight: 600; color: var(--text-muted);">FL-004</td>
+              <td style="color: var(--text-muted);">Yale GLP050</td>
+              <td style="color: var(--text-muted);">-</td>
+              <td><span class="badge badge-neutral">Decommissioned</span></td>
+              <td style="color: var(--text-muted);">-</td>
+              <td>
+                <button class="btn btn-secondary btn-sm">View History</button>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </section>
+
+    <!-- ============================================
+         TAB 4: SITES
+         ============================================ -->
+    <section id="tab-sites" class="page-section">
+      <div class="page-header">
+        <div>
+          <h1>Sites</h1>
+          <p>Manage site locations</p>
+        </div>
+        <button class="btn btn-primary">+ Add Site</button>
+      </div>
+
+      <!-- Filters -->
+      <div class="filter-bar">
+        <select class="form-select">
+          <option>All Statuses</option>
+          <option>Active</option>
+          <option>Inactive</option>
+        </select>
+        <select class="form-select">
+          <option>All Countries</option>
+          <option>New Zealand</option>
+          <option>Australia</option>
+        </select>
+        <input type="text" class="form-input search-input" placeholder="Search by name, address...">
+      </div>
+
+      <!-- Sites Table -->
+      <div class="card" style="padding: 0; overflow: hidden;">
+        <table class="data-table">
+          <thead>
+            <tr>
+              <th>Site Name</th>
+              <th>Address</th>
+              <th>Country</th>
+              <th>Status</th>
+              <th>Actions</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td style="font-weight: 600; color: var(--text-heading);">Auckland Head Office</td>
+              <td>123 Queen Street, Auckland CBD</td>
+              <td>New Zealand</td>
+              <td><span class="badge badge-success">Active</span></td>
+              <td>
+                <button class="btn btn-secondary btn-sm">Edit</button>
+              </td>
+            </tr>
+            <tr>
+              <td style="font-weight: 600; color: var(--text-heading);">Auckland Warehouse</td>
+              <td>45 Industrial Ave, Penrose</td>
+              <td>New Zealand</td>
+              <td><span class="badge badge-success">Active</span></td>
+              <td>
+                <button class="btn btn-secondary btn-sm">Edit</button>
+              </td>
+            </tr>
+            <tr>
+              <td style="font-weight: 600; color: var(--text-heading);">Wellington Depot</td>
+              <td>78 Thorndon Quay, Wellington</td>
+              <td>New Zealand</td>
+              <td><span class="badge badge-success">Active</span></td>
+              <td>
+                <button class="btn btn-secondary btn-sm">Edit</button>
+              </td>
+            </tr>
+            <tr>
+              <td style="font-weight: 600; color: var(--text-heading);">Sydney Office</td>
+              <td>100 George Street, Sydney</td>
+              <td>Australia</td>
+              <td><span class="badge badge-success">Active</span></td>
+              <td>
+                <button class="btn btn-secondary btn-sm">Edit</button>
+              </td>
+            </tr>
+            <tr style="opacity: 0.6;">
+              <td style="font-weight: 600; color: var(--text-muted);">Old Depot (Closed)</td>
+              <td style="color: var(--text-muted);">99 Fake Street, Hamilton</td>
+              <td style="color: var(--text-muted);">New Zealand</td>
+              <td><span class="badge badge-neutral">Inactive</span></td>
+              <td>
+                <button class="btn btn-secondary btn-sm">Reactivate</button>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </section>
+
+  </div>
+
+  <script>
+    function showTab(tabId, clickedBtn) {
+      // Hide all sections
+      document.querySelectorAll('.page-section').forEach(section => {
+        section.classList.remove('active');
+      });
+
+      // Deactivate all tabs
+      document.querySelectorAll('.tab-pill').forEach(tab => {
+        tab.classList.remove('active');
+      });
+
+      // Show selected section
+      document.getElementById('tab-' + tabId).classList.add('active');
+
+      // Activate clicked tab
+      clickedBtn.classList.add('active');
+    }
+
+    function setTheme(theme, clickedBtn) {
+      document.documentElement.setAttribute('data-theme', theme);
+      document.querySelectorAll('.theme-toggle button').forEach(btn => {
+        btn.classList.remove('active');
+      });
+      clickedBtn.classList.add('active');
+    }
+
+    function syncGoogle() {
+      const btn = event.currentTarget;
+      const originalText = btn.innerHTML;
+      btn.innerHTML = '<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="animation: spin 1s linear infinite;"><path d="M23 4v6h-6M1 20v-6h6M3.51 9a9 9 0 0114.85-3.36L23 10M1 14l4.64 4.36A9 9 0 0020.49 15"/></svg> Syncing...';
+      btn.disabled = true;
+
+      setTimeout(() => {
+        btn.innerHTML = originalText;
+        btn.disabled = false;
+        alert('Sync complete! Found 2 new users and 1 removed user.');
+      }, 2000);
+    }
+  </script>
+
+  <style>
+    @keyframes spin {
+      from { transform: rotate(0deg); }
+      to { transform: rotate(360deg); }
+    }
+  </style>
+
+</body>
+</html>

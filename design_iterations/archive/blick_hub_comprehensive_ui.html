@@ -1,0 +1,509 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Blick Hub - Comprehensive UI Design System</title>
+    <link rel="stylesheet" href="comprehensive_theme_system.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        body {
+            font-family: 'Inter', system-ui, -apple-system, sans-serif;
+            background: var(--bg-page);
+            color: var(--text-primary);
+            margin: 0;
+            padding: 0;
+            transition: all 0.3s ease;
+        }
+
+        /* Apply all the CSS from comprehensive_theme_system.css inline for demo */
+        [data-theme="light"] {
+            --primary: #f05323;
+            --primary-hover: #d63911;
+            --primary-light: #fff5f2;
+            --secondary: #22d3ee;
+            --secondary-hover: #0ea5c7;
+            --secondary-light: #ecfeff;
+            --bg-page: #f8fafc;
+            --bg-surface: #ffffff;
+            --bg-surface-secondary: #f1f5f9;
+            --bg-overlay: rgba(0, 0, 0, 0.3);
+            --text-primary: #1e293b;
+            --text-secondary: #64748b;
+            --text-muted: #94a3b8;
+            --text-inverse: #ffffff;
+            --border-default: #e2e8f0;
+            --border-strong: #cbd5e1;
+            --border-subtle: #f1f5f9;
+            --btn-primary-bg: linear-gradient(135deg, #f05323 0%, #e8471a 100%);
+            --btn-primary-shadow: 0 2px 4px rgba(240, 83, 35, 0.2);
+            --btn-primary-hover-shadow: 0 4px 8px rgba(240, 83, 35, 0.3);
+            --btn-secondary-bg: #ffffff;
+            --btn-secondary-border: #e2e8f0;
+            --btn-secondary-text: #475569;
+            --btn-secondary-shadow: 0 1px 2px rgba(0, 0, 0, 0.05);
+            --btn-dark-bg: #1e293b;
+            --btn-dark-hover-bg: #0f172a;
+            --input-bg: #ffffff;
+            --input-border: #cbd5e1;
+            --input-border-focus: #f05323;
+            --input-shadow-focus: 0 0 0 3px rgba(240, 83, 35, 0.1);
+            --card-bg: #ffffff;
+            --card-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+            --card-hover-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            --success: #10b981;
+            --success-light: #d1fae5;
+            --warning: #f59e0b;
+            --warning-light: #fef3c7;
+            --danger: #ef4444;
+            --danger-light: #fee2e2;
+        }
+
+        [data-theme="dark"] {
+            --primary: #f05323;
+            --primary-hover: #ff6a3d;
+            --primary-light: #2a1611;
+            --secondary: #22d3ee;
+            --secondary-hover: #38dff7;
+            --secondary-light: #0e2a30;
+            --bg-page: #0f0f0f;
+            --bg-surface: #1a1a1a;
+            --bg-surface-secondary: #262626;
+            --bg-overlay: rgba(0, 0, 0, 0.7);
+            --text-primary: #e2e8f0;
+            --text-secondary: #94a3b8;
+            --text-muted: #64748b;
+            --text-inverse: #0f172a;
+            --border-default: #2d2d2d;
+            --border-strong: #404040;
+            --border-subtle: #1f1f1f;
+            --btn-primary-bg: linear-gradient(135deg, #f05323 0%, #ff6a3d 100%);
+            --btn-primary-shadow: 0 4px 12px rgba(240, 83, 35, 0.3);
+            --btn-primary-hover-shadow: 0 6px 20px rgba(240, 83, 35, 0.4);
+            --btn-secondary-bg: rgba(255, 255, 255, 0.05);
+            --btn-secondary-border: rgba(255, 255, 255, 0.1);
+            --btn-secondary-text: #e2e8f0;
+            --btn-secondary-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
+            --btn-dark-bg: rgba(255, 255, 255, 0.1);
+            --btn-dark-hover-bg: rgba(255, 255, 255, 0.15);
+            --input-bg: #262626;
+            --input-border: #404040;
+            --input-border-focus: #f05323;
+            --input-shadow-focus: 0 0 0 3px rgba(240, 83, 35, 0.2);
+            --card-bg: #1a1a1a;
+            --card-shadow: 0 2px 8px rgba(0, 0, 0, 0.3);
+            --card-hover-shadow: 0 8px 16px rgba(0, 0, 0, 0.4);
+            --success: #10b981;
+            --success-light: #064e3b;
+            --warning: #f59e0b;
+            --warning-light: #451a03;
+            --danger: #ef4444;
+            --danger-light: #450a0a;
+        }
+
+        .btn-primary {
+            background: var(--btn-primary-bg);
+            color: var(--text-inverse);
+            border: none;
+            padding: 10px 20px;
+            border-radius: 8px;
+            font-weight: 600;
+            box-shadow: var(--btn-primary-shadow);
+            transition: all 0.2s ease;
+            cursor: pointer;
+        }
+
+        .btn-primary:hover {
+            transform: translateY(-1px);
+            box-shadow: var(--btn-primary-hover-shadow);
+        }
+
+        .btn-secondary {
+            background: var(--btn-secondary-bg);
+            color: var(--btn-secondary-text);
+            border: 1px solid var(--btn-secondary-border);
+            padding: 10px 20px;
+            border-radius: 8px;
+            font-weight: 500;
+            box-shadow: var(--btn-secondary-shadow);
+            backdrop-filter: blur(8px);
+            transition: all 0.2s ease;
+            cursor: pointer;
+        }
+
+        .btn-action-dark {
+            background: var(--btn-dark-bg);
+            color: #ffffff;
+            border: 2px solid transparent;
+            border-radius: 12px;
+            padding: 24px;
+            transition: all 0.3s ease;
+            cursor: pointer;
+            text-align: center;
+            min-height: 120px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+        }
+
+        .btn-action-dark:hover {
+            background: var(--btn-dark-hover-bg);
+            border-color: var(--primary);
+            transform: scale(1.02);
+        }
+
+        .btn-action-dark.orange-accent {
+            border-left: 4px solid var(--primary);
+        }
+
+        .input-field {
+            background: var(--input-bg);
+            border: 1px solid var(--input-border);
+            color: var(--text-primary);
+            padding: 10px 14px;
+            border-radius: 8px;
+            width: 100%;
+            transition: all 0.2s ease;
+        }
+
+        .input-field:focus {
+            border-color: var(--input-border-focus);
+            box-shadow: var(--input-shadow-focus);
+            outline: none;
+        }
+
+        .card {
+            background: var(--card-bg);
+            border: 1px solid var(--border-default);
+            border-radius: 12px;
+            box-shadow: var(--card-shadow);
+            transition: all 0.2s ease;
+            padding: 20px;
+        }
+
+        .card:hover {
+            box-shadow: var(--card-hover-shadow);
+            transform: translateY(-2px);
+        }
+
+        .inspection-card {
+            background: var(--bg-surface);
+            border: 1px solid var(--border-default);
+            border-radius: 12px;
+            padding: 16px 20px;
+            transition: all 0.2s ease;
+            position: relative;
+            overflow: hidden;
+            cursor: pointer;
+        }
+
+        .inspection-card::before {
+            content: '';
+            position: absolute;
+            left: 0;
+            top: 0;
+            bottom: 0;
+            width: 4px;
+            background: var(--primary);
+            opacity: 0;
+            transition: opacity 0.2s ease;
+        }
+
+        .inspection-card:hover::before {
+            opacity: 1;
+        }
+
+        .inspection-card:hover {
+            background: var(--bg-surface-secondary);
+            transform: translateX(4px);
+        }
+
+        .modal-overlay {
+            background: var(--bg-overlay);
+            backdrop-filter: blur(4px);
+            position: fixed;
+            inset: 0;
+            z-index: 1000;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .modal-content {
+            background: var(--bg-surface);
+            border: 1px solid var(--border-default);
+            border-radius: 16px;
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.2);
+            max-width: 600px;
+            width: 90%;
+            max-height: 80vh;
+            overflow: hidden;
+        }
+
+        .theme-toggle {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            z-index: 100;
+        }
+
+        .header {
+            background: var(--bg-surface);
+            border-bottom: 1px solid var(--border-default);
+            padding: 16px 24px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .rig-card {
+            background: var(--bg-surface);
+            border: 1px solid var(--border-default);
+            border-radius: 8px;
+            padding: 20px;
+            transition: all 0.2s ease;
+            cursor: pointer;
+        }
+
+        .rig-card:hover {
+            border-color: var(--primary);
+            box-shadow: var(--card-hover-shadow);
+        }
+
+        .label {
+            color: var(--text-muted);
+            font-size: 12px;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            margin-bottom: 4px;
+        }
+
+        .value {
+            color: var(--text-primary);
+            font-weight: 600;
+            font-size: 16px;
+        }
+    </style>
+</head>
+<body data-theme="dark">
+    <!-- Theme Toggle -->
+    <div class="theme-toggle">
+        <button class="btn-secondary" onclick="toggleTheme()">
+            <span id="theme-icon">🌙</span> <span id="theme-text">Dark Mode</span>
+        </button>
+    </div>
+
+    <!-- Header -->
+    <div class="header">
+        <h1 style="color: var(--primary); margin: 0; font-size: 24px; font-weight: 700;">Blick Hub UI Components</h1>
+        <div style="color: var(--text-secondary); font-size: 14px;">Comprehensive Design System</div>
+    </div>
+
+    <!-- Main Content -->
+    <div style="padding: 24px; max-width: 1400px; margin: 0 auto;">
+
+        <!-- Section: Buttons -->
+        <section style="margin-bottom: 48px;">
+            <h2 style="color: var(--text-primary); margin-bottom: 24px; font-size: 20px; font-weight: 600;">Button Styles</h2>
+            <div style="display: flex; gap: 16px; flex-wrap: wrap;">
+                <button class="btn-primary">Primary Button</button>
+                <button class="btn-secondary">Secondary Button</button>
+                <button class="btn-secondary" style="border-color: var(--primary); color: var(--primary);">Outline Primary</button>
+                <button class="btn-secondary" disabled style="opacity: 0.5; cursor: not-allowed;">Disabled</button>
+            </div>
+        </section>
+
+        <!-- Section: Health & Safety Style Buttons -->
+        <section style="margin-bottom: 48px;">
+            <h2 style="color: var(--text-primary); margin-bottom: 24px; font-size: 20px; font-weight: 600;">Health & Safety Quick Actions</h2>
+            <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 16px;">
+                <button class="btn-action-dark orange-accent">
+                    <div style="font-size: 32px;">⚠️</div>
+                    <div style="font-weight: 600;">Report Incident</div>
+                </button>
+                <button class="btn-action-dark orange-accent">
+                    <div style="font-size: 32px;">⚡</div>
+                    <div style="font-weight: 600;">Hazard Report</div>
+                </button>
+            </div>
+        </section>
+
+        <!-- Section: Inspection Cards -->
+        <section style="margin-bottom: 48px;">
+            <h2 style="color: var(--text-primary); margin-bottom: 24px; font-size: 20px; font-weight: 600;">Inspection Cards</h2>
+            <div style="display: flex; flex-direction: column; gap: 12px;">
+                <div class="inspection-card">
+                    <div style="display: flex; justify-content: space-between; align-items: center;">
+                        <div>
+                            <div style="font-weight: 600; color: var(--text-primary); margin-bottom: 4px;">Vehicle Inspection</div>
+                            <div style="font-size: 14px; color: var(--text-muted);">Last check: 2 days ago ✓</div>
+                        </div>
+                        <div style="color: var(--primary);">→</div>
+                    </div>
+                </div>
+                <div class="inspection-card">
+                    <div style="display: flex; justify-content: space-between; align-items: center;">
+                        <div>
+                            <div style="font-weight: 600; color: var(--text-primary); margin-bottom: 4px;">Forklift Inspection</div>
+                            <div style="font-size: 14px; color: var(--text-muted);">Next due: Tomorrow</div>
+                        </div>
+                        <div style="color: var(--primary);">→</div>
+                    </div>
+                </div>
+                <div class="inspection-card">
+                    <div style="display: flex; justify-content: space-between; align-items: center;">
+                        <div>
+                            <div style="font-weight: 600; color: var(--text-primary); margin-bottom: 4px;">Workplace Assessment</div>
+                            <div style="font-size: 14px; color: var(--text-muted);">Completed last week</div>
+                        </div>
+                        <div style="color: var(--primary);">→</div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Section: Rig Cards -->
+        <section style="margin-bottom: 48px;">
+            <h2 style="color: var(--text-primary); margin-bottom: 24px; font-size: 20px; font-weight: 600;">Customer Rig Cards</h2>
+            <div style="display: flex; flex-direction: column; gap: 16px;">
+                <div class="rig-card">
+                    <div style="display: grid; grid-template-columns: repeat(3, 1fr); gap: 24px;">
+                        <div>
+                            <div class="label">Customer</div>
+                            <div class="value">Parkinson & Holland Ltd</div>
+                        </div>
+                        <div>
+                            <div class="label">Rig Model</div>
+                            <div class="value">JT922</div>
+                        </div>
+                        <div>
+                            <div class="label">Rig Name</div>
+                            <div class="value">RIG-001</div>
+                        </div>
+                    </div>
+                </div>
+                <div class="rig-card">
+                    <div style="display: grid; grid-template-columns: repeat(3, 1fr); gap: 24px;">
+                        <div>
+                            <div class="label">Customer</div>
+                            <div class="value">TD Drilling Limited</div>
+                        </div>
+                        <div>
+                            <div class="label">Rig Model</div>
+                            <div class="value">DML 1200</div>
+                        </div>
+                        <div>
+                            <div class="label">Rig Name</div>
+                            <div class="value">Alpha-7</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Section: Forms -->
+        <section style="margin-bottom: 48px;">
+            <h2 style="color: var(--text-primary); margin-bottom: 24px; font-size: 20px; font-weight: 600;">Form Elements</h2>
+            <div class="card" style="max-width: 500px;">
+                <div style="margin-bottom: 16px;">
+                    <label style="display: block; margin-bottom: 8px; font-weight: 500; color: var(--text-primary);">
+                        Customer Name
+                    </label>
+                    <input type="text" class="input-field" placeholder="Enter customer name">
+                </div>
+                <div style="margin-bottom: 16px;">
+                    <label style="display: block; margin-bottom: 8px; font-weight: 500; color: var(--text-primary);">
+                        Rig Model
+                    </label>
+                    <select class="input-field">
+                        <option>Select a model...</option>
+                        <option>JT922</option>
+                        <option>DML 1200</option>
+                        <option>XR-500</option>
+                    </select>
+                </div>
+                <div style="margin-bottom: 20px;">
+                    <label style="display: block; margin-bottom: 8px; font-weight: 500; color: var(--text-primary);">
+                        Notes
+                    </label>
+                    <textarea class="input-field" rows="3" placeholder="Add any additional notes..."></textarea>
+                </div>
+                <div style="display: flex; gap: 12px; justify-content: flex-end;">
+                    <button class="btn-secondary">Cancel</button>
+                    <button class="btn-primary">Save Changes</button>
+                </div>
+            </div>
+        </section>
+
+        <!-- Section: Modal Example -->
+        <section style="margin-bottom: 48px;">
+            <h2 style="color: var(--text-primary); margin-bottom: 24px; font-size: 20px; font-weight: 600;">Modal Example</h2>
+            <button class="btn-primary" onclick="showModal()">Open Modal</button>
+        </section>
+
+    </div>
+
+    <!-- Modal (Hidden by default) -->
+    <div id="modal" class="modal-overlay" style="display: none;">
+        <div class="modal-content">
+            <div style="border-bottom: 1px solid var(--border-subtle); padding: 20px 24px; display: flex; justify-content: space-between; align-items: center;">
+                <h3 style="margin: 0; font-size: 18px; font-weight: 600; color: var(--text-primary);">Edit Rig Configuration</h3>
+                <button onclick="hideModal()" style="background: none; border: none; color: var(--text-secondary); cursor: pointer; font-size: 24px;">×</button>
+            </div>
+            <div style="padding: 24px;">
+                <div style="margin-bottom: 16px;">
+                    <label style="display: block; margin-bottom: 8px; font-weight: 500; color: var(--text-primary);">
+                        Customer <span style="color: var(--danger);">*</span>
+                    </label>
+                    <input type="text" class="input-field" value="Parkinson & Holland Limited">
+                </div>
+                <div style="margin-bottom: 16px;">
+                    <label style="display: block; margin-bottom: 8px; font-weight: 500; color: var(--text-primary);">
+                        Rig Model <span style="color: var(--danger);">*</span>
+                    </label>
+                    <select class="input-field">
+                        <option selected>JT922</option>
+                        <option>DML 1200</option>
+                        <option>XR-500</option>
+                    </select>
+                </div>
+            </div>
+            <div style="border-top: 1px solid var(--border-subtle); padding: 16px 24px; background: var(--bg-surface-secondary); border-radius: 0 0 16px 16px; display: flex; gap: 12px; justify-content: flex-end;">
+                <button class="btn-secondary" onclick="hideModal()">Cancel</button>
+                <button class="btn-primary">Save Changes</button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        function toggleTheme() {
+            const body = document.body;
+            const currentTheme = body.getAttribute('data-theme');
+            const newTheme = currentTheme === 'dark' ? 'light' : 'dark';
+            body.setAttribute('data-theme', newTheme);
+
+            // Update toggle button text
+            document.getElementById('theme-icon').textContent = newTheme === 'dark' ? '🌙' : '☀️';
+            document.getElementById('theme-text').textContent = newTheme === 'dark' ? 'Dark Mode' : 'Light Mode';
+        }
+
+        function showModal() {
+            document.getElementById('modal').style.display = 'flex';
+        }
+
+        function hideModal() {
+            document.getElementById('modal').style.display = 'none';
+        }
+
+        // Close modal on overlay click
+        document.getElementById('modal').addEventListener('click', function(e) {
+            if (e.target === this) {
+                hideModal();
+            }
+        });
+    </script>
+</body>
+</html>
