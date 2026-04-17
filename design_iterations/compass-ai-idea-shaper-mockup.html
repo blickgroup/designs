@@ -1,0 +1,1252 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Compass Idea Shaper / Nexus-linked AI Workflow Mockup</title>
+  <style>
+    :root {
+      color-scheme: light;
+      --bg-page: #eef3f8;
+      --bg-surface: #ffffff;
+      --bg-surface-2: #f7f9fc;
+      --bg-muted: #edf2f7;
+      --bg-dark: #18202b;
+      --line: #d8e1ea;
+      --line-strong: #c5d0dd;
+      --text: #1e2a36;
+      --text-soft: #607286;
+      --text-muted: #7e8ea0;
+      --primary: #f05e22;
+      --primary-2: #ff8a4c;
+      --primary-soft: rgba(240, 94, 34, 0.12);
+      --accent: #6b7cff;
+      --success: #12a36d;
+      --warning: #d48b00;
+      --danger: #d94d4d;
+      --shadow-lg: 0 28px 60px rgba(27, 39, 53, 0.12);
+      --shadow-md: 0 12px 30px rgba(27, 39, 53, 0.08);
+      --radius-xl: 24px;
+      --radius-lg: 18px;
+      --radius-md: 14px;
+      --radius-sm: 10px;
+      --font: Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+    }
+
+    * { box-sizing: border-box; }
+    html, body { margin: 0; padding: 0; }
+    body {
+      font-family: var(--font);
+      background:
+        radial-gradient(circle at top left, rgba(240, 94, 34, 0.12), transparent 24%),
+        radial-gradient(circle at 85% 8%, rgba(107, 124, 255, 0.12), transparent 18%),
+        linear-gradient(180deg, #f7fafc 0%, var(--bg-page) 100%);
+      color: var(--text);
+      min-height: 100vh;
+    }
+
+    .page {
+      max-width: 1520px;
+      margin: 0 auto;
+      padding: 28px 24px 64px;
+    }
+
+    .hero {
+      display: grid;
+      grid-template-columns: minmax(0, 1.5fr) minmax(320px, 0.9fr);
+      gap: 18px;
+      align-items: stretch;
+      margin-bottom: 22px;
+    }
+
+    .hero-card,
+    .status-card,
+    .state-card {
+      background: var(--bg-surface);
+      border: 1px solid var(--line);
+      border-radius: var(--radius-xl);
+      box-shadow: var(--shadow-md);
+    }
+
+    .hero-card {
+      padding: 26px;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .hero-card::after {
+      content: "";
+      position: absolute;
+      inset: auto -90px -90px auto;
+      width: 240px;
+      height: 240px;
+      border-radius: 50%;
+      background: radial-gradient(circle, rgba(240, 94, 34, 0.14), rgba(240, 94, 34, 0));
+      pointer-events: none;
+    }
+
+    .eyebrow {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      padding: 7px 12px;
+      border-radius: 999px;
+      background: var(--primary-soft);
+      color: var(--primary);
+      font-size: 12px;
+      font-weight: 700;
+      letter-spacing: 0.04em;
+      text-transform: uppercase;
+    }
+
+    .hero h1 {
+      margin: 14px 0 10px;
+      font-size: clamp(2rem, 3vw, 3.1rem);
+      line-height: 1.05;
+      letter-spacing: -0.03em;
+    }
+
+    .hero p {
+      margin: 0;
+      max-width: 78ch;
+      color: var(--text-soft);
+      line-height: 1.6;
+      font-size: 15px;
+    }
+
+    .hero-grid {
+      display: grid;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: 12px;
+      margin-top: 20px;
+    }
+
+    .mini-stat {
+      padding: 14px;
+      background: var(--bg-surface-2);
+      border: 1px solid var(--line);
+      border-radius: var(--radius-md);
+    }
+
+    .mini-stat .label {
+      font-size: 12px;
+      color: var(--text-muted);
+      margin-bottom: 8px;
+    }
+
+    .mini-stat .value {
+      font-size: 15px;
+      font-weight: 700;
+      color: var(--text);
+      line-height: 1.25;
+    }
+
+    .mini-stat .note {
+      margin-top: 6px;
+      font-size: 12px;
+      color: var(--text-soft);
+      line-height: 1.45;
+    }
+
+    .status-card {
+      padding: 20px;
+      display: flex;
+      flex-direction: column;
+      gap: 14px;
+    }
+
+    .status-title {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 10px;
+    }
+
+    .status-title h2 {
+      margin: 0;
+      font-size: 16px;
+      letter-spacing: -0.01em;
+    }
+
+    .status-pill {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      padding: 7px 10px;
+      border-radius: 999px;
+      background: rgba(18, 163, 109, 0.12);
+      color: var(--success);
+      font-size: 12px;
+      font-weight: 700;
+    }
+
+    .status-list {
+      display: grid;
+      gap: 10px;
+    }
+
+    .status-item {
+      display: flex;
+      align-items: flex-start;
+      gap: 10px;
+      padding: 11px 12px;
+      background: var(--bg-surface-2);
+      border: 1px solid var(--line);
+      border-radius: var(--radius-md);
+      font-size: 13px;
+      line-height: 1.45;
+      color: var(--text-soft);
+    }
+
+    .status-dot {
+      width: 10px;
+      height: 10px;
+      margin-top: 4px;
+      border-radius: 50%;
+      flex: 0 0 auto;
+      background: var(--primary);
+      box-shadow: 0 0 0 4px rgba(240, 94, 34, 0.08);
+    }
+
+    .board {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 18px;
+    }
+
+    .state-card {
+      padding: 18px;
+      overflow: hidden;
+    }
+
+    .state-head {
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-start;
+      gap: 12px;
+      margin-bottom: 14px;
+    }
+
+    .state-head h2 {
+      margin: 6px 0 4px;
+      font-size: 18px;
+      letter-spacing: -0.02em;
+    }
+
+    .state-head p {
+      margin: 0;
+      color: var(--text-soft);
+      font-size: 13px;
+      line-height: 1.5;
+    }
+
+    .state-tag {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      padding: 6px 10px;
+      border-radius: 999px;
+      background: var(--bg-muted);
+      color: var(--text);
+      font-size: 11px;
+      font-weight: 700;
+      white-space: nowrap;
+    }
+
+    .screen {
+      background: linear-gradient(180deg, #fbfcfe 0%, #f5f8fb 100%);
+      border: 1px solid var(--line);
+      border-radius: 22px;
+      box-shadow: inset 0 1px 0 rgba(255,255,255,0.7);
+      overflow: hidden;
+    }
+
+    .screen-topbar {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 12px;
+      padding: 12px 14px;
+      background: rgba(255,255,255,0.72);
+      border-bottom: 1px solid var(--line);
+      backdrop-filter: blur(10px);
+    }
+
+    .traffic {
+      display: flex;
+      gap: 6px;
+    }
+
+    .traffic span {
+      width: 10px;
+      height: 10px;
+      border-radius: 50%;
+      background: #d3dbe5;
+    }
+
+    .traffic span:first-child { background: #ff6b62; }
+    .traffic span:nth-child(2) { background: #f7c14a; }
+    .traffic span:nth-child(3) { background: #33c56f; }
+
+    .screen-title {
+      font-size: 12px;
+      font-weight: 700;
+      color: var(--text-muted);
+      letter-spacing: 0.04em;
+      text-transform: uppercase;
+    }
+
+    .content {
+      padding: 16px;
+    }
+
+    .surface {
+      background: var(--bg-surface);
+      border: 1px solid var(--line);
+      border-radius: var(--radius-lg);
+      box-shadow: 0 8px 18px rgba(26, 38, 52, 0.04);
+    }
+
+    .split {
+      display: grid;
+      grid-template-columns: minmax(0, 1.15fr) minmax(280px, 0.85fr);
+      gap: 14px;
+    }
+
+    .panel {
+      padding: 16px;
+    }
+
+    .panel h3 {
+      margin: 0 0 10px;
+      font-size: 15px;
+      letter-spacing: -0.01em;
+    }
+
+    .helper {
+      margin: 0 0 14px;
+      font-size: 13px;
+      color: var(--text-soft);
+      line-height: 1.5;
+    }
+
+    .field {
+      display: grid;
+      gap: 8px;
+      margin-bottom: 12px;
+    }
+
+    .field label,
+    .field .label {
+      font-size: 12px;
+      font-weight: 700;
+      color: var(--text-muted);
+      text-transform: uppercase;
+      letter-spacing: 0.04em;
+    }
+
+    .input,
+    .textarea,
+    .chip-input {
+      width: 100%;
+      border: 1px solid var(--line);
+      border-radius: 12px;
+      background: #fbfcfe;
+      color: var(--text);
+      font: inherit;
+      padding: 12px 13px;
+    }
+
+    .textarea {
+      min-height: 116px;
+      resize: vertical;
+      line-height: 1.55;
+    }
+
+    .input:focus,
+    .textarea:focus {
+      outline: none;
+      border-color: rgba(240, 94, 34, 0.45);
+      box-shadow: 0 0 0 4px rgba(240, 94, 34, 0.08);
+    }
+
+    .choice-row {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 10px;
+    }
+
+    .choice-card {
+      padding: 14px;
+      border: 1px solid var(--line);
+      border-radius: 14px;
+      background: var(--bg-surface);
+      transition: 0.2s ease;
+    }
+
+    .choice-card strong {
+      display: block;
+      margin-bottom: 4px;
+      font-size: 14px;
+    }
+
+    .choice-card p {
+      margin: 0;
+      font-size: 12px;
+      color: var(--text-soft);
+      line-height: 1.45;
+    }
+
+    .choice-card.primary {
+      border-color: rgba(240, 94, 34, 0.35);
+      background: linear-gradient(180deg, rgba(240, 94, 34, 0.08), rgba(240, 94, 34, 0.03));
+    }
+
+    .button-row {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+      margin-top: 10px;
+    }
+
+    .btn {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      border: 1px solid var(--line-strong);
+      border-radius: 12px;
+      padding: 10px 14px;
+      background: #fff;
+      color: var(--text);
+      font: inherit;
+      font-size: 13px;
+      font-weight: 700;
+    }
+
+    .btn.primary {
+      border-color: transparent;
+      background: linear-gradient(135deg, var(--primary) 0%, var(--primary-2) 100%);
+      color: #fff;
+      box-shadow: 0 10px 20px rgba(240, 94, 34, 0.22);
+    }
+
+    .btn.soft {
+      background: var(--bg-surface-2);
+    }
+
+    .step-list {
+      display: grid;
+      gap: 10px;
+    }
+
+    .step-item {
+      display: flex;
+      gap: 10px;
+      padding: 12px;
+      border-radius: 14px;
+      background: var(--bg-surface-2);
+      border: 1px solid var(--line);
+    }
+
+    .step-num {
+      flex: 0 0 auto;
+      width: 26px;
+      height: 26px;
+      border-radius: 50%;
+      display: grid;
+      place-items: center;
+      background: var(--primary-soft);
+      color: var(--primary);
+      font-size: 12px;
+      font-weight: 800;
+    }
+
+    .step-item strong {
+      display: block;
+      font-size: 13px;
+      margin-bottom: 3px;
+    }
+
+    .step-item span {
+      display: block;
+      color: var(--text-soft);
+      font-size: 12px;
+      line-height: 1.45;
+    }
+
+    .chat {
+      display: grid;
+      gap: 10px;
+    }
+
+    .bubble {
+      max-width: 92%;
+      padding: 11px 13px;
+      border-radius: 16px;
+      font-size: 13px;
+      line-height: 1.5;
+      border: 1px solid var(--line);
+      background: var(--bg-surface);
+      color: var(--text);
+    }
+
+    .bubble.ai {
+      background: #f8f5ff;
+      border-color: rgba(107, 124, 255, 0.14);
+      margin-right: auto;
+    }
+
+    .bubble.user {
+      margin-left: auto;
+      background: #fff;
+    }
+
+    .bubble .meta {
+      display: block;
+      margin-bottom: 4px;
+      font-size: 11px;
+      font-weight: 800;
+      color: var(--text-muted);
+      text-transform: uppercase;
+      letter-spacing: 0.04em;
+    }
+
+    .nexus-banner {
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-start;
+      gap: 12px;
+      padding: 12px 14px;
+      border-radius: 14px;
+      background: linear-gradient(135deg, rgba(107, 124, 255, 0.11), rgba(240, 94, 34, 0.08));
+      border: 1px solid rgba(107, 124, 255, 0.16);
+      margin-bottom: 14px;
+    }
+
+    .nexus-banner strong {
+      display: block;
+      margin-bottom: 4px;
+      font-size: 13px;
+    }
+
+    .nexus-banner p {
+      margin: 0;
+      font-size: 12px;
+      color: var(--text-soft);
+      line-height: 1.45;
+    }
+
+    .nexus-badge {
+      padding: 6px 10px;
+      border-radius: 999px;
+      background: rgba(107, 124, 255, 0.14);
+      color: var(--accent);
+      font-size: 11px;
+      font-weight: 800;
+      white-space: nowrap;
+    }
+
+    .evidence-grid {
+      display: grid;
+      gap: 10px;
+      margin-top: 12px;
+    }
+
+    .evidence-item {
+      display: flex;
+      gap: 10px;
+      padding: 12px;
+      border: 1px solid var(--line);
+      border-radius: 14px;
+      background: var(--bg-surface-2);
+    }
+
+    .evidence-tag {
+      flex: 0 0 auto;
+      align-self: flex-start;
+      padding: 5px 8px;
+      border-radius: 999px;
+      background: rgba(18, 163, 109, 0.12);
+      color: var(--success);
+      font-size: 11px;
+      font-weight: 800;
+    }
+
+    .evidence-item strong {
+      display: block;
+      margin-bottom: 4px;
+      font-size: 13px;
+    }
+
+    .evidence-item p {
+      margin: 0;
+      color: var(--text-soft);
+      font-size: 12px;
+      line-height: 1.45;
+    }
+
+    .triage-layout {
+      display: grid;
+      grid-template-columns: minmax(0, 1.25fr) minmax(280px, 0.75fr);
+      gap: 14px;
+    }
+
+    .confidence {
+      display: grid;
+      gap: 12px;
+    }
+
+    .meter {
+      padding: 14px;
+      border-radius: 14px;
+      background: var(--bg-surface-2);
+      border: 1px solid var(--line);
+    }
+
+    .meter-head {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 10px;
+      margin-bottom: 8px;
+    }
+
+    .meter-head strong {
+      font-size: 13px;
+    }
+
+    .meter-head span {
+      font-size: 12px;
+      color: var(--text-muted);
+      font-weight: 700;
+    }
+
+    .bar {
+      position: relative;
+      height: 10px;
+      border-radius: 999px;
+      background: #dee6ef;
+      overflow: hidden;
+    }
+
+    .bar > span {
+      position: absolute;
+      inset: 0 auto 0 0;
+      border-radius: inherit;
+      background: linear-gradient(90deg, var(--primary) 0%, var(--accent) 100%);
+    }
+
+    .summary-box {
+      padding: 16px;
+      background: #0f1720;
+      color: #eff5fb;
+      border-radius: 18px;
+      border: 1px solid rgba(255,255,255,0.08);
+      box-shadow: 0 18px 34px rgba(15, 23, 32, 0.22);
+    }
+
+    .summary-box .label {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      margin-bottom: 10px;
+      font-size: 11px;
+      letter-spacing: 0.05em;
+      text-transform: uppercase;
+      color: #9fc0e0;
+      font-weight: 800;
+    }
+
+    .summary-box h3 {
+      margin: 0 0 8px;
+      font-size: 18px;
+      letter-spacing: -0.02em;
+    }
+
+    .summary-box p {
+      margin: 0;
+      font-size: 13px;
+      color: #c8d5e3;
+      line-height: 1.55;
+    }
+
+    .summary-list {
+      margin: 14px 0 0;
+      padding: 0;
+      list-style: none;
+      display: grid;
+      gap: 10px;
+    }
+
+    .summary-list li {
+      display: flex;
+      gap: 10px;
+      align-items: flex-start;
+      color: #d6e4f1;
+      font-size: 12px;
+      line-height: 1.45;
+    }
+
+    .summary-list li::before {
+      content: "";
+      width: 8px;
+      height: 8px;
+      margin-top: 5px;
+      border-radius: 50%;
+      background: var(--primary-2);
+      box-shadow: 0 0 0 4px rgba(255, 138, 76, 0.12);
+      flex: 0 0 auto;
+    }
+
+    .mobile-frame {
+      display: grid;
+      place-items: center;
+      background:
+        radial-gradient(circle at top, rgba(240, 94, 34, 0.08), transparent 36%),
+        linear-gradient(180deg, #f7fafc 0%, #eef3f8 100%);
+      border-radius: 22px;
+      padding: 24px 16px 20px;
+    }
+
+    .phone {
+      width: min(100%, 390px);
+      border-radius: 34px;
+      padding: 10px;
+      background: #111826;
+      box-shadow: 0 24px 40px rgba(16, 24, 40, 0.2);
+    }
+
+    .phone-notch {
+      width: 38%;
+      height: 18px;
+      margin: 0 auto 8px;
+      border-radius: 0 0 14px 14px;
+      background: #111826;
+    }
+
+    .phone-screen {
+      background: linear-gradient(180deg, #ffffff 0%, #f5f8fb 100%);
+      border-radius: 26px;
+      overflow: hidden;
+      min-height: 720px;
+    }
+
+    .phone-head {
+      padding: 14px 14px 12px;
+      background: rgba(255,255,255,0.94);
+      border-bottom: 1px solid var(--line);
+    }
+
+    .phone-head .title {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 12px;
+      margin-bottom: 8px;
+    }
+
+    .phone-head h3 {
+      margin: 0;
+      font-size: 15px;
+      letter-spacing: -0.02em;
+    }
+
+    .phone-body {
+      padding: 14px;
+      display: grid;
+      gap: 12px;
+    }
+
+    .card {
+      padding: 14px;
+      border-radius: 16px;
+      background: var(--bg-surface);
+      border: 1px solid var(--line);
+    }
+
+    .card h4 {
+      margin: 0 0 6px;
+      font-size: 14px;
+    }
+
+    .card p {
+      margin: 0;
+      font-size: 12px;
+      color: var(--text-soft);
+      line-height: 1.45;
+    }
+
+    .mobile-actions {
+      display: flex;
+      gap: 8px;
+      margin-top: 12px;
+    }
+
+    .mobile-actions .btn {
+      flex: 1 1 0;
+      padding-inline: 10px;
+      font-size: 12px;
+    }
+
+    .callout {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      padding: 8px 10px;
+      border-radius: 12px;
+      background: rgba(107, 124, 255, 0.08);
+      color: #5060c8;
+      font-size: 12px;
+      font-weight: 700;
+    }
+
+    .callout.nexus {
+      background: rgba(107, 124, 255, 0.11);
+      color: var(--accent);
+      border: 1px solid rgba(107, 124, 255, 0.14);
+    }
+
+    .kpis {
+      display: grid;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: 10px;
+      margin-top: 12px;
+    }
+
+    .kpi {
+      padding: 12px;
+      background: var(--bg-surface-2);
+      border: 1px solid var(--line);
+      border-radius: 14px;
+    }
+
+    .kpi .num {
+      display: block;
+      font-size: 18px;
+      font-weight: 800;
+      margin-bottom: 4px;
+    }
+
+    .kpi .desc {
+      color: var(--text-soft);
+      font-size: 11px;
+      line-height: 1.35;
+    }
+
+    .subtle {
+      color: var(--text-soft);
+      font-size: 12px;
+      line-height: 1.5;
+    }
+
+    .label-row {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+      margin-bottom: 12px;
+    }
+
+    .label-chip {
+      padding: 6px 9px;
+      border-radius: 999px;
+      background: var(--bg-muted);
+      color: var(--text);
+      font-size: 11px;
+      font-weight: 700;
+    }
+
+    .label-chip.nexus {
+      background: rgba(107, 124, 255, 0.12);
+      color: var(--accent);
+    }
+
+    .label-chip.ai {
+      background: rgba(240, 94, 34, 0.12);
+      color: var(--primary);
+    }
+
+    .footer-note {
+      margin-top: 18px;
+      color: var(--text-muted);
+      font-size: 12px;
+      line-height: 1.5;
+    }
+
+    @media (max-width: 1180px) {
+      .hero,
+      .board,
+      .triage-layout,
+      .split {
+        grid-template-columns: 1fr;
+      }
+    }
+
+    @media (max-width: 760px) {
+      .page { padding: 18px 12px 42px; }
+      .hero-card,
+      .status-card,
+      .state-card { border-radius: 20px; }
+      .hero-grid,
+      .choice-row,
+      .kpis { grid-template-columns: 1fr; }
+      .screen-topbar { padding-inline: 12px; }
+      .content { padding: 12px; }
+      .panel { padding: 14px; }
+      .phone-screen { min-height: auto; }
+      .phone { width: 100%; }
+      .mobile-frame { padding-inline: 0; }
+    }
+  </style>
+</head>
+<body>
+  <main class="page">
+    <section class="hero">
+      <article class="hero-card">
+        <span class="eyebrow">Compass idea shaper</span>
+        <h1>Nexus-linked AI workflow for turning rough ideas into review-ready drafts.</h1>
+        <p>
+          This mockup keeps Compass familiar: compact cards, restrained surfaces, orange-forward action states, and admin-first review details.
+          The new piece is the AI shaping path, with Nexus context called out wherever the workflow uses connected history, related ideas, or evidence from prior submissions.
+        </p>
+        <div class="hero-grid">
+          <div class="mini-stat">
+            <div class="label">Entry paths</div>
+            <div class="value">Quick submit or Shape with AI</div>
+            <div class="note">Same destination, different amount of guidance.</div>
+          </div>
+          <div class="mini-stat">
+            <div class="label">Nexus context</div>
+            <div class="value">Related ideas, past requests, evidence</div>
+            <div class="note">Appears as a panel, chip, or evidence rail.</div>
+          </div>
+          <div class="mini-stat">
+            <div class="label">Admin outcome</div>
+            <div class="value">Summary, confidence, and review trail</div>
+            <div class="note">Built for triage without losing provenance.</div>
+          </div>
+        </div>
+      </article>
+      <aside class="status-card">
+        <div class="status-title">
+          <h2>Workflow map</h2>
+          <span class="status-pill">Prototype</span>
+        </div>
+        <div class="status-list">
+          <div class="status-item"><span class="status-dot"></span><span><strong>1.</strong> Idea submit entry with a fast lane and an AI-assisted lane.</span></div>
+          <div class="status-item"><span class="status-dot"></span><span><strong>2.</strong> Conversational shaping wizard that gathers intent, constraints, and examples.</span></div>
+          <div class="status-item"><span class="status-dot"></span><span><strong>3.</strong> Nexus findings feed a review-to-idea draft screen before handoff.</span></div>
+          <div class="status-item"><span class="status-dot"></span><span><strong>4.</strong> Admin triage shows AI summary, confidence, and evidence in one place.</span></div>
+        </div>
+      </aside>
+    </section>
+
+    <section class="board">
+      <article class="state-card">
+        <div class="state-head">
+          <div>
+            <span class="state-tag">Page state 1</span>
+            <h2>Idea submit entry</h2>
+            <p>Two clear paths: a fast, low-friction submit flow and a richer AI-shaping path for people who want help forming the idea.</p>
+          </div>
+          <span class="callout">Compass entry</span>
+        </div>
+        <div class="screen">
+          <div class="screen-topbar">
+            <div class="traffic"><span></span><span></span><span></span></div>
+            <div class="screen-title">Submit idea</div>
+            <div class="state-tag">Nexus optional</div>
+          </div>
+          <div class="content">
+            <div class="split">
+              <section class="surface panel">
+                <h3>Share a rough idea</h3>
+                <p class="helper">The default path keeps the original Compass feel: short form, fast save, no extra cognitive load.</p>
+                <div class="field">
+                  <label for="idea-title">Idea title</label>
+                  <input id="idea-title" class="input" value="Streamline customer follow-up handoffs" />
+                </div>
+                <div class="field">
+                  <label for="idea-desc">What’s the problem?</label>
+                  <textarea id="idea-desc" class="textarea">Teams are re-entering context across tools, so follow-up work gets lost between tickets and notes.</textarea>
+                </div>
+                <div class="button-row">
+                  <button class="btn primary">Quick submit</button>
+                  <button class="btn soft">Shape with AI</button>
+                </div>
+              </section>
+              <aside class="surface panel">
+                <div class="label-row">
+                  <span class="label-chip ai">AI assist available</span>
+                  <span class="label-chip nexus">Nexus context: hidden until requested</span>
+                </div>
+                <h3>Why use Shape with AI?</h3>
+                <p class="helper">This path helps turn rough input into a clearer statement, likely impact, and suggested categorization.</p>
+                <div class="step-list">
+                  <div class="step-item"><span class="step-num">1</span><div><strong>Refine the ask</strong><span>Ask a few focused questions to complete the brief.</span></div></div>
+                  <div class="step-item"><span class="step-num">2</span><div><strong>Enrich with Nexus</strong><span>Surface related ideas, duplicates, and prior decisions when useful.</span></div></div>
+                  <div class="step-item"><span class="step-num">3</span><div><strong>Review draft</strong><span>Send a polished idea to Compass with traceable context.</span></div></div>
+                </div>
+              </aside>
+            </div>
+          </div>
+        </div>
+      </article>
+
+      <article class="state-card">
+        <div class="state-head">
+          <div>
+            <span class="state-tag">Page state 2</span>
+            <h2>AI shaping wizard</h2>
+            <p>Conversational intake stays lightweight but deliberate, with prompts that collect intent, audience, and expected outcome before drafting.</p>
+          </div>
+          <span class="callout nexus">Nexus context appears when matches are found</span>
+        </div>
+        <div class="screen">
+          <div class="screen-topbar">
+            <div class="traffic"><span></span><span></span><span></span></div>
+            <div class="screen-title">Shape with AI</div>
+            <div class="state-tag">Drafting in progress</div>
+          </div>
+          <div class="content">
+            <div class="split">
+              <section class="surface panel">
+                <h3>Conversation</h3>
+                <p class="helper">The wizard asks for the missing parts, then turns the conversation into a structured idea draft.</p>
+                <div class="chat">
+                  <div class="bubble ai"><span class="meta">Compass AI</span>What outcome are you aiming for, and who is the idea for?</div>
+                  <div class="bubble user"><span class="meta">You</span>Reduce time spent re-entering issue details across systems for ops teams.</div>
+                  <div class="bubble ai"><span class="meta">Compass AI</span>Do you want this framed as an efficiency gain, a customer experience improvement, or a risk reduction?</div>
+                  <div class="bubble user"><span class="meta">You</span>Efficiency first, with a secondary impact on handoff quality.</div>
+                </div>
+                <div class="button-row">
+                  <button class="btn primary">Continue</button>
+                  <button class="btn soft">Add more context</button>
+                </div>
+              </section>
+              <aside class="surface panel">
+                <div class="nexus-banner">
+                  <div>
+                    <strong>Nexus context panel</strong>
+                    <p>Shows related submissions, known duplicates, and notes from connected history before the draft is finalized.</p>
+                  </div>
+                  <span class="nexus-badge">Nexus match: 3</span>
+                </div>
+                <div class="step-list">
+                  <div class="step-item">
+                    <span class="step-num">A</span>
+                    <div><strong>Found a related idea</strong><span>“Reduce duplicate updates between tools” from last quarter.</span></div>
+                  </div>
+                  <div class="step-item">
+                    <span class="step-num">B</span>
+                    <div><strong>Suggested angle</strong><span>Position the idea around workflow reliability instead of simple automation.</span></div>
+                  </div>
+                  <div class="step-item">
+                    <span class="step-num">C</span>
+                    <div><strong>Draft additions</strong><span>Nexus notes imply this affects both operations and customer support.</span></div>
+                  </div>
+                </div>
+              </aside>
+            </div>
+          </div>
+        </div>
+      </article>
+
+      <article class="state-card">
+        <div class="state-head">
+          <div>
+            <span class="state-tag">Page state 3</span>
+            <h2>Nexus finding review-to-idea draft</h2>
+            <p>This screen makes the handoff explicit: Nexus findings become a reviewable idea draft, with the source context visible beside the proposed write-up.</p>
+          </div>
+          <span class="callout nexus">Nexus context is pinned here</span>
+        </div>
+        <div class="screen">
+          <div class="screen-topbar">
+            <div class="traffic"><span></span><span></span><span></span></div>
+            <div class="screen-title">Review findings</div>
+            <div class="state-tag">From Nexus to draft</div>
+          </div>
+          <div class="content">
+            <div class="triage-layout">
+              <section class="surface panel">
+                <h3>Idea draft</h3>
+                <div class="label-row">
+                  <span class="label-chip ai">AI-generated draft</span>
+                  <span class="label-chip nexus">Based on Nexus review findings</span>
+                </div>
+                <div class="field">
+                  <label>Draft title</label>
+                  <div class="input" style="display:flex; align-items:center;">Unify follow-up context across tools</div>
+                </div>
+                <div class="field">
+                  <label>Draft summary</label>
+                  <div class="textarea" style="min-height: 160px;">
+When support or operations move a task between systems, the context should move with it.
+The draft proposes a linked handoff layer that preserves notes, status, and evidence.
+This would cut duplicate entry and reduce the chance of losing a customer-facing next step.
+                  </div>
+                </div>
+                <div class="button-row">
+                  <button class="btn primary">Accept draft</button>
+                  <button class="btn soft">Refine with AI</button>
+                </div>
+              </section>
+              <aside class="surface panel">
+                <h3>Nexus findings</h3>
+                <p class="helper">Keep this panel visible so reviewers can tell what the AI used as source material.</p>
+                <div class="evidence-grid">
+                  <div class="evidence-item">
+                    <span class="evidence-tag">Match</span>
+                    <div>
+                      <strong>Prior idea: “Context sync between tools”</strong>
+                      <p>Contains a similar goal and a shared operational audience.</p>
+                    </div>
+                  </div>
+                  <div class="evidence-item">
+                    <span class="evidence-tag">Note</span>
+                    <div>
+                      <strong>Related outcome: fewer dropped handoffs</strong>
+                      <p>Evidence suggests the pain point is about continuity, not just speed.</p>
+                    </div>
+                  </div>
+                </div>
+              </aside>
+            </div>
+          </div>
+        </div>
+      </article>
+
+      <article class="state-card">
+        <div class="state-head">
+          <div>
+            <span class="state-tag">Page state 4</span>
+            <h2>Admin triage detail</h2>
+            <p>The triage view keeps Compass admin-friendly while adding a compact AI summary, a confidence meter, and evidence that explains the recommendation.</p>
+          </div>
+          <span class="callout">AI summary + confidence + evidence</span>
+        </div>
+        <div class="screen">
+          <div class="screen-topbar">
+            <div class="traffic"><span></span><span></span><span></span></div>
+            <div class="screen-title">Triage detail</div>
+            <div class="state-tag">Ready for review</div>
+          </div>
+          <div class="content">
+            <div class="triage-layout">
+              <section class="surface panel">
+                <div class="summary-box">
+                  <div class="label">AI triage summary</div>
+                  <h3>Strong candidate for a Nexus-connected workflow improvement</h3>
+                  <p>
+                    The idea is consistent with prior context-sync requests, addresses a repeated operations pain point, and can be framed as a process reliability win.
+                    It is likely to be easy to understand for reviewers and relevant to both support and operations.
+                  </p>
+                  <ul class="summary-list">
+                    <li>Recommendation: move to review queue with Nexus context attached.</li>
+                    <li>Risk: moderate overlap with existing handoff ideas, but the framing is more specific.</li>
+                    <li>Next step: confirm whether the idea is meant for ops, support, or both teams.</li>
+                  </ul>
+                </div>
+                <div class="button-row">
+                  <button class="btn primary">Approve</button>
+                  <button class="btn soft">Send back</button>
+                  <button class="btn soft">Park</button>
+                </div>
+              </section>
+              <aside class="surface panel">
+                <h3>Confidence and evidence</h3>
+                <div class="confidence">
+                  <div class="meter">
+                    <div class="meter-head">
+                      <strong>Confidence</strong>
+                      <span>82%</span>
+                    </div>
+                    <div class="bar"><span style="width:82%"></span></div>
+                    <p class="subtle" style="margin: 8px 0 0;">High confidence because the draft maps to known patterns in Nexus and has a clear operational need.</p>
+                  </div>
+                  <div class="meter">
+                    <div class="meter-head">
+                      <strong>Evidence strength</strong>
+                      <span>3 sources</span>
+                    </div>
+                    <div class="bar"><span style="width:74%"></span></div>
+                    <p class="subtle" style="margin: 8px 0 0;">Evidence is readable and traceable, but still short enough for a quick triage decision.</p>
+                  </div>
+                  <div class="evidence-grid">
+                    <div class="evidence-item">
+                      <span class="evidence-tag">1</span>
+                      <div>
+                        <strong>Related request pattern</strong>
+                        <p>Multiple idea submissions mention duplicate data entry and missing context at handoff.</p>
+                      </div>
+                    </div>
+                    <div class="evidence-item">
+                      <span class="evidence-tag">2</span>
+                      <div>
+                        <strong>Match quality</strong>
+                        <p>Context similarity is strong, but the draft adds a clearer workflow-specific framing.</p>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </aside>
+            </div>
+          </div>
+        </div>
+      </article>
+
+      <article class="state-card">
+        <div class="state-head">
+          <div>
+            <span class="state-tag">Page state 5</span>
+            <h2>Mobile-friendly state</h2>
+            <p>The same workflow collapses into a phone-sized experience with stacked actions and visible Nexus labeling so the context still feels deliberate on small screens.</p>
+          </div>
+          <span class="callout nexus">Mobile state</span>
+        </div>
+        <div class="mobile-frame">
+          <div class="phone">
+            <div class="phone-notch"></div>
+            <div class="phone-screen">
+              <div class="phone-head">
+                <div class="title">
+                  <h3>Submit an idea</h3>
+                  <span class="state-tag">Nexus aware</span>
+                </div>
+                <p class="subtle">Small-screen layout keeps the entry simple, then expands into AI if the user chooses to shape the idea.</p>
+              </div>
+              <div class="phone-body">
+                <div class="card">
+                  <h4>Quick submit</h4>
+                  <p>Fast path for getting the idea into Compass with minimal friction.</p>
+                </div>
+                <div class="card" style="border-color: rgba(240, 94, 34, 0.28); background: rgba(240, 94, 34, 0.04);">
+                  <h4>Shape with AI</h4>
+                  <p>Starts a guided intake and can surface Nexus context in a compact drawer or sheet.</p>
+                </div>
+                <div class="card">
+                  <span class="callout nexus" style="margin-bottom: 10px;">Nexus context appears as a bottom sheet</span>
+                  <p>Related ideas, duplicates, and evidence stay close to the draft without crowding the form.</p>
+                </div>
+                <div class="card">
+                  <h4>Preview state</h4>
+                  <p>The AI draft and triage summary stack vertically for easy scanning with one-thumb interaction.</p>
+                  <div class="mobile-actions">
+                    <button class="btn primary">Continue</button>
+                    <button class="btn soft">Save</button>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </article>
+    </section>
+
+    <p class="footer-note">
+      Nexus labels are intentionally explicit in each state so it is obvious where connected context enters the flow, how it is used, and when it becomes review evidence.
+    </p>
+  </main>
+</body>
+</html>
