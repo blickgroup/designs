@@ -1,0 +1,1671 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="dark">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Compass Execution Layouts — Options A, B, C</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+:root, [data-theme="dark"] {
+  --primary: #f05323;
+  --bg-page: #1a1a1a;
+  --bg-surface: #2a2a2a;
+  --bg-surface-secondary: #262626;
+  --bg-hover: #3a3a3a;
+  --text-heading: #ffffff;
+  --text-primary: #bcbec0;
+  --text-secondary: #a0a0a0;
+  --text-muted: #707070;
+  --border-default: #58595b;
+  --border-hover: #707070;
+  --button-primary-bg: #f05323;
+  --button-primary-text: #ffffff;
+  --card-bg: rgba(255,255,255,0.03);
+  --card-border: #58595b;
+  --card-hover-border: #f05323;
+  --success: #10b981;
+  --success-bg: rgba(16,185,129,0.10);
+  --success-border: rgba(16,185,129,0.25);
+  --warning: #f59e0b;
+  --warning-bg: rgba(245,158,11,0.10);
+  --warning-border: rgba(245,158,11,0.25);
+  --danger: #ef4444;
+  --danger-bg: rgba(239,68,68,0.10);
+  --danger-border: rgba(239,68,68,0.25);
+  --info: #4A9EFF;
+  --info-bg: rgba(74,158,255,0.10);
+  --chart-1: #10b981;
+  --chart-2: #f59e0b;
+  --chart-3: #3b82f6;
+  --chart-4: #8b5cf6;
+}
+[data-theme="light"] {
+  --primary: #f05323;
+  --bg-page: #f8fafc;
+  --bg-surface: #ffffff;
+  --bg-surface-secondary: #f1f5f9;
+  --bg-hover: #e5e7eb;
+  --text-heading: #000000;
+  --text-primary: #111827;
+  --text-secondary: #6b7280;
+  --text-muted: #9ca3af;
+  --border-default: #e5e7eb;
+  --border-hover: #d1d5db;
+  --button-primary-bg: #f05323;
+  --button-primary-text: #ffffff;
+  --card-bg: rgba(0,0,0,0.02);
+  --card-border: #e5e7eb;
+  --card-hover-border: #f05323;
+  --success: #10b981;
+  --success-bg: rgba(16,185,129,0.10);
+  --success-border: rgba(16,185,129,0.25);
+  --warning: #f59e0b;
+  --warning-bg: rgba(245,158,11,0.10);
+  --warning-border: rgba(245,158,11,0.25);
+  --danger: #ef4444;
+  --danger-bg: rgba(239,68,68,0.10);
+  --danger-border: rgba(239,68,68,0.25);
+  --info: #4A9EFF;
+  --info-bg: rgba(74,158,255,0.10);
+  --chart-1: #10b981;
+  --chart-2: #f59e0b;
+  --chart-3: #3b82f6;
+  --chart-4: #8b5cf6;
+}
+
+* { box-sizing: border-box; margin: 0; padding: 0; }
+
+body {
+  font-family: 'Inter', sans-serif;
+  background: var(--bg-page);
+  color: var(--text-primary);
+  min-height: 100vh;
+  font-size: 13px;
+  line-height: 1.5;
+}
+
+/* TOPBAR */
+.topbar {
+  position: sticky;
+  top: 0;
+  z-index: 100;
+  background: var(--bg-surface);
+  border-bottom: 1px solid var(--border-default);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 24px;
+  height: 48px;
+}
+.topbar-left {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+.topbar-logo {
+  font-size: 15px;
+  font-weight: 700;
+  color: var(--text-heading);
+  letter-spacing: -0.3px;
+}
+.topbar-logo span { color: var(--primary); }
+.topbar-sep {
+  width: 1px;
+  height: 20px;
+  background: var(--border-default);
+}
+.topbar-title {
+  font-size: 13px;
+  color: var(--text-secondary);
+}
+.topbar-right {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+.theme-btn {
+  padding: 5px 12px;
+  border-radius: 6px;
+  border: 1px solid var(--border-default);
+  background: transparent;
+  color: var(--text-secondary);
+  font-family: 'Inter', sans-serif;
+  font-size: 12px;
+  cursor: pointer;
+  transition: all 0.15s;
+}
+.theme-btn:hover {
+  border-color: var(--border-hover);
+  color: var(--text-primary);
+  background: var(--bg-hover);
+}
+.theme-btn.active {
+  background: var(--primary);
+  border-color: var(--primary);
+  color: #fff;
+}
+
+/* MAIN LAYOUT */
+.main {
+  max-width: 1400px;
+  margin: 0 auto;
+  padding: 32px 24px 64px;
+  display: flex;
+  flex-direction: column;
+  gap: 56px;
+}
+
+/* OPTION WRAPPER */
+.option-section {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+.option-header {
+  display: flex;
+  align-items: flex-start;
+  gap: 12px;
+}
+.option-badge {
+  display: inline-flex;
+  align-items: center;
+  padding: 4px 10px;
+  border-radius: 20px;
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 0.5px;
+  text-transform: uppercase;
+  background: var(--primary);
+  color: #fff;
+  white-space: nowrap;
+  margin-top: 2px;
+}
+.option-title {
+  font-size: 15px;
+  font-weight: 600;
+  color: var(--text-heading);
+}
+.option-subtitle {
+  font-size: 12px;
+  color: var(--text-secondary);
+  margin-top: 2px;
+}
+
+/* PROGRESS TRACK */
+.progress-track-wrap {
+  background: var(--bg-surface);
+  border: 1px solid var(--border-default);
+  border-radius: 10px;
+  overflow: hidden;
+  padding: 0;
+}
+.progress-segments {
+  display: flex;
+  height: 48px;
+  position: relative;
+}
+.seg {
+  flex: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  position: relative;
+  font-size: 10px;
+  font-weight: 600;
+  letter-spacing: 0.3px;
+}
+.seg-c1 {
+  background: rgba(16,185,129,0.06);
+  color: var(--success);
+  border-right: 1px dashed var(--border-default);
+}
+.seg-c2 {
+  background: rgba(240,83,35,0.05);
+  color: var(--primary);
+  border-right: 1px dashed var(--border-default);
+}
+.seg-c3 {
+  background: transparent;
+  color: var(--text-muted);
+}
+.progress-fill {
+  position: absolute;
+  left: 0; top: 0; bottom: 0;
+  width: 52.2%;
+  background: linear-gradient(90deg, rgba(16,185,129,0.2) 0%, rgba(240,83,35,0.3) 100%);
+  pointer-events: none;
+  z-index: 0;
+}
+.seg-label {
+  position: relative;
+  z-index: 1;
+}
+.today-marker {
+  position: absolute;
+  left: 52.2%;
+  top: 0;
+  bottom: 0;
+  width: 2px;
+  background: var(--primary);
+  z-index: 5;
+  transform: translateX(-1px);
+}
+.today-triangle {
+  position: absolute;
+  top: -6px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 0;
+  height: 0;
+  border-left: 5px solid transparent;
+  border-right: 5px solid transparent;
+  border-top: 6px solid var(--primary);
+  margin-top: 1px;
+}
+.today-label {
+  position: absolute;
+  top: -20px;
+  left: 50%;
+  transform: translateX(-50%);
+  font-size: 11px;
+  font-weight: 700;
+  color: var(--primary);
+  white-space: nowrap;
+}
+.progress-stats {
+  padding: 8px 16px;
+  font-size: 13px;
+  color: var(--text-secondary);
+  border-top: 1px solid var(--border-default);
+}
+
+/* KANBAN (Option A) */
+.kanban-board {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 12px;
+}
+.kanban-col {
+  background: var(--bg-surface);
+  border: 1px solid var(--border-default);
+  border-radius: 8px;
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+}
+.kanban-col-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 10px 12px;
+  border-bottom: 1px solid var(--border-default);
+  font-size: 12px;
+  font-weight: 600;
+}
+.kanban-col-header.blocked {
+  background: var(--danger-bg);
+}
+.col-label { display: flex; align-items: center; gap: 6px; }
+.count-chip {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 20px;
+  height: 20px;
+  padding: 0 6px;
+  border-radius: 10px;
+  font-size: 11px;
+  font-weight: 700;
+  background: var(--bg-surface-secondary);
+  color: var(--text-secondary);
+}
+.count-chip.success { background: var(--success-bg); color: var(--success); }
+.count-chip.warning { background: var(--warning-bg); color: var(--warning); }
+.count-chip.danger { background: var(--danger-bg); color: var(--danger); }
+
+.kanban-cards {
+  padding: 8px;
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  flex: 1;
+  max-height: 520px;
+  overflow-y: auto;
+}
+.kanban-cards::-webkit-scrollbar { width: 4px; }
+.kanban-cards::-webkit-scrollbar-track { background: transparent; }
+.kanban-cards::-webkit-scrollbar-thumb { background: var(--border-default); border-radius: 2px; }
+
+.kcard {
+  background: var(--card-bg);
+  border: 1px solid var(--card-border);
+  border-radius: 6px;
+  padding: 8px 10px;
+  cursor: pointer;
+  transition: border-color 0.15s, background 0.15s;
+  min-height: 72px;
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+.kcard:hover {
+  border-color: var(--card-hover-border);
+  background: var(--bg-hover);
+}
+.kcard.blocked-card {
+  border-left: 3px solid var(--danger);
+  background: var(--danger-bg);
+}
+.kcard.done-card {
+  opacity: 0.8;
+}
+.kcard-top {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  flex-wrap: wrap;
+}
+.cycle-pill {
+  display: inline-flex;
+  align-items: center;
+  padding: 1px 6px;
+  border-radius: 10px;
+  font-size: 10px;
+  font-weight: 700;
+  letter-spacing: 0.2px;
+}
+.cycle-pill.c1 { background: rgba(16,185,129,0.12); color: var(--success); }
+.cycle-pill.c2 { background: rgba(240,83,35,0.12); color: var(--primary); }
+.cycle-pill.c3 { background: var(--info-bg); color: var(--info); }
+
+.goal-dot {
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  flex-shrink: 0;
+}
+.carried-badge {
+  font-size: 10px;
+  color: var(--primary);
+  font-weight: 700;
+}
+.kcard-title {
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--text-heading);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  line-height: 1.3;
+}
+.kcard-bottom {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-top: auto;
+}
+.avatar-bubble {
+  width: 20px;
+  height: 20px;
+  border-radius: 50%;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 9px;
+  font-weight: 700;
+  color: #fff;
+  flex-shrink: 0;
+}
+.effort-chip {
+  padding: 1px 7px;
+  border-radius: 4px;
+  font-size: 10px;
+  font-weight: 600;
+  background: var(--bg-surface-secondary);
+  color: var(--text-muted);
+  border: 1px solid var(--border-default);
+}
+.blocked-reason {
+  font-size: 11px;
+  font-style: italic;
+  color: var(--danger);
+  line-height: 1.3;
+}
+
+.done-collapsed-btn {
+  margin: 0 8px 8px;
+  padding: 6px 10px;
+  border-radius: 6px;
+  border: 1px dashed var(--border-default);
+  background: transparent;
+  color: var(--text-muted);
+  font-family: 'Inter', sans-serif;
+  font-size: 11px;
+  cursor: pointer;
+  text-align: center;
+  transition: all 0.15s;
+}
+.done-collapsed-btn:hover {
+  border-color: var(--border-hover);
+  color: var(--text-secondary);
+  background: var(--bg-hover);
+}
+
+/* SWIMLANES (Option B) */
+.swimlane-table {
+  background: var(--bg-surface);
+  border: 1px solid var(--border-default);
+  border-radius: 8px;
+  overflow: hidden;
+}
+.sl-header-row {
+  display: grid;
+  grid-template-columns: 200px repeat(4, 1fr);
+  border-bottom: 1px solid var(--border-default);
+  background: var(--bg-surface-secondary);
+  position: sticky;
+  top: 49px;
+  z-index: 10;
+}
+.sl-header-cell {
+  padding: 8px 12px;
+  font-size: 11px;
+  font-weight: 600;
+  color: var(--text-secondary);
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  border-right: 1px solid var(--border-default);
+}
+.sl-header-cell:last-child { border-right: none; }
+.sl-header-cell.status-col { text-align: center; }
+.sl-header-cell.status-warning { color: var(--warning); }
+.sl-header-cell.status-danger { color: var(--danger); }
+.sl-header-cell.status-success { color: var(--success); }
+
+.sl-row {
+  display: grid;
+  grid-template-columns: 200px repeat(4, 1fr);
+  border-bottom: 1px solid var(--border-default);
+  min-height: 80px;
+}
+.sl-row:last-child { border-bottom: none; }
+.sl-row.c1-row { }
+.sl-row.c2-row {
+  border-left: 3px solid var(--primary);
+  background: rgba(240,83,35,0.02);
+}
+.sl-row.c3-row { opacity: 0.7; }
+
+.sl-label-cell {
+  padding: 12px;
+  border-right: 1px solid var(--border-default);
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  gap: 3px;
+}
+.sl-cycle-name {
+  font-size: 12px;
+  font-weight: 700;
+  color: var(--text-heading);
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+.sl-cycle-meta {
+  font-size: 10px;
+  color: var(--text-secondary);
+}
+.sl-cycle-meta.active { color: var(--primary); font-weight: 600; }
+
+.sl-cell {
+  padding: 8px 10px;
+  border-right: 1px solid var(--border-default);
+  display: flex;
+  flex-direction: column;
+  gap: 3px;
+}
+.sl-cell:last-child { border-right: none; }
+.sl-cell.blocked-cell { background: rgba(239,68,68,0.04); }
+.sl-cell.empty-cell {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.sl-empty {
+  color: var(--text-muted);
+  font-size: 12px;
+}
+
+.sl-done-chip {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  padding: 3px 10px;
+  border-radius: 12px;
+  background: var(--success-bg);
+  border: 1px solid var(--success-border);
+  color: var(--success);
+  font-size: 12px;
+  font-weight: 700;
+  align-self: flex-start;
+  margin-top: 4px;
+}
+.sl-rolled {
+  font-size: 11px;
+  color: var(--primary);
+  padding: 2px 6px;
+  border-radius: 4px;
+  background: rgba(240,83,35,0.08);
+  margin-top: 3px;
+  align-self: flex-start;
+}
+
+.sl-item-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 3px 6px;
+  border-radius: 4px;
+  height: 28px;
+  cursor: pointer;
+  transition: background 0.1s;
+  gap: 6px;
+}
+.sl-item-row:hover { background: var(--bg-hover); }
+.sl-item-dot {
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  flex-shrink: 0;
+}
+.sl-item-title {
+  font-size: 12px;
+  color: var(--text-primary);
+  flex: 1;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+.sl-item-avatar {
+  width: 18px;
+  height: 18px;
+  border-radius: 50%;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 8px;
+  font-weight: 700;
+  color: #fff;
+  flex-shrink: 0;
+}
+.sl-more {
+  font-size: 10px;
+  color: var(--text-muted);
+  padding: 2px 6px;
+  cursor: pointer;
+}
+.sl-more:hover { color: var(--primary); }
+
+/* TABLE (Option C) */
+.table-controls {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 10px 12px;
+  background: var(--bg-surface);
+  border: 1px solid var(--border-default);
+  border-bottom: none;
+  border-radius: 8px 8px 0 0;
+}
+.filter-select {
+  padding: 4px 10px;
+  border-radius: 5px;
+  border: 1px solid var(--border-default);
+  background: var(--bg-surface-secondary);
+  color: var(--text-primary);
+  font-family: 'Inter', sans-serif;
+  font-size: 12px;
+  cursor: pointer;
+  appearance: none;
+  -webkit-appearance: none;
+}
+.filter-select:hover { border-color: var(--border-hover); }
+.filter-sep {
+  width: 1px;
+  height: 20px;
+  background: var(--border-default);
+  margin: 0 4px;
+}
+.search-input {
+  width: 200px;
+  padding: 4px 10px;
+  border-radius: 5px;
+  border: 1px solid var(--border-default);
+  background: var(--bg-surface-secondary);
+  color: var(--text-primary);
+  font-family: 'Inter', sans-serif;
+  font-size: 12px;
+  outline: none;
+  margin-left: auto;
+}
+.search-input::placeholder { color: var(--text-muted); }
+.search-input:focus { border-color: var(--primary); }
+
+.data-table {
+  width: 100%;
+  border-collapse: collapse;
+  background: var(--bg-surface);
+  border: 1px solid var(--border-default);
+  border-top: none;
+  border-radius: 0 0 8px 8px;
+  overflow: hidden;
+}
+.data-table thead tr {
+  background: var(--bg-surface-secondary);
+  position: sticky;
+  top: 49px;
+  z-index: 10;
+}
+.data-table thead th {
+  padding: 8px 12px;
+  font-size: 11px;
+  font-weight: 600;
+  color: var(--text-secondary);
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  border-bottom: 1px solid var(--border-default);
+  white-space: nowrap;
+  text-align: left;
+}
+.th-status { width: 32px; text-align: center !important; }
+.th-cycle { width: 72px; }
+.th-assignee { width: 100px; }
+.th-goal { width: 100px; }
+.th-effort { width: 56px; text-align: center !important; }
+
+.group-row td {
+  padding: 0;
+}
+.group-header {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 8px 12px;
+  background: var(--bg-surface-secondary);
+  border-bottom: 1px solid var(--border-default);
+  cursor: pointer;
+  user-select: none;
+  transition: background 0.1s;
+}
+.group-header:hover { background: var(--bg-hover); }
+.group-header.c2-group { border-left: 3px solid var(--primary); }
+.group-chevron {
+  font-size: 10px;
+  color: var(--text-muted);
+  transition: transform 0.2s;
+}
+.group-chevron.open { transform: rotate(90deg); }
+.group-label {
+  font-size: 12px;
+  font-weight: 700;
+  color: var(--text-heading);
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+.group-count {
+  font-size: 11px;
+  color: var(--text-muted);
+  font-weight: 400;
+  margin-left: 4px;
+}
+.group-expand-hint {
+  font-size: 11px;
+  color: var(--primary);
+  margin-left: auto;
+  font-weight: 500;
+}
+
+.data-row {
+  cursor: pointer;
+  transition: background 0.1s;
+  border-bottom: 1px solid var(--border-default);
+}
+.data-row:last-child { border-bottom: none; }
+.data-row:hover { background: var(--bg-hover); }
+.data-row.selected {
+  border-left: 3px solid var(--primary);
+  background: rgba(240,83,35,0.04);
+}
+.data-row.c1-row { opacity: 0.75; }
+.data-row.c3-row { opacity: 0.85; }
+.data-row.blocked-row { background: var(--danger-bg); }
+.data-row.blocked-row:hover { background: rgba(239,68,68,0.14); }
+
+.data-row td {
+  padding: 6px 12px;
+  height: 32px;
+  vertical-align: middle;
+}
+.td-status { text-align: center; }
+
+.status-dot {
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+  display: inline-block;
+}
+.status-dot.done { background: var(--success); }
+.status-dot.in-progress { background: var(--warning); animation: pulse-dot 2s infinite; }
+.status-dot.blocked { background: var(--danger); }
+.status-dot.backlog { background: var(--text-muted); }
+
+@keyframes pulse-dot {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0.35; }
+}
+
+.td-title {
+  font-size: 13px;
+  color: var(--text-primary);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  max-width: 320px;
+}
+.td-title .carried { color: var(--primary); font-weight: 700; margin-right: 4px; }
+.td-title .blocked-icon { margin-right: 4px; }
+
+.td-cycle { }
+.td-assignee {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  white-space: nowrap;
+}
+.td-assignee .avatar-sm {
+  width: 22px;
+  height: 22px;
+  border-radius: 50%;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 9px;
+  font-weight: 700;
+  color: #fff;
+  flex-shrink: 0;
+}
+.td-assignee .name {
+  font-size: 11px;
+  color: var(--text-secondary);
+}
+.td-goal {
+  display: flex;
+  align-items: center;
+  gap: 5px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+.td-goal .goal-dot { width: 7px; height: 7px; border-radius: 50%; flex-shrink: 0; }
+.td-goal .goal-label { font-size: 10px; color: var(--text-muted); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.td-effort { text-align: center; }
+
+/* TRADEOFFS TABLE */
+.tradeoffs-section {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+.tradeoffs-title {
+  font-size: 14px;
+  font-weight: 700;
+  color: var(--text-heading);
+  padding-bottom: 8px;
+  border-bottom: 1px solid var(--border-default);
+}
+.tradeoffs-table {
+  width: 100%;
+  border-collapse: collapse;
+  border: 1px solid var(--border-default);
+  border-radius: 8px;
+  overflow: hidden;
+  background: var(--bg-surface);
+}
+.tradeoffs-table th {
+  padding: 10px 16px;
+  font-size: 11px;
+  font-weight: 700;
+  color: var(--text-secondary);
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  text-align: left;
+  background: var(--bg-surface-secondary);
+  border-bottom: 1px solid var(--border-default);
+}
+.tradeoffs-table th.opt-col {
+  color: var(--text-heading);
+  font-size: 12px;
+}
+.tradeoffs-table td {
+  padding: 10px 16px;
+  font-size: 12px;
+  color: var(--text-primary);
+  border-bottom: 1px solid var(--border-default);
+  vertical-align: middle;
+}
+.tradeoffs-table tr:last-child td { border-bottom: none; }
+.tradeoffs-table tbody tr:nth-child(even) td { background: rgba(255,255,255,0.015); }
+[data-theme="light"] .tradeoffs-table tbody tr:nth-child(even) td { background: rgba(0,0,0,0.015); }
+.tradeoffs-table td.row-label {
+  font-weight: 600;
+  color: var(--text-secondary);
+  font-size: 11px;
+  text-transform: uppercase;
+  letter-spacing: 0.3px;
+  white-space: nowrap;
+}
+.check { color: var(--success); font-weight: 700; }
+.cross { color: var(--danger); font-weight: 700; }
+.neutral { color: var(--text-muted); }
+.badge-good { color: var(--success); font-weight: 600; }
+.badge-best { color: var(--primary); font-weight: 700; }
+.badge-poor { color: var(--danger); font-weight: 500; }
+.badge-medium { color: var(--warning); font-weight: 500; }
+.badge-low { color: var(--success); font-weight: 600; }
+
+/* FOOTER */
+.footer {
+  text-align: center;
+  padding: 24px;
+  font-size: 11px;
+  color: var(--text-muted);
+  border-top: 1px solid var(--border-default);
+}
+
+/* SECTION DIVIDER */
+.section-divider {
+  height: 1px;
+  background: var(--border-default);
+  margin: 0;
+}
+
+/* UTILITY */
+.hidden { display: none !important; }
+
+/* Pulse for In Progress dots */
+.sl-item-dot.in-progress { animation: pulse-dot 2s infinite; }
+
+/* progress track relative container */
+.progress-inner {
+  position: relative;
+  height: 48px;
+}
+</style>
+</head>
+<body>
+
+<!-- TOPBAR -->
+<div class="topbar">
+  <div class="topbar-left">
+    <div class="topbar-logo">Blick<span>.</span></div>
+    <div class="topbar-sep"></div>
+    <div class="topbar-title">Compass — Execution Layout Options</div>
+  </div>
+  <div class="topbar-right">
+    <button class="theme-btn active" id="btn-dark" onclick="setTheme('dark')">Dark</button>
+    <button class="theme-btn" id="btn-light" onclick="setTheme('light')">Light</button>
+  </div>
+</div>
+
+<div class="main">
+
+<!-- ═══════════════════════════════════════════
+     OPTION A — KANBAN PRIMARY, CYCLE AS CONTEXT
+════════════════════════════════════════════ -->
+<div class="option-section">
+  <div class="option-header">
+    <div class="option-badge">Option A</div>
+    <div>
+      <div class="option-title">Kanban with Cycle Context</div>
+      <div class="option-subtitle">Standard 4-column status board. Cycle shown on each card. Progress track above gives temporal context.</div>
+    </div>
+  </div>
+
+  <!-- Progress Track -->
+  <div class="progress-track-wrap">
+    <div class="progress-inner">
+      <div class="progress-fill"></div>
+      <div class="progress-segments">
+        <div class="seg seg-c1"><span class="seg-label">✓ C1</span></div>
+        <div class="seg seg-c2"><span class="seg-label">● C2 Active</span></div>
+        <div class="seg seg-c3"><span class="seg-label">C3</span></div>
+      </div>
+      <div class="today-marker">
+        <div class="today-label">Day 47</div>
+        <div class="today-triangle"></div>
+      </div>
+    </div>
+    <div class="progress-stats">📅 Day 47 of 90 &nbsp;·&nbsp; ✓ 8 done &nbsp;·&nbsp; 🔥 6 in progress &nbsp;·&nbsp; 🚧 2 blocked &nbsp;·&nbsp; 📋 6 backlog</div>
+  </div>
+
+  <!-- Kanban Board -->
+  <div class="kanban-board">
+    <!-- Backlog -->
+    <div class="kanban-col">
+      <div class="kanban-col-header">
+        <div class="col-label">
+          <span style="color:var(--text-muted)">Backlog</span>
+        </div>
+        <span class="count-chip">6</span>
+      </div>
+      <div class="kanban-cards">
+        <div class="kcard">
+          <div class="kcard-top"><span class="cycle-pill c2">C2</span><span class="goal-dot" style="background:var(--chart-4)"></span></div>
+          <div class="kcard-title">Data Sync API</div>
+          <div class="kcard-bottom"><span class="avatar-bubble" style="background:var(--chart-4)">DT</span><span class="effort-chip">M</span></div>
+        </div>
+        <div class="kcard">
+          <div class="kcard-top"><span class="cycle-pill c2">C2</span><span class="goal-dot" style="background:var(--chart-1)"></span></div>
+          <div class="kcard-title">Bulk Operations</div>
+          <div class="kcard-bottom"><span class="avatar-bubble" style="background:var(--chart-1)">AM</span><span class="effort-chip">L</span></div>
+        </div>
+        <div class="kcard">
+          <div class="kcard-top"><span class="cycle-pill c3">C3</span><span class="goal-dot" style="background:var(--chart-1)"></span></div>
+          <div class="kcard-title">AI Suggestion Engine</div>
+          <div class="kcard-bottom"><span class="avatar-bubble" style="background:var(--chart-1)">AM</span><span class="effort-chip">L</span></div>
+        </div>
+        <div class="kcard">
+          <div class="kcard-top"><span class="cycle-pill c3">C3</span><span class="goal-dot" style="background:var(--chart-3)"></span></div>
+          <div class="kcard-title">Multi-tenant Auth</div>
+          <div class="kcard-bottom"><span class="avatar-bubble" style="background:var(--chart-3)">BC</span><span class="effort-chip">L</span></div>
+        </div>
+        <div class="kcard">
+          <div class="kcard-top"><span class="cycle-pill c3">C3</span><span class="goal-dot" style="background:var(--chart-4)"></span></div>
+          <div class="kcard-title">Analytics v2</div>
+          <div class="kcard-bottom"><span class="avatar-bubble" style="background:var(--chart-4)">DT</span><span class="effort-chip">M</span></div>
+        </div>
+        <div class="kcard">
+          <div class="kcard-top"><span class="cycle-pill c3">C3</span><span class="goal-dot" style="background:var(--chart-1)"></span></div>
+          <div class="kcard-title">Batch Processing</div>
+          <div class="kcard-bottom"><span class="avatar-bubble" style="background:var(--chart-1)">AM</span><span class="effort-chip">M</span></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- In Progress -->
+    <div class="kanban-col">
+      <div class="kanban-col-header">
+        <div class="col-label">
+          <span style="color:var(--warning)">In Progress</span>
+        </div>
+        <span class="count-chip warning">4</span>
+      </div>
+      <div class="kanban-cards">
+        <div class="kcard">
+          <div class="kcard-top"><span class="cycle-pill c2">C2</span><span class="goal-dot" style="background:var(--chart-4)"></span><span class="carried-badge">↗</span></div>
+          <div class="kcard-title">Reporting Engine</div>
+          <div class="kcard-bottom"><span class="avatar-bubble" style="background:var(--chart-4)">DT</span><span class="effort-chip">L</span></div>
+        </div>
+        <div class="kcard">
+          <div class="kcard-top"><span class="cycle-pill c2">C2</span><span class="goal-dot" style="background:var(--chart-1)"></span></div>
+          <div class="kcard-title">Customer Insights Dashboard</div>
+          <div class="kcard-bottom"><span class="avatar-bubble" style="background:var(--chart-1)">AM</span><span class="effort-chip">M</span></div>
+        </div>
+        <div class="kcard">
+          <div class="kcard-top"><span class="cycle-pill c2">C2</span><span class="goal-dot" style="background:var(--chart-3)"></span></div>
+          <div class="kcard-title">Rig Maintenance Scheduler</div>
+          <div class="kcard-bottom"><span class="avatar-bubble" style="background:var(--chart-3)">BC</span><span class="effort-chip">M</span></div>
+        </div>
+        <div class="kcard">
+          <div class="kcard-top"><span class="cycle-pill c2">C2</span><span class="goal-dot" style="background:var(--chart-4)"></span></div>
+          <div class="kcard-title">Export to PDF</div>
+          <div class="kcard-bottom"><span class="avatar-bubble" style="background:var(--chart-4)">DT</span><span class="effort-chip">S</span></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Blocked -->
+    <div class="kanban-col">
+      <div class="kanban-col-header blocked">
+        <div class="col-label">
+          <span style="color:var(--danger)">Blocked</span>
+        </div>
+        <span class="count-chip danger">1</span>
+      </div>
+      <div class="kanban-cards">
+        <div class="kcard blocked-card">
+          <div class="kcard-top"><span class="cycle-pill c2">C2</span><span class="goal-dot" style="background:var(--chart-3)"></span></div>
+          <div class="kcard-title">Notification Service</div>
+          <div class="blocked-reason">Waiting on API credentials</div>
+          <div class="kcard-bottom"><span class="avatar-bubble" style="background:var(--chart-3)">BC</span><span class="effort-chip">M</span></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Done -->
+    <div class="kanban-col">
+      <div class="kanban-col-header">
+        <div class="col-label">
+          <span style="color:var(--success)">Done</span>
+        </div>
+        <span class="count-chip success">8</span>
+      </div>
+      <div class="kanban-cards" id="done-cards">
+        <div class="kcard done-card">
+          <div class="kcard-top"><span class="cycle-pill c1">C1</span><span class="goal-dot" style="background:var(--chart-1)"></span></div>
+          <div class="kcard-title">Analytics Dashboard</div>
+          <div class="kcard-bottom"><span class="avatar-bubble" style="background:var(--chart-1)">AM</span><span class="effort-chip">M</span></div>
+        </div>
+        <div class="kcard done-card">
+          <div class="kcard-top"><span class="cycle-pill c1">C1</span><span class="goal-dot" style="background:var(--chart-3)"></span></div>
+          <div class="kcard-title">Mobile Auth Refactor</div>
+          <div class="kcard-bottom"><span class="avatar-bubble" style="background:var(--chart-3)">BC</span><span class="effort-chip">M</span></div>
+        </div>
+        <div class="kcard done-card">
+          <div class="kcard-top"><span class="cycle-pill c1">C1</span><span class="goal-dot" style="background:var(--chart-1)"></span></div>
+          <div class="kcard-title">Customer Portal v2</div>
+          <div class="kcard-bottom"><span class="avatar-bubble" style="background:var(--chart-1)">AM</span><span class="effort-chip">L</span></div>
+        </div>
+        <div class="kcard done-card">
+          <div class="kcard-top"><span class="cycle-pill c1">C1</span><span class="goal-dot" style="background:var(--chart-4)"></span></div>
+          <div class="kcard-title">API Rate Limiting</div>
+          <div class="kcard-bottom"><span class="avatar-bubble" style="background:var(--chart-4)">DT</span><span class="effort-chip">S</span></div>
+        </div>
+        <!-- Hidden extra done cards -->
+        <div class="kcard done-card hidden" id="done-extra-1">
+          <div class="kcard-top"><span class="cycle-pill c1">C1</span><span class="goal-dot" style="background:var(--chart-3)"></span></div>
+          <div class="kcard-title">Onboarding Flow</div>
+          <div class="kcard-bottom"><span class="avatar-bubble" style="background:var(--chart-3)">BC</span><span class="effort-chip">M</span></div>
+        </div>
+        <div class="kcard done-card hidden" id="done-extra-2">
+          <div class="kcard-top"><span class="cycle-pill c1">C1</span><span class="goal-dot" style="background:var(--chart-4)"></span></div>
+          <div class="kcard-title">Invoice Generator</div>
+          <div class="kcard-bottom"><span class="avatar-bubble" style="background:var(--chart-4)">DT</span><span class="effort-chip">S</span></div>
+        </div>
+        <div class="kcard done-card hidden" id="done-extra-3">
+          <div class="kcard-top"><span class="cycle-pill c1">C1</span><span class="goal-dot" style="background:var(--chart-1)"></span></div>
+          <div class="kcard-title">Rig Health Alerts</div>
+          <div class="kcard-bottom"><span class="avatar-bubble" style="background:var(--chart-1)">AM</span><span class="effort-chip">M</span></div>
+        </div>
+        <div class="kcard done-card hidden" id="done-extra-4">
+          <div class="kcard-top"><span class="cycle-pill c1">C1</span><span class="goal-dot" style="background:var(--chart-3)"></span></div>
+          <div class="kcard-title">Staff Directory</div>
+          <div class="kcard-bottom"><span class="avatar-bubble" style="background:var(--chart-3)">BC</span><span class="effort-chip">S</span></div>
+        </div>
+      </div>
+      <button class="done-collapsed-btn" id="done-toggle-btn" onclick="toggleDone()">+ 4 more C1 items</button>
+    </div>
+  </div>
+</div>
+
+
+<!-- ═══════════════════════════════════════════
+     OPTION B — CYCLE SWIMLANES WITH STATUS COLS
+════════════════════════════════════════════ -->
+<div class="option-section">
+  <div class="option-header">
+    <div class="option-badge">Option B</div>
+    <div>
+      <div class="option-title">Cycle Swimlanes</div>
+      <div class="option-subtitle">Rows = cycles. Columns = status. See each cycle's execution state at a glance.</div>
+    </div>
+  </div>
+
+  <!-- Progress Track -->
+  <div class="progress-track-wrap">
+    <div class="progress-inner">
+      <div class="progress-fill"></div>
+      <div class="progress-segments">
+        <div class="seg seg-c1"><span class="seg-label">✓ C1</span></div>
+        <div class="seg seg-c2"><span class="seg-label">● C2 Active</span></div>
+        <div class="seg seg-c3"><span class="seg-label">C3</span></div>
+      </div>
+      <div class="today-marker">
+        <div class="today-label">Day 47</div>
+        <div class="today-triangle"></div>
+      </div>
+    </div>
+    <div class="progress-stats">📅 Day 47 of 90 &nbsp;·&nbsp; ✓ 8 done &nbsp;·&nbsp; 🔥 6 in progress &nbsp;·&nbsp; 🚧 2 blocked &nbsp;·&nbsp; 📋 6 backlog</div>
+  </div>
+
+  <!-- Swimlane Table -->
+  <div class="swimlane-table">
+    <!-- Header -->
+    <div class="sl-header-row">
+      <div class="sl-header-cell">Cycle</div>
+      <div class="sl-header-cell status-col">Backlog</div>
+      <div class="sl-header-cell status-col status-warning">In Progress</div>
+      <div class="sl-header-cell status-col status-danger">Blocked</div>
+      <div class="sl-header-cell status-col status-success">Done</div>
+    </div>
+
+    <!-- C1 Row -->
+    <div class="sl-row c1-row">
+      <div class="sl-label-cell" style="background:rgba(16,185,129,0.04); border-right:1px solid var(--border-default);">
+        <div class="sl-cycle-name"><span style="color:var(--success)">✓</span> Cycle 1</div>
+        <div class="sl-cycle-meta">Apr 1–30 · Complete</div>
+      </div>
+      <div class="sl-cell empty-cell"><span class="sl-empty">—</span></div>
+      <div class="sl-cell empty-cell"><span class="sl-empty">—</span></div>
+      <div class="sl-cell empty-cell"><span class="sl-empty">—</span></div>
+      <div class="sl-cell" style="justify-content:center;">
+        <div class="sl-done-chip">8 ✓</div>
+        <div class="sl-rolled">↗ 1 Reporting Engine</div>
+      </div>
+    </div>
+
+    <!-- C2 Row (active) -->
+    <div class="sl-row c2-row">
+      <div class="sl-label-cell" style="border-right:1px solid var(--border-default);">
+        <div class="sl-cycle-name"><span style="color:var(--primary)">●</span> Cycle 2</div>
+        <div class="sl-cycle-meta active">May 1–31 · Active · Day 17/30</div>
+      </div>
+      <!-- Backlog -->
+      <div class="sl-cell">
+        <div class="sl-item-row">
+          <span class="sl-item-dot" style="background:var(--text-muted)"></span>
+          <span class="sl-item-title">Data Sync API</span>
+          <span class="sl-item-avatar" style="background:var(--chart-4)">DT</span>
+        </div>
+        <div class="sl-item-row">
+          <span class="sl-item-dot" style="background:var(--text-muted)"></span>
+          <span class="sl-item-title">Bulk Operations</span>
+          <span class="sl-item-avatar" style="background:var(--chart-1)">AM</span>
+        </div>
+      </div>
+      <!-- In Progress -->
+      <div class="sl-cell">
+        <div class="sl-item-row">
+          <span class="sl-item-dot in-progress" style="background:var(--warning)"></span>
+          <span class="sl-item-title">↗ Reporting Engine</span>
+          <span class="sl-item-avatar" style="background:var(--chart-4)">DT</span>
+        </div>
+        <div class="sl-item-row">
+          <span class="sl-item-dot in-progress" style="background:var(--warning)"></span>
+          <span class="sl-item-title">Customer Insights</span>
+          <span class="sl-item-avatar" style="background:var(--chart-1)">AM</span>
+        </div>
+        <div class="sl-item-row">
+          <span class="sl-item-dot in-progress" style="background:var(--warning)"></span>
+          <span class="sl-item-title">Rig Maintenance Sched.</span>
+          <span class="sl-item-avatar" style="background:var(--chart-3)">BC</span>
+        </div>
+        <div class="sl-item-row">
+          <span class="sl-item-dot in-progress" style="background:var(--warning)"></span>
+          <span class="sl-item-title">Export to PDF</span>
+          <span class="sl-item-avatar" style="background:var(--chart-4)">DT</span>
+        </div>
+      </div>
+      <!-- Blocked -->
+      <div class="sl-cell blocked-cell">
+        <div class="sl-item-row">
+          <span class="sl-item-dot" style="background:var(--danger)"></span>
+          <span class="sl-item-title" style="color:var(--danger)">Notification Service</span>
+          <span class="sl-item-avatar" style="background:var(--chart-3)">BC</span>
+        </div>
+        <div style="font-size:10px; color:var(--danger); padding:2px 6px; font-style:italic;">Waiting on API credentials</div>
+      </div>
+      <!-- Done -->
+      <div class="sl-cell empty-cell"><span class="sl-empty">—</span></div>
+    </div>
+
+    <!-- C3 Row -->
+    <div class="sl-row c3-row">
+      <div class="sl-label-cell" style="border-right:1px solid var(--border-default);">
+        <div class="sl-cycle-name"><span style="color:var(--text-muted)">○</span> Cycle 3</div>
+        <div class="sl-cycle-meta">Jun 1–30 · Upcoming</div>
+      </div>
+      <!-- Backlog -->
+      <div class="sl-cell">
+        <div class="sl-item-row">
+          <span class="sl-item-dot" style="background:var(--text-muted)"></span>
+          <span class="sl-item-title">AI Suggestion Engine</span>
+          <span class="sl-item-avatar" style="background:var(--chart-1)">AM</span>
+        </div>
+        <div class="sl-item-row">
+          <span class="sl-item-dot" style="background:var(--text-muted)"></span>
+          <span class="sl-item-title">Multi-tenant Auth</span>
+          <span class="sl-item-avatar" style="background:var(--chart-3)">BC</span>
+        </div>
+        <div class="sl-item-row">
+          <span class="sl-item-dot" style="background:var(--text-muted)"></span>
+          <span class="sl-item-title">Analytics v2</span>
+          <span class="sl-item-avatar" style="background:var(--chart-4)">DT</span>
+        </div>
+        <div class="sl-item-row">
+          <span class="sl-item-dot" style="background:var(--text-muted)"></span>
+          <span class="sl-item-title">Batch Processing</span>
+          <span class="sl-item-avatar" style="background:var(--chart-1)">AM</span>
+        </div>
+        <div class="sl-more" onclick="">+ 2 more</div>
+      </div>
+      <div class="sl-cell empty-cell"><span class="sl-empty">—</span></div>
+      <div class="sl-cell empty-cell"><span class="sl-empty">—</span></div>
+      <div class="sl-cell empty-cell"><span class="sl-empty">—</span></div>
+    </div>
+  </div>
+</div>
+
+
+<!-- ═══════════════════════════════════════════
+     OPTION C — TABLE VIEW (IDEAS AS ROWS)
+════════════════════════════════════════════ -->
+<div class="option-section">
+  <div class="option-header">
+    <div class="option-badge">Option C</div>
+    <div>
+      <div class="option-title">Table View</div>
+      <div class="option-subtitle">Every idea as a row. Status, cycle, assignee, goal all scannable in one grid. Group by cycle.</div>
+    </div>
+  </div>
+
+  <!-- Progress Track -->
+  <div class="progress-track-wrap">
+    <div class="progress-inner">
+      <div class="progress-fill"></div>
+      <div class="progress-segments">
+        <div class="seg seg-c1"><span class="seg-label">✓ C1</span></div>
+        <div class="seg seg-c2"><span class="seg-label">● C2 Active</span></div>
+        <div class="seg seg-c3"><span class="seg-label">C3</span></div>
+      </div>
+      <div class="today-marker">
+        <div class="today-label">Day 47</div>
+        <div class="today-triangle"></div>
+      </div>
+    </div>
+    <div class="progress-stats">📅 Day 47 of 90 &nbsp;·&nbsp; ✓ 8 done &nbsp;·&nbsp; 🔥 6 in progress &nbsp;·&nbsp; 🚧 2 blocked &nbsp;·&nbsp; 📋 6 backlog</div>
+  </div>
+
+  <!-- Filter Bar -->
+  <div class="table-controls">
+    <select class="filter-select"><option>Group by: Cycle ▾</option><option>Group by: Status</option><option>Group by: Assignee</option></select>
+    <div class="filter-sep"></div>
+    <select class="filter-select"><option>Status: All ▾</option><option>In Progress</option><option>Blocked</option><option>Backlog</option><option>Done</option></select>
+    <div class="filter-sep"></div>
+    <select class="filter-select"><option>Assignee: All ▾</option><option>Alice M</option><option>Bob C</option><option>Dev T</option></select>
+    <input class="search-input" type="text" placeholder="Search ideas…">
+  </div>
+
+  <!-- Table -->
+  <table class="data-table">
+    <thead>
+      <tr>
+        <th class="th-status">·</th>
+        <th>Title</th>
+        <th class="th-cycle">Cycle</th>
+        <th class="th-assignee">Assignee</th>
+        <th class="th-goal">Goal</th>
+        <th class="th-effort">Effort</th>
+      </tr>
+    </thead>
+    <tbody>
+
+      <!-- C1 Group — Collapsed -->
+      <tr class="group-row" id="group-c1">
+        <td colspan="6">
+          <div class="group-header" onclick="toggleGroup('c1')">
+            <span class="group-chevron" id="chevron-c1">▶</span>
+            <span class="group-label"><span style="color:var(--success)">✓</span> Cycle 1 — Complete <span class="group-count">· 9 ideas</span></span>
+            <span class="group-expand-hint" id="hint-c1">▸ Show 9 ideas</span>
+          </div>
+        </td>
+      </tr>
+      <!-- C1 rows (hidden by default) -->
+      <tr class="data-row c1-row hidden c1-content" onclick="selectRow(this)">
+        <td class="td-status"><span class="status-dot done"></span></td>
+        <td class="td-title">Analytics Dashboard</td>
+        <td><span class="cycle-pill c1">C1</span></td>
+        <td><div class="td-assignee"><span class="avatar-sm" style="background:var(--chart-1)">AM</span><span class="name">Alice M</span></div></td>
+        <td><div class="td-goal"><span class="goal-dot" style="background:var(--chart-2)"></span><span class="goal-label">Innovation</span></div></td>
+        <td class="td-effort"><span class="effort-chip">M</span></td>
+      </tr>
+      <tr class="data-row c1-row hidden c1-content" onclick="selectRow(this)">
+        <td class="td-status"><span class="status-dot done"></span></td>
+        <td class="td-title">Mobile Auth Refactor</td>
+        <td><span class="cycle-pill c1">C1</span></td>
+        <td><div class="td-assignee"><span class="avatar-sm" style="background:var(--chart-3)">BC</span><span class="name">Bob C</span></div></td>
+        <td><div class="td-goal"><span class="goal-dot" style="background:var(--chart-3)"></span><span class="goal-label">Excellence</span></div></td>
+        <td class="td-effort"><span class="effort-chip">M</span></td>
+      </tr>
+      <tr class="data-row c1-row hidden c1-content" onclick="selectRow(this)">
+        <td class="td-status"><span class="status-dot done"></span></td>
+        <td class="td-title">Customer Portal v2</td>
+        <td><span class="cycle-pill c1">C1</span></td>
+        <td><div class="td-assignee"><span class="avatar-sm" style="background:var(--chart-1)">AM</span><span class="name">Alice M</span></div></td>
+        <td><div class="td-goal"><span class="goal-dot" style="background:var(--chart-1)"></span><span class="goal-label">Customer</span></div></td>
+        <td class="td-effort"><span class="effort-chip">L</span></td>
+      </tr>
+      <tr class="data-row c1-row hidden c1-content" onclick="selectRow(this)">
+        <td class="td-status"><span class="status-dot done"></span></td>
+        <td class="td-title">API Rate Limiting</td>
+        <td><span class="cycle-pill c1">C1</span></td>
+        <td><div class="td-assignee"><span class="avatar-sm" style="background:var(--chart-4)">DT</span><span class="name">Dev T</span></div></td>
+        <td><div class="td-goal"><span class="goal-dot" style="background:var(--chart-3)"></span><span class="goal-label">Excellence</span></div></td>
+        <td class="td-effort"><span class="effort-chip">S</span></td>
+      </tr>
+      <tr class="data-row c1-row hidden c1-content" onclick="selectRow(this)">
+        <td class="td-status"><span class="status-dot done"></span></td>
+        <td class="td-title">Onboarding Flow</td>
+        <td><span class="cycle-pill c1">C1</span></td>
+        <td><div class="td-assignee"><span class="avatar-sm" style="background:var(--chart-3)">BC</span><span class="name">Bob C</span></div></td>
+        <td><div class="td-goal"><span class="goal-dot" style="background:var(--chart-1)"></span><span class="goal-label">Customer</span></div></td>
+        <td class="td-effort"><span class="effort-chip">M</span></td>
+      </tr>
+      <tr class="data-row c1-row hidden c1-content" onclick="selectRow(this)">
+        <td class="td-status"><span class="status-dot done"></span></td>
+        <td class="td-title">Invoice Generator</td>
+        <td><span class="cycle-pill c1">C1</span></td>
+        <td><div class="td-assignee"><span class="avatar-sm" style="background:var(--chart-4)">DT</span><span class="name">Dev T</span></div></td>
+        <td><div class="td-goal"><span class="goal-dot" style="background:var(--chart-2)"></span><span class="goal-label">Market</span></div></td>
+        <td class="td-effort"><span class="effort-chip">S</span></td>
+      </tr>
+      <tr class="data-row c1-row hidden c1-content" onclick="selectRow(this)">
+        <td class="td-status"><span class="status-dot done"></span></td>
+        <td class="td-title">Rig Health Alerts</td>
+        <td><span class="cycle-pill c1">C1</span></td>
+        <td><div class="td-assignee"><span class="avatar-sm" style="background:var(--chart-1)">AM</span><span class="name">Alice M</span></div></td>
+        <td><div class="td-goal"><span class="goal-dot" style="background:var(--chart-4)"></span><span class="goal-label">Excellence</span></div></td>
+        <td class="td-effort"><span class="effort-chip">M</span></td>
+      </tr>
+      <tr class="data-row c1-row hidden c1-content" onclick="selectRow(this)">
+        <td class="td-status"><span class="status-dot done"></span></td>
+        <td class="td-title">Staff Directory</td>
+        <td><span class="cycle-pill c1">C1</span></td>
+        <td><div class="td-assignee"><span class="avatar-sm" style="background:var(--chart-3)">BC</span><span class="name">Bob C</span></div></td>
+        <td><div class="td-goal"><span class="goal-dot" style="background:var(--chart-1)"></span><span class="goal-label">Customer</span></div></td>
+        <td class="td-effort"><span class="effort-chip">S</span></td>
+      </tr>
+      <tr class="data-row c1-row hidden c1-content" onclick="selectRow(this)">
+        <td class="td-status"><span class="status-dot done"></span></td>
+        <td class="td-title"><span class="carried" style="color:var(--primary)">↗</span>Reporting Engine</td>
+        <td><span class="cycle-pill c1">C1</span></td>
+        <td><div class="td-assignee"><span class="avatar-sm" style="background:var(--chart-4)">DT</span><span class="name">Dev T</span></div></td>
+        <td><div class="td-goal"><span class="goal-dot" style="background:var(--chart-2)"></span><span class="goal-label">Innovation</span></div></td>
+        <td class="td-effort"><span class="effort-chip">L</span></td>
+      </tr>
+
+      <!-- C2 Group — Expanded -->
+      <tr class="group-row" id="group-c2">
+        <td colspan="6">
+          <div class="group-header c2-group" onclick="toggleGroup('c2')">
+            <span class="group-chevron open" id="chevron-c2">▶</span>
+            <span class="group-label"><span style="color:var(--primary)">●</span> Cycle 2 — Active <span class="group-count">· 7 ideas</span></span>
+            <span class="group-expand-hint" id="hint-c2" style="display:none">▸ Show 7 ideas</span>
+          </div>
+        </td>
+      </tr>
+      <tr class="data-row selected c2-content" onclick="selectRow(this)" id="row-reporting-engine">
+        <td class="td-status"><span class="status-dot in-progress"></span></td>
+        <td class="td-title"><span class="carried">↗</span>Reporting Engine</td>
+        <td><span class="cycle-pill c2">C2</span></td>
+        <td><div class="td-assignee"><span class="avatar-sm" style="background:var(--chart-4)">DT</span><span class="name">Dev T</span></div></td>
+        <td><div class="td-goal"><span class="goal-dot" style="background:var(--chart-2)"></span><span class="goal-label">Innovation</span></div></td>
+        <td class="td-effort"><span class="effort-chip">L</span></td>
+      </tr>
+      <tr class="data-row c2-content" onclick="selectRow(this)">
+        <td class="td-status"><span class="status-dot in-progress"></span></td>
+        <td class="td-title">Customer Insights Dashboard</td>
+        <td><span class="cycle-pill c2">C2</span></td>
+        <td><div class="td-assignee"><span class="avatar-sm" style="background:var(--chart-1)">AM</span><span class="name">Alice M</span></div></td>
+        <td><div class="td-goal"><span class="goal-dot" style="background:var(--chart-1)"></span><span class="goal-label">Customer</span></div></td>
+        <td class="td-effort"><span class="effort-chip">M</span></td>
+      </tr>
+      <tr class="data-row c2-content" onclick="selectRow(this)">
+        <td class="td-status"><span class="status-dot in-progress"></span></td>
+        <td class="td-title">Rig Maintenance Scheduler</td>
+        <td><span class="cycle-pill c2">C2</span></td>
+        <td><div class="td-assignee"><span class="avatar-sm" style="background:var(--chart-3)">BC</span><span class="name">Bob C</span></div></td>
+        <td><div class="td-goal"><span class="goal-dot" style="background:var(--chart-3)"></span><span class="goal-label">Excellence</span></div></td>
+        <td class="td-effort"><span class="effort-chip">M</span></td>
+      </tr>
+      <tr class="data-row c2-content" onclick="selectRow(this)">
+        <td class="td-status"><span class="status-dot in-progress"></span></td>
+        <td class="td-title">Export to PDF</td>
+        <td><span class="cycle-pill c2">C2</span></td>
+        <td><div class="td-assignee"><span class="avatar-sm" style="background:var(--chart-4)">DT</span><span class="name">Dev T</span></div></td>
+        <td><div class="td-goal"><span class="goal-dot" style="background:var(--chart-1)"></span><span class="goal-label">Customer</span></div></td>
+        <td class="td-effort"><span class="effort-chip">S</span></td>
+      </tr>
+      <tr class="data-row blocked-row c2-content" onclick="selectRow(this)">
+        <td class="td-status"><span class="status-dot blocked"></span></td>
+        <td class="td-title"><span class="blocked-icon">🚧</span>Notification Service</td>
+        <td><span class="cycle-pill c2">C2</span></td>
+        <td><div class="td-assignee"><span class="avatar-sm" style="background:var(--chart-3)">BC</span><span class="name">Bob C</span></div></td>
+        <td><div class="td-goal"><span class="goal-dot" style="background:var(--chart-3)"></span><span class="goal-label">Excellence</span></div></td>
+        <td class="td-effort"><span class="effort-chip">M</span></td>
+      </tr>
+      <tr class="data-row c2-content" onclick="selectRow(this)">
+        <td class="td-status"><span class="status-dot backlog"></span></td>
+        <td class="td-title">Data Sync API</td>
+        <td><span class="cycle-pill c2">C2</span></td>
+        <td><div class="td-assignee"><span class="avatar-sm" style="background:var(--chart-4)">DT</span><span class="name">Dev T</span></div></td>
+        <td><div class="td-goal"><span class="goal-dot" style="background:var(--chart-2)"></span><span class="goal-label">Innovation</span></div></td>
+        <td class="td-effort"><span class="effort-chip">M</span></td>
+      </tr>
+      <tr class="data-row c2-content" onclick="selectRow(this)">
+        <td class="td-status"><span class="status-dot backlog"></span></td>
+        <td class="td-title">Bulk Operations</td>
+        <td><span class="cycle-pill c2">C2</span></td>
+        <td><div class="td-assignee"><span class="avatar-sm" style="background:var(--chart-1)">AM</span><span class="name">Alice M</span></div></td>
+        <td><div class="td-goal"><span class="goal-dot" style="background:var(--chart-1)"></span><span class="goal-label">Customer</span></div></td>
+        <td class="td-effort"><span class="effort-chip">L</span></td>
+      </tr>
+
+      <!-- C3 Group — Expanded -->
+      <tr class="group-row" id="group-c3">
+        <td colspan="6">
+          <div class="group-header" onclick="toggleGroup('c3')">
+            <span class="group-chevron open" id="chevron-c3">▶</span>
+            <span class="group-label"><span style="color:var(--text-muted)">○</span> Cycle 3 — Upcoming <span class="group-count">· 6 ideas</span></span>
+            <span class="group-expand-hint" id="hint-c3" style="display:none">▸ Show 6 ideas</span>
+          </div>
+        </td>
+      </tr>
+      <tr class="data-row c3-row c3-content" onclick="selectRow(this)">
+        <td class="td-status"><span class="status-dot backlog"></span></td>
+        <td class="td-title">AI Suggestion Engine</td>
+        <td><span class="cycle-pill c3">C3</span></td>
+        <td><div class="td-assignee"><span class="avatar-sm" style="background:var(--chart-1)">AM</span><span class="name">Alice M</span></div></td>
+        <td><div class="td-goal"><span class="goal-dot" style="background:var(--chart-2)"></span><span class="goal-label">Innovation</span></div></td>
+        <td class="td-effort"><span class="effort-chip">L</span></td>
+      </tr>
+      <tr class="data-row c3-row c3-content" onclick="selectRow(this)">
+        <td class="td-status"><span class="status-dot backlog"></span></td>
+        <td class="td-title">Multi-tenant Auth</td>
+        <td><span class="cycle-pill c3">C3</span></td>
+        <td><div class="td-assignee"><span class="avatar-sm" style="background:var(--chart-3)">BC</span><span class="name">Bob C</span></div></td>
+        <td><div class="td-goal"><span class="goal-dot" style="background:var(--chart-3)"></span><span class="goal-label">Excellence</span></div></td>
+        <td class="td-effort"><span class="effort-chip">L</span></td>
+      </tr>
+      <tr class="data-row c3-row c3-content" onclick="selectRow(this)">
+        <td class="td-status"><span class="status-dot backlog"></span></td>
+        <td class="td-title">Analytics v2</td>
+        <td><span class="cycle-pill c3">C3</span></td>
+        <td><div class="td-assignee"><span class="avatar-sm" style="background:var(--chart-4)">DT</span><span class="name">Dev T</span></div></td>
+        <td><div class="td-goal"><span class="goal-dot" style="background:var(--chart-2)"></span><span class="goal-label">Innovation</span></div></td>
+        <td class="td-effort"><span class="effort-chip">M</span></td>
+      </tr>
+      <tr class="data-row c3-row c3-content" onclick="selectRow(this)">
+        <td class="td-status"><span class="status-dot backlog"></span></td>
+        <td class="td-title">Batch Processing</td>
+        <td><span class="cycle-pill c3">C3</span></td>
+        <td><div class="td-assignee"><span class="avatar-sm" style="background:var(--chart-1)">AM</span><span class="name">Alice M</span></div></td>
+        <td><div class="td-goal"><span class="goal-dot" style="background:var(--chart-2)"></span><span class="goal-label">Innovation</span></div></td>
+        <td class="td-effort"><span class="effort-chip">M</span></td>
+      </tr>
+      <tr class="data-row c3-row c3-content" onclick="selectRow(this)">
+        <td class="td-status"><span class="status-dot backlog"></span></td>
+        <td class="td-title">Compliance Reporting</td>
+        <td><span class="cycle-pill c3">C3</span></td>
+        <td><div class="td-assignee"><span class="avatar-sm" style="background:var(--chart-3)">BC</span><span class="name">Bob C</span></div></td>
+        <td><div class="td-goal"><span class="goal-dot" style="background:var(--chart-3)"></span><span class="goal-label">Excellence</span></div></td>
+        <td class="td-effort"><span class="effort-chip">M</span></td>
+      </tr>
+      <tr class="data-row c3-row c3-content" onclick="selectRow(this)">
+        <td class="td-status"><span class="status-dot backlog"></span></td>
+        <td class="td-title">Customer Feedback Loop</td>
+        <td><span class="cycle-pill c3">C3</span></td>
+        <td><div class="td-assignee"><span class="avatar-sm" style="background:var(--chart-4)">DT</span><span class="name">Dev T</span></div></td>
+        <td><div class="td-goal"><span class="goal-dot" style="background:var(--chart-1)"></span><span class="goal-label">Customer</span></div></td>
+        <td class="td-effort"><span class="effort-chip">S</span></td>
+      </tr>
+
+    </tbody>
+  </table>
+</div>
+
+
+<!-- ═══════════════════════════════════════════
+     TRADEOFFS PANEL
+════════════════════════════════════════════ -->
+<div class="tradeoffs-section">
+  <div class="tradeoffs-title">Design Tradeoffs</div>
+  <table class="tradeoffs-table">
+    <thead>
+      <tr>
+        <th style="width:160px"></th>
+        <th class="opt-col">Option A — Kanban</th>
+        <th class="opt-col">Option B — Swimlanes</th>
+        <th class="opt-col">Option C — Table</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td class="row-label">Best for</td>
+        <td>Drag status updates</td>
+        <td>Cycle health overview</td>
+        <td>Scanning + sorting</td>
+      </tr>
+      <tr>
+        <td class="row-label">Shows titles</td>
+        <td><span class="check">✓</span> On cards</td>
+        <td><span class="check">✓</span> Inline rows</td>
+        <td><span class="check">✓</span> Dedicated column</td>
+      </tr>
+      <tr>
+        <td class="row-label">Cycle context</td>
+        <td>Chip on card</td>
+        <td>Primary structure</td>
+        <td>Grouped rows</td>
+      </tr>
+      <tr>
+        <td class="row-label">Progress visibility</td>
+        <td class="badge-good">Good</td>
+        <td class="badge-best">Best (per-cycle)</td>
+        <td class="badge-good">Good</td>
+      </tr>
+      <tr>
+        <td class="row-label">Status clarity</td>
+        <td class="badge-best">Best (visual columns)</td>
+        <td class="badge-good">Good (cells)</td>
+        <td class="badge-good">Good (dot + row color)</td>
+      </tr>
+      <tr>
+        <td class="row-label">Density</td>
+        <td class="badge-medium">Low (cards)</td>
+        <td class="badge-medium">Medium</td>
+        <td class="badge-best">Highest (rows)</td>
+      </tr>
+      <tr>
+        <td class="row-label">Mobile</td>
+        <td class="badge-poor">Poor (4 cols)</td>
+        <td class="badge-poor">Poor (dense grid)</td>
+        <td class="badge-best">Best (rows scroll)</td>
+      </tr>
+      <tr>
+        <td class="row-label">Sorting / filtering</td>
+        <td class="badge-poor">Not natural</td>
+        <td class="neutral">Limited</td>
+        <td class="badge-best">Native</td>
+      </tr>
+      <tr>
+        <td class="row-label">Build effort</td>
+        <td class="badge-low">Low (exists)</td>
+        <td class="badge-medium">Medium</td>
+        <td class="badge-medium">Medium</td>
+      </tr>
+    </tbody>
+  </table>
+</div>
+
+</div><!-- /.main -->
+
+<!-- FOOTER -->
+<div class="footer">
+  v1.0 &nbsp;|&nbsp; 2026-04-19 &nbsp;|&nbsp; Status: Draft — Execution Layout Options A, B, C
+</div>
+
+<script>
+// Theme toggle
+function setTheme(t) {
+  document.documentElement.setAttribute('data-theme', t);
+  document.getElementById('btn-dark').classList.toggle('active', t === 'dark');
+  document.getElementById('btn-light').classList.toggle('active', t === 'light');
+}
+
+// Option A: Done column toggle
+var doneExpanded = false;
+function toggleDone() {
+  doneExpanded = !doneExpanded;
+  var btn = document.getElementById('done-toggle-btn');
+  var extras = document.querySelectorAll('#done-extra-1, #done-extra-2, #done-extra-3, #done-extra-4');
+  extras.forEach(function(el) {
+    el.classList.toggle('hidden', !doneExpanded);
+  });
+  btn.textContent = doneExpanded ? '− Show less' : '+ 4 more C1 items';
+}
+
+// Option C: Group expand/collapse
+var groupState = { c1: false, c2: true, c3: true };
+
+function toggleGroup(cycle) {
+  groupState[cycle] = !groupState[cycle];
+  var rows = document.querySelectorAll('.' + cycle + '-content');
+  var chevron = document.getElementById('chevron-' + cycle);
+  var hint = document.getElementById('hint-' + cycle);
+  rows.forEach(function(row) {
+    row.classList.toggle('hidden', !groupState[cycle]);
+  });
+  chevron.classList.toggle('open', groupState[cycle]);
+  if (hint) hint.style.display = groupState[cycle] ? 'none' : 'inline';
+}
+
+// Option C: Row selection
+var selectedRow = null;
+function selectRow(row) {
+  if (selectedRow && selectedRow !== row) {
+    selectedRow.classList.remove('selected');
+  }
+  row.classList.toggle('selected');
+  selectedRow = row.classList.contains('selected') ? row : null;
+}
+
+// Initialize group states
+(function() {
+  // C1 collapsed
+  toggleGroup('c1'); // starts false, this sets it to false initially... wait, state starts false
+  // Actually groupState.c1 = false means collapsed, so rows should be hidden
+  // We need to ensure C1 rows start hidden, C2 and C3 start shown
+  // C1 rows have class hidden already? No. Let's handle properly:
+
+  // C1 = collapsed (false) - hide rows
+  var c1rows = document.querySelectorAll('.c1-content');
+  c1rows.forEach(function(r) { r.classList.add('hidden'); });
+  document.getElementById('chevron-c1').classList.remove('open');
+  var hint1 = document.getElementById('hint-c1');
+  if (hint1) hint1.style.display = 'inline';
+
+  // C2 = expanded (true) - rows already visible (no hidden class)
+  document.getElementById('chevron-c2').classList.add('open');
+
+  // C3 = expanded (true) - rows already visible
+  document.getElementById('chevron-c3').classList.add('open');
+})();
+</script>
+
+</body>
+</html>

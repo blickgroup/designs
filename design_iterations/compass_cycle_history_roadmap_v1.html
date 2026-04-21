@@ -1,0 +1,1554 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="dark">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Compass — Cycle Lifecycle: Journeys D & E</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet" />
+  <script src="https://cdn.tailwindcss.com"></script>
+  <style>
+    /* ─── Design Tokens ─────────────────────────────────────────── */
+    :root, [data-theme="dark"] {
+      --primary: #f05323;
+      --primary-hover: #ff6a3d;
+      --bg-page: #1a1a1a;
+      --bg-surface: #2a2a2a;
+      --bg-surface-secondary: #262626;
+      --bg-hover: #3a3a3a;
+      --bg-primary: #212121;
+      --bg-secondary: #2a2a2a;
+      --text-heading: #ffffff;
+      --text-primary: #bcbec0;
+      --text-secondary: #a0a0a0;
+      --text-muted: #707070;
+      --border-default: #58595b;
+      --border-hover: #707070;
+      --button-primary-bg: #f05323;
+      --button-primary-text: #ffffff;
+      --button-secondary-bg: transparent;
+      --button-secondary-text: #bcbec0;
+      --button-secondary-border: #bcbec0;
+      --input-bg: #2a2a2a;
+      --input-border: #58595b;
+      --input-text: #ffffff;
+      --input-placeholder: #a0a0a0;
+      --card-bg: rgba(255,255,255,0.03);
+      --card-border: #58595b;
+      --card-hover-border: #f05323;
+      --success: #10b981;
+      --success-bg: rgba(16,185,129,0.10);
+      --success-border: rgba(16,185,129,0.25);
+      --warning: #f59e0b;
+      --warning-bg: rgba(245,158,11,0.08);
+      --warning-border: rgba(245,158,11,0.20);
+      --danger: #ef4444;
+      --danger-bg: rgba(239,68,68,0.10);
+      --danger-border: rgba(239,68,68,0.25);
+      --info: #4A9EFF;
+      --info-bg: rgba(74,158,255,0.10);
+      --info-border: rgba(74,158,255,0.25);
+      --chart-1: #10b981;
+      --chart-2: #f59e0b;
+      --chart-3: #3b82f6;
+      --chart-4: #8b5cf6;
+      --chart-5: #ec4899;
+      --chart-6: #14b8a6;
+      --chart-7: #f97316;
+      --chart-8: #6366f1;
+      --shadow-lg: 0 10px 15px -3px rgba(0,0,0,0.5);
+    }
+
+    [data-theme="light"] {
+      --primary: #f05323;
+      --primary-hover: #d63911;
+      --bg-page: #f8fafc;
+      --bg-surface: #f9fafb;
+      --bg-surface-secondary: #f1f5f9;
+      --bg-hover: #e5e7eb;
+      --bg-primary: #ffffff;
+      --bg-secondary: #f9fafb;
+      --text-heading: #000000;
+      --text-primary: #111827;
+      --text-secondary: #6b7280;
+      --text-muted: #9ca3af;
+      --border-default: #e5e7eb;
+      --border-hover: #d1d5db;
+      --button-primary-bg: #f05323;
+      --button-primary-text: #ffffff;
+      --button-secondary-bg: transparent;
+      --button-secondary-text: #111827;
+      --button-secondary-border: #d1d5db;
+      --input-bg: #ffffff;
+      --input-border: #d1d5db;
+      --input-text: #111827;
+      --input-placeholder: #9ca3af;
+      --card-bg: rgba(0,0,0,0.02);
+      --card-border: #e5e7eb;
+      --card-hover-border: #f05323;
+      --success: #10b981;
+      --success-bg: rgba(16,185,129,0.10);
+      --success-border: rgba(16,185,129,0.25);
+      --warning: #f59e0b;
+      --warning-bg: rgba(245,158,11,0.08);
+      --warning-border: rgba(245,158,11,0.20);
+      --danger: #ef4444;
+      --danger-bg: rgba(239,68,68,0.10);
+      --danger-border: rgba(239,68,68,0.25);
+      --info: #4A9EFF;
+      --info-bg: rgba(74,158,255,0.10);
+      --info-border: rgba(74,158,255,0.25);
+      --chart-1: #10b981;
+      --chart-2: #f59e0b;
+      --chart-3: #3b82f6;
+      --chart-4: #8b5cf6;
+      --chart-5: #ec4899;
+      --chart-6: #14b8a6;
+      --chart-7: #f97316;
+      --chart-8: #6366f1;
+      --shadow-lg: 0 10px 15px -3px rgba(0,0,0,0.15);
+    }
+
+    /* ─── Base ──────────────────────────────────────────────────── */
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    body {
+      font-family: 'Inter', sans-serif;
+      background: var(--bg-page);
+      color: var(--text-primary);
+      font-size: 13px;
+      line-height: 1.5;
+      min-height: 100vh;
+    }
+
+    /* ─── Top Bar ───────────────────────────────────────────────── */
+    .topbar {
+      position: sticky;
+      top: 0;
+      z-index: 1000;
+      background: var(--bg-primary);
+      border-bottom: 1px solid var(--border-default);
+      padding: 0 20px;
+      height: 44px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 12px;
+    }
+    .topbar-brand {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      font-weight: 700;
+      font-size: 13px;
+      color: var(--text-heading);
+      letter-spacing: -0.01em;
+    }
+    .topbar-brand span { color: var(--primary); }
+    .topbar-meta {
+      font-size: 11px;
+      color: var(--text-muted);
+    }
+    .topbar-controls {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+    .ctrl-btn {
+      padding: 4px 10px;
+      border-radius: 5px;
+      border: 1px solid var(--border-default);
+      background: var(--button-secondary-bg);
+      color: var(--button-secondary-text);
+      font-family: 'Inter', sans-serif;
+      font-size: 11px;
+      font-weight: 500;
+      cursor: pointer;
+      transition: border-color 0.15s, background 0.15s, color 0.15s;
+    }
+    .ctrl-btn:hover { border-color: var(--primary); color: var(--primary); }
+    .ctrl-btn.active { background: var(--primary); color: #fff; border-color: var(--primary); }
+
+    /* ─── Split Layout ──────────────────────────────────────────── */
+    .view-wrapper { display: flex; width: 100%; }
+    .panel {
+      flex: 1;
+      min-width: 0;
+      padding: 28px 24px 48px;
+      overflow-y: auto;
+      position: relative;
+    }
+    .panel-divider {
+      width: 1px;
+      background: var(--border-default);
+      flex-shrink: 0;
+    }
+    .panel-dark { background: var(--bg-page); }
+    .panel-light { background: #f8fafc; }
+    [data-theme="light"] .panel-dark { background: #f8fafc; }
+
+    /* Single panel modes */
+    body.mode-dark .panel-light,
+    body.mode-dark .panel-divider { display: none; }
+    body.mode-light .panel-dark,
+    body.mode-light .panel-divider { display: none; }
+    body.mode-dark .panel-dark,
+    body.mode-light .panel-light { flex: 1; }
+
+    /* ─── Section Headers ───────────────────────────────────────── */
+    .section-label {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      margin-bottom: 20px;
+    }
+    .section-label::before {
+      content: '';
+      display: block;
+      width: 3px;
+      height: 16px;
+      background: var(--primary);
+      border-radius: 2px;
+    }
+    .section-tag {
+      font-size: 10px;
+      font-weight: 700;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      color: var(--text-secondary);
+    }
+    .section-title {
+      font-size: 18px;
+      font-weight: 700;
+      color: var(--text-heading);
+      margin-bottom: 4px;
+      letter-spacing: -0.02em;
+    }
+    .section-desc {
+      font-size: 12px;
+      color: var(--text-muted);
+      margin-bottom: 20px;
+    }
+    .section-divider {
+      border: none;
+      border-top: 1px solid var(--border-default);
+      margin: 36px 0;
+    }
+
+    /* ─── Trigger Button ────────────────────────────────────────── */
+    .btn-primary {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      padding: 7px 14px;
+      background: var(--button-primary-bg);
+      color: var(--button-primary-text);
+      border: none;
+      border-radius: 6px;
+      font-family: 'Inter', sans-serif;
+      font-size: 12px;
+      font-weight: 600;
+      cursor: pointer;
+      transition: background 0.15s;
+    }
+    .btn-primary:hover { background: var(--primary-hover); }
+
+    /* ─── Modal Overlay ─────────────────────────────────────────── */
+    .modal-overlay {
+      position: absolute;
+      inset: 0;
+      background: rgba(0,0,0,0.65);
+      backdrop-filter: blur(4px);
+      z-index: 500;
+      display: none;
+      align-items: flex-start;
+      justify-content: center;
+      padding-top: 64px;
+    }
+    .modal-overlay.open { display: flex; }
+
+    .modal-shell {
+      width: 100%;
+      max-width: 640px;
+      background: var(--bg-surface);
+      border: 1px solid var(--border-default);
+      border-radius: 10px;
+      box-shadow: var(--shadow-lg);
+      overflow: hidden;
+      margin: 0 16px;
+    }
+
+    .modal-header {
+      padding: 16px 20px 0;
+      border-bottom: 1px solid var(--border-default);
+    }
+    .modal-header-row {
+      display: flex;
+      align-items: flex-start;
+      justify-content: space-between;
+      gap: 12px;
+      padding-bottom: 14px;
+    }
+    .modal-title {
+      font-size: 15px;
+      font-weight: 700;
+      color: var(--text-heading);
+      letter-spacing: -0.02em;
+    }
+    .modal-subtitle {
+      font-size: 11px;
+      color: var(--text-muted);
+      margin-top: 2px;
+    }
+    .modal-close {
+      width: 28px;
+      height: 28px;
+      border-radius: 6px;
+      border: 1px solid var(--border-default);
+      background: transparent;
+      color: var(--text-secondary);
+      cursor: pointer;
+      font-size: 14px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-shrink: 0;
+      transition: border-color 0.15s, color 0.15s;
+    }
+    .modal-close:hover { border-color: var(--border-hover); color: var(--text-heading); }
+
+    /* Modal Tabs */
+    .modal-tabs {
+      display: flex;
+      gap: 0;
+      margin-top: 0;
+    }
+    .tab-btn {
+      padding: 8px 16px;
+      border: none;
+      background: transparent;
+      font-family: 'Inter', sans-serif;
+      font-size: 12px;
+      font-weight: 500;
+      color: var(--text-secondary);
+      cursor: pointer;
+      border-bottom: 2px solid transparent;
+      transition: color 0.15s, border-color 0.15s;
+    }
+    .tab-btn:hover { color: var(--text-primary); }
+    .tab-btn.active { color: var(--primary); border-bottom-color: var(--primary); }
+
+    .modal-body { padding: 20px; }
+    .tab-content { display: none; }
+    .tab-content.active { display: block; }
+
+    /* Details Tab */
+    .detail-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 12px;
+      margin-bottom: 16px;
+    }
+    .detail-field label {
+      display: block;
+      font-size: 10px;
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      color: var(--text-muted);
+      margin-bottom: 4px;
+    }
+    .detail-field .field-value {
+      font-size: 12px;
+      color: var(--text-primary);
+      font-weight: 500;
+    }
+    .detail-desc {
+      font-size: 12px;
+      color: var(--text-primary);
+      line-height: 1.6;
+      padding: 10px 12px;
+      background: var(--bg-surface-secondary);
+      border-radius: 6px;
+      border: 1px solid var(--border-default);
+      margin-bottom: 16px;
+    }
+
+    /* Status chips */
+    .chip {
+      display: inline-flex;
+      align-items: center;
+      gap: 4px;
+      padding: 2px 8px;
+      border-radius: 4px;
+      font-size: 10px;
+      font-weight: 600;
+      letter-spacing: 0.03em;
+    }
+    .chip-success { background: var(--success-bg); color: var(--success); border: 1px solid var(--success-border); }
+    .chip-warning { background: var(--warning-bg); color: var(--warning); border: 1px solid var(--warning-border); }
+    .chip-info { background: var(--info-bg); color: var(--info); border: 1px solid var(--info-border); }
+    .chip-muted { background: rgba(255,255,255,0.05); color: var(--text-muted); border: 1px solid var(--border-default); }
+    .chip-primary { background: rgba(240,83,35,0.12); color: var(--primary); border: 1px solid rgba(240,83,35,0.3); }
+
+    /* ─── History Timeline ──────────────────────────────────────── */
+    .timeline {
+      position: relative;
+      padding-left: 28px;
+    }
+    .timeline::before {
+      content: '';
+      position: absolute;
+      left: 8px;
+      top: 10px;
+      bottom: 10px;
+      width: 2px;
+      background: var(--border-default);
+    }
+    .timeline-entry {
+      position: relative;
+      margin-bottom: 16px;
+    }
+    .timeline-entry:last-child { margin-bottom: 0; }
+
+    .timeline-dot {
+      position: absolute;
+      left: -24px;
+      top: 10px;
+      width: 12px;
+      height: 12px;
+      border-radius: 50%;
+      border: 2px solid var(--bg-surface);
+    }
+    .dot-active {
+      background: var(--primary);
+      box-shadow: 0 0 0 3px rgba(240,83,35,0.2);
+      animation: pulse-ring 2s cubic-bezier(0.455, 0.03, 0.515, 0.955) infinite;
+    }
+    .dot-rolled { background: var(--warning); }
+    .dot-past { background: var(--text-muted); }
+
+    @keyframes pulse-ring {
+      0% { box-shadow: 0 0 0 0 rgba(240,83,35,0.4); }
+      70% { box-shadow: 0 0 0 6px rgba(240,83,35,0); }
+      100% { box-shadow: 0 0 0 0 rgba(240,83,35,0); }
+    }
+
+    .timeline-card {
+      background: var(--bg-surface-secondary);
+      border: 1px solid var(--border-default);
+      border-radius: 7px;
+      padding: 10px 12px;
+    }
+    .timeline-card.current {
+      border-left: 3px solid var(--primary);
+    }
+    .timeline-card-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 8px;
+      margin-bottom: 6px;
+    }
+    .timeline-cycle-name {
+      font-size: 12px;
+      font-weight: 700;
+      color: var(--text-heading);
+    }
+    .timeline-date {
+      font-size: 10px;
+      color: var(--text-muted);
+      margin-top: 1px;
+    }
+    .timeline-meta {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      flex-wrap: wrap;
+      margin-top: 6px;
+    }
+    .timeline-meta-item {
+      font-size: 11px;
+      color: var(--text-secondary);
+      display: flex;
+      align-items: center;
+      gap: 4px;
+    }
+    .timeline-note {
+      margin-top: 7px;
+      padding: 6px 8px;
+      background: rgba(255,255,255,0.03);
+      border-radius: 4px;
+      border-left: 2px solid var(--border-default);
+      font-size: 11px;
+      color: var(--text-secondary);
+      line-height: 1.5;
+    }
+    .timeline-note.rolled {
+      border-left-color: var(--warning);
+    }
+    .timeline-line-active {
+      position: absolute;
+      left: -20px;
+      top: 22px;
+      width: 2px;
+      height: calc(100% + 16px);
+      background: var(--primary);
+      opacity: 0.5;
+    }
+    .show-more-link {
+      font-size: 11px;
+      color: var(--text-muted);
+      cursor: pointer;
+      margin-top: 10px;
+      display: block;
+      text-decoration: none;
+    }
+    .show-more-link:hover { color: var(--text-secondary); }
+
+    /* ─── Roadmap ───────────────────────────────────────────────── */
+    .roadmap-header {
+      margin-bottom: 16px;
+    }
+    .roadmap-title {
+      font-size: 18px;
+      font-weight: 700;
+      color: var(--text-heading);
+      letter-spacing: -0.02em;
+    }
+    .filter-bar {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      margin-bottom: 16px;
+      flex-wrap: wrap;
+    }
+    .filter-select {
+      padding: 5px 10px;
+      background: var(--input-bg);
+      border: 1px solid var(--input-border);
+      border-radius: 5px;
+      color: var(--input-text);
+      font-family: 'Inter', sans-serif;
+      font-size: 11px;
+      cursor: pointer;
+      appearance: none;
+      -webkit-appearance: none;
+    }
+    .filter-select::after { content: ' ▾'; }
+    .filter-chip-toggle {
+      padding: 5px 10px;
+      border-radius: 5px;
+      border: 1px solid var(--border-default);
+      background: transparent;
+      color: var(--text-secondary);
+      font-family: 'Inter', sans-serif;
+      font-size: 11px;
+      cursor: pointer;
+      transition: all 0.15s;
+    }
+    .filter-chip-toggle:hover { border-color: var(--primary); color: var(--primary); }
+    .filter-chip-toggle.on { background: rgba(240,83,35,0.12); border-color: var(--primary); color: var(--primary); }
+
+    /* Quarter grid */
+    .quarter-grid {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 14px;
+    }
+
+    .quarter-col {
+      display: flex;
+      flex-direction: column;
+      gap: 0;
+    }
+    .quarter-header {
+      padding: 10px 12px;
+      border-radius: 7px 7px 0 0;
+      border: 1px solid var(--border-default);
+      border-bottom: none;
+      background: var(--bg-surface);
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 6px;
+    }
+    .quarter-name {
+      font-size: 12px;
+      font-weight: 700;
+      color: var(--text-heading);
+    }
+    .quarter-dates {
+      font-size: 10px;
+      color: var(--text-muted);
+      margin-top: 1px;
+    }
+
+    .quarter-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 4px;
+      padding: 2px 7px;
+      border-radius: 10px;
+      font-size: 9px;
+      font-weight: 700;
+      letter-spacing: 0.04em;
+      white-space: nowrap;
+    }
+    .badge-active { background: var(--success-bg); color: var(--success); border: 1px solid var(--success-border); }
+    .badge-published { background: var(--info-bg); color: var(--info); border: 1px solid var(--info-border); }
+    .badge-draft { background: rgba(255,255,255,0.04); color: var(--text-muted); border: 1px solid var(--border-default); }
+
+    .quarter-cycles {
+      border: 1px solid var(--border-default);
+      border-radius: 0 0 7px 7px;
+      overflow: hidden;
+      background: var(--bg-surface-secondary);
+    }
+
+    /* Cycle row card */
+    .cycle-row {
+      padding: 8px 10px;
+      border-bottom: 1px solid var(--border-default);
+      cursor: pointer;
+      transition: background 0.12s, border-color 0.12s;
+      position: relative;
+    }
+    .cycle-row:last-of-type { border-bottom: none; }
+    .cycle-row:hover { background: var(--bg-hover); }
+    .cycle-row.future { opacity: 0.55; }
+    .cycle-row::before {
+      content: '';
+      position: absolute;
+      left: 0; top: 0; bottom: 0;
+      width: 3px;
+      background: transparent;
+      transition: background 0.12s;
+    }
+    .cycle-row:hover::before { background: var(--primary); }
+    .cycle-row.cycle-active::before { background: var(--primary); }
+
+    .cycle-row-top {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 4px;
+      margin-bottom: 5px;
+    }
+    .cycle-row-title {
+      font-size: 11px;
+      font-weight: 600;
+      color: var(--text-primary);
+    }
+    .expand-toggle {
+      font-size: 9px;
+      color: var(--text-muted);
+      background: none;
+      border: none;
+      cursor: pointer;
+      font-family: 'Inter', sans-serif;
+      transition: color 0.12s;
+      white-space: nowrap;
+      padding: 2px 4px;
+    }
+    .expand-toggle:hover { color: var(--primary); }
+
+    .cycle-chips {
+      display: flex;
+      align-items: center;
+      gap: 4px;
+      flex-wrap: wrap;
+    }
+    .stat-chip {
+      display: inline-flex;
+      align-items: center;
+      gap: 2px;
+      padding: 1px 5px;
+      border-radius: 3px;
+      font-size: 10px;
+      font-weight: 500;
+      border: 1px solid var(--border-default);
+      background: rgba(255,255,255,0.03);
+      color: var(--text-secondary);
+    }
+    .stat-chip.done { color: var(--success); border-color: var(--success-border); background: var(--success-bg); }
+    .stat-chip.fire { color: var(--warning); border-color: var(--warning-border); background: var(--warning-bg); }
+    .stat-chip.wip { color: var(--info); border-color: var(--info-border); background: var(--info-bg); }
+    .carried-tag {
+      font-size: 9px;
+      color: var(--text-muted);
+      margin-left: 2px;
+    }
+
+    /* Dashed placeholder cycle */
+    .cycle-row-placeholder {
+      padding: 10px;
+      border-bottom: 1px dashed var(--border-default);
+      text-align: center;
+    }
+    .cycle-row-placeholder:last-child { border-bottom: none; }
+    .placeholder-inner {
+      border: 1px dashed var(--border-default);
+      border-radius: 5px;
+      padding: 8px;
+      color: var(--text-muted);
+      font-size: 10px;
+    }
+
+    /* Quarter footer links */
+    .quarter-footer {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      padding: 6px 2px 0;
+    }
+    .quarter-footer a {
+      font-size: 10px;
+      color: var(--primary);
+      text-decoration: none;
+      cursor: pointer;
+    }
+    .quarter-footer a:hover { color: var(--primary-hover); }
+
+    /* Inline expanded ideas */
+    .ideas-list {
+      max-height: 0;
+      overflow: hidden;
+      transition: max-height 0.25s ease;
+    }
+    .ideas-list.open { max-height: 300px; }
+    .idea-row {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      padding: 4px 0 4px 0;
+      border-top: 1px solid var(--border-default);
+    }
+    .idea-dot {
+      width: 7px;
+      height: 7px;
+      border-radius: 50%;
+      flex-shrink: 0;
+    }
+    .idea-name {
+      flex: 1;
+      font-size: 11px;
+      color: var(--text-primary);
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+    .idea-assignee {
+      width: 18px;
+      height: 18px;
+      border-radius: 50%;
+      background: var(--bg-hover);
+      border: 1px solid var(--border-default);
+      font-size: 9px;
+      font-weight: 700;
+      color: var(--text-secondary);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-shrink: 0;
+    }
+    .ideas-more {
+      font-size: 10px;
+      color: var(--primary);
+      padding: 3px 0;
+      cursor: pointer;
+      border-top: 1px solid var(--border-default);
+    }
+
+    /* ─── Comparison Table ──────────────────────────────────────── */
+    .compare-table {
+      width: 100%;
+      border-collapse: collapse;
+      border-radius: 8px;
+      overflow: hidden;
+      border: 1px solid var(--border-default);
+    }
+    .compare-table th,
+    .compare-table td {
+      padding: 9px 14px;
+      text-align: left;
+      font-size: 12px;
+      border-bottom: 1px solid var(--border-default);
+    }
+    .compare-table tr:last-child th,
+    .compare-table tr:last-child td { border-bottom: none; }
+    .compare-table thead th {
+      background: var(--bg-surface);
+      font-weight: 700;
+      font-size: 11px;
+      color: var(--text-heading);
+      letter-spacing: 0.02em;
+    }
+    .compare-table tbody tr { background: var(--bg-surface-secondary); }
+    .compare-table tbody tr:nth-child(even) { background: var(--bg-surface); }
+    .compare-table td:first-child {
+      font-weight: 600;
+      color: var(--text-secondary);
+      font-size: 11px;
+    }
+    .compare-table td:not(:first-child) { color: var(--text-primary); }
+
+    /* ─── Option label ──────────────────────────────────────────── */
+    .option-label {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      padding: 5px 12px 5px 8px;
+      background: rgba(240,83,35,0.08);
+      border: 1px solid rgba(240,83,35,0.25);
+      border-radius: 5px;
+      margin-bottom: 10px;
+    }
+    .option-label-badge {
+      font-size: 10px;
+      font-weight: 800;
+      color: var(--primary);
+      text-transform: uppercase;
+      letter-spacing: 0.06em;
+    }
+    .option-label-text {
+      font-size: 11px;
+      color: var(--text-primary);
+      font-weight: 500;
+    }
+
+    /* ─── Version Footer ────────────────────────────────────────── */
+    .version-footer {
+      text-align: center;
+      padding: 16px;
+      font-size: 10px;
+      color: var(--text-muted);
+      border-top: 1px solid var(--border-default);
+      margin-top: 24px;
+    }
+
+    /* ─── Light panel overrides ─────────────────────────────────── */
+    .panel-light .modal-shell { box-shadow: 0 10px 30px rgba(0,0,0,0.12); }
+  </style>
+</head>
+<body class="mode-split">
+
+<!-- ─── Top Bar ──────────────────────────────────────────────── -->
+<div class="topbar">
+  <div class="topbar-brand">
+    <span>Compass</span> — Cycle Lifecycle
+    <span style="color: var(--border-default); font-weight:300">·</span>
+    <span style="color: var(--text-muted); font-weight:400">Journeys D &amp; E</span>
+  </div>
+  <div class="topbar-meta">Mockup · v1.0 · 2026-04-18</div>
+  <div class="topbar-controls">
+    <button class="ctrl-btn active" id="btn-split" onclick="setMode('split')">Split</button>
+    <button class="ctrl-btn" id="btn-dark" onclick="setMode('dark')">Dark</button>
+    <button class="ctrl-btn" id="btn-light" onclick="setMode('light')">Light</button>
+  </div>
+</div>
+
+<!-- ─── Panel Wrapper ────────────────────────────────────────── -->
+<div class="view-wrapper">
+
+  <!-- ══════════ DARK PANEL ══════════════════════════════════════ -->
+  <div class="panel panel-dark" id="panel-dark">
+    <PanelContent data-panel="dark"></PanelContent>
+  </div>
+
+  <div class="panel-divider"></div>
+
+  <!-- ══════════ LIGHT PANEL ════════════════════════════════════ -->
+  <div class="panel panel-light" id="panel-light">
+    <PanelContent data-panel="light"></PanelContent>
+  </div>
+
+</div>
+
+<!-- ─── Version Footer ───────────────────────────────────────── -->
+<div class="version-footer">v1.0 | 2026-04-18 | Status: Draft — Journeys D, E (Options A &amp; B)</div>
+
+
+<!-- ─── Shared Template (cloned into each panel) ────────────── -->
+<template id="panel-template">
+
+  <!-- ====================================================
+       SECTION 1 — Journey D: Idea History
+  ===================================================== -->
+  <div class="section-label">
+    <div>
+      <div class="section-tag">Journey D</div>
+    </div>
+  </div>
+  <div class="section-title">Idea Lifecycle History</div>
+  <p class="section-desc">IdeaDetailModal with enhanced History tab — track where an idea has been across cycles.</p>
+
+  <button class="btn-primary open-modal-btn">
+    <svg width="13" height="13" viewBox="0 0 16 16" fill="none"><rect x="2" y="2" width="12" height="12" rx="2" stroke="currentColor" stroke-width="1.5"/><path d="M8 5v6M5 8h6" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg>
+    View Idea — Analytics Dashboard
+  </button>
+
+  <!-- Modal Overlay (absolute within panel) -->
+  <div class="modal-overlay">
+    <div class="modal-shell">
+      <!-- Modal Header -->
+      <div class="modal-header">
+        <div class="modal-header-row">
+          <div>
+            <div class="modal-title">Analytics Dashboard</div>
+            <div class="modal-subtitle">Idea · Q2 2026 · Currently in Cycle 3</div>
+          </div>
+          <button class="modal-close close-modal-btn">×</button>
+        </div>
+        <!-- Tab Bar -->
+        <div class="modal-tabs">
+          <button class="tab-btn active" data-tab="details">Details</button>
+          <button class="tab-btn" data-tab="history">History</button>
+        </div>
+      </div>
+
+      <!-- Modal Body -->
+      <div class="modal-body">
+
+        <!-- ── Details Tab ─────────────────────────────────── -->
+        <div class="tab-content active" data-tab-content="details">
+          <div class="detail-desc">
+            Build a real-time analytics dashboard showing rig utilisation, job completion rates, and revenue KPIs. Targets ops and finance leads as primary consumers.
+          </div>
+          <div class="detail-grid">
+            <div class="detail-field">
+              <label>Goal</label>
+              <div class="field-value">
+                <span class="chip chip-info">● Operational Excellence</span>
+              </div>
+            </div>
+            <div class="detail-field">
+              <label>Status</label>
+              <div class="field-value">
+                <span class="chip chip-warning">In Progress</span>
+              </div>
+            </div>
+            <div class="detail-field">
+              <label>Effort</label>
+              <div class="field-value">🔥 High effort</div>
+            </div>
+            <div class="detail-field">
+              <label>Assignee</label>
+              <div class="field-value">Bob Chen</div>
+            </div>
+            <div class="detail-field">
+              <label>Current Cycle</label>
+              <div class="field-value">C3 · Jun 1–30, 2026</div>
+            </div>
+            <div class="detail-field">
+              <label>Times Rolled</label>
+              <div class="field-value" style="color: var(--warning);">2 rolls</div>
+            </div>
+          </div>
+          <div style="display:flex; gap:8px; margin-top:4px;">
+            <button class="ctrl-btn">Edit</button>
+            <button class="ctrl-btn">Move to Cycle</button>
+            <button class="btn-primary" style="margin-left:auto;">Mark Complete</button>
+          </div>
+        </div>
+
+        <!-- ── History Tab ─────────────────────────────────── -->
+        <div class="tab-content" data-tab-content="history">
+          <div style="display:flex; align-items:center; justify-content:space-between; margin-bottom:14px;">
+            <div style="font-size:11px; color:var(--text-muted);">3 cycle appearances · First added Apr 2026</div>
+            <span class="chip chip-primary">2 rolls</span>
+          </div>
+
+          <div class="timeline">
+
+            <!-- Entry 3 — Current / Active -->
+            <div class="timeline-entry">
+              <div class="timeline-dot dot-active"></div>
+              <div class="timeline-card current">
+                <div class="timeline-card-header">
+                  <div>
+                    <div class="timeline-cycle-name">Q2 2026 · Cycle 3 <span style="font-weight:400; color:var(--text-muted)">· Current</span></div>
+                    <div class="timeline-date">Jun 1 – Jun 30, 2026</div>
+                  </div>
+                  <span class="chip chip-warning">In Progress</span>
+                </div>
+                <div class="timeline-meta">
+                  <div class="timeline-meta-item">
+                    <span style="color:var(--text-muted)">👤</span> Bob Chen
+                  </div>
+                  <div class="timeline-meta-item">
+                    <span style="color:var(--text-muted)">🎯</span> Operational Excellence
+                  </div>
+                  <div class="timeline-meta-item">
+                    <span style="color:var(--text-muted)">🔥</span> High effort
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <!-- Entry 2 — Rolled -->
+            <div class="timeline-entry">
+              <div class="timeline-dot dot-rolled"></div>
+              <div class="timeline-card">
+                <div class="timeline-card-header">
+                  <div>
+                    <div class="timeline-cycle-name">Q2 2026 · Cycle 2</div>
+                    <div class="timeline-date">May 1 – May 31, 2026</div>
+                  </div>
+                  <span class="chip chip-muted">↗ Rolled to C3</span>
+                </div>
+                <div class="timeline-meta">
+                  <div class="timeline-meta-item">
+                    <span style="color:var(--text-muted)">👤</span> Bob Chen
+                  </div>
+                  <div class="timeline-meta-item">
+                    <span style="color:var(--text-muted)">🔥</span> High effort
+                  </div>
+                </div>
+                <div class="timeline-note rolled">
+                  ↗ Rolled: Auth API dependency not resolved before cycle close.
+                </div>
+              </div>
+            </div>
+
+            <!-- Entry 1 — Past/Partial -->
+            <div class="timeline-entry">
+              <div class="timeline-dot dot-past"></div>
+              <div class="timeline-card">
+                <div class="timeline-card-header">
+                  <div>
+                    <div class="timeline-cycle-name">Q2 2026 · Cycle 1</div>
+                    <div class="timeline-date">Apr 1 – Apr 30, 2026</div>
+                  </div>
+                  <span class="chip chip-muted">In Progress → Rolled</span>
+                </div>
+                <div class="timeline-meta">
+                  <div class="timeline-meta-item">
+                    <span style="color:var(--text-muted)">👤</span> Alice M.
+                  </div>
+                  <div class="timeline-meta-item">
+                    <span style="color:var(--text-muted)">🔥</span> High effort
+                  </div>
+                </div>
+                <div class="timeline-note">
+                  Started design phase, blocked waiting on Platform team. Reassigned to Bob Chen for C2.
+                </div>
+              </div>
+            </div>
+
+          </div><!-- /timeline -->
+
+          <a href="#" class="show-more-link">Show earlier cycles ↓</a>
+        </div><!-- /history tab -->
+
+      </div><!-- /modal-body -->
+    </div><!-- /modal-shell -->
+  </div><!-- /modal-overlay -->
+
+  <hr class="section-divider" />
+
+  <!-- ====================================================
+       SECTION 2 — Journey E Option A: Stat Chips Only
+  ===================================================== -->
+  <div class="section-label">
+    <div>
+      <div class="section-tag">Journey E · Roadmap View</div>
+    </div>
+  </div>
+  <div class="section-title" style="margin-bottom:4px;">Q2 2026 — Q1 2027</div>
+
+  <div class="option-label" style="margin-top:10px;">
+    <span class="option-label-badge">Option A</span>
+    <span class="option-label-text">Stat Chips Only</span>
+  </div>
+  <p class="section-desc" style="margin-bottom:14px;">Clean, fast-to-scan. Click any cycle row to see ideas.</p>
+
+  <!-- Filter Bar -->
+  <div class="filter-bar">
+    <select class="filter-select"><option>All Goals ▾</option><option>Operational Excellence</option><option>Revenue Growth</option><option>Team</option></select>
+    <select class="filter-select"><option>All Statuses ▾</option><option>Active</option><option>Draft</option><option>Published</option></select>
+    <button class="filter-chip-toggle option-a-carried">Carried items only</button>
+  </div>
+
+  <!-- Quarter Grid — Option A -->
+  <div class="quarter-grid option-a-grid">
+
+    <!-- Q2 2026 — Active -->
+    <div class="quarter-col">
+      <div class="quarter-header">
+        <div>
+          <div class="quarter-name">Q2 2026</div>
+          <div class="quarter-dates">Apr – Jun</div>
+        </div>
+        <span class="quarter-badge badge-active">● Active</span>
+      </div>
+      <div class="quarter-cycles">
+        <!-- C1 -->
+        <div class="cycle-row">
+          <div class="cycle-row-top">
+            <span class="cycle-row-title">C1 · Apr 1–30</span>
+          </div>
+          <div class="cycle-chips">
+            <span class="stat-chip done">✓ 5</span>
+            <span class="stat-chip fire">🔥 2</span>
+            <span class="stat-chip wip">🚧 1</span>
+            <span class="stat-chip">📋 1</span>
+            <span class="carried-tag">↗ 0 carried</span>
+          </div>
+        </div>
+        <!-- C2 active -->
+        <div class="cycle-row cycle-active">
+          <div class="cycle-row-top">
+            <span class="cycle-row-title">C2 · May 1–31</span>
+            <span class="chip chip-warning" style="font-size:9px; padding: 1px 6px;">Active</span>
+          </div>
+          <div class="cycle-chips">
+            <span class="stat-chip done">✓ 1</span>
+            <span class="stat-chip fire">🔥 4</span>
+            <span class="stat-chip wip">🚧 0</span>
+            <span class="stat-chip">📋 2</span>
+          </div>
+        </div>
+        <!-- C3 future -->
+        <div class="cycle-row future">
+          <div class="cycle-row-top">
+            <span class="cycle-row-title">C3 · Jun 1–30</span>
+            <span style="font-size:9px; color:var(--text-muted);">Upcoming</span>
+          </div>
+          <div class="cycle-chips">
+            <span class="stat-chip done">✓ 0</span>
+            <span class="stat-chip fire">🔥 0</span>
+            <span class="stat-chip wip">🚧 0</span>
+            <span class="stat-chip">📋 6</span>
+          </div>
+        </div>
+      </div>
+      <div class="quarter-footer">
+        <a href="#">Execution →</a>
+        <a href="#">Planning →</a>
+      </div>
+    </div>
+
+    <!-- Q3 2026 — Published -->
+    <div class="quarter-col">
+      <div class="quarter-header">
+        <div>
+          <div class="quarter-name">Q3 2026</div>
+          <div class="quarter-dates">Jul – Sep</div>
+        </div>
+        <span class="quarter-badge badge-published">○ Published</span>
+      </div>
+      <div class="quarter-cycles">
+        <div class="cycle-row">
+          <div class="cycle-row-top">
+            <span class="cycle-row-title">C1 · Jul 1–31</span>
+          </div>
+          <div class="cycle-chips">
+            <span class="stat-chip done">✓ 0</span>
+            <span class="stat-chip fire">🔥 0</span>
+            <span class="stat-chip wip">🚧 0</span>
+            <span class="stat-chip">📋 4</span>
+            <span class="carried-tag">↗ 2 from Q2</span>
+          </div>
+        </div>
+        <div class="cycle-row">
+          <div class="cycle-row-top">
+            <span class="cycle-row-title">C2 · Aug 1–31</span>
+          </div>
+          <div class="cycle-chips">
+            <span class="stat-chip done">✓ 0</span>
+            <span class="stat-chip fire">🔥 0</span>
+            <span class="stat-chip wip">🚧 0</span>
+            <span class="stat-chip">📋 5</span>
+          </div>
+        </div>
+        <div class="cycle-row">
+          <div class="cycle-row-top">
+            <span class="cycle-row-title">C3 · Sep 1–30</span>
+          </div>
+          <div class="cycle-chips">
+            <span class="stat-chip done">✓ 0</span>
+            <span class="stat-chip fire">🔥 0</span>
+            <span class="stat-chip wip">🚧 0</span>
+            <span class="stat-chip">📋 3</span>
+          </div>
+        </div>
+      </div>
+      <div class="quarter-footer">
+        <a href="#">Execution →</a>
+        <a href="#">Planning →</a>
+      </div>
+    </div>
+
+    <!-- Q4 2026 — Draft -->
+    <div class="quarter-col">
+      <div class="quarter-header">
+        <div>
+          <div class="quarter-name">Q4 2026</div>
+          <div class="quarter-dates">Oct – Dec</div>
+        </div>
+        <span class="quarter-badge badge-draft">○ Draft</span>
+      </div>
+      <div class="quarter-cycles">
+        <div class="cycle-row-placeholder"><div class="placeholder-inner">Oct 1–31<br/>No plan yet</div></div>
+        <div class="cycle-row-placeholder"><div class="placeholder-inner">Nov 1–30<br/>No plan yet</div></div>
+        <div class="cycle-row-placeholder"><div class="placeholder-inner">Dec 1–31<br/>No plan yet</div></div>
+      </div>
+      <div class="quarter-footer">
+        <a href="#">Execution →</a>
+        <a href="#">Planning →</a>
+      </div>
+    </div>
+
+    <!-- Q1 2027 — Draft -->
+    <div class="quarter-col">
+      <div class="quarter-header">
+        <div>
+          <div class="quarter-name">Q1 2027</div>
+          <div class="quarter-dates">Jan – Mar</div>
+        </div>
+        <span class="quarter-badge badge-draft">○ Draft</span>
+      </div>
+      <div class="quarter-cycles">
+        <div class="cycle-row-placeholder"><div class="placeholder-inner">Jan 1–31<br/>No plan yet</div></div>
+        <div class="cycle-row-placeholder"><div class="placeholder-inner">Feb 1–28<br/>No plan yet</div></div>
+        <div class="cycle-row-placeholder"><div class="placeholder-inner">Mar 1–31<br/>No plan yet</div></div>
+      </div>
+      <div class="quarter-footer">
+        <a href="#">Execution →</a>
+        <a href="#">Planning →</a>
+      </div>
+    </div>
+
+  </div><!-- /option-a-grid -->
+
+  <hr class="section-divider" />
+
+  <!-- ====================================================
+       SECTION 3 — Journey E Option B: Collapsible Idea Titles
+  ===================================================== -->
+  <div class="option-label">
+    <span class="option-label-badge">Option B</span>
+    <span class="option-label-text">Collapsible Idea Titles</span>
+  </div>
+  <p class="section-desc" style="margin-bottom:14px;">More detail visible upfront. Expand any cycle to see its ideas inline.</p>
+
+  <!-- Filter Bar -->
+  <div class="filter-bar">
+    <select class="filter-select"><option>All Goals ▾</option><option>Operational Excellence</option><option>Revenue Growth</option></select>
+    <select class="filter-select"><option>All Statuses ▾</option><option>Active</option><option>Draft</option></select>
+    <button class="filter-chip-toggle option-b-carried">Carried items only</button>
+  </div>
+
+  <!-- Quarter Grid — Option B -->
+  <div class="quarter-grid option-b-grid">
+
+    <!-- Q2 2026 — Active (C2 expanded by default) -->
+    <div class="quarter-col">
+      <div class="quarter-header">
+        <div>
+          <div class="quarter-name">Q2 2026</div>
+          <div class="quarter-dates">Apr – Jun</div>
+        </div>
+        <span class="quarter-badge badge-active">● Active</span>
+      </div>
+      <div class="quarter-cycles">
+        <!-- C1 collapsed -->
+        <div class="cycle-row expandable-row">
+          <div class="cycle-row-top">
+            <span class="cycle-row-title">C1 · Apr 1–30 · 9 ideas</span>
+            <button class="expand-toggle expand-btn">▸ Show ideas</button>
+          </div>
+          <div class="cycle-chips">
+            <span class="stat-chip done">✓ 5</span>
+            <span class="stat-chip fire">🔥 2</span>
+            <span class="stat-chip wip">🚧 1</span>
+            <span class="stat-chip">📋 1</span>
+          </div>
+          <div class="ideas-list">
+            <div class="idea-row"><span class="idea-dot" style="background:var(--chart-3)"></span><span class="idea-name">Analytics Dashboard</span><div class="idea-assignee">B</div><span class="chip chip-success" style="font-size:9px">✓</span></div>
+            <div class="idea-row"><span class="idea-dot" style="background:var(--chart-1)"></span><span class="idea-name">Customer Portal v2</span><div class="idea-assignee">A</div><span class="chip chip-success" style="font-size:9px">✓</span></div>
+            <div class="idea-row"><span class="idea-dot" style="background:var(--chart-4)"></span><span class="idea-name">API Gateway Setup</span><div class="idea-assignee">C</div><span class="chip chip-muted" style="font-size:9px">📋</span></div>
+          </div>
+        </div>
+        <!-- C2 expanded by default -->
+        <div class="cycle-row cycle-active expandable-row" data-expanded="true">
+          <div class="cycle-row-top">
+            <span class="cycle-row-title">C2 · May 1–31 · 7 ideas</span>
+            <button class="expand-toggle expand-btn">▾ Hide ideas</button>
+          </div>
+          <div class="cycle-chips">
+            <span class="stat-chip done">✓ 1</span>
+            <span class="stat-chip fire">🔥 4</span>
+            <span class="stat-chip wip">🚧 0</span>
+            <span class="stat-chip">📋 2</span>
+          </div>
+          <div class="ideas-list open">
+            <div class="idea-row"><span class="idea-dot" style="background:var(--chart-3)"></span><span class="idea-name">Analytics Dashboard</span><div class="idea-assignee">B</div><span class="chip chip-warning" style="font-size:9px">🔥</span></div>
+            <div class="idea-row"><span class="idea-dot" style="background:var(--chart-2)"></span><span class="idea-name">Customer Portal</span><div class="idea-assignee">A</div><span class="chip chip-warning" style="font-size:9px">🔥</span></div>
+            <div class="idea-row"><span class="idea-dot" style="background:var(--chart-4)"></span><span class="idea-name">API Gateway</span><div class="idea-assignee">C</div><span class="chip chip-muted" style="font-size:9px">📋</span></div>
+            <div class="idea-row"><span class="idea-dot" style="background:var(--chart-1)"></span><span class="idea-name">Mobile Field App</span><div class="idea-assignee">D</div><span class="chip chip-warning" style="font-size:9px">🔥</span></div>
+            <div class="idea-row"><span class="idea-dot" style="background:var(--chart-5)"></span><span class="idea-name">Reporting Engine</span><div class="idea-assignee">E</div><span class="chip chip-warning" style="font-size:9px">🔥</span></div>
+            <div class="ideas-more">+ 2 more ideas</div>
+          </div>
+        </div>
+        <!-- C3 collapsed -->
+        <div class="cycle-row future expandable-row">
+          <div class="cycle-row-top">
+            <span class="cycle-row-title">C3 · Jun 1–30 · 6 ideas</span>
+            <button class="expand-toggle expand-btn">▸ Show ideas</button>
+          </div>
+          <div class="cycle-chips">
+            <span class="stat-chip done">✓ 0</span>
+            <span class="stat-chip fire">🔥 0</span>
+            <span class="stat-chip wip">🚧 0</span>
+            <span class="stat-chip">📋 6</span>
+          </div>
+          <div class="ideas-list"></div>
+        </div>
+      </div>
+      <div class="quarter-footer">
+        <a href="#">Execution →</a>
+        <a href="#">Planning →</a>
+      </div>
+    </div>
+
+    <!-- Q3 2026 -->
+    <div class="quarter-col">
+      <div class="quarter-header">
+        <div>
+          <div class="quarter-name">Q3 2026</div>
+          <div class="quarter-dates">Jul – Sep</div>
+        </div>
+        <span class="quarter-badge badge-published">○ Published</span>
+      </div>
+      <div class="quarter-cycles">
+        <div class="cycle-row expandable-row">
+          <div class="cycle-row-top">
+            <span class="cycle-row-title">C1 · Jul 1–31 · 4 ideas</span>
+            <button class="expand-toggle expand-btn">▸ Show ideas</button>
+          </div>
+          <div class="cycle-chips">
+            <span class="stat-chip">📋 4</span>
+            <span class="carried-tag">↗ 2 from Q2</span>
+          </div>
+          <div class="ideas-list"></div>
+        </div>
+        <div class="cycle-row expandable-row">
+          <div class="cycle-row-top">
+            <span class="cycle-row-title">C2 · Aug 1–31 · 5 ideas</span>
+            <button class="expand-toggle expand-btn">▸ Show ideas</button>
+          </div>
+          <div class="cycle-chips">
+            <span class="stat-chip">📋 5</span>
+          </div>
+          <div class="ideas-list"></div>
+        </div>
+        <div class="cycle-row expandable-row">
+          <div class="cycle-row-top">
+            <span class="cycle-row-title">C3 · Sep 1–30 · 3 ideas</span>
+            <button class="expand-toggle expand-btn">▸ Show ideas</button>
+          </div>
+          <div class="cycle-chips">
+            <span class="stat-chip">📋 3</span>
+          </div>
+          <div class="ideas-list"></div>
+        </div>
+      </div>
+      <div class="quarter-footer">
+        <a href="#">Execution →</a>
+        <a href="#">Planning →</a>
+      </div>
+    </div>
+
+    <!-- Q4 2026 Draft -->
+    <div class="quarter-col">
+      <div class="quarter-header">
+        <div>
+          <div class="quarter-name">Q4 2026</div>
+          <div class="quarter-dates">Oct – Dec</div>
+        </div>
+        <span class="quarter-badge badge-draft">○ Draft</span>
+      </div>
+      <div class="quarter-cycles">
+        <div class="cycle-row-placeholder"><div class="placeholder-inner">Oct 1–31<br/>No plan yet</div></div>
+        <div class="cycle-row-placeholder"><div class="placeholder-inner">Nov 1–30<br/>No plan yet</div></div>
+        <div class="cycle-row-placeholder"><div class="placeholder-inner">Dec 1–31<br/>No plan yet</div></div>
+      </div>
+      <div class="quarter-footer">
+        <a href="#">Execution →</a>
+        <a href="#">Planning →</a>
+      </div>
+    </div>
+
+    <!-- Q1 2027 Draft -->
+    <div class="quarter-col">
+      <div class="quarter-header">
+        <div>
+          <div class="quarter-name">Q1 2027</div>
+          <div class="quarter-dates">Jan – Mar</div>
+        </div>
+        <span class="quarter-badge badge-draft">○ Draft</span>
+      </div>
+      <div class="quarter-cycles">
+        <div class="cycle-row-placeholder"><div class="placeholder-inner">Jan 1–31<br/>No plan yet</div></div>
+        <div class="cycle-row-placeholder"><div class="placeholder-inner">Feb 1–28<br/>No plan yet</div></div>
+        <div class="cycle-row-placeholder"><div class="placeholder-inner">Mar 1–31<br/>No plan yet</div></div>
+      </div>
+      <div class="quarter-footer">
+        <a href="#">Execution →</a>
+        <a href="#">Planning →</a>
+      </div>
+    </div>
+
+  </div><!-- /option-b-grid -->
+
+  <hr class="section-divider" />
+
+  <!-- ====================================================
+       SECTION 4 — Option Comparison Panel
+  ===================================================== -->
+  <div class="section-label">
+    <div>
+      <div class="section-tag">Design Decision</div>
+    </div>
+  </div>
+  <div class="section-title" style="margin-bottom:12px;">Option Comparison</div>
+
+  <table class="compare-table">
+    <thead>
+      <tr>
+        <th style="width:32%">Dimension</th>
+        <th style="width:34%">Option A — Stat Chips Only</th>
+        <th style="width:34%">Option B — Collapsible Titles</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td>Information density</td>
+        <td>Low — summary only</td>
+        <td>High — titles visible on expand</td>
+      </tr>
+      <tr>
+        <td>Scanability</td>
+        <td>Faster — numbers only</td>
+        <td>Slower — reads idea titles</td>
+      </tr>
+      <tr>
+        <td>Best for</td>
+        <td>Quick status overview</td>
+        <td>Understanding what's planned</td>
+      </tr>
+      <tr>
+        <td>Mobile</td>
+        <td>Excellent</td>
+        <td>Challenging (lists compress)</td>
+      </tr>
+      <tr>
+        <td>Build effort</td>
+        <td>Lower</td>
+        <td>Higher (expand/collapse logic)</td>
+      </tr>
+    </tbody>
+  </table>
+
+</template>
+
+
+<script>
+  // ─── Inject template into both panels ───────────────────────────
+  function injectPanels() {
+    const tpl = document.getElementById('panel-template');
+
+    ['panel-dark', 'panel-light'].forEach(panelId => {
+      const panel = document.getElementById(panelId);
+      // Remove placeholder PanelContent tag
+      panel.querySelectorAll('PanelContent').forEach(el => el.remove());
+      const clone = tpl.content.cloneNode(true);
+      panel.appendChild(clone);
+    });
+  }
+  injectPanels();
+
+  // ─── Wire up all interactive elements ───────────────────────────
+  function wirePanel(panel) {
+    const themeAttr = panel.classList.contains('panel-dark') ? 'dark' : 'light';
+    panel.setAttribute('data-theme', themeAttr);
+
+    // Modal open/close
+    const openBtn = panel.querySelector('.open-modal-btn');
+    const overlay = panel.querySelector('.modal-overlay');
+    const closeBtn = panel.querySelector('.close-modal-btn');
+
+    if (openBtn && overlay && closeBtn) {
+      openBtn.addEventListener('click', () => overlay.classList.add('open'));
+      closeBtn.addEventListener('click', () => overlay.classList.remove('open'));
+      overlay.addEventListener('click', e => {
+        if (e.target === overlay) overlay.classList.remove('open');
+      });
+    }
+
+    // Tab switching
+    panel.querySelectorAll('.tab-btn').forEach(btn => {
+      btn.addEventListener('click', () => {
+        const modal = btn.closest('.modal-shell');
+        const tabName = btn.getAttribute('data-tab');
+        modal.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+        modal.querySelectorAll('.tab-content').forEach(c => c.classList.remove('active'));
+        btn.classList.add('active');
+        modal.querySelector(`[data-tab-content="${tabName}"]`).classList.add('active');
+      });
+    });
+
+    // Expand/collapse cycle rows (Option B)
+    panel.querySelectorAll('.expand-btn').forEach(btn => {
+      const row = btn.closest('.expandable-row');
+      const list = row.querySelector('.ideas-list');
+      // Initialize state from data-expanded attribute
+      if (row.getAttribute('data-expanded') === 'true') {
+        list.classList.add('open');
+      }
+      btn.addEventListener('click', e => {
+        e.stopPropagation();
+        const isOpen = list.classList.toggle('open');
+        btn.textContent = isOpen ? '▾ Hide ideas' : '▸ Show ideas';
+      });
+    });
+
+    // Filter carried toggle
+    panel.querySelectorAll('.filter-chip-toggle').forEach(btn => {
+      btn.addEventListener('click', () => btn.classList.toggle('on'));
+    });
+  }
+
+  document.querySelectorAll('.panel').forEach(p => wirePanel(p));
+
+  // ─── Light panel: force light theme on elements ─────────────────
+  function applyPanelTheme() {
+    const lightPanel = document.getElementById('panel-light');
+    if (lightPanel) lightPanel.setAttribute('data-theme', 'light');
+    const darkPanel = document.getElementById('panel-dark');
+    if (darkPanel) darkPanel.setAttribute('data-theme', 'dark');
+  }
+  applyPanelTheme();
+
+  // ─── View Mode Toggle ────────────────────────────────────────────
+  function setMode(mode) {
+    document.body.className = 'mode-' + mode;
+    ['btn-split','btn-dark','btn-light'].forEach(id => {
+      document.getElementById(id).classList.remove('active');
+    });
+    document.getElementById('btn-' + mode).classList.add('active');
+
+    // In single-panel modes, apply correct theme to full page
+    const root = document.documentElement;
+    if (mode === 'light') {
+      root.setAttribute('data-theme', 'light');
+    } else {
+      root.setAttribute('data-theme', 'dark');
+    }
+  }
+</script>
+
+</body>
+</html>

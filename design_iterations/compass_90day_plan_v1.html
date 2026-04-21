@@ -1,0 +1,1136 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Compass — 90-Day Plan View</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet" />
+  <script src="https://cdn.tailwindcss.com"></script>
+  <style>
+    /* ── Design Tokens ── */
+    :root, [data-theme="dark"] {
+      --primary: #f05323;
+      --primary-hover: #ff6a3d;
+      --bg-page: #1a1a1a;
+      --bg-surface: #2a2a2a;
+      --bg-surface-secondary: #262626;
+      --bg-hover: #3a3a3a;
+      --bg-primary: #212121;
+      --text-heading: #ffffff;
+      --text-primary: #bcbec0;
+      --text-secondary: #a0a0a0;
+      --text-muted: #707070;
+      --border-default: #58595b;
+      --border-hover: #707070;
+      --button-primary-bg: #f05323;
+      --button-primary-text: #ffffff;
+      --input-bg: #2a2a2a;
+      --input-border: #58595b;
+      --card-bg: rgba(255,255,255,0.03);
+      --card-border: #58595b;
+      --card-hover-border: #f05323;
+      --success: #10b981;
+      --success-bg: rgba(16,185,129,0.10);
+      --success-border: rgba(16,185,129,0.25);
+      --warning: #f59e0b;
+      --warning-bg: rgba(245,158,11,0.08);
+      --warning-border: rgba(245,158,11,0.20);
+      --danger: #ef4444;
+      --danger-bg: rgba(239,68,68,0.10);
+      --danger-border: rgba(239,68,68,0.25);
+      --info: #4A9EFF;
+      --info-bg: rgba(74,158,255,0.10);
+      --chart-1: #10b981;
+      --chart-2: #f59e0b;
+      --chart-3: #3b82f6;
+      --chart-4: #8b5cf6;
+      --shadow-lg: 0 10px 15px -3px rgba(0,0,0,0.5);
+    }
+    [data-theme="light"] {
+      --primary: #f05323;
+      --primary-hover: #d94520;
+      --bg-page: #f8fafc;
+      --bg-surface: #ffffff;
+      --bg-surface-secondary: #f1f5f9;
+      --bg-hover: #e5e7eb;
+      --bg-primary: #ffffff;
+      --text-heading: #000000;
+      --text-primary: #111827;
+      --text-secondary: #6b7280;
+      --text-muted: #9ca3af;
+      --border-default: #e5e7eb;
+      --border-hover: #d1d5db;
+      --button-primary-bg: #f05323;
+      --button-primary-text: #ffffff;
+      --input-bg: #ffffff;
+      --input-border: #d1d5db;
+      --card-bg: rgba(0,0,0,0.02);
+      --card-border: #e5e7eb;
+      --card-hover-border: #f05323;
+      --success: #10b981;
+      --success-bg: rgba(16,185,129,0.10);
+      --success-border: rgba(16,185,129,0.25);
+      --warning: #f59e0b;
+      --warning-bg: rgba(245,158,11,0.08);
+      --warning-border: rgba(245,158,11,0.20);
+      --danger: #ef4444;
+      --danger-bg: rgba(239,68,68,0.10);
+      --danger-border: rgba(239,68,68,0.25);
+      --info: #4A9EFF;
+      --info-bg: rgba(74,158,255,0.10);
+      --chart-1: #10b981;
+      --chart-2: #f59e0b;
+      --chart-3: #3b82f6;
+      --chart-4: #8b5cf6;
+      --shadow-lg: 0 10px 15px -3px rgba(0,0,0,0.15);
+    }
+
+    /* ── Global reset / base ── */
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    body {
+      font-family: 'Inter', system-ui, sans-serif;
+      font-size: 14px;
+      line-height: 1.5;
+      background: #111;
+      display: flex;
+      flex-direction: column;
+      min-height: 100vh;
+    }
+
+    /* ── Top bar ── */
+    .topbar {
+      position: sticky;
+      top: 0;
+      z-index: 100;
+      background: #1c1c1c;
+      border-bottom: 1px solid #333;
+      padding: 0 16px;
+      height: 44px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      flex-shrink: 0;
+    }
+    .topbar-title {
+      font-size: 13px;
+      font-weight: 600;
+      color: #bcbec0;
+      letter-spacing: 0.02em;
+      text-transform: uppercase;
+    }
+    .topbar-controls {
+      display: flex;
+      gap: 4px;
+      align-items: center;
+    }
+    .theme-btn {
+      font-size: 11px;
+      font-weight: 500;
+      padding: 3px 10px;
+      border-radius: 5px;
+      border: 1px solid #444;
+      background: transparent;
+      color: #a0a0a0;
+      cursor: pointer;
+      transition: all 100ms;
+      font-family: inherit;
+    }
+    .theme-btn:hover { background: #2a2a2a; color: #fff; }
+    .theme-btn.active { background: #f05323; border-color: #f05323; color: #fff; }
+
+    /* ── Split layout ── */
+    .split-wrapper {
+      display: flex;
+      flex: 1;
+      min-height: 0;
+      overflow: hidden;
+    }
+    .split-wrapper.solo { flex-direction: column; }
+    .panel {
+      flex: 1;
+      overflow-y: auto;
+      min-width: 0;
+    }
+    .split-wrapper:not(.solo) .panel + .panel {
+      border-left: 2px solid #000;
+    }
+    .split-wrapper.solo .panel {
+      flex: 0 0 auto;
+      width: 100%;
+    }
+
+    /* ── Panel inner ── */
+    .panel-inner {
+      background: var(--bg-page);
+      min-height: 100%;
+      padding: 0 0 32px 0;
+    }
+
+    /* ── Topbar (in-panel) ── */
+    .plan-topbar {
+      background: var(--bg-surface);
+      border-bottom: 1px solid var(--border-default);
+      padding: 0 20px;
+      height: 52px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 12px;
+    }
+    .plan-nav {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+    .nav-arrow {
+      width: 28px;
+      height: 28px;
+      border-radius: 6px;
+      border: 1px solid var(--border-default);
+      background: transparent;
+      color: var(--text-secondary);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      font-size: 14px;
+      transition: all 120ms;
+      font-family: inherit;
+    }
+    .nav-arrow:hover { border-color: var(--border-hover); color: var(--text-heading); background: var(--bg-hover); }
+    .plan-title {
+      font-size: 14px;
+      font-weight: 700;
+      color: var(--text-heading);
+    }
+    .plan-subtitle {
+      font-size: 11px;
+      color: var(--text-muted);
+      margin-top: 1px;
+    }
+    .plan-topbar-right {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+    .badge-active {
+      display: inline-flex;
+      align-items: center;
+      gap: 5px;
+      padding: 3px 10px;
+      border-radius: 20px;
+      font-size: 11px;
+      font-weight: 600;
+      background: var(--success-bg);
+      border: 1px solid var(--success-border);
+      color: var(--success);
+    }
+    .badge-active::before {
+      content: '';
+      width: 6px;
+      height: 6px;
+      border-radius: 50%;
+      background: var(--success);
+    }
+    .btn-secondary {
+      font-size: 12px;
+      font-weight: 500;
+      padding: 5px 12px;
+      border-radius: 7px;
+      border: 1px solid var(--border-default);
+      background: transparent;
+      color: var(--text-secondary);
+      cursor: pointer;
+      transition: all 120ms;
+      font-family: inherit;
+    }
+    .btn-secondary:hover { border-color: var(--border-hover); color: var(--text-heading); background: var(--bg-hover); }
+    .btn-secondary.ending { color: var(--warning); border-color: var(--warning-border); }
+
+    /* ── Zone padding ── */
+    .zone {
+      padding: 16px 20px 0;
+    }
+
+    /* ── Zone 2 — Progress Track ── */
+    .progress-track-wrap {
+      position: relative;
+      height: 56px;
+      border-radius: 12px;
+      background: var(--bg-surface);
+      border: 1px solid var(--border-default);
+      overflow: visible;
+      margin-bottom: 10px;
+    }
+    .progress-fill {
+      position: absolute;
+      left: 0;
+      top: 0;
+      height: 100%;
+      border-radius: 12px 0 0 12px;
+      background: linear-gradient(90deg, rgba(16,185,129,0.25), rgba(240,83,35,0.35));
+      z-index: 1;
+      pointer-events: none;
+    }
+    .cycle-section {
+      position: absolute;
+      top: 0;
+      height: 100%;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      padding: 0 14px;
+      z-index: 3;
+      pointer-events: none;
+    }
+    .cycle-section.c1 {
+      left: 0;
+      width: 33.333%;
+      background: rgba(16,185,129,0.06);
+      border-radius: 12px 0 0 12px;
+    }
+    .cycle-section.c2 {
+      left: 33.333%;
+      width: 33.333%;
+      background: rgba(240,83,35,0.05);
+    }
+    .cycle-section.c3 {
+      left: 66.666%;
+      width: 33.334%;
+      border-radius: 0 12px 12px 0;
+    }
+    .cycle-section-label {
+      font-size: 10px;
+      font-weight: 700;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+    }
+    .cycle-section-label.done { color: var(--success); }
+    .cycle-section-label.active { color: var(--primary); }
+    .cycle-section-label.upcoming { color: var(--text-muted); }
+    .cycle-divider {
+      position: absolute;
+      top: 0;
+      height: 100%;
+      width: 1px;
+      border-left: 1px dashed var(--border-default);
+      z-index: 4;
+    }
+    .today-marker {
+      position: absolute;
+      top: -20px;
+      transform: translateX(-50%);
+      z-index: 10;
+      pointer-events: all;
+      cursor: default;
+    }
+    .today-label {
+      font-size: 10px;
+      font-weight: 700;
+      color: var(--primary);
+      white-space: nowrap;
+      text-align: center;
+      margin-bottom: 2px;
+    }
+    .today-line {
+      width: 2px;
+      height: 76px;
+      background: var(--primary);
+      margin: 0 auto;
+      border-radius: 1px;
+      position: relative;
+    }
+    .today-arrow {
+      width: 0;
+      height: 0;
+      border-left: 5px solid transparent;
+      border-right: 5px solid transparent;
+      border-top: 6px solid var(--primary);
+      margin: 0 auto;
+      position: relative;
+      top: -1px;
+    }
+    .today-tooltip {
+      display: none;
+      position: absolute;
+      top: -56px;
+      left: 50%;
+      transform: translateX(-50%);
+      background: var(--bg-surface);
+      border: 1px solid var(--border-default);
+      border-radius: 7px;
+      padding: 6px 10px;
+      font-size: 11px;
+      color: var(--text-primary);
+      white-space: nowrap;
+      box-shadow: var(--shadow-lg);
+      z-index: 50;
+    }
+    .today-marker:hover .today-tooltip { display: block; }
+
+    .stat-row {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      font-size: 12px;
+      color: var(--text-secondary);
+      flex-wrap: wrap;
+    }
+    .stat-sep { color: var(--text-muted); }
+    .stat-done { color: var(--success); font-weight: 500; }
+    .stat-prog { color: var(--warning); font-weight: 500; }
+    .stat-block { color: var(--danger); font-weight: 500; }
+
+    /* ── Zone 3 — Three Cycle Columns ── */
+    .cycle-columns {
+      display: grid;
+      grid-template-columns: 1fr 1fr 1fr;
+      gap: 14px;
+    }
+    .cycle-card {
+      background: var(--bg-surface);
+      border: 1px solid var(--card-border);
+      border-radius: 12px;
+      overflow: hidden;
+    }
+    .cycle-card.c2-active {
+      border-left: 3px solid var(--primary);
+    }
+    .cycle-card.c3-upcoming {
+      opacity: 0.8;
+    }
+    .cycle-header {
+      padding: 12px 14px 10px;
+      border-bottom: 1px solid var(--border-default);
+    }
+    .cycle-header-row {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin-bottom: 4px;
+    }
+    .cycle-name {
+      font-size: 14px;
+      font-weight: 700;
+      color: var(--text-heading);
+    }
+    .cycle-dates {
+      font-size: 11px;
+      color: var(--text-muted);
+      margin-bottom: 6px;
+    }
+    .cycle-meta-row {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 8px;
+    }
+    .badge-pill {
+      display: inline-flex;
+      align-items: center;
+      gap: 4px;
+      padding: 2px 8px;
+      border-radius: 20px;
+      font-size: 10px;
+      font-weight: 600;
+    }
+    .badge-complete { background: var(--success-bg); border: 1px solid var(--success-border); color: var(--success); }
+    .badge-active-pill {
+      background: rgba(240,83,35,0.12);
+      border: 1px solid rgba(240,83,35,0.30);
+      color: var(--primary);
+    }
+    .badge-active-pill::before { content: '● '; font-size: 8px; }
+    .badge-upcoming { background: var(--bg-surface-secondary); border: 1px solid var(--border-default); color: var(--text-muted); font-style: italic; }
+    .idea-chip {
+      font-size: 10px;
+      font-weight: 500;
+      color: var(--text-muted);
+      background: var(--bg-surface-secondary);
+      border: 1px solid var(--border-default);
+      border-radius: 20px;
+      padding: 2px 8px;
+    }
+    .cycle-mini-progress {
+      margin-top: 8px;
+    }
+    .cycle-mini-progress-label {
+      font-size: 10px;
+      color: var(--text-muted);
+      margin-bottom: 3px;
+    }
+    .mini-bar-track {
+      height: 4px;
+      background: var(--border-default);
+      border-radius: 2px;
+      overflow: hidden;
+    }
+    .mini-bar-fill {
+      height: 100%;
+      background: var(--primary);
+      border-radius: 2px;
+      transition: width 400ms ease;
+    }
+
+    /* ── Idea rows ── */
+    .idea-list {
+      padding: 4px 0;
+    }
+    .idea-row {
+      height: 34px;
+      padding: 0 12px;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      cursor: pointer;
+      transition: background 120ms;
+      position: relative;
+    }
+    .idea-row:hover { background: var(--bg-hover); }
+    .idea-row.blocked-row {
+      background: rgba(239,68,68,0.05);
+    }
+    .idea-row.blocked-row:hover { background: rgba(239,68,68,0.10); }
+    .status-dot {
+      width: 9px;
+      height: 9px;
+      border-radius: 50%;
+      flex-shrink: 0;
+    }
+    .dot-done { background: var(--success); }
+    .dot-inprog { background: var(--warning); animation: pulse-dot 2s ease-in-out infinite; }
+    .dot-blocked { background: var(--danger); }
+    .dot-backlog { background: var(--text-muted); }
+    .dot-rolled { background: var(--warning); }
+    @keyframes pulse-dot {
+      0%, 100% { opacity: 1; }
+      50% { opacity: 0.35; }
+    }
+    .idea-title {
+      flex: 1;
+      font-size: 12px;
+      color: var(--text-primary);
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      min-width: 0;
+    }
+    .idea-title.rolled {
+      color: var(--text-muted);
+      font-style: italic;
+    }
+    .carried-badge {
+      font-size: 10px;
+      color: var(--primary);
+      font-weight: 500;
+      white-space: nowrap;
+      flex-shrink: 0;
+    }
+    .assignee-bubble {
+      width: 22px;
+      height: 22px;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 9px;
+      font-weight: 700;
+      color: #fff;
+      flex-shrink: 0;
+    }
+    .av-a { background: #3b82f6; }
+    .av-b { background: #8b5cf6; }
+    .av-d { background: #f59e0b; color: #111; }
+
+    /* Rolled tooltip */
+    .rolled-tooltip {
+      display: none;
+      position: absolute;
+      bottom: 36px;
+      left: 12px;
+      background: var(--bg-surface);
+      border: 1px solid var(--border-default);
+      border-radius: 7px;
+      padding: 6px 10px;
+      font-size: 11px;
+      color: var(--text-primary);
+      white-space: nowrap;
+      box-shadow: var(--shadow-lg);
+      z-index: 50;
+    }
+    .idea-row.rolled-row:hover .rolled-tooltip { display: block; }
+
+    /* Blockers callout */
+    .blockers-callout {
+      margin: 0 10px 10px;
+      padding: 9px 12px;
+      background: var(--danger-bg);
+      border: 1px solid var(--danger-border);
+      border-radius: 8px;
+      font-size: 11px;
+      color: var(--danger);
+      transition: background 120ms;
+      cursor: default;
+    }
+    .blockers-callout:hover { background: rgba(239,68,68,0.16); }
+
+    /* ── Popover ── */
+    .idea-popover {
+      display: none;
+      position: fixed;
+      z-index: 200;
+      background: var(--bg-surface);
+      border: 1px solid var(--border-default);
+      border-radius: 10px;
+      box-shadow: var(--shadow-lg);
+      padding: 14px 16px;
+      width: 280px;
+      font-size: 12px;
+      color: var(--text-primary);
+    }
+    .idea-popover.visible { display: block; }
+    .popover-title { font-size: 13px; font-weight: 700; color: var(--text-heading); margin-bottom: 6px; }
+    .popover-desc { color: var(--text-secondary); margin-bottom: 10px; line-height: 1.5; }
+    .popover-meta { display: flex; flex-wrap: wrap; gap: 6px; margin-bottom: 10px; }
+    .popover-chip {
+      display: inline-flex;
+      align-items: center;
+      gap: 4px;
+      padding: 2px 8px;
+      border-radius: 20px;
+      font-size: 10px;
+      font-weight: 500;
+      background: var(--bg-surface-secondary);
+      border: 1px solid var(--border-default);
+      color: var(--text-secondary);
+    }
+    .popover-link {
+      display: inline-flex;
+      align-items: center;
+      gap: 4px;
+      color: var(--primary);
+      font-size: 11px;
+      font-weight: 600;
+      text-decoration: none;
+      cursor: pointer;
+    }
+    .popover-link:hover { color: var(--primary-hover); }
+
+    /* ── Toast ── */
+    .toast {
+      position: fixed;
+      bottom: 20px;
+      right: 20px;
+      background: var(--bg-surface);
+      border: 1px solid var(--success-border);
+      border-radius: 9px;
+      padding: 10px 16px;
+      font-size: 12px;
+      color: var(--success);
+      font-weight: 500;
+      box-shadow: var(--shadow-lg);
+      z-index: 300;
+      transform: translateY(20px);
+      opacity: 0;
+      transition: all 300ms ease;
+      pointer-events: none;
+    }
+    .toast.show { transform: translateY(0); opacity: 1; }
+
+    /* ── Zone 4 — Goal bar ── */
+    .goal-bar {
+      display: flex;
+      gap: 10px;
+      flex-wrap: wrap;
+      margin-top: 14px;
+    }
+    .goal-chip {
+      flex: 1;
+      min-width: 140px;
+      background: var(--bg-surface-secondary);
+      border: 1px solid var(--border-default);
+      border-radius: 8px;
+      padding: 9px 12px;
+    }
+    .goal-chip-label {
+      font-size: 12px;
+      font-weight: 600;
+      color: var(--text-primary);
+      margin-bottom: 2px;
+    }
+    .goal-chip-sub {
+      font-size: 10px;
+      color: var(--text-muted);
+      margin-bottom: 5px;
+    }
+    .goal-progress-track {
+      height: 4px;
+      background: var(--border-default);
+      border-radius: 2px;
+      overflow: hidden;
+    }
+    .goal-progress-fill {
+      height: 100%;
+      background: var(--success);
+      border-radius: 2px;
+    }
+
+    /* ── Version footer ── */
+    .version-footer {
+      text-align: center;
+      font-size: 10px;
+      color: var(--text-muted);
+      padding: 16px 20px 8px;
+      border-top: 1px solid var(--border-default);
+      margin-top: 20px;
+    }
+
+    /* ── Scrollbar cosmetics ── */
+    .panel::-webkit-scrollbar { width: 6px; }
+    .panel::-webkit-scrollbar-track { background: transparent; }
+    .panel::-webkit-scrollbar-thumb { background: #444; border-radius: 3px; }
+
+    /* ── Zone spacing ── */
+    .zone + .zone { padding-top: 14px; }
+  </style>
+</head>
+<body>
+
+<!-- Global topbar -->
+<div class="topbar">
+  <span class="topbar-title">Compass · Design Preview</span>
+  <div class="topbar-controls">
+    <button class="theme-btn" onclick="setMode('dark')">Dark</button>
+    <button class="theme-btn active" id="btn-split" onclick="setMode('split')">Split</button>
+    <button class="theme-btn" onclick="setMode('light')">Light</button>
+  </div>
+</div>
+
+<!-- Split wrapper -->
+<div class="split-wrapper" id="splitWrapper">
+  <!-- DARK PANEL -->
+  <div class="panel" id="panelDark">
+    <div class="panel-inner" data-theme="dark" id="darkInner">
+      <!-- injected by JS -->
+    </div>
+  </div>
+  <!-- LIGHT PANEL -->
+  <div class="panel" id="panelLight">
+    <div class="panel-inner" data-theme="light" id="lightInner">
+      <!-- injected by JS -->
+    </div>
+  </div>
+</div>
+
+<!-- Global popover (shared, positioned absolutely) -->
+<div class="idea-popover" id="globalPopover">
+  <div class="popover-title" id="popTitle"></div>
+  <div class="popover-desc" id="popDesc"></div>
+  <div class="popover-meta" id="popMeta"></div>
+  <span class="popover-link" onclick="closePopover()">View in Execution →</span>
+</div>
+
+<!-- Toast -->
+<div class="toast" id="globalToast">Cycle summary ready →</div>
+
+<script>
+/* ── Data ── */
+const DAY = 47;
+const TOTAL_DAYS = 90;
+const TODAY_PCT = (DAY / TOTAL_DAYS * 100).toFixed(3);
+
+const ideas = {
+  c1: [
+    { id:'c1-1', title:'Analytics Dashboard',    status:'done',     assignee:'A', carried:false },
+    { id:'c1-2', title:'Mobile Auth Refactor',   status:'done',     assignee:'B', carried:false },
+    { id:'c1-3', title:'Customer Portal v2',     status:'done',     assignee:'A', carried:false },
+    { id:'c1-4', title:'API Rate Limiting',      status:'done',     assignee:'D', carried:false },
+    { id:'c1-5', title:'Onboarding Flow',        status:'done',     assignee:'B', carried:false },
+    { id:'c1-6', title:'Invoice Generator',      status:'done',     assignee:'D', carried:false },
+    { id:'c1-7', title:'Rig Health Alerts',      status:'done',     assignee:'A', carried:false },
+    { id:'c1-8', title:'Staff Directory',        status:'done',     assignee:'B', carried:false },
+    { id:'c1-9', title:'Reporting Engine',       status:'rolled',   assignee:'D', carried:true  },
+  ],
+  c2: [
+    { id:'c2-1', title:'Reporting Engine',             status:'in_progress', assignee:'D', carried:true  },
+    { id:'c2-2', title:'Customer Insights Dashboard',  status:'in_progress', assignee:'A', carried:false },
+    { id:'c2-3', title:'Rig Maintenance Scheduler',    status:'in_progress', assignee:'B', carried:false },
+    { id:'c2-4', title:'Export to PDF',                status:'in_progress', assignee:'D', carried:false },
+    { id:'c2-5', title:'Notification Service',         status:'blocked',     assignee:'B', carried:false },
+    { id:'c2-6', title:'Data Sync API',                status:'backlog',     assignee:'D', carried:false },
+    { id:'c2-7', title:'Bulk Operations',              status:'backlog',     assignee:'A', carried:false },
+  ],
+  c3: [
+    { id:'c3-1', title:'AI Suggestion Engine',   status:'backlog', assignee:'A', carried:false },
+    { id:'c3-2', title:'Multi-tenant Auth',       status:'backlog', assignee:'B', carried:false },
+    { id:'c3-3', title:'Analytics v2',            status:'backlog', assignee:'D', carried:false },
+    { id:'c3-4', title:'Batch Processing',        status:'backlog', assignee:'A', carried:false },
+    { id:'c3-5', title:'Compliance Reporting',    status:'backlog', assignee:'B', carried:false },
+    { id:'c3-6', title:'Customer Feedback Loop',  status:'backlog', assignee:'D', carried:false },
+  ],
+};
+
+const popoverData = {
+  'c2-3': {
+    title: 'Rig Maintenance Scheduler',
+    desc: 'Schedule and track preventive maintenance for all active rigs.',
+    goal: '⚙ Excellence',
+    effort: 'M',
+    assignee: 'Ben H.',
+    status: 'In Progress',
+  },
+  'c2-5': {
+    title: 'Notification Service',
+    desc: 'Real-time push notifications for rig status changes and alerts.',
+    goal: '💡 Innovation',
+    effort: 'L',
+    assignee: 'Ben H.',
+    status: 'Blocked',
+  },
+  'c2-1': {
+    title: 'Reporting Engine',
+    desc: 'Flexible report builder for generating operational summaries.',
+    goal: '📈 Market',
+    effort: 'L',
+    assignee: 'Dan W.',
+    status: 'In Progress',
+  },
+  'c2-2': {
+    title: 'Customer Insights Dashboard',
+    desc: 'Aggregated view of customer activity, usage patterns, and health score.',
+    goal: '💚 Customer',
+    effort: 'M',
+    assignee: 'Amy K.',
+    status: 'In Progress',
+  },
+  'c2-4': {
+    title: 'Export to PDF',
+    desc: 'One-click PDF export for all major report and invoice views.',
+    goal: '💚 Customer',
+    effort: 'S',
+    assignee: 'Dan W.',
+    status: 'In Progress',
+  },
+};
+
+/* ── Render ── */
+function buildPanel(themeId) {
+  const uid = themeId; // 'dark' or 'light'
+
+  return `
+  <div>
+    <!-- Plan top bar -->
+    <div class="plan-topbar">
+      <div class="plan-nav">
+        <button class="nav-arrow">&#8592;</button>
+        <div>
+          <div class="plan-title">Q2 2026 Plan</div>
+          <div class="plan-subtitle">Apr 1 – Jun 30, 2026</div>
+        </div>
+        <button class="nav-arrow">&#8594;</button>
+      </div>
+      <div class="plan-topbar-right">
+        <span class="badge-active">Active</span>
+        <button class="btn-secondary" id="endCycleBtn-${uid}" onclick="endCycle('${uid}')">End Cycle</button>
+      </div>
+    </div>
+
+    <!-- Zone 2: Progress Track -->
+    <div class="zone">
+      <div class="progress-track-wrap" id="track-${uid}">
+        <!-- Fill -->
+        <div class="progress-fill" style="width:${TODAY_PCT}%"></div>
+        <!-- Cycle sections -->
+        <div class="cycle-section c1">
+          <span class="cycle-section-label done">Cycle 1 ✓</span>
+        </div>
+        <div class="cycle-section c2">
+          <span class="cycle-section-label active">Cycle 2 — Active</span>
+        </div>
+        <div class="cycle-section c3">
+          <span class="cycle-section-label upcoming">Cycle 3</span>
+        </div>
+        <!-- Dividers -->
+        <div class="cycle-divider" style="left:33.333%"></div>
+        <div class="cycle-divider" style="left:66.666%"></div>
+        <!-- Today marker -->
+        <div class="today-marker" style="left:${TODAY_PCT}%" id="todayMarker-${uid}">
+          <div class="today-tooltip">Today · Day ${DAY} · May 17, 2026 · 43 days remaining</div>
+          <div class="today-label">Day ${DAY}</div>
+          <div class="today-line"></div>
+          <div class="today-arrow"></div>
+        </div>
+      </div>
+      <!-- Stat row -->
+      <div class="stat-row">
+        <span>📅 Day ${DAY} of ${TOTAL_DAYS}</span>
+        <span class="stat-sep">·</span>
+        <span class="stat-done">✓ 8 completed</span>
+        <span class="stat-sep">·</span>
+        <span class="stat-prog">🔥 6 in progress</span>
+        <span class="stat-sep">·</span>
+        <span class="stat-block">🚧 2 blocked</span>
+        <span class="stat-sep">·</span>
+        <span>📋 6 backlog</span>
+      </div>
+    </div>
+
+    <!-- Zone 3: Three Cycle Columns -->
+    <div class="zone" style="padding-top:14px;">
+      <div class="cycle-columns">
+
+        <!-- C1 -->
+        <div class="cycle-card">
+          <div class="cycle-header">
+            <div class="cycle-header-row">
+              <span class="cycle-name">Cycle 1</span>
+              <span class="badge-pill badge-complete">✓ Complete</span>
+            </div>
+            <div class="cycle-dates">Apr 1 – Apr 30</div>
+            <div class="cycle-meta-row">
+              <span></span>
+              <span class="idea-chip">9 ideas</span>
+            </div>
+          </div>
+          <div class="idea-list">
+            ${ideas.c1.slice(0,8).map(i => ideaRow(i, uid)).join('')}
+            ${rolledRow(ideas.c1[8], uid)}
+          </div>
+        </div>
+
+        <!-- C2 -->
+        <div class="cycle-card c2-active">
+          <div class="cycle-header">
+            <div class="cycle-header-row">
+              <span class="cycle-name">Cycle 2</span>
+              <span class="badge-pill badge-active-pill">Active</span>
+            </div>
+            <div class="cycle-dates">May 1 – May 31</div>
+            <div class="cycle-meta-row">
+              <span></span>
+              <span class="idea-chip">7 ideas</span>
+            </div>
+            <div class="cycle-mini-progress">
+              <div class="cycle-mini-progress-label">8 / 9 started</div>
+              <div class="mini-bar-track">
+                <div class="mini-bar-fill" style="width:${(8/9*100).toFixed(1)}%"></div>
+              </div>
+            </div>
+          </div>
+          <div class="idea-list">
+            ${ideas.c2.map(i => ideaRow(i, uid)).join('')}
+          </div>
+          <!-- Blockers callout -->
+          <div class="blockers-callout" id="blockerCallout-${uid}">
+            🚧 1 blocked · Notification Service — waiting on third-party API credentials
+          </div>
+        </div>
+
+        <!-- C3 -->
+        <div class="cycle-card c3-upcoming">
+          <div class="cycle-header">
+            <div class="cycle-header-row">
+              <span class="cycle-name">Cycle 3</span>
+              <span class="badge-pill badge-upcoming">Upcoming</span>
+            </div>
+            <div class="cycle-dates">Jun 1 – Jun 30</div>
+            <div class="cycle-meta-row">
+              <span style="font-size:10px;color:var(--text-muted);font-style:italic;">Starts Jun 1</span>
+              <span class="idea-chip">6 ideas</span>
+            </div>
+          </div>
+          <div class="idea-list">
+            ${ideas.c3.map(i => ideaRow(i, uid)).join('')}
+          </div>
+        </div>
+
+      </div>
+
+      <!-- Zone 4: Goal Summary Bar -->
+      <div class="goal-bar">
+        ${goalChip('💡 Innovation', '7 ideas', 4, 7)}
+        ${goalChip('💚 Customer', '6 ideas', 2, 6)}
+        ${goalChip('⚙ Excellence', '5 ideas', 2, 5)}
+        ${goalChip('📈 Market', '4 ideas', 0, 4)}
+      </div>
+
+    </div>
+
+    <div class="version-footer">
+      v1.0 &nbsp;|&nbsp; 2026-04-19 &nbsp;|&nbsp; Status: Draft — 90-Day Plan View
+    </div>
+  </div>
+  `;
+}
+
+function ideaRow(idea, uid) {
+  const dotClass = {
+    done:        'dot-done',
+    in_progress: 'dot-inprog',
+    blocked:     'dot-blocked',
+    backlog:     'dot-backlog',
+  }[idea.status] || 'dot-backlog';
+
+  const rowClass = idea.status === 'blocked' ? 'idea-row blocked-row' : 'idea-row';
+  const titleClass = 'idea-title';
+
+  const hasPopover = !!popoverData[idea.id];
+  const onclickAttr = hasPopover
+    ? `onclick="showPopover(event,'${idea.id}')"`
+    : '';
+
+  return `
+    <div class="${rowClass}" ${onclickAttr}>
+      <span class="status-dot ${dotClass}"></span>
+      <span class="${titleClass}">${idea.title}</span>
+      ${idea.carried ? `<span class="carried-badge">↗</span>` : ''}
+      <span class="assignee-bubble av-${idea.assignee.toLowerCase()}">${idea.assignee}</span>
+    </div>
+  `;
+}
+
+function rolledRow(idea, uid) {
+  return `
+    <div class="idea-row rolled-row" style="position:relative;">
+      <div class="rolled-tooltip">Rolled to Cycle 2 on Apr 30 · Reason: Scope too large for one cycle</div>
+      <span class="status-dot dot-rolled"></span>
+      <span class="idea-title rolled">${idea.title}</span>
+      <span class="carried-badge">↗ rolled to C2</span>
+      <span class="assignee-bubble av-d">D</span>
+    </div>
+  `;
+}
+
+function goalChip(label, sub, done, total) {
+  const pct = total > 0 ? (done / total * 100).toFixed(0) : 0;
+  return `
+    <div class="goal-chip">
+      <div class="goal-chip-label">${label}</div>
+      <div class="goal-chip-sub">${sub} · ${done} done</div>
+      <div class="goal-progress-track">
+        <div class="goal-progress-fill" style="width:${pct}%"></div>
+      </div>
+    </div>
+  `;
+}
+
+/* ── Theme mode ── */
+let mode = 'split';
+function setMode(m) {
+  mode = m;
+  document.querySelectorAll('.theme-btn').forEach(b => b.classList.remove('active'));
+  document.getElementById('btn-split') && document.querySelector(`.theme-btn[onclick="setMode('${m}')"]`).classList.add('active');
+
+  const sw = document.getElementById('splitWrapper');
+  const pd = document.getElementById('panelDark');
+  const pl = document.getElementById('panelLight');
+
+  if (m === 'split') {
+    sw.classList.remove('solo');
+    pd.style.display = '';
+    pl.style.display = '';
+  } else if (m === 'dark') {
+    sw.classList.add('solo');
+    pd.style.display = '';
+    pl.style.display = 'none';
+  } else {
+    sw.classList.add('solo');
+    pd.style.display = 'none';
+    pl.style.display = '';
+  }
+  // Re-mark active button
+  document.querySelectorAll('.theme-btn').forEach(b => {
+    if (b.getAttribute('onclick') === `setMode('${m}')`) b.classList.add('active');
+  });
+}
+
+/* ── Popover ── */
+let popoverOpen = false;
+function showPopover(e, ideaId) {
+  e.stopPropagation();
+  const data = popoverData[ideaId];
+  if (!data) return;
+
+  const pop = document.getElementById('globalPopover');
+  document.getElementById('popTitle').textContent = data.title;
+  document.getElementById('popDesc').textContent = data.desc;
+  document.getElementById('popMeta').innerHTML = `
+    <span class="popover-chip">${data.goal}</span>
+    <span class="popover-chip">Effort: ${data.effort}</span>
+    <span class="popover-chip">👤 ${data.assignee}</span>
+    <span class="popover-chip">${data.status}</span>
+  `;
+
+  // Detect if we're in a dark or light panel for theming
+  const rect = e.currentTarget.getBoundingClientRect();
+  let left = rect.left + window.scrollX;
+  let top = rect.bottom + window.scrollY + 6;
+
+  // Clamp to viewport
+  if (left + 280 > window.innerWidth - 16) left = window.innerWidth - 296;
+  if (left < 8) left = 8;
+
+  pop.style.left = left + 'px';
+  pop.style.top = top + 'px';
+
+  // Match theme of the panel it was clicked in
+  const panel = e.currentTarget.closest('[data-theme]');
+  const panelTheme = panel ? panel.getAttribute('data-theme') : 'dark';
+  pop.setAttribute('data-theme', panelTheme);
+
+  pop.classList.add('visible');
+  popoverOpen = true;
+}
+function closePopover() {
+  document.getElementById('globalPopover').classList.remove('visible');
+  popoverOpen = false;
+}
+document.addEventListener('click', function(e) {
+  if (popoverOpen && !e.target.closest('#globalPopover')) closePopover();
+});
+
+/* ── End Cycle button ── */
+function endCycle(uid) {
+  const btn = document.getElementById(`endCycleBtn-${uid}`);
+  if (!btn || btn.classList.contains('ending')) return;
+  btn.classList.add('ending');
+  btn.textContent = 'Ending…';
+  setTimeout(() => {
+    btn.textContent = 'End Cycle';
+    btn.classList.remove('ending');
+    showToast();
+  }, 800);
+}
+function showToast() {
+  const t = document.getElementById('globalToast');
+  t.classList.add('show');
+  setTimeout(() => t.classList.remove('show'), 3200);
+}
+
+/* ── Blockers callout highlights blocked row ── */
+function initBlockerHover(uid) {
+  const callout = document.getElementById(`blockerCallout-${uid}`);
+  if (!callout) return;
+  // Find the blocked row within the same panel
+  const panel = callout.closest('[data-theme]');
+  if (!panel) return;
+  const blockedRows = Array.from(panel.querySelectorAll('.blocked-row'));
+  callout.addEventListener('mouseenter', () => {
+    blockedRows.forEach(r => r.style.background = 'rgba(239,68,68,0.18)');
+  });
+  callout.addEventListener('mouseleave', () => {
+    blockedRows.forEach(r => r.style.background = '');
+  });
+}
+
+/* ── Init ── */
+document.getElementById('darkInner').innerHTML = buildPanel('dark');
+document.getElementById('lightInner').innerHTML = buildPanel('light');
+setMode('split');
+initBlockerHover('dark');
+initBlockerHover('light');
+</script>
+</body>
+</html>

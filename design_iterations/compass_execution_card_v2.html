@@ -1,0 +1,1056 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="dark">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Compass Execution Card v2 — Design Mockup</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet" />
+  <script src="https://cdn.tailwindcss.com"></script>
+  <style>
+    /* ─── Design Tokens ─────────────────────────────────────────────────── */
+    :root, [data-theme="dark"] {
+      --primary: #f05323;
+      --primary-hover: #ff6a3d;
+      --bg-page: #1a1a1a;
+      --bg-surface: #2a2a2a;
+      --bg-surface-secondary: #262626;
+      --bg-hover: #3a3a3a;
+      --text-heading: #ffffff;
+      --text-primary: #bcbec0;
+      --text-secondary: #a0a0a0;
+      --text-muted: #707070;
+      --border-default: #58595b;
+      --border-hover: #707070;
+      --button-primary-bg: #f05323;
+      --button-primary-text: #ffffff;
+      --card-bg: rgba(255,255,255,0.03);
+      --card-border: #58595b;
+      --card-hover-border: #f05323;
+      --success: #10b981;
+      --success-bg: rgba(16,185,129,0.10);
+      --success-border: rgba(16,185,129,0.25);
+      --warning: #f59e0b;
+      --warning-bg: rgba(245,158,11,0.10);
+      --warning-border: rgba(245,158,11,0.25);
+      --danger: #ef4444;
+      --danger-bg: rgba(239,68,68,0.10);
+      --danger-border: rgba(239,68,68,0.25);
+      --info: #4A9EFF;
+      --chart-1: #10b981; --chart-2: #f59e0b; --chart-3: #3b82f6; --chart-4: #8b5cf6;
+      --column-bg: rgba(255,255,255,0.02);
+    }
+    [data-theme="light"] {
+      --primary: #f05323;
+      --primary-hover: #e04313;
+      --bg-page: #f8fafc;
+      --bg-surface: #ffffff;
+      --bg-surface-secondary: #f1f5f9;
+      --bg-hover: #e5e7eb;
+      --text-heading: #000000;
+      --text-primary: #111827;
+      --text-secondary: #6b7280;
+      --text-muted: #9ca3af;
+      --border-default: #e5e7eb;
+      --border-hover: #d1d5db;
+      --button-primary-bg: #f05323;
+      --button-primary-text: #ffffff;
+      --card-bg: rgba(0,0,0,0.02);
+      --card-border: #e5e7eb;
+      --card-hover-border: #f05323;
+      --success: #10b981;
+      --success-bg: rgba(16,185,129,0.10);
+      --success-border: rgba(16,185,129,0.25);
+      --warning: #f59e0b;
+      --warning-bg: rgba(245,158,11,0.10);
+      --warning-border: rgba(245,158,11,0.25);
+      --danger: #ef4444;
+      --danger-bg: rgba(239,68,68,0.10);
+      --danger-border: rgba(239,68,68,0.25);
+      --info: #4A9EFF;
+      --chart-1: #10b981; --chart-2: #f59e0b; --chart-3: #3b82f6; --chart-4: #8b5cf6;
+      --column-bg: rgba(0,0,0,0.02);
+    }
+
+    /* ─── Base ──────────────────────────────────────────────────────────── */
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body {
+      font-family: 'Inter', sans-serif;
+      background: var(--bg-page);
+      color: var(--text-primary);
+      min-height: 100vh;
+      padding-top: 52px;
+    }
+
+    /* ─── Topbar ────────────────────────────────────────────────────────── */
+    .topbar {
+      position: fixed; top: 0; left: 0; right: 0; z-index: 100;
+      height: 52px;
+      background: var(--bg-surface);
+      border-bottom: 1px solid var(--border-default);
+      display: flex; align-items: center; justify-content: space-between;
+      padding: 0 24px;
+    }
+    .topbar-title {
+      font-size: 13px; font-weight: 600;
+      color: var(--text-heading);
+      display: flex; align-items: center; gap: 8px;
+    }
+    .topbar-title span { color: var(--primary); }
+    .topbar-controls { display: flex; gap: 4px; }
+    .toggle-btn {
+      padding: 5px 12px; border-radius: 6px; border: 1px solid var(--border-default);
+      background: transparent; color: var(--text-secondary);
+      font-size: 12px; font-weight: 500; cursor: pointer;
+      transition: all 0.15s;
+    }
+    .toggle-btn:hover { background: var(--bg-hover); color: var(--text-primary); }
+    .toggle-btn.active {
+      background: var(--primary); color: #fff;
+      border-color: var(--primary);
+    }
+
+    /* ─── Split layout ──────────────────────────────────────────────────── */
+    .split-layout { display: grid; grid-template-columns: 1fr 1fr; height: calc(100vh - 52px); }
+    .split-pane {
+      overflow-y: auto; padding: 0;
+    }
+    .split-pane.dark-pane { background: #1a1a1a; }
+    .split-pane.light-pane { background: #f8fafc; }
+    .split-divider {
+      width: 1px; background: var(--border-default);
+      position: fixed; top: 52px; bottom: 0; left: 50%;
+    }
+    .single-layout { max-width: 1400px; margin: 0 auto; padding: 32px 24px; }
+
+    /* ─── Section styles ─────────────────────────────────────────────────── */
+    .section { padding: 32px 28px; }
+    .section + .section { border-top: 1px solid var(--border-default); }
+    .section-label {
+      font-size: 11px; font-weight: 600; letter-spacing: 0.08em;
+      text-transform: uppercase; color: var(--text-muted);
+      margin-bottom: 20px;
+    }
+
+    /* ─── Before / After comparison ─────────────────────────────────────── */
+    .comparison-pair {
+      display: grid; grid-template-columns: 1fr 1fr;
+      gap: 16px; margin-bottom: 28px;
+    }
+    .comparison-side { display: flex; flex-direction: column; gap: 8px; }
+    .comparison-label {
+      font-size: 11px; font-weight: 600; letter-spacing: 0.06em;
+      text-transform: uppercase;
+    }
+    .comparison-label.current { color: var(--text-muted); }
+    .comparison-label.improved { color: var(--primary); }
+
+    /* ─── Card — OLD (Current) ───────────────────────────────────────────── */
+    .card-old {
+      background: var(--card-bg);
+      border: 1px solid var(--card-border);
+      border-radius: 8px;
+      padding: 12px;
+      cursor: grab;
+      transition: all 0.15s;
+      position: relative;
+    }
+    .card-old:hover {
+      border-color: var(--card-hover-border);
+      transform: translateY(-2px);
+      box-shadow: 0 4px 12px rgba(0,0,0,0.3);
+    }
+    .card-old-top {
+      display: flex; align-items: center; justify-content: space-between;
+      margin-bottom: 6px;
+    }
+    .card-old-title {
+      font-size: 13px; font-weight: 500;
+      color: var(--text-heading);
+      white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
+      margin-bottom: 8px;
+      line-height: 1.35;
+    }
+    .card-old-bottom {
+      display: flex; align-items: center; justify-content: space-between;
+    }
+    .card-old-meta { display: flex; align-items: center; gap: 6px; }
+
+    /* ─── Card — NEW (Improved) ──────────────────────────────────────────── */
+    .card-new {
+      background: var(--card-bg);
+      border: 1px solid var(--card-border);
+      border-radius: 8px;
+      padding: 14px;
+      cursor: grab;
+      transition: all 0.15s;
+      position: relative;
+    }
+    .card-new:hover {
+      border-color: var(--card-hover-border);
+      transform: translateY(-2px);
+      box-shadow: 0 4px 12px rgba(0,0,0,0.3);
+    }
+    .card-new-title {
+      font-size: 15px; font-weight: 600;
+      color: var(--text-heading);
+      line-height: 1.35;
+      display: -webkit-box;
+      -webkit-line-clamp: 2;
+      -webkit-box-orient: vertical;
+      overflow: hidden;
+      margin-bottom: 10px;
+    }
+    .card-new-middle {
+      display: flex; align-items: center; gap: 6px;
+      margin-bottom: 10px;
+    }
+    .card-new-footer {
+      display: flex; align-items: center; justify-content: space-between;
+    }
+
+    /* Carried badge */
+    .carried-badge {
+      display: inline-flex; align-items: center;
+      font-size: 11px; color: var(--warning);
+      cursor: pointer; position: relative;
+      margin-left: 4px;
+    }
+    .carried-badge .tooltip {
+      display: none;
+      position: absolute; bottom: 100%; left: 50%; transform: translateX(-50%);
+      background: var(--bg-surface); border: 1px solid var(--border-default);
+      color: var(--text-primary); font-size: 11px; white-space: nowrap;
+      padding: 4px 8px; border-radius: 4px; margin-bottom: 4px;
+      z-index: 10;
+    }
+    .carried-badge:hover .tooltip { display: block; }
+
+    /* ─── Chips & Badges ────────────────────────────────────────────────── */
+    .goal-tag {
+      display: inline-flex; align-items: center; gap: 4px;
+      font-size: 11px; font-weight: 500;
+      padding: 2px 7px; border-radius: 4px;
+      background: var(--warning-bg);
+      border: 1px solid var(--warning-border);
+      color: var(--warning);
+      white-space: nowrap;
+    }
+    .goal-tag.innovation { background: var(--warning-bg); border-color: var(--warning-border); color: var(--warning); }
+    .goal-tag.excellence { background: rgba(74,158,255,0.10); border-color: rgba(74,158,255,0.25); color: var(--info); }
+    .goal-tag.customer { background: var(--success-bg); border-color: var(--success-border); color: var(--success); }
+
+    .cycle-badge {
+      display: inline-flex; align-items: center;
+      font-size: 11px; font-weight: 600;
+      padding: 2px 7px; border-radius: 4px;
+      background: rgba(74,158,255,0.10);
+      border: 1px solid rgba(74,158,255,0.25);
+      color: var(--info);
+    }
+    .cycle-badge.muted {
+      font-size: 11px; font-weight: 500;
+      background: transparent; border: none;
+      color: var(--text-muted);
+      padding: 0;
+    }
+
+    .assignee-chip {
+      display: inline-flex; align-items: center; gap: 5px;
+      font-size: 11px; color: var(--text-secondary);
+    }
+    .avatar {
+      width: 18px; height: 18px; border-radius: 50%;
+      background: var(--border-default);
+      color: var(--text-primary); font-size: 9px; font-weight: 600;
+      display: inline-flex; align-items: center; justify-content: center;
+      flex-shrink: 0;
+    }
+    .avatar.alice { background: rgba(139,92,246,0.25); color: #a78bfa; }
+    .avatar.bob   { background: rgba(74,158,255,0.25); color: var(--info); }
+    .avatar.dev   { background: rgba(16,185,129,0.25); color: var(--success); }
+
+    .due-chip {
+      font-size: 11px; color: var(--text-muted);
+    }
+
+    .effort-chip {
+      display: inline-flex; align-items: center;
+      font-size: 10px; font-weight: 600;
+      padding: 2px 6px; border-radius: 3px;
+      background: rgba(255,255,255,0.05);
+      border: 1px solid var(--border-default);
+      color: var(--text-muted);
+    }
+
+    /* ─── Blocked card ──────────────────────────────────────────────────── */
+    .card-new.blocked {
+      border-left: 3px solid var(--danger);
+      background: color-mix(in srgb, var(--danger-bg) 50%, var(--card-bg));
+    }
+    .card-new.blocked:hover {
+      border-color: var(--danger);
+      border-left-color: var(--danger);
+    }
+    .blocked-reason {
+      font-size: 11px; font-style: italic;
+      color: var(--danger);
+      line-height: 1.4;
+      display: -webkit-box;
+      -webkit-line-clamp: 2;
+      -webkit-box-orient: vertical;
+      overflow: hidden;
+      margin-top: 6px;
+    }
+
+    /* ─── Done card ─────────────────────────────────────────────────────── */
+    .card-new.done {
+      opacity: 0.70;
+      border-left: 2px solid var(--success);
+    }
+
+    /* ─── Progress track ────────────────────────────────────────────────── */
+    .progress-track-wrap {
+      background: var(--bg-surface);
+      border: 1px solid var(--border-default);
+      border-radius: 10px; padding: 16px 20px; margin-bottom: 24px;
+    }
+    .progress-track-header {
+      display: flex; align-items: center; justify-content: space-between;
+      margin-bottom: 12px;
+    }
+    .progress-track-title { font-size: 12px; font-weight: 600; color: var(--text-heading); }
+    .progress-track-meta { font-size: 11px; color: var(--text-muted); }
+    .track-bar {
+      height: 8px; background: var(--bg-surface-secondary);
+      border-radius: 4px; overflow: visible; position: relative;
+      display: flex; border: 1px solid var(--border-default);
+    }
+    .track-segment {
+      height: 100%; position: relative; display: flex; align-items: center;
+    }
+    .track-fill {
+      height: 100%; border-radius: 0;
+    }
+    .track-segment:first-child .track-fill { border-radius: 4px 0 0 4px; }
+    .track-segment-label {
+      position: absolute; bottom: calc(100% + 6px);
+      font-size: 10px; color: var(--text-muted);
+      white-space: nowrap; left: 50%; transform: translateX(-50%);
+    }
+    .track-divider {
+      width: 1px; background: var(--border-default);
+      height: 100%; flex-shrink: 0;
+    }
+    .today-marker {
+      position: absolute; top: -4px; bottom: -4px;
+      width: 2px; background: var(--primary); border-radius: 1px;
+    }
+    .today-label {
+      position: absolute; top: calc(100% + 6px);
+      font-size: 10px; font-weight: 600; color: var(--primary);
+      white-space: nowrap; transform: translateX(-50%);
+    }
+
+    /* ─── Kanban board ──────────────────────────────────────────────────── */
+    .kanban-board {
+      display: grid; grid-template-columns: repeat(4, 1fr);
+      gap: 14px;
+    }
+    .kanban-col {
+      background: var(--column-bg);
+      border: 1px solid var(--border-default);
+      border-radius: 10px; overflow: hidden;
+    }
+    .col-header {
+      padding: 12px 14px 10px;
+      border-bottom: 1px solid var(--border-default);
+      display: flex; align-items: center; justify-content: space-between;
+    }
+    .col-title {
+      font-size: 12px; font-weight: 700; letter-spacing: 0.04em;
+      text-transform: uppercase;
+    }
+    .col-title.backlog { color: var(--text-muted); }
+    .col-title.in-progress { color: var(--info); }
+    .col-title.blocked-col { color: var(--danger); }
+    .col-title.done-col { color: var(--success); }
+    .col-header.blocked-header { background: var(--danger-bg); }
+    .col-count {
+      font-size: 11px; font-weight: 600;
+      padding: 2px 7px; border-radius: 9999px;
+      background: rgba(255,255,255,0.06); color: var(--text-muted);
+    }
+    .col-body { padding: 10px; display: flex; flex-direction: column; gap: 8px; }
+
+    .expand-link {
+      font-size: 12px; color: var(--text-muted);
+      cursor: pointer; padding: 6px 0; text-align: center;
+      border-radius: 6px;
+      transition: color 0.15s;
+    }
+    .expand-link:hover { color: var(--text-secondary); }
+    .hidden-cards { display: none; flex-direction: column; gap: 8px; }
+    .hidden-cards.visible { display: flex; }
+
+    /* ─── Anatomy diagram ───────────────────────────────────────────────── */
+    .anatomy-wrap {
+      display: grid; grid-template-columns: 1fr 1fr;
+      gap: 40px; align-items: start;
+    }
+    .anatomy-card-container { position: relative; padding: 20px; }
+    .anatomy-card {
+      background: var(--card-bg);
+      border: 1px solid var(--card-border);
+      border-radius: 8px;
+      overflow: hidden;
+    }
+    .anatomy-zone {
+      padding: 12px 14px;
+      position: relative;
+    }
+    .anatomy-zone + .anatomy-zone { border-top: 1px dashed var(--border-default); }
+    .anatomy-zone-label {
+      position: absolute; right: -168px; top: 50%; transform: translateY(-50%);
+      font-size: 11px; color: var(--text-muted); white-space: nowrap;
+      display: flex; align-items: center; gap: 8px;
+    }
+    .anatomy-zone-label::before {
+      content: '';
+      width: 32px; height: 1px;
+      background: var(--border-default);
+      flex-shrink: 0;
+    }
+    .anatomy-zone-name { font-weight: 600; color: var(--text-secondary); }
+    .anatomy-zone-desc { font-size: 10px; color: var(--text-muted); margin-top: 2px; }
+    .anatomy-legend { display: flex; flex-direction: column; gap: 16px; padding-top: 8px; }
+    .anatomy-legend-item { display: flex; gap: 10px; align-items: flex-start; }
+    .anatomy-legend-dot {
+      width: 8px; height: 8px; border-radius: 50%; flex-shrink: 0; margin-top: 3px;
+    }
+    .anatomy-legend-text {}
+    .anatomy-legend-title { font-size: 12px; font-weight: 600; color: var(--text-heading); }
+    .anatomy-legend-desc { font-size: 11px; color: var(--text-muted); line-height: 1.5; }
+
+    /* ─── Page sections ─────────────────────────────────────────────────── */
+    .page-content { padding: 32px 28px; max-width: 1400px; margin: 0 auto; }
+    h2 {
+      font-size: 18px; font-weight: 700; color: var(--text-heading);
+      margin-bottom: 4px;
+    }
+    .section-desc { font-size: 13px; color: var(--text-muted); margin-bottom: 24px; }
+    .divider { border: none; border-top: 1px solid var(--border-default); margin: 40px 0; }
+
+    /* ─── Footer ────────────────────────────────────────────────────────── */
+    .page-footer {
+      border-top: 1px solid var(--border-default);
+      padding: 16px 28px;
+      font-size: 11px; color: var(--text-muted);
+      display: flex; align-items: center; justify-content: space-between;
+    }
+    .footer-badge {
+      display: inline-flex; align-items: center; gap: 6px;
+      padding: 3px 8px; border-radius: 4px;
+      background: var(--warning-bg); border: 1px solid var(--warning-border);
+      color: var(--warning); font-size: 10px; font-weight: 600;
+    }
+
+    /* ─── Comparison annotation ─────────────────────────────────────────── */
+    .annotation {
+      font-size: 11px; color: var(--text-muted);
+      background: var(--bg-surface-secondary);
+      border: 1px solid var(--border-default);
+      border-radius: 6px; padding: 8px 10px;
+      line-height: 1.5; margin-top: 4px;
+    }
+    .annotation strong { color: var(--text-secondary); }
+  </style>
+</head>
+<body>
+
+<!-- ─── Topbar ─────────────────────────────────────────────────────────── -->
+<div class="topbar">
+  <div class="topbar-title">
+    <span>Compass</span> — Execution Card v2 · Design Mockup
+  </div>
+  <div class="topbar-controls" id="themeControls">
+    <button class="toggle-btn" onclick="setTheme('dark')">Dark</button>
+    <button class="toggle-btn" onclick="setTheme('light')">Light</button>
+  </div>
+</div>
+
+<!-- ─── Page ───────────────────────────────────────────────────────────── -->
+<div class="page-content">
+
+  <!-- Section 1: Before / After -->
+  <h2>Before / After — Card Redesign</h2>
+  <p class="section-desc">The core change: title moves to the top so the most important identifier is read first. Cycle badge is demoted to quiet metadata in the footer.</p>
+
+  <!-- Pair 1: Standard title -->
+  <div style="margin-bottom: 12px;">
+    <div style="font-size: 11px; font-weight: 600; color: var(--text-muted); text-transform: uppercase; letter-spacing: 0.06em; margin-bottom: 12px;">Example 1 — Standard title</div>
+    <div class="comparison-pair">
+      <div class="comparison-side">
+        <div class="comparison-label current">Current</div>
+        <!-- OLD card -->
+        <div class="card-old">
+          <div class="card-old-top">
+            <span class="goal-tag innovation">🎯 Innovation</span>
+            <span class="cycle-badge">C2</span>
+          </div>
+          <div class="card-old-title">Rig Maintenance Scheduler</div>
+          <div class="card-old-bottom">
+            <div class="card-old-meta">
+              <div class="assignee-chip">
+                <span class="avatar bob">B</span>
+                <span>Bob C</span>
+              </div>
+              <span class="due-chip">May 28</span>
+            </div>
+          </div>
+        </div>
+        <div class="annotation">
+          <strong>Problem:</strong> Goal tag occupies line 1, pushing the title to line 2. You read the category before you know what the task is. C2 badge dominates the top-right corner despite being low-value context.
+        </div>
+      </div>
+      <div class="comparison-side">
+        <div class="comparison-label improved">Improved</div>
+        <!-- NEW card -->
+        <div class="card-new">
+          <div class="card-new-title">Rig Maintenance Scheduler</div>
+          <div class="card-new-middle">
+            <span class="goal-tag innovation">🎯 Innovation</span>
+            <span class="effort-chip">M</span>
+          </div>
+          <div class="card-new-footer">
+            <div class="assignee-chip">
+              <span class="avatar bob">B</span>
+              <span>Bob C</span>
+            </div>
+            <span class="cycle-badge muted">C2 · May 28</span>
+          </div>
+        </div>
+        <div class="annotation">
+          <strong>Improvement:</strong> Title is first and prominent — you instantly know what the card is. Goal tag and effort appear as secondary context. Cycle+due merged into one muted footer element, freeing visual space.
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Pair 2: Long title — shows 2-line benefit -->
+  <div style="margin-bottom: 40px;">
+    <div style="font-size: 11px; font-weight: 600; color: var(--text-muted); text-transform: uppercase; letter-spacing: 0.06em; margin-bottom: 12px;">Example 2 — Long title (2-line benefit)</div>
+    <div class="comparison-pair">
+      <div class="comparison-side">
+        <div class="comparison-label current">Current</div>
+        <div class="card-old">
+          <div class="card-old-top">
+            <span class="goal-tag innovation">🎯 Innovation</span>
+            <span class="cycle-badge">C2</span>
+          </div>
+          <div class="card-old-title">Customer Analytics Dashboard — Phase 2</div>
+          <div class="card-old-bottom">
+            <div class="card-old-meta">
+              <div class="assignee-chip">
+                <span class="avatar alice">A</span>
+                <span>Alice M</span>
+              </div>
+              <span class="due-chip">Jun 4</span>
+            </div>
+          </div>
+        </div>
+        <div class="annotation">
+          <strong>Problem:</strong> Long title truncates to 1 line — "— Phase 2" is hidden. Context lost. No way to distinguish from other analytics cards without clicking.
+        </div>
+      </div>
+      <div class="comparison-side">
+        <div class="comparison-label improved">Improved</div>
+        <div class="card-new">
+          <div class="card-new-title">Customer Analytics Dashboard — Phase 2</div>
+          <div class="card-new-middle">
+            <span class="goal-tag innovation">🎯 Innovation</span>
+            <span class="effort-chip">M</span>
+          </div>
+          <div class="card-new-footer">
+            <div class="assignee-chip">
+              <span class="avatar alice">A</span>
+              <span>Alice M</span>
+            </div>
+            <span class="cycle-badge muted">C2 · Jun 4</span>
+          </div>
+        </div>
+        <div class="annotation">
+          <strong>Improvement:</strong> 2-line clamp means full title is visible. "Phase 2" makes it distinct from Phase 1 at a glance. Cards with shorter titles still snap to 1 line — no wasted space.
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <hr class="divider" />
+
+  <!-- Section 2: Full Kanban Board -->
+  <h2>Full Execution Board</h2>
+  <p class="section-desc">Day 47 of 90 · Cycle 2 in progress · All cards use the improved design.</p>
+
+  <!-- Progress Track -->
+  <div class="progress-track-wrap">
+    <div class="progress-track-header">
+      <div class="progress-track-title">90-Day Progress</div>
+      <div class="progress-track-meta">Day 47 of 90 · C2 active</div>
+    </div>
+    <div style="position: relative; padding-top: 24px; padding-bottom: 22px;">
+      <div class="track-bar">
+        <!-- C1: days 1-30 = 33.3% -->
+        <div class="track-segment" style="width: 33.3%;">
+          <div class="track-fill" style="width: 100%; background: var(--success);"></div>
+          <div class="track-segment-label">Cycle 1 · Done</div>
+        </div>
+        <div class="track-divider"></div>
+        <!-- C2: days 31-60 = 33.3%, day 47 = 17/30 = 56.7% fill -->
+        <div class="track-segment" style="width: 33.3%;">
+          <div class="track-fill" style="width: 56.7%; background: var(--primary);"></div>
+          <div class="track-segment-label" style="color: var(--primary);">Cycle 2 · Active</div>
+          <!-- TODAY marker: day 47, in C2 (days 31-60), relative pos = (47-30)/30 = 56.7% of segment = 56.7% of 33.3% of bar = 18.89% from segment start = 33.3+18.89 = 52.2% of total -->
+          <div class="today-marker" style="left: 56.7%;"></div>
+          <div class="today-label" style="left: 56.7%;">TODAY</div>
+        </div>
+        <div class="track-divider"></div>
+        <!-- C3: days 61-90 = 33.3% -->
+        <div class="track-segment" style="width: 33.3%;">
+          <div class="track-fill" style="width: 0%; background: var(--chart-4);"></div>
+          <div class="track-segment-label">Cycle 3 · Upcoming</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Kanban Board -->
+  <div class="kanban-board">
+
+    <!-- Backlog -->
+    <div class="kanban-col">
+      <div class="col-header">
+        <span class="col-title backlog">Backlog</span>
+        <span class="col-count">6</span>
+      </div>
+      <div class="col-body">
+
+        <div class="card-new">
+          <div class="card-new-title">Data Sync API</div>
+          <div class="card-new-middle">
+            <span class="goal-tag excellence">⚡ Excellence</span>
+            <span class="effort-chip">S</span>
+          </div>
+          <div class="card-new-footer">
+            <div class="assignee-chip"><span class="avatar dev">D</span><span>Dev T</span></div>
+            <span class="cycle-badge muted">C2</span>
+          </div>
+        </div>
+
+        <div class="card-new">
+          <div class="card-new-title">Bulk Operations</div>
+          <div class="card-new-middle">
+            <span class="goal-tag excellence">⚡ Excellence</span>
+            <span class="effort-chip">M</span>
+          </div>
+          <div class="card-new-footer">
+            <div class="assignee-chip"><span class="avatar alice">A</span><span>Alice M</span></div>
+            <span class="cycle-badge muted">C2</span>
+          </div>
+        </div>
+
+        <div class="card-new">
+          <div class="card-new-title">AI Suggestion Engine</div>
+          <div class="card-new-middle">
+            <span class="goal-tag innovation">🎯 Innovation</span>
+            <span class="effort-chip">L</span>
+          </div>
+          <div class="card-new-footer">
+            <div class="assignee-chip"><span class="avatar alice">A</span><span>Alice M</span></div>
+            <span class="cycle-badge muted">C3</span>
+          </div>
+        </div>
+
+        <div class="card-new">
+          <div class="card-new-title">Multi-tenant Auth</div>
+          <div class="card-new-middle">
+            <span class="goal-tag innovation">🎯 Innovation</span>
+            <span class="effort-chip">M</span>
+          </div>
+          <div class="card-new-footer">
+            <div class="assignee-chip"><span class="avatar bob">B</span><span>Bob C</span></div>
+            <span class="cycle-badge muted">C3</span>
+          </div>
+        </div>
+
+        <div class="card-new">
+          <div class="card-new-title">Analytics v2</div>
+          <div class="card-new-middle">
+            <span class="goal-tag innovation">🎯 Innovation</span>
+            <span class="effort-chip">M</span>
+          </div>
+          <div class="card-new-footer">
+            <div class="assignee-chip"><span class="avatar dev">D</span><span>Dev T</span></div>
+            <span class="cycle-badge muted">C3</span>
+          </div>
+        </div>
+
+        <div class="card-new">
+          <div class="card-new-title">Compliance Reporting</div>
+          <div class="card-new-middle">
+            <span class="goal-tag excellence">⚡ Excellence</span>
+            <span class="effort-chip">S</span>
+          </div>
+          <div class="card-new-footer">
+            <div class="assignee-chip"><span class="avatar bob">B</span><span>Bob C</span></div>
+            <span class="cycle-badge muted">C3</span>
+          </div>
+        </div>
+
+      </div>
+    </div>
+
+    <!-- In Progress -->
+    <div class="kanban-col">
+      <div class="col-header">
+        <span class="col-title in-progress">In Progress</span>
+        <span class="col-count">4</span>
+      </div>
+      <div class="col-body">
+
+        <div class="card-new">
+          <div class="card-new-title">
+            Reporting Engine
+            <span class="carried-badge">
+              ↗
+              <span class="tooltip">Carried from Cycle 1</span>
+            </span>
+          </div>
+          <div class="card-new-middle">
+            <span class="goal-tag innovation">🎯 Innovation</span>
+            <span class="effort-chip">L</span>
+          </div>
+          <div class="card-new-footer">
+            <div class="assignee-chip"><span class="avatar dev">D</span><span>Dev T</span></div>
+            <span class="cycle-badge muted">C2</span>
+          </div>
+        </div>
+
+        <div class="card-new">
+          <div class="card-new-title">Customer Insights Dashboard</div>
+          <div class="card-new-middle">
+            <span class="goal-tag customer">✦ Customer Success</span>
+            <span class="effort-chip">M</span>
+          </div>
+          <div class="card-new-footer">
+            <div class="assignee-chip"><span class="avatar alice">A</span><span>Alice M</span></div>
+            <span class="cycle-badge muted">C2</span>
+          </div>
+        </div>
+
+        <div class="card-new">
+          <div class="card-new-title">Rig Maintenance Scheduler</div>
+          <div class="card-new-middle">
+            <span class="goal-tag excellence">⚡ Excellence</span>
+            <span class="effort-chip">M</span>
+          </div>
+          <div class="card-new-footer">
+            <div class="assignee-chip"><span class="avatar bob">B</span><span>Bob C</span></div>
+            <span class="cycle-badge muted">C2 · May 28</span>
+          </div>
+        </div>
+
+        <div class="card-new">
+          <div class="card-new-title">Export to PDF</div>
+          <div class="card-new-middle">
+            <span class="goal-tag excellence">⚡ Excellence</span>
+            <span class="effort-chip">S</span>
+          </div>
+          <div class="card-new-footer">
+            <div class="assignee-chip"><span class="avatar dev">D</span><span>Dev T</span></div>
+            <span class="cycle-badge muted">C2 · May 30</span>
+          </div>
+        </div>
+
+      </div>
+    </div>
+
+    <!-- Blocked -->
+    <div class="kanban-col">
+      <div class="col-header blocked-header">
+        <span class="col-title blocked-col">Blocked</span>
+        <span class="col-count">1</span>
+      </div>
+      <div class="col-body">
+
+        <div class="card-new blocked">
+          <div class="card-new-title">Notification Service</div>
+          <div class="blocked-reason">Waiting on third-party API credentials from vendor</div>
+          <div class="card-new-middle" style="margin-top: 8px;">
+            <span class="goal-tag innovation">🎯 Innovation</span>
+            <span class="effort-chip">L</span>
+          </div>
+          <div class="card-new-footer">
+            <div class="assignee-chip"><span class="avatar bob">B</span><span>Bob C</span></div>
+            <span class="cycle-badge muted">C2</span>
+          </div>
+        </div>
+
+      </div>
+    </div>
+
+    <!-- Done -->
+    <div class="kanban-col">
+      <div class="col-header">
+        <span class="col-title done-col">Done</span>
+        <span class="col-count">8</span>
+      </div>
+      <div class="col-body">
+
+        <div class="card-new done">
+          <div class="card-new-title">Analytics Dashboard</div>
+          <div class="card-new-middle">
+            <span class="goal-tag innovation">🎯 Innovation</span>
+            <span class="effort-chip">M</span>
+          </div>
+          <div class="card-new-footer">
+            <div class="assignee-chip"><span class="avatar alice">A</span><span>Alice M</span></div>
+            <span class="cycle-badge muted">C1</span>
+          </div>
+        </div>
+
+        <div class="card-new done">
+          <div class="card-new-title">Mobile Auth Refactor</div>
+          <div class="card-new-middle">
+            <span class="goal-tag excellence">⚡ Excellence</span>
+            <span class="effort-chip">S</span>
+          </div>
+          <div class="card-new-footer">
+            <div class="assignee-chip"><span class="avatar bob">B</span><span>Bob C</span></div>
+            <span class="cycle-badge muted">C1</span>
+          </div>
+        </div>
+
+        <div class="card-new done">
+          <div class="card-new-title">Customer Portal v2</div>
+          <div class="card-new-middle">
+            <span class="goal-tag customer">✦ Customer Success</span>
+            <span class="effort-chip">L</span>
+          </div>
+          <div class="card-new-footer">
+            <div class="assignee-chip"><span class="avatar alice">A</span><span>Alice M</span></div>
+            <span class="cycle-badge muted">C1</span>
+          </div>
+        </div>
+
+        <div class="card-new done">
+          <div class="card-new-title">API Rate Limiting</div>
+          <div class="card-new-middle">
+            <span class="goal-tag excellence">⚡ Excellence</span>
+            <span class="effort-chip">S</span>
+          </div>
+          <div class="card-new-footer">
+            <div class="assignee-chip"><span class="avatar dev">D</span><span>Dev T</span></div>
+            <span class="cycle-badge muted">C1</span>
+          </div>
+        </div>
+
+        <!-- Hidden cards -->
+        <div class="hidden-cards" id="hiddenDone">
+          <div class="card-new done">
+            <div class="card-new-title">Invoice Generator</div>
+            <div class="card-new-middle">
+              <span class="goal-tag excellence">⚡ Excellence</span>
+              <span class="effort-chip">M</span>
+            </div>
+            <div class="card-new-footer">
+              <div class="assignee-chip"><span class="avatar alice">A</span><span>Alice M</span></div>
+              <span class="cycle-badge muted">C1</span>
+            </div>
+          </div>
+          <div class="card-new done">
+            <div class="card-new-title">Rig Health Alerts</div>
+            <div class="card-new-middle">
+              <span class="goal-tag innovation">🎯 Innovation</span>
+              <span class="effort-chip">S</span>
+            </div>
+            <div class="card-new-footer">
+              <div class="assignee-chip"><span class="avatar bob">B</span><span>Bob C</span></div>
+              <span class="cycle-badge muted">C1</span>
+            </div>
+          </div>
+          <div class="card-new done">
+            <div class="card-new-title">Staff Directory</div>
+            <div class="card-new-middle">
+              <span class="goal-tag customer">✦ Customer Success</span>
+              <span class="effort-chip">S</span>
+            </div>
+            <div class="card-new-footer">
+              <div class="assignee-chip"><span class="avatar dev">D</span><span>Dev T</span></div>
+              <span class="cycle-badge muted">C1</span>
+            </div>
+          </div>
+          <div class="card-new done">
+            <div class="card-new-title">Onboarding Flow</div>
+            <div class="card-new-middle">
+              <span class="goal-tag customer">✦ Customer Success</span>
+              <span class="effort-chip">M</span>
+            </div>
+            <div class="card-new-footer">
+              <div class="assignee-chip"><span class="avatar alice">A</span><span>Alice M</span></div>
+              <span class="cycle-badge muted">C1</span>
+            </div>
+          </div>
+        </div>
+
+        <div class="expand-link" id="expandDone" onclick="toggleDone()">+ 4 more completed</div>
+
+      </div>
+    </div>
+
+  </div><!-- /kanban-board -->
+
+  <hr class="divider" />
+
+  <!-- Section 3: Anatomy Diagram -->
+  <h2>Card Anatomy</h2>
+  <p class="section-desc">Each zone has a clear information hierarchy. Proximity to the top = importance to the reader.</p>
+
+  <div class="anatomy-wrap">
+    <!-- Annotated card -->
+    <div style="padding-right: 180px; position: relative;">
+      <div class="anatomy-card">
+
+        <!-- Zone 1: Title -->
+        <div class="anatomy-zone" style="background: rgba(240,83,35,0.04);">
+          <div style="font-size: 15px; font-weight: 600; color: var(--text-heading); line-height: 1.35;">
+            Rig Maintenance Scheduler<br/>
+            <span style="font-size: 13px; font-weight: 400; color: var(--text-secondary);">for Rig Fleet Management</span>
+          </div>
+          <div class="anatomy-zone-label">
+            <div>
+              <div class="anatomy-zone-name">Title zone</div>
+              <div class="anatomy-zone-desc">Primary identifier · 2-line max</div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Zone 2: Goal + Effort -->
+        <div class="anatomy-zone" style="background: rgba(245,158,11,0.03);">
+          <div style="display: flex; align-items: center; gap: 6px;">
+            <span class="goal-tag excellence">🔧 Excellence</span>
+            <span class="effort-chip">M</span>
+          </div>
+          <div class="anatomy-zone-label">
+            <div>
+              <div class="anatomy-zone-name">Context zone</div>
+              <div class="anatomy-zone-desc">Strategic goal · Effort sizing</div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Zone 3: Footer -->
+        <div class="anatomy-zone">
+          <div style="display: flex; align-items: center; justify-content: space-between;">
+            <div class="assignee-chip"><span class="avatar bob">B</span><span>Bob C</span></div>
+            <span class="cycle-badge muted">C2 · May 28</span>
+          </div>
+          <div class="anatomy-zone-label">
+            <div>
+              <div class="anatomy-zone-name">Metadata zone</div>
+              <div class="anatomy-zone-desc">Assignee · Cycle · Due date</div>
+            </div>
+          </div>
+        </div>
+
+      </div>
+    </div>
+
+    <!-- Legend -->
+    <div class="anatomy-legend">
+      <div style="font-size: 12px; font-weight: 700; color: var(--text-heading); margin-bottom: 4px; text-transform: uppercase; letter-spacing: 0.06em;">Design Rationale</div>
+
+      <div class="anatomy-legend-item">
+        <div class="anatomy-legend-dot" style="background: var(--primary);"></div>
+        <div class="anatomy-legend-text">
+          <div class="anatomy-legend-title">Title first — primary scan target</div>
+          <div class="anatomy-legend-desc">The task name is the only thing that uniquely identifies a card. Reading it first lets the eye scan the board by content, not by category.</div>
+        </div>
+      </div>
+
+      <div class="anatomy-legend-item">
+        <div class="anatomy-legend-dot" style="background: var(--warning);"></div>
+        <div class="anatomy-legend-text">
+          <div class="anatomy-legend-title">Goal tag — secondary context</div>
+          <div class="anatomy-legend-desc">Helps filter by strategic initiative when needed, but doesn't need to precede the title. Colour coding (amber/blue/green) carries the signal.</div>
+        </div>
+      </div>
+
+      <div class="anatomy-legend-item">
+        <div class="anatomy-legend-dot" style="background: var(--info);"></div>
+        <div class="anatomy-legend-text">
+          <div class="anatomy-legend-title">Effort chip — sizing at a glance</div>
+          <div class="anatomy-legend-desc">S/M/L sits next to goal tag. Compact pill, muted colour — readable but not competing with the goal tag.</div>
+        </div>
+      </div>
+
+      <div class="anatomy-legend-item">
+        <div class="anatomy-legend-dot" style="background: var(--text-muted);"></div>
+        <div class="anatomy-legend-text">
+          <div class="anatomy-legend-title">Cycle + due — merged, muted metadata</div>
+          <div class="anatomy-legend-desc">"C2 · May 28" consolidates two low-priority fields into one quiet element. Cycle number is context, not the primary signal — demoting it reduces visual noise without losing the data.</div>
+        </div>
+      </div>
+
+      <div class="anatomy-legend-item">
+        <div class="anatomy-legend-dot" style="background: var(--success);"></div>
+        <div class="anatomy-legend-text">
+          <div class="anatomy-legend-title">Assignee — left-anchored, always visible</div>
+          <div class="anatomy-legend-desc">Avatar + name chip in the footer left. Consistent position makes it scannable across all cards without reading the label.</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Footer -->
+  <div style="height: 40px;"></div>
+</div><!-- /page-content -->
+
+<div class="page-footer">
+  <span>v2.0 · 2026-04-19 · Compass Execution Card Redesign</span>
+  <span class="footer-badge">Draft</span>
+</div>
+
+<script>
+  // ─── Theme toggling ──────────────────────────────────────────────────────
+  function setTheme(theme) {
+    document.documentElement.setAttribute('data-theme', theme);
+    document.querySelectorAll('.toggle-btn').forEach(btn => {
+      btn.classList.remove('active');
+    });
+    const labels = { dark: 'Dark', light: 'Light' };
+    document.querySelectorAll('.toggle-btn').forEach(btn => {
+      if (btn.textContent === labels[theme]) btn.classList.add('active');
+    });
+  }
+
+  // Set default active state
+  document.querySelectorAll('.toggle-btn').forEach(btn => {
+    if (btn.textContent === 'Dark') btn.classList.add('active');
+  });
+
+  // ─── Expand Done ─────────────────────────────────────────────────────────
+  function toggleDone() {
+    const hidden = document.getElementById('hiddenDone');
+    const link = document.getElementById('expandDone');
+    if (hidden.classList.contains('visible')) {
+      hidden.classList.remove('visible');
+      link.textContent = '+ 4 more completed';
+    } else {
+      hidden.classList.add('visible');
+      link.textContent = '− Collapse';
+    }
+  }
+</script>
+</body>
+</html>

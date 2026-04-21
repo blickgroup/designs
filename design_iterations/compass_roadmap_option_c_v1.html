@@ -1,0 +1,2060 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="dark">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Compass Roadmap — Option C v1</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet" />
+  <script src="https://cdn.tailwindcss.com"></script>
+  <style>
+    :root, [data-theme="dark"] {
+      --primary: #f05323;
+      --primary-hover: #ff6a3d;
+      --bg-page: #1a1a1a;
+      --bg-surface: #2a2a2a;
+      --bg-surface-secondary: #262626;
+      --bg-hover: #3a3a3a;
+      --bg-primary: #212121;
+      --text-heading: #ffffff;
+      --text-primary: #bcbec0;
+      --text-secondary: #a0a0a0;
+      --text-muted: #707070;
+      --border-default: #58595b;
+      --border-hover: #707070;
+      --button-primary-bg: #f05323;
+      --button-primary-text: #ffffff;
+      --card-bg: rgba(255,255,255,0.03);
+      --card-border: #58595b;
+      --card-hover-border: #f05323;
+      --success: #10b981;
+      --success-bg: rgba(16,185,129,0.10);
+      --success-border: rgba(16,185,129,0.25);
+      --warning: #f59e0b;
+      --warning-bg: rgba(245,158,11,0.08);
+      --warning-border: rgba(245,158,11,0.20);
+      --danger: #ef4444;
+      --danger-bg: rgba(239,68,68,0.10);
+      --danger-border: rgba(239,68,68,0.25);
+      --info: #4A9EFF;
+      --info-bg: rgba(74,158,255,0.10);
+      --info-border: rgba(74,158,255,0.25);
+      --chart-1: #10b981;
+      --chart-2: #f59e0b;
+      --chart-3: #3b82f6;
+      --chart-4: #8b5cf6;
+      --chart-5: #ec4899;
+      --chart-6: #14b8a6;
+      --chart-7: #f97316;
+      --chart-8: #6366f1;
+      --shadow-lg: 0 10px 15px -3px rgba(0,0,0,0.5);
+    }
+
+    [data-theme="light"] {
+      --primary: #f05323;
+      --primary-hover: #d63911;
+      --bg-page: #f8fafc;
+      --bg-surface: #f9fafb;
+      --bg-surface-secondary: #f1f5f9;
+      --bg-hover: #e5e7eb;
+      --bg-primary: #ffffff;
+      --text-heading: #000000;
+      --text-primary: #111827;
+      --text-secondary: #6b7280;
+      --text-muted: #9ca3af;
+      --border-default: #e5e7eb;
+      --border-hover: #d1d5db;
+      --button-primary-bg: #f05323;
+      --button-primary-text: #ffffff;
+      --card-bg: rgba(0,0,0,0.02);
+      --card-border: #e5e7eb;
+      --card-hover-border: #f05323;
+      --success: #10b981;
+      --success-bg: rgba(16,185,129,0.10);
+      --success-border: rgba(16,185,129,0.25);
+      --warning: #f59e0b;
+      --warning-bg: rgba(245,158,11,0.08);
+      --warning-border: rgba(245,158,11,0.20);
+      --danger: #ef4444;
+      --danger-bg: rgba(239,68,68,0.10);
+      --danger-border: rgba(239,68,68,0.25);
+      --info: #4A9EFF;
+      --info-bg: rgba(74,158,255,0.10);
+      --info-border: rgba(74,158,255,0.25);
+      --chart-1: #10b981;
+      --chart-2: #f59e0b;
+      --chart-3: #3b82f6;
+      --chart-4: #8b5cf6;
+      --chart-5: #ec4899;
+      --chart-6: #14b8a6;
+      --chart-7: #f97316;
+      --chart-8: #6366f1;
+      --shadow-lg: 0 10px 15px -3px rgba(0,0,0,0.15);
+    }
+
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+
+    body {
+      font-family: 'Inter', system-ui, -apple-system, sans-serif;
+      background: var(--bg-page);
+      color: var(--text-primary);
+      min-height: 100vh;
+      font-size: 13px;
+      line-height: 1.4;
+    }
+
+    /* ─── TOPBAR ─── */
+    .topbar {
+      position: sticky;
+      top: 0;
+      z-index: 100;
+      background: var(--bg-primary);
+      border-bottom: 1px solid var(--border-default);
+      padding: 0 24px;
+      height: 52px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 16px;
+    }
+
+    .topbar-left {
+      display: flex;
+      align-items: center;
+      gap: 20px;
+    }
+
+    .topbar-logo {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .logo-mark {
+      width: 28px;
+      height: 28px;
+      background: var(--primary);
+      border-radius: 6px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 13px;
+      font-weight: 700;
+      color: white;
+      letter-spacing: -0.5px;
+    }
+
+    .logo-text {
+      font-size: 15px;
+      font-weight: 600;
+      color: var(--text-heading);
+      letter-spacing: -0.3px;
+    }
+
+    .logo-product {
+      font-size: 11px;
+      font-weight: 500;
+      color: var(--text-muted);
+      text-transform: uppercase;
+      letter-spacing: 0.8px;
+      border-left: 1px solid var(--border-default);
+      padding-left: 12px;
+      margin-left: 4px;
+    }
+
+    .topbar-nav {
+      display: flex;
+      align-items: center;
+      gap: 2px;
+    }
+
+    .nav-item {
+      padding: 5px 12px;
+      border-radius: 6px;
+      font-size: 13px;
+      font-weight: 500;
+      color: var(--text-secondary);
+      cursor: pointer;
+      transition: all 120ms;
+      border: none;
+      background: none;
+    }
+
+    .nav-item:hover {
+      color: var(--text-primary);
+      background: var(--bg-hover);
+    }
+
+    .nav-item.active {
+      color: var(--text-heading);
+      background: var(--bg-hover);
+    }
+
+    .topbar-right {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    /* Theme toggle */
+    .theme-toggle-group {
+      display: flex;
+      align-items: center;
+      background: var(--bg-surface);
+      border: 1px solid var(--border-default);
+      border-radius: 8px;
+      padding: 3px;
+      gap: 2px;
+    }
+
+    .theme-btn {
+      padding: 4px 10px;
+      border-radius: 5px;
+      font-size: 11px;
+      font-weight: 500;
+      cursor: pointer;
+      border: none;
+      background: none;
+      color: var(--text-muted);
+      transition: all 120ms;
+    }
+
+    .theme-btn.active {
+      background: var(--bg-primary);
+      color: var(--text-primary);
+      box-shadow: 0 1px 3px rgba(0,0,0,0.3);
+    }
+
+    .theme-btn:hover:not(.active) {
+      color: var(--text-secondary);
+    }
+
+    /* ─── MAIN LAYOUT ─── */
+    .page-content {
+      padding: 24px 24px 32px;
+      max-width: 1600px;
+      margin: 0 auto;
+    }
+
+    /* ─── SECTION TAG ─── */
+    .section-tag {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      margin-bottom: 6px;
+    }
+
+    .section-tag-label {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      font-size: 11px;
+      font-weight: 600;
+      color: var(--text-secondary);
+      text-transform: uppercase;
+      letter-spacing: 1px;
+    }
+
+    .section-tag-label::before {
+      content: '';
+      display: block;
+      width: 3px;
+      height: 14px;
+      background: var(--primary);
+      border-radius: 2px;
+    }
+
+    /* ─── PAGE HEADER ─── */
+    .page-header {
+      margin-bottom: 20px;
+    }
+
+    .page-title {
+      font-size: 24px;
+      font-weight: 700;
+      color: var(--text-heading);
+      letter-spacing: -0.5px;
+      margin-bottom: 16px;
+    }
+
+    /* ─── FILTER BAR ─── */
+    .filter-bar {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      flex-wrap: wrap;
+    }
+
+    .filter-select {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      padding: 6px 10px;
+      background: var(--bg-surface);
+      border: 1px solid var(--border-default);
+      border-radius: 7px;
+      font-size: 12px;
+      font-weight: 500;
+      color: var(--text-primary);
+      cursor: pointer;
+      transition: all 120ms;
+      font-family: inherit;
+    }
+
+    .filter-select:hover {
+      border-color: var(--border-hover);
+      background: var(--bg-hover);
+    }
+
+    .filter-select .chevron {
+      font-size: 10px;
+      color: var(--text-muted);
+    }
+
+    .filter-chip {
+      display: flex;
+      align-items: center;
+      gap: 5px;
+      padding: 6px 10px;
+      background: var(--bg-surface);
+      border: 1px solid var(--border-default);
+      border-radius: 7px;
+      font-size: 12px;
+      font-weight: 500;
+      color: var(--text-muted);
+      cursor: pointer;
+      transition: all 120ms;
+      user-select: none;
+    }
+
+    .filter-chip:hover {
+      border-color: var(--border-hover);
+      color: var(--text-primary);
+    }
+
+    .filter-chip.active {
+      background: rgba(240, 83, 35, 0.1);
+      border-color: rgba(240, 83, 35, 0.4);
+      color: var(--primary);
+    }
+
+    .filter-divider {
+      width: 1px;
+      height: 20px;
+      background: var(--border-default);
+      margin: 0 4px;
+    }
+
+    /* ─── ROADMAP GRID ─── */
+    .roadmap-grid {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 16px;
+      align-items: start;
+    }
+
+    @media (max-width: 1100px) {
+      .roadmap-grid { grid-template-columns: repeat(2, 1fr); }
+    }
+
+    @media (max-width: 640px) {
+      .roadmap-grid { grid-template-columns: 1fr; }
+    }
+
+    /* ─── QUARTER COLUMN ─── */
+    .quarter-col {
+      display: flex;
+      flex-direction: column;
+      background: var(--card-bg);
+      border: 1px solid var(--card-border);
+      border-radius: 10px;
+      overflow: hidden;
+      transition: border-color 150ms;
+      position: relative;
+    }
+
+    .quarter-col:hover .quarter-col-header {
+      background: var(--bg-surface-secondary);
+    }
+
+    .quarter-col-header {
+      padding: 14px 16px 12px;
+      background: var(--bg-surface);
+      border-bottom: 1px solid var(--border-default);
+      position: sticky;
+      top: 0;
+      z-index: 10;
+      transition: background 150ms;
+    }
+
+    .quarter-col-header-top {
+      display: flex;
+      align-items: flex-start;
+      justify-content: space-between;
+      margin-bottom: 6px;
+    }
+
+    .quarter-name {
+      font-size: 14px;
+      font-weight: 700;
+      color: var(--text-heading);
+      letter-spacing: -0.2px;
+    }
+
+    .quarter-dates {
+      font-size: 12px;
+      color: var(--text-muted);
+      margin-top: 2px;
+    }
+
+    .quarter-body {
+      overflow-y: auto;
+      max-height: 70vh;
+      padding: 0;
+    }
+
+    .quarter-body::-webkit-scrollbar {
+      width: 4px;
+    }
+    .quarter-body::-webkit-scrollbar-track {
+      background: transparent;
+    }
+    .quarter-body::-webkit-scrollbar-thumb {
+      background: var(--border-default);
+      border-radius: 2px;
+    }
+
+    /* ─── STATUS BADGE (quarter) ─── */
+    .status-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 5px;
+      padding: 3px 8px;
+      border-radius: 20px;
+      font-size: 11px;
+      font-weight: 500;
+      border: 1px solid;
+      white-space: nowrap;
+    }
+
+    .status-dot {
+      width: 6px;
+      height: 6px;
+      border-radius: 50%;
+      flex-shrink: 0;
+    }
+
+    .status-badge.active {
+      background: var(--success-bg);
+      border-color: var(--success-border);
+      color: var(--success);
+    }
+
+    .status-badge.active .status-dot { background: var(--success); }
+
+    .status-badge.published {
+      background: var(--info-bg);
+      border-color: var(--info-border);
+      color: var(--info);
+    }
+
+    .status-badge.published .status-dot { background: var(--info); }
+
+    .status-badge.draft {
+      background: transparent;
+      border-color: var(--border-default);
+      color: var(--text-muted);
+    }
+
+    .status-badge.draft .status-dot { background: var(--text-muted); }
+
+    /* ─── CYCLE BLOCK ─── */
+    .cycle-block {
+      position: relative;
+      border-bottom: 1px solid var(--border-default);
+    }
+
+    .cycle-block:last-child {
+      border-bottom: none;
+    }
+
+    .cycle-accent {
+      position: absolute;
+      left: 0;
+      top: 0;
+      bottom: 0;
+      width: 3px;
+      border-radius: 0;
+      z-index: 1;
+    }
+
+    .cycle-accent.active   { background: var(--primary); }
+    .cycle-accent.completed { background: var(--success); }
+    .cycle-accent.future   { background: transparent; }
+
+    .cycle-header {
+      display: flex;
+      align-items: center;
+      padding: 9px 12px 9px 16px;
+      gap: 8px;
+      background: var(--bg-surface-secondary);
+    }
+
+    .cycle-name {
+      font-size: 12px;
+      font-weight: 700;
+      color: var(--text-secondary);
+      text-transform: uppercase;
+      letter-spacing: 0.4px;
+    }
+
+    .cycle-dates {
+      font-size: 11px;
+      color: var(--text-muted);
+      flex: 1;
+    }
+
+    .cycle-count {
+      font-size: 11px;
+      font-weight: 600;
+      color: var(--text-muted);
+      background: var(--bg-hover);
+      border: 1px solid var(--border-default);
+      border-radius: 10px;
+      padding: 1px 7px;
+      min-width: 22px;
+      text-align: center;
+    }
+
+    /* ─── IDEA ROWS ─── */
+    .idea-list {
+      padding: 2px 0;
+    }
+
+    .idea-row {
+      display: flex;
+      align-items: center;
+      gap: 7px;
+      height: 30px;
+      padding: 0 10px 0 16px;
+      cursor: pointer;
+      transition: background 100ms;
+      position: relative;
+    }
+
+    .idea-row:hover {
+      background: var(--bg-hover);
+    }
+
+    .idea-row.dimmed {
+      opacity: 0.3;
+    }
+
+    .idea-row.dimmed:hover {
+      opacity: 0.5;
+    }
+
+    /* status dot */
+    .idea-status-dot {
+      width: 8px;
+      height: 8px;
+      border-radius: 50%;
+      flex-shrink: 0;
+    }
+
+    .idea-status-dot.done        { background: var(--success); }
+    .idea-status-dot.in_progress { background: var(--warning); }
+    .idea-status-dot.blocked     { background: var(--danger); }
+    .idea-status-dot.backlog     { background: var(--text-muted); border: 1px solid var(--text-muted); background: transparent; }
+
+    /* title */
+    .idea-title {
+      flex: 1;
+      font-size: 13px;
+      color: var(--text-primary);
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      min-width: 0;
+    }
+
+    .idea-row:hover .idea-title {
+      color: var(--text-heading);
+    }
+
+    /* assignee bubble */
+    .assignee-bubble {
+      width: 20px;
+      height: 20px;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 10px;
+      font-weight: 600;
+      color: white;
+      flex-shrink: 0;
+      letter-spacing: -0.3px;
+    }
+
+    /* carried badge */
+    .carried-badge {
+      font-size: 10px;
+      font-weight: 700;
+      color: var(--primary);
+      flex-shrink: 0;
+      cursor: default;
+      position: relative;
+    }
+
+    .carried-badge:hover .carried-tooltip {
+      opacity: 1;
+      pointer-events: auto;
+    }
+
+    .carried-tooltip {
+      position: absolute;
+      bottom: calc(100% + 4px);
+      right: 0;
+      background: var(--bg-surface);
+      border: 1px solid var(--border-default);
+      border-radius: 6px;
+      padding: 4px 8px;
+      font-size: 11px;
+      color: var(--text-primary);
+      white-space: nowrap;
+      opacity: 0;
+      pointer-events: none;
+      transition: opacity 150ms;
+      z-index: 50;
+      box-shadow: var(--shadow-lg);
+      font-weight: 400;
+    }
+
+    /* more row */
+    .more-row {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      height: 30px;
+      padding: 0 10px 0 16px;
+      cursor: pointer;
+      font-size: 12px;
+      color: var(--text-muted);
+      transition: color 100ms, background 100ms;
+    }
+
+    .more-row:hover {
+      background: var(--bg-hover);
+      color: var(--text-secondary);
+    }
+
+    .more-row-icon {
+      font-size: 9px;
+      transition: transform 150ms;
+    }
+
+    .more-row.expanded .more-row-icon {
+      transform: rotate(90deg);
+    }
+
+    /* empty placeholder */
+    .cycle-placeholder {
+      margin: 10px 14px 10px 16px;
+      border: 1px dashed var(--border-default);
+      border-radius: 6px;
+      padding: 14px 12px;
+      text-align: center;
+      font-size: 12px;
+      color: var(--text-muted);
+      font-style: italic;
+    }
+
+    /* ─── IDEA POPOVER ─── */
+    .idea-popover {
+      position: fixed;
+      z-index: 200;
+      background: var(--bg-surface);
+      border: 1px solid var(--border-default);
+      border-radius: 10px;
+      width: 300px;
+      box-shadow: var(--shadow-lg);
+      display: none;
+      overflow: hidden;
+    }
+
+    .idea-popover.visible {
+      display: block;
+    }
+
+    .popover-header {
+      padding: 12px 14px 10px;
+      border-bottom: 1px solid var(--border-default);
+    }
+
+    .popover-title {
+      font-size: 14px;
+      font-weight: 600;
+      color: var(--text-heading);
+      margin-bottom: 6px;
+      line-height: 1.3;
+    }
+
+    .popover-desc {
+      font-size: 12px;
+      color: var(--text-secondary);
+      line-height: 1.5;
+    }
+
+    .popover-body {
+      padding: 10px 14px 12px;
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+    }
+
+    .popover-meta-row {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      font-size: 12px;
+      color: var(--text-secondary);
+    }
+
+    .popover-meta-label {
+      color: var(--text-muted);
+      font-size: 11px;
+      min-width: 64px;
+    }
+
+    .popover-chip {
+      padding: 2px 8px;
+      border-radius: 5px;
+      font-size: 11px;
+      font-weight: 500;
+      border: 1px solid var(--border-default);
+      background: var(--card-bg);
+    }
+
+    .popover-chip.goal { color: var(--chart-3); border-color: rgba(74,158,255,0.25); background: rgba(74,158,255,0.08); }
+    .popover-chip.effort-s { color: var(--success); border-color: var(--success-border); background: var(--success-bg); }
+    .popover-chip.effort-m { color: var(--warning); border-color: var(--warning-border); background: var(--warning-bg); }
+    .popover-chip.effort-l { color: var(--danger); border-color: var(--danger-border); background: var(--danger-bg); }
+
+    .popover-status-row {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+
+    .popover-status-text {
+      font-size: 12px;
+      font-weight: 500;
+    }
+
+    .popover-status-text.done        { color: var(--success); }
+    .popover-status-text.in_progress { color: var(--warning); }
+    .popover-status-text.blocked     { color: var(--danger); }
+    .popover-status-text.backlog     { color: var(--text-muted); }
+
+    .popover-assignee {
+      display: flex;
+      align-items: center;
+      gap: 7px;
+    }
+
+    .popover-close {
+      position: absolute;
+      top: 10px;
+      right: 10px;
+      width: 22px;
+      height: 22px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      border: none;
+      background: none;
+      color: var(--text-muted);
+      cursor: pointer;
+      border-radius: 4px;
+      font-size: 14px;
+      transition: all 120ms;
+    }
+
+    .popover-close:hover {
+      background: var(--bg-hover);
+      color: var(--text-primary);
+    }
+
+    /* ─── VERSION FOOTER ─── */
+    .version-footer {
+      text-align: center;
+      padding: 24px;
+      font-size: 11px;
+      color: var(--text-muted);
+      border-top: 1px solid var(--border-default);
+      margin-top: 32px;
+    }
+
+    /* Goal filter dropdown (simple) */
+    .filter-dropdown-wrapper {
+      position: relative;
+    }
+
+    .filter-dropdown-menu {
+      position: absolute;
+      top: calc(100% + 6px);
+      left: 0;
+      background: var(--bg-surface);
+      border: 1px solid var(--border-default);
+      border-radius: 8px;
+      min-width: 200px;
+      box-shadow: var(--shadow-lg);
+      z-index: 150;
+      display: none;
+      overflow: hidden;
+    }
+
+    .filter-dropdown-menu.open {
+      display: block;
+    }
+
+    .dropdown-item {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      padding: 8px 12px;
+      font-size: 13px;
+      color: var(--text-primary);
+      cursor: pointer;
+      transition: background 100ms;
+    }
+
+    .dropdown-item:hover {
+      background: var(--bg-hover);
+    }
+
+    .dropdown-item.selected {
+      color: var(--primary);
+    }
+
+    .dropdown-checkmark {
+      width: 14px;
+      height: 14px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 11px;
+    }
+
+    .goal-dot {
+      width: 8px;
+      height: 8px;
+      border-radius: 50%;
+      flex-shrink: 0;
+    }
+
+    /* Subtle pulse for active cycle accent */
+    @keyframes pulse-border {
+      0%, 100% { opacity: 1; }
+      50% { opacity: 0.6; }
+    }
+
+    .cycle-accent.active {
+      animation: pulse-border 3s ease-in-out infinite;
+    }
+
+    /* Active cycle header tint */
+    .cycle-block.is-active .cycle-header {
+      background: rgba(240, 83, 35, 0.04);
+    }
+
+    .cycle-block.is-active .cycle-name {
+      color: var(--primary);
+    }
+
+    /* Split panel demo */
+    .split-panel {
+      display: none;
+    }
+
+    .split-panel.active {
+      display: block;
+    }
+  </style>
+</head>
+<body>
+
+  <!-- ─── TOPBAR ─── -->
+  <header class="topbar">
+    <div class="topbar-left">
+      <div class="topbar-logo">
+        <div class="logo-mark">B</div>
+        <span class="logo-text">Blick</span>
+        <span class="logo-product">Compass</span>
+      </div>
+      <nav class="topbar-nav">
+        <button class="nav-item">Overview</button>
+        <button class="nav-item">Cycles</button>
+        <button class="nav-item active">Roadmap</button>
+        <button class="nav-item">Ideas</button>
+        <button class="nav-item">Goals</button>
+      </nav>
+    </div>
+    <div class="topbar-right">
+      <div class="theme-toggle-group">
+        <button class="theme-btn" onclick="setTheme('light')">Light</button>
+        <button class="theme-btn" id="splitBtn" onclick="setTheme('split')">Split</button>
+        <button class="theme-btn active" id="darkBtn" onclick="setTheme('dark')">Dark</button>
+      </div>
+    </div>
+  </header>
+
+  <!-- ─── PAGE CONTENT ─── -->
+  <main class="page-content">
+
+    <!-- Section header -->
+    <div class="page-header">
+      <div class="section-tag">
+        <span class="section-tag-label">Roadmap</span>
+      </div>
+      <h1 class="page-title">Q2 2026 — Q1 2027</h1>
+
+      <!-- Filter bar -->
+      <div class="filter-bar">
+        <div class="filter-dropdown-wrapper" id="goalDropdownWrapper">
+          <button class="filter-select" onclick="toggleGoalDropdown()">
+            <span id="goalFilterLabel">All Goals</span>
+            <span class="chevron">▾</span>
+          </button>
+          <div class="filter-dropdown-menu" id="goalDropdownMenu">
+            <div class="dropdown-item selected" onclick="selectGoal('all')" data-goal="all">
+              <span class="dropdown-checkmark" id="check-all">✓</span>
+              <span>All Goals</span>
+            </div>
+            <div class="dropdown-item" onclick="selectGoal('platform')" data-goal="platform">
+              <span class="dropdown-checkmark" id="check-platform"></span>
+              <span class="goal-dot" style="background: var(--chart-3);"></span>
+              <span>Platform Stability</span>
+            </div>
+            <div class="dropdown-item" onclick="selectGoal('growth')" data-goal="growth">
+              <span class="dropdown-checkmark" id="check-growth"></span>
+              <span class="goal-dot" style="background: var(--chart-1);"></span>
+              <span>Customer Growth</span>
+            </div>
+            <div class="dropdown-item" onclick="selectGoal('ops')" data-goal="ops">
+              <span class="dropdown-checkmark" id="check-ops"></span>
+              <span class="goal-dot" style="background: var(--chart-2);"></span>
+              <span>Operations</span>
+            </div>
+            <div class="dropdown-item" onclick="selectGoal('ai')" data-goal="ai">
+              <span class="dropdown-checkmark" id="check-ai"></span>
+              <span class="goal-dot" style="background: var(--chart-4);"></span>
+              <span>AI &amp; Intelligence</span>
+            </div>
+          </div>
+        </div>
+
+        <button class="filter-select" onclick="toggleStatusFilter(this)">
+          <span>All Statuses</span>
+          <span class="chevron">▾</span>
+        </button>
+
+        <div class="filter-divider"></div>
+
+        <button class="filter-chip" id="carriedChip" onclick="toggleCarried()">
+          <span>↗</span>
+          <span>Carried only</span>
+        </button>
+      </div>
+    </div>
+
+    <!-- ─── ROADMAP GRID ─── -->
+    <div class="roadmap-grid" id="roadmapGrid">
+
+      <!-- ── Q2 2026 ── -->
+      <div class="quarter-col">
+        <div class="quarter-col-header">
+          <div class="quarter-col-header-top">
+            <div>
+              <div class="quarter-name">Q2 2026</div>
+              <div class="quarter-dates">Apr – Jun 2026</div>
+            </div>
+            <span class="status-badge active">
+              <span class="status-dot"></span>Active
+            </span>
+          </div>
+        </div>
+        <div class="quarter-body">
+
+          <!-- Cycle 1 — Completed -->
+          <div class="cycle-block">
+            <div class="cycle-accent completed"></div>
+            <div class="cycle-header">
+              <span class="cycle-name">Cycle 1</span>
+              <span class="cycle-dates">Apr 1–30</span>
+              <span class="cycle-count">6</span>
+            </div>
+            <div class="idea-list">
+              <div class="idea-row" data-goal="platform"
+                   data-title="Analytics Dashboard"
+                   data-desc="Core analytics dashboard with key metrics, drill-down charts, and exportable reports."
+                   data-status="done"
+                   data-assignee="AM"
+                   data-effort="L"
+                   data-goalname="Platform Stability"
+                   data-goalcolor="var(--chart-3)"
+                   onclick="showPopover(event, this)">
+                <span class="idea-status-dot done"></span>
+                <span class="idea-title">Analytics Dashboard</span>
+                <span class="assignee-bubble" style="background: var(--chart-1);">AM</span>
+              </div>
+              <div class="idea-row" data-goal="platform"
+                   data-title="Mobile Auth Refactor"
+                   data-desc="Refactor mobile authentication to use token refresh with biometric fallback."
+                   data-status="done"
+                   data-assignee="BC"
+                   data-effort="M"
+                   data-goalname="Platform Stability"
+                   data-goalcolor="var(--chart-3)"
+                   onclick="showPopover(event, this)">
+                <span class="idea-status-dot done"></span>
+                <span class="idea-title">Mobile Auth Refactor</span>
+                <span class="assignee-bubble" style="background: var(--chart-3);">BC</span>
+              </div>
+              <div class="idea-row" data-goal="growth"
+                   data-title="Customer Portal v2"
+                   data-desc="Redesigned customer portal with improved navigation and self-service capabilities."
+                   data-status="done"
+                   data-assignee="AM"
+                   data-effort="L"
+                   data-goalname="Customer Growth"
+                   data-goalcolor="var(--chart-1)"
+                   onclick="showPopover(event, this)">
+                <span class="idea-status-dot done"></span>
+                <span class="idea-title">Customer Portal v2</span>
+                <span class="assignee-bubble" style="background: var(--chart-1);">AM</span>
+              </div>
+              <div class="idea-row" data-goal="platform"
+                   data-title="API Rate Limiting"
+                   data-desc="Implement per-tenant rate limiting with configurable thresholds and graceful degradation."
+                   data-status="done"
+                   data-assignee="DT"
+                   data-effort="S"
+                   data-goalname="Platform Stability"
+                   data-goalcolor="var(--chart-3)"
+                   onclick="showPopover(event, this)">
+                <span class="idea-status-dot done"></span>
+                <span class="idea-title">API Rate Limiting</span>
+                <span class="assignee-bubble" style="background: var(--chart-6);">DT</span>
+              </div>
+              <div class="idea-row" data-goal="growth"
+                   data-title="Onboarding Flow"
+                   data-desc="Guided onboarding experience for new customers with interactive setup wizard."
+                   data-status="done"
+                   data-assignee="BC"
+                   data-effort="M"
+                   data-goalname="Customer Growth"
+                   data-goalcolor="var(--chart-1)"
+                   onclick="showPopover(event, this)">
+                <span class="idea-status-dot done"></span>
+                <span class="idea-title">Onboarding Flow</span>
+                <span class="assignee-bubble" style="background: var(--chart-3);">BC</span>
+              </div>
+              <div class="idea-row" data-goal="ops"
+                   data-title="Reporting Engine"
+                   data-desc="Flexible report builder with scheduling, PDF export, and multi-format output."
+                   data-status="in_progress"
+                   data-assignee="DT"
+                   data-effort="L"
+                   data-goalname="Operations"
+                   data-goalcolor="var(--chart-2)"
+                   onclick="showPopover(event, this)">
+                <span class="idea-status-dot in_progress"></span>
+                <span class="idea-title">Reporting Engine</span>
+                <span class="assignee-bubble" style="background: var(--chart-6);">DT</span>
+                <span class="carried-badge" title="">
+                  ↗
+                  <span class="carried-tooltip">Carried to Cycle 2</span>
+                </span>
+              </div>
+            </div>
+          </div>
+
+          <!-- Cycle 2 — Active -->
+          <div class="cycle-block is-active">
+            <div class="cycle-accent active"></div>
+            <div class="cycle-header">
+              <span class="cycle-name">Cycle 2</span>
+              <span class="cycle-dates">May 1–31</span>
+              <span class="cycle-count">7</span>
+            </div>
+            <div class="idea-list" id="c2-list">
+              <div class="idea-row" data-goal="ops"
+                   data-title="Reporting Engine"
+                   data-desc="Continued from Cycle 1. Flexible report builder with scheduling and multi-format export."
+                   data-status="in_progress"
+                   data-assignee="DT"
+                   data-effort="L"
+                   data-goalname="Operations"
+                   data-goalcolor="var(--chart-2)"
+                   onclick="showPopover(event, this)">
+                <span class="idea-status-dot in_progress"></span>
+                <span class="idea-title">Reporting Engine</span>
+                <span class="assignee-bubble" style="background: var(--chart-6);">DT</span>
+                <span class="carried-badge">
+                  ↗
+                  <span class="carried-tooltip">Carried from Cycle 1</span>
+                </span>
+              </div>
+              <div class="idea-row" data-goal="growth"
+                   data-title="Customer Portal v2 follow-up"
+                   data-desc="Post-launch improvements: performance fixes, user feedback integration, and edge cases."
+                   data-status="in_progress"
+                   data-assignee="AM"
+                   data-effort="S"
+                   data-goalname="Customer Growth"
+                   data-goalcolor="var(--chart-1)"
+                   onclick="showPopover(event, this)">
+                <span class="idea-status-dot in_progress"></span>
+                <span class="idea-title">Customer Portal v2 follow-up</span>
+                <span class="assignee-bubble" style="background: var(--chart-1);">AM</span>
+              </div>
+              <div class="idea-row" data-goal="ops"
+                   data-title="Rig Health Dashboard"
+                   data-desc="Real-time rig health monitoring with alert thresholds and maintenance scheduling."
+                   data-status="in_progress"
+                   data-assignee="BC"
+                   data-effort="L"
+                   data-goalname="Operations"
+                   data-goalcolor="var(--chart-2)"
+                   onclick="showPopover(event, this)">
+                <span class="idea-status-dot in_progress"></span>
+                <span class="idea-title">Rig Health Dashboard</span>
+                <span class="assignee-bubble" style="background: var(--chart-3);">BC</span>
+              </div>
+              <div class="idea-row" data-goal="ops"
+                   data-title="Invoicing Module"
+                   data-desc="Automated invoice generation from completed jobs with GST/tax handling for NZ and AU."
+                   data-status="backlog"
+                   data-assignee="DT"
+                   data-effort="M"
+                   data-goalname="Operations"
+                   data-goalcolor="var(--chart-2)"
+                   onclick="showPopover(event, this)">
+                <span class="idea-status-dot backlog"></span>
+                <span class="idea-title">Invoicing Module</span>
+                <span class="assignee-bubble" style="background: var(--chart-6);">DT</span>
+              </div>
+              <div class="idea-row" data-goal="ops"
+                   data-title="Export to PDF"
+                   data-desc="One-click PDF export for reports, timesheets, and job summaries with Blick branding."
+                   data-status="backlog"
+                   data-assignee="AM"
+                   data-effort="S"
+                   data-goalname="Operations"
+                   data-goalcolor="var(--chart-2)"
+                   onclick="showPopover(event, this)">
+                <span class="idea-status-dot backlog"></span>
+                <span class="idea-title">Export to PDF</span>
+                <span class="assignee-bubble" style="background: var(--chart-1);">AM</span>
+              </div>
+              <div class="idea-row" data-goal="platform"
+                   data-title="Notification Service (blocked)"
+                   data-desc="Push and in-app notification delivery. Blocked on third-party provider SLA review."
+                   data-status="blocked"
+                   data-assignee="BC"
+                   data-effort="M"
+                   data-goalname="Platform Stability"
+                   data-goalcolor="var(--chart-3)"
+                   onclick="showPopover(event, this)">
+                <span class="idea-status-dot blocked"></span>
+                <span class="idea-title">Notification Service</span>
+                <span class="assignee-bubble" style="background: var(--chart-3);">BC</span>
+              </div>
+            </div>
+            <!-- More row -->
+            <div class="more-row" id="c2-more" onclick="expandMore('c2', this)">
+              <span class="more-row-icon">▸</span>
+              <span class="more-row-label">+ 1 more idea</span>
+            </div>
+            <!-- Hidden idea -->
+            <div class="idea-list" id="c2-hidden" style="display:none;">
+              <div class="idea-row" data-goal="platform"
+                   data-title="Data Sync API"
+                   data-desc="Background sync API for offline data reconciliation across mobile and web clients."
+                   data-status="backlog"
+                   data-assignee="DT"
+                   data-effort="M"
+                   data-goalname="Platform Stability"
+                   data-goalcolor="var(--chart-3)"
+                   onclick="showPopover(event, this)">
+                <span class="idea-status-dot backlog"></span>
+                <span class="idea-title">Data Sync API</span>
+                <span class="assignee-bubble" style="background: var(--chart-6);">DT</span>
+              </div>
+            </div>
+          </div>
+
+          <!-- Cycle 3 — Future -->
+          <div class="cycle-block">
+            <div class="cycle-accent future"></div>
+            <div class="cycle-header">
+              <span class="cycle-name">Cycle 3</span>
+              <span class="cycle-dates">Jun 1–30</span>
+              <span class="cycle-count">6</span>
+            </div>
+            <div class="idea-list">
+              <div class="idea-row" data-goal="ai"
+                   data-title="AI Suggestion Engine"
+                   data-desc="ML-powered suggestions for job planning, resource allocation, and predictive maintenance."
+                   data-status="backlog"
+                   data-assignee="AM"
+                   data-effort="L"
+                   data-goalname="AI & Intelligence"
+                   data-goalcolor="var(--chart-4)"
+                   onclick="showPopover(event, this)">
+                <span class="idea-status-dot backlog"></span>
+                <span class="idea-title">AI Suggestion Engine</span>
+                <span class="assignee-bubble" style="background: var(--chart-1);">AM</span>
+              </div>
+              <div class="idea-row" data-goal="platform"
+                   data-title="Multi-tenant Auth"
+                   data-desc="Isolate tenant auth contexts with per-org SSO, domain mapping, and granular permissions."
+                   data-status="backlog"
+                   data-assignee="BC"
+                   data-effort="L"
+                   data-goalname="Platform Stability"
+                   data-goalcolor="var(--chart-3)"
+                   onclick="showPopover(event, this)">
+                <span class="idea-status-dot backlog"></span>
+                <span class="idea-title">Multi-tenant Auth</span>
+                <span class="assignee-bubble" style="background: var(--chart-3);">BC</span>
+              </div>
+              <div class="idea-row" data-goal="platform"
+                   data-title="Analytics v2"
+                   data-desc="Second-generation analytics with cohort analysis, custom funnels, and real-time streaming."
+                   data-status="backlog"
+                   data-assignee="DT"
+                   data-effort="L"
+                   data-goalname="Platform Stability"
+                   data-goalcolor="var(--chart-3)"
+                   onclick="showPopover(event, this)">
+                <span class="idea-status-dot backlog"></span>
+                <span class="idea-title">Analytics v2</span>
+                <span class="assignee-bubble" style="background: var(--chart-6);">DT</span>
+              </div>
+              <div class="idea-row" data-goal="ops"
+                   data-title="Batch Processing"
+                   data-desc="Queue-based batch operations for bulk imports, exports, and scheduled data transformations."
+                   data-status="backlog"
+                   data-assignee="AM"
+                   data-effort="M"
+                   data-goalname="Operations"
+                   data-goalcolor="var(--chart-2)"
+                   onclick="showPopover(event, this)">
+                <span class="idea-status-dot backlog"></span>
+                <span class="idea-title">Batch Processing</span>
+                <span class="assignee-bubble" style="background: var(--chart-1);">AM</span>
+              </div>
+              <div class="idea-row" data-goal="growth"
+                   data-title="Customer Feedback Loop"
+                   data-desc="In-app NPS surveys, feedback capture, and automated escalation routing for churn signals."
+                   data-status="backlog"
+                   data-assignee="BC"
+                   data-effort="M"
+                   data-goalname="Customer Growth"
+                   data-goalcolor="var(--chart-1)"
+                   onclick="showPopover(event, this)">
+                <span class="idea-status-dot backlog"></span>
+                <span class="idea-title">Customer Feedback Loop</span>
+                <span class="assignee-bubble" style="background: var(--chart-3);">BC</span>
+              </div>
+              <div class="idea-row" data-goal="ops"
+                   data-title="Compliance Reporting"
+                   data-desc="Automated H&S and regulatory compliance reports for AU/NZ requirements."
+                   data-status="backlog"
+                   data-assignee="DT"
+                   data-effort="M"
+                   data-goalname="Operations"
+                   data-goalcolor="var(--chart-2)"
+                   onclick="showPopover(event, this)">
+                <span class="idea-status-dot backlog"></span>
+                <span class="idea-title">Compliance Reporting</span>
+                <span class="assignee-bubble" style="background: var(--chart-6);">DT</span>
+              </div>
+            </div>
+          </div>
+
+        </div>
+      </div><!-- /Q2 -->
+
+      <!-- ── Q3 2026 ── -->
+      <div class="quarter-col">
+        <div class="quarter-col-header">
+          <div class="quarter-col-header-top">
+            <div>
+              <div class="quarter-name">Q3 2026</div>
+              <div class="quarter-dates">Jul – Sep 2026</div>
+            </div>
+            <span class="status-badge published">
+              <span class="status-dot"></span>Published
+            </span>
+          </div>
+        </div>
+        <div class="quarter-body">
+
+          <!-- Cycle 1 -->
+          <div class="cycle-block">
+            <div class="cycle-accent future"></div>
+            <div class="cycle-header">
+              <span class="cycle-name">Cycle 1</span>
+              <span class="cycle-dates">Jul 1–31</span>
+              <span class="cycle-count">4</span>
+            </div>
+            <div class="idea-list">
+              <div class="idea-row" data-goal="ops"
+                   data-title="Reporting Engine v2"
+                   data-desc="Phase 2 of the reporting engine: custom templates, conditional logic, and white-label output."
+                   data-status="backlog"
+                   data-assignee="DT"
+                   data-effort="L"
+                   data-goalname="Operations"
+                   data-goalcolor="var(--chart-2)"
+                   onclick="showPopover(event, this)">
+                <span class="idea-status-dot backlog"></span>
+                <span class="idea-title">Reporting Engine v2</span>
+                <span class="assignee-bubble" style="background: var(--chart-6);">DT</span>
+                <span class="carried-badge">
+                  ↗
+                  <span class="carried-tooltip">Carried from Q2 Cycle 2</span>
+                </span>
+              </div>
+              <div class="idea-row" data-goal="platform"
+                   data-title="Mobile Offline Mode"
+                   data-desc="Full offline support for field workers with conflict resolution on reconnect."
+                   data-status="backlog"
+                   data-assignee="AM"
+                   data-effort="L"
+                   data-goalname="Platform Stability"
+                   data-goalcolor="var(--chart-3)"
+                   onclick="showPopover(event, this)">
+                <span class="idea-status-dot backlog"></span>
+                <span class="idea-title">Mobile Offline Mode</span>
+                <span class="assignee-bubble" style="background: var(--chart-1);">AM</span>
+              </div>
+              <div class="idea-row" data-goal="ops"
+                   data-title="Bulk Operations"
+                   data-desc="Multi-select and bulk actions across jobs, timesheets, and resources."
+                   data-status="backlog"
+                   data-assignee="BC"
+                   data-effort="M"
+                   data-goalname="Operations"
+                   data-goalcolor="var(--chart-2)"
+                   onclick="showPopover(event, this)">
+                <span class="idea-status-dot backlog"></span>
+                <span class="idea-title">Bulk Operations</span>
+                <span class="assignee-bubble" style="background: var(--chart-3);">BC</span>
+              </div>
+              <div class="idea-row" data-goal="ops"
+                   data-title="Advanced Filters"
+                   data-desc="Saved filter sets, complex AND/OR logic, and cross-entity filtering for all list views."
+                   data-status="backlog"
+                   data-assignee="DT"
+                   data-effort="M"
+                   data-goalname="Operations"
+                   data-goalcolor="var(--chart-2)"
+                   onclick="showPopover(event, this)">
+                <span class="idea-status-dot backlog"></span>
+                <span class="idea-title">Advanced Filters</span>
+                <span class="assignee-bubble" style="background: var(--chart-6);">DT</span>
+              </div>
+            </div>
+          </div>
+
+          <!-- Cycle 2 -->
+          <div class="cycle-block">
+            <div class="cycle-accent future"></div>
+            <div class="cycle-header">
+              <span class="cycle-name">Cycle 2</span>
+              <span class="cycle-dates">Aug 1–31</span>
+              <span class="cycle-count">5</span>
+            </div>
+            <div class="idea-list">
+              <div class="idea-row" data-goal="platform"
+                   data-title="SSO Integration"
+                   data-desc="SAML 2.0 and OIDC single sign-on with Azure AD, Google Workspace, and Okta."
+                   data-status="backlog"
+                   data-assignee="AM"
+                   data-effort="L"
+                   data-goalname="Platform Stability"
+                   data-goalcolor="var(--chart-3)"
+                   onclick="showPopover(event, this)">
+                <span class="idea-status-dot backlog"></span>
+                <span class="idea-title">SSO Integration</span>
+                <span class="assignee-bubble" style="background: var(--chart-1);">AM</span>
+              </div>
+              <div class="idea-row" data-goal="platform"
+                   data-title="Webhooks"
+                   data-desc="Outbound webhooks for job events, status changes, and data mutations with retry logic."
+                   data-status="backlog"
+                   data-assignee="BC"
+                   data-effort="M"
+                   data-goalname="Platform Stability"
+                   data-goalcolor="var(--chart-3)"
+                   onclick="showPopover(event, this)">
+                <span class="idea-status-dot backlog"></span>
+                <span class="idea-title">Webhooks</span>
+                <span class="assignee-bubble" style="background: var(--chart-3);">BC</span>
+              </div>
+              <div class="idea-row" data-goal="ops"
+                   data-title="Audit Log"
+                   data-desc="Immutable audit trail for all data changes with user attribution and timestamp integrity."
+                   data-status="backlog"
+                   data-assignee="DT"
+                   data-effort="M"
+                   data-goalname="Operations"
+                   data-goalcolor="var(--chart-2)"
+                   onclick="showPopover(event, this)">
+                <span class="idea-status-dot backlog"></span>
+                <span class="idea-title">Audit Log</span>
+                <span class="assignee-bubble" style="background: var(--chart-6);">DT</span>
+              </div>
+              <div class="idea-row" data-goal="platform"
+                   data-title="Role Management"
+                   data-desc="Fine-grained RBAC with custom role builder, permission inheritance, and bulk assignment."
+                   data-status="backlog"
+                   data-assignee="AM"
+                   data-effort="M"
+                   data-goalname="Platform Stability"
+                   data-goalcolor="var(--chart-3)"
+                   onclick="showPopover(event, this)">
+                <span class="idea-status-dot backlog"></span>
+                <span class="idea-title">Role Management</span>
+                <span class="assignee-bubble" style="background: var(--chart-1);">AM</span>
+              </div>
+              <div class="idea-row" data-goal="platform"
+                   data-title="API v2"
+                   data-desc="Versioned REST API v2 with OpenAPI spec, SDK generation, and backwards compatibility."
+                   data-status="backlog"
+                   data-assignee="BC"
+                   data-effort="L"
+                   data-goalname="Platform Stability"
+                   data-goalcolor="var(--chart-3)"
+                   onclick="showPopover(event, this)">
+                <span class="idea-status-dot backlog"></span>
+                <span class="idea-title">API v2</span>
+                <span class="assignee-bubble" style="background: var(--chart-3);">BC</span>
+              </div>
+            </div>
+          </div>
+
+          <!-- Cycle 3 -->
+          <div class="cycle-block">
+            <div class="cycle-accent future"></div>
+            <div class="cycle-header">
+              <span class="cycle-name">Cycle 3</span>
+              <span class="cycle-dates">Sep 1–30</span>
+              <span class="cycle-count">3</span>
+            </div>
+            <div class="idea-list">
+              <div class="idea-row" data-goal="ai"
+                   data-title="Customer Insights"
+                   data-desc="Automated customer health scoring, usage analytics, and churn prediction signals."
+                   data-status="backlog"
+                   data-assignee="DT"
+                   data-effort="L"
+                   data-goalname="AI & Intelligence"
+                   data-goalcolor="var(--chart-4)"
+                   onclick="showPopover(event, this)">
+                <span class="idea-status-dot backlog"></span>
+                <span class="idea-title">Customer Insights</span>
+                <span class="assignee-bubble" style="background: var(--chart-6);">DT</span>
+              </div>
+              <div class="idea-row" data-goal="ai"
+                   data-title="Predictive Analytics"
+                   data-desc="ML forecasting for resource demand, job completion times, and cost overrun risk."
+                   data-status="backlog"
+                   data-assignee="AM"
+                   data-effort="L"
+                   data-goalname="AI & Intelligence"
+                   data-goalcolor="var(--chart-4)"
+                   onclick="showPopover(event, this)">
+                <span class="idea-status-dot backlog"></span>
+                <span class="idea-title">Predictive Analytics</span>
+                <span class="assignee-bubble" style="background: var(--chart-1);">AM</span>
+              </div>
+              <div class="idea-row" data-goal="ops"
+                   data-title="Performance Dashboard"
+                   data-desc="Company-wide KPI dashboard with drill-down to team, rig, and individual performance."
+                   data-status="backlog"
+                   data-assignee="BC"
+                   data-effort="M"
+                   data-goalname="Operations"
+                   data-goalcolor="var(--chart-2)"
+                   onclick="showPopover(event, this)">
+                <span class="idea-status-dot backlog"></span>
+                <span class="idea-title">Performance Dashboard</span>
+                <span class="assignee-bubble" style="background: var(--chart-3);">BC</span>
+              </div>
+            </div>
+          </div>
+
+        </div>
+      </div><!-- /Q3 -->
+
+      <!-- ── Q4 2026 ── -->
+      <div class="quarter-col">
+        <div class="quarter-col-header">
+          <div class="quarter-col-header-top">
+            <div>
+              <div class="quarter-name">Q4 2026</div>
+              <div class="quarter-dates">Oct – Dec 2026</div>
+            </div>
+            <span class="status-badge draft">
+              <span class="status-dot"></span>Draft
+            </span>
+          </div>
+        </div>
+        <div class="quarter-body">
+
+          <!-- Cycle 1 — empty -->
+          <div class="cycle-block">
+            <div class="cycle-accent future"></div>
+            <div class="cycle-header">
+              <span class="cycle-name">Cycle 1</span>
+              <span class="cycle-dates">Oct 1–31</span>
+              <span class="cycle-count" style="color: var(--text-muted); border-color: transparent; background: transparent;">0</span>
+            </div>
+            <div class="cycle-placeholder">No ideas planned yet</div>
+          </div>
+
+          <!-- Cycle 2 — empty -->
+          <div class="cycle-block">
+            <div class="cycle-accent future"></div>
+            <div class="cycle-header">
+              <span class="cycle-name">Cycle 2</span>
+              <span class="cycle-dates">Nov 1–30</span>
+              <span class="cycle-count" style="color: var(--text-muted); border-color: transparent; background: transparent;">0</span>
+            </div>
+            <div class="cycle-placeholder">No ideas planned yet</div>
+          </div>
+
+          <!-- Cycle 3 — empty -->
+          <div class="cycle-block">
+            <div class="cycle-accent future"></div>
+            <div class="cycle-header">
+              <span class="cycle-name">Cycle 3</span>
+              <span class="cycle-dates">Dec 1–31</span>
+              <span class="cycle-count" style="color: var(--text-muted); border-color: transparent; background: transparent;">0</span>
+            </div>
+            <div class="cycle-placeholder">No ideas planned yet</div>
+          </div>
+
+        </div>
+      </div><!-- /Q4 -->
+
+      <!-- ── Q1 2027 ── -->
+      <div class="quarter-col">
+        <div class="quarter-col-header">
+          <div class="quarter-col-header-top">
+            <div>
+              <div class="quarter-name">Q1 2027</div>
+              <div class="quarter-dates">Jan – Mar 2027</div>
+            </div>
+            <span class="status-badge draft">
+              <span class="status-dot"></span>Draft
+            </span>
+          </div>
+        </div>
+        <div class="quarter-body">
+
+          <!-- Cycle 1 — empty -->
+          <div class="cycle-block">
+            <div class="cycle-accent future"></div>
+            <div class="cycle-header">
+              <span class="cycle-name">Cycle 1</span>
+              <span class="cycle-dates">Jan 1–31</span>
+              <span class="cycle-count" style="color: var(--text-muted); border-color: transparent; background: transparent;">0</span>
+            </div>
+            <div class="cycle-placeholder">No ideas planned yet</div>
+          </div>
+
+          <!-- Cycle 2 — empty -->
+          <div class="cycle-block">
+            <div class="cycle-accent future"></div>
+            <div class="cycle-header">
+              <span class="cycle-name">Cycle 2</span>
+              <span class="cycle-dates">Feb 1–28</span>
+              <span class="cycle-count" style="color: var(--text-muted); border-color: transparent; background: transparent;">0</span>
+            </div>
+            <div class="cycle-placeholder">No ideas planned yet</div>
+          </div>
+
+          <!-- Cycle 3 — empty -->
+          <div class="cycle-block">
+            <div class="cycle-accent future"></div>
+            <div class="cycle-header">
+              <span class="cycle-name">Cycle 3</span>
+              <span class="cycle-dates">Mar 1–31</span>
+              <span class="cycle-count" style="color: var(--text-muted); border-color: transparent; background: transparent;">0</span>
+            </div>
+            <div class="cycle-placeholder">No ideas planned yet</div>
+          </div>
+
+        </div>
+      </div><!-- /Q1 2027 -->
+
+    </div><!-- /roadmap-grid -->
+
+  </main>
+
+  <!-- ─── IDEA POPOVER ─── -->
+  <div class="idea-popover" id="ideaPopover">
+    <button class="popover-close" onclick="closePopover()">✕</button>
+    <div class="popover-header">
+      <div class="popover-title" id="popoverTitle">—</div>
+      <div class="popover-desc" id="popoverDesc">—</div>
+    </div>
+    <div class="popover-body">
+      <div class="popover-meta-row">
+        <span class="popover-meta-label">Goal</span>
+        <span class="popover-chip goal" id="popoverGoal">—</span>
+      </div>
+      <div class="popover-meta-row">
+        <span class="popover-meta-label">Status</span>
+        <div class="popover-status-row">
+          <span class="idea-status-dot" id="popoverStatusDot"></span>
+          <span class="popover-status-text" id="popoverStatus">—</span>
+        </div>
+      </div>
+      <div class="popover-meta-row">
+        <span class="popover-meta-label">Effort</span>
+        <span class="popover-chip" id="popoverEffort">—</span>
+      </div>
+      <div class="popover-meta-row">
+        <span class="popover-meta-label">Assignee</span>
+        <div class="popover-assignee">
+          <span class="assignee-bubble" id="popoverAssigneeBubble" style="width:22px;height:22px;font-size:11px;">—</span>
+          <span id="popoverAssigneeName">—</span>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <footer class="version-footer">
+    v1.0 &nbsp;|&nbsp; 2026-04-18 &nbsp;|&nbsp; Status: Draft — Roadmap Option C (Titles Always Visible)
+  </footer>
+
+  <script>
+    // ── THEME TOGGLE ──
+    const html = document.documentElement;
+    let splitActive = false;
+    let splitContainer = null;
+
+    function setTheme(mode) {
+      // Reset split layout if leaving split
+      if (splitContainer) {
+        document.body.innerHTML = document.body.innerHTML; // no — just undo split
+      }
+
+      document.querySelectorAll('.theme-btn').forEach(b => b.classList.remove('active'));
+
+      if (mode === 'dark') {
+        html.setAttribute('data-theme', 'dark');
+        document.getElementById('darkBtn').classList.add('active');
+      } else if (mode === 'light') {
+        html.setAttribute('data-theme', 'light');
+        document.querySelector('.theme-btn:first-child').classList.add('active');
+      } else if (mode === 'split') {
+        // Split: just show dark + light side by side via an overlay hint
+        // For simplicity: show a split indicator, keep dark on left
+        document.getElementById('splitBtn').classList.add('active');
+        applySplit();
+      }
+    }
+
+    function applySplit() {
+      // Simple split: clone the page content into a light version
+      const grid = document.getElementById('roadmapGrid');
+      const clone = grid.cloneNode(true);
+      clone.id = 'roadmapGridLight';
+      clone.setAttribute('data-theme', 'light');
+      clone.style.cssText = `
+        background: #f8fafc;
+        padding: 0;
+        border-radius: 10px;
+        border: 1px solid #e5e7eb;
+        overflow: hidden;
+      `;
+
+      // Apply light theme vars inline via a wrapper
+      const lightWrapper = document.createElement('div');
+      lightWrapper.setAttribute('data-theme', 'light');
+      lightWrapper.style.cssText = `flex: 1; min-width: 0;`;
+      lightWrapper.appendChild(clone);
+
+      const darkWrapper = document.createElement('div');
+      darkWrapper.setAttribute('data-theme', 'dark');
+      darkWrapper.style.cssText = `flex: 1; min-width: 0;`;
+      darkWrapper.appendChild(grid.cloneNode(true));
+
+      const splitWrapper = document.createElement('div');
+      splitWrapper.id = 'splitWrapper';
+      splitWrapper.style.cssText = `display: flex; gap: 12px; align-items: start;`;
+
+      const splitLabel = document.createElement('div');
+      splitLabel.style.cssText = `
+        display: flex;
+        gap: 12px;
+        margin-bottom: 8px;
+        font-size: 11px;
+        font-weight: 600;
+        text-transform: uppercase;
+        letter-spacing: 0.8px;
+        color: var(--text-muted);
+      `;
+      splitLabel.innerHTML = `<div style="flex:1;text-align:center;">Dark</div><div style="flex:1;text-align:center;">Light</div>`;
+
+      // Don't fully restructure DOM — just show a side-by-side CSS hack via a notice
+      alert('Split view: Open two browser tabs — one with ?theme=light appended. Full dual-panel split requires the React shell. Showing dark mode for this mockup.');
+      document.getElementById('darkBtn').classList.add('active');
+      document.getElementById('splitBtn').classList.remove('active');
+    }
+
+    // Handle theme buttons correctly
+    document.querySelectorAll('.theme-btn').forEach((btn, i) => {
+      btn.addEventListener('click', function() {
+        const modes = ['light', 'split', 'dark'];
+        setThemeSimple(modes[i]);
+      });
+    });
+
+    function setThemeSimple(mode) {
+      document.querySelectorAll('.theme-btn').forEach(b => b.classList.remove('active'));
+      const btn = document.querySelector(`.theme-btn:nth-child(${mode === 'light' ? 1 : mode === 'split' ? 2 : 3})`);
+      if (btn) btn.classList.add('active');
+
+      if (mode === 'light') {
+        html.setAttribute('data-theme', 'light');
+      } else if (mode === 'dark') {
+        html.setAttribute('data-theme', 'dark');
+      } else {
+        // Split: add a class to body and use CSS to show both
+        html.setAttribute('data-theme', 'dark'); // base is dark for split
+        // We'll just toggle the page background to half-half (visual demo)
+        html.setAttribute('data-theme', 'dark');
+      }
+    }
+
+    // Init: dark is default
+    document.querySelectorAll('.theme-btn').forEach(b => b.classList.remove('active'));
+    document.querySelector('.theme-btn:nth-child(3)').classList.add('active');
+
+    // Re-attach clean theme buttons
+    document.querySelectorAll('.theme-btn').forEach(function(btn) {
+      btn.onclick = null;
+    });
+    document.querySelector('.theme-btn:nth-child(1)').onclick = function() {
+      document.querySelectorAll('.theme-btn').forEach(b => b.classList.remove('active'));
+      this.classList.add('active');
+      html.setAttribute('data-theme', 'light');
+    };
+    document.querySelector('.theme-btn:nth-child(2)').onclick = function() {
+      document.querySelectorAll('.theme-btn').forEach(b => b.classList.remove('active'));
+      this.classList.add('active');
+      // Split: side by side styling
+      html.setAttribute('data-theme', 'dark');
+      showSplitNotice();
+    };
+    document.querySelector('.theme-btn:nth-child(3)').onclick = function() {
+      document.querySelectorAll('.theme-btn').forEach(b => b.classList.remove('active'));
+      this.classList.add('active');
+      html.setAttribute('data-theme', 'dark');
+    };
+
+    function showSplitNotice() {
+      // For this static mockup, create a simple split by duplicating the grid
+      const existing = document.getElementById('splitDemoWrapper');
+      if (existing) { existing.remove(); return; }
+
+      const grid = document.getElementById('roadmapGrid');
+      const parent = grid.parentNode;
+
+      const wrapper = document.createElement('div');
+      wrapper.id = 'splitDemoWrapper';
+      wrapper.style.cssText = 'display: flex; gap: 12px; align-items: start;';
+
+      // Labels
+      const labelRow = document.createElement('div');
+      labelRow.style.cssText = 'display: flex; gap: 12px; margin-bottom: 8px;';
+      labelRow.innerHTML = `
+        <div style="flex:1;font-size:11px;font-weight:600;text-transform:uppercase;letter-spacing:0.8px;color:var(--text-muted);text-align:center;padding:4px;border-radius:6px;background:rgba(255,255,255,0.04);">Dark</div>
+        <div style="flex:1;font-size:11px;font-weight:600;text-transform:uppercase;letter-spacing:0.8px;color:var(--text-muted);text-align:center;padding:4px;border-radius:6px;background:rgba(255,255,255,0.04);">Light</div>
+      `;
+
+      // Dark side (original)
+      const darkSide = document.createElement('div');
+      darkSide.style.cssText = 'flex: 1; min-width: 0;';
+      darkSide.appendChild(grid);
+
+      // Light side (clone with light data-theme)
+      const lightGrid = grid.cloneNode(true);
+      lightGrid.id = 'roadmapGridLightClone';
+      lightGrid.style.cssText = '';
+
+      const lightShell = document.createElement('div');
+      lightShell.setAttribute('data-theme', 'light');
+      lightShell.style.cssText = 'flex: 1; min-width: 0;';
+      lightShell.appendChild(lightGrid);
+
+      wrapper.appendChild(darkSide);
+      wrapper.appendChild(lightShell);
+
+      const splitSection = document.createElement('div');
+      splitSection.id = 'splitDemoWrapper';
+      splitSection.appendChild(labelRow);
+      splitSection.appendChild(wrapper);
+
+      parent.insertBefore(splitSection, parent.querySelector('.version-footer') || null);
+      parent.removeChild(grid);
+    }
+
+    // ── GOAL FILTER ──
+    let activeGoal = 'all';
+
+    function toggleGoalDropdown() {
+      const menu = document.getElementById('goalDropdownMenu');
+      menu.classList.toggle('open');
+    }
+
+    function selectGoal(goal) {
+      activeGoal = goal;
+      const labels = {
+        all: 'All Goals',
+        platform: 'Platform Stability',
+        growth: 'Customer Growth',
+        ops: 'Operations',
+        ai: 'AI & Intelligence'
+      };
+      document.getElementById('goalFilterLabel').textContent = labels[goal];
+
+      // Update checkmarks
+      ['all', 'platform', 'growth', 'ops', 'ai'].forEach(g => {
+        const el = document.getElementById('check-' + g);
+        if (el) el.textContent = g === goal ? '✓' : '';
+      });
+
+      // Apply dimming
+      applyGoalFilter();
+
+      document.getElementById('goalDropdownMenu').classList.remove('open');
+    }
+
+    function applyGoalFilter() {
+      const rows = document.querySelectorAll('.idea-row');
+      rows.forEach(row => {
+        if (activeGoal === 'all') {
+          row.classList.remove('dimmed');
+        } else {
+          const rowGoal = row.getAttribute('data-goal');
+          if (rowGoal === activeGoal) {
+            row.classList.remove('dimmed');
+          } else {
+            row.classList.add('dimmed');
+          }
+        }
+      });
+
+      // Also apply carried filter if active
+      if (carriedOnly) applyCarriedFilter();
+    }
+
+    // Close dropdown on outside click
+    document.addEventListener('click', function(e) {
+      const wrapper = document.getElementById('goalDropdownWrapper');
+      if (wrapper && !wrapper.contains(e.target)) {
+        document.getElementById('goalDropdownMenu').classList.remove('open');
+      }
+    });
+
+    // ── CARRIED FILTER ──
+    let carriedOnly = false;
+
+    function toggleCarried() {
+      carriedOnly = !carriedOnly;
+      const chip = document.getElementById('carriedChip');
+      chip.classList.toggle('active', carriedOnly);
+      applyCarriedFilter();
+    }
+
+    function applyCarriedFilter() {
+      if (!carriedOnly) {
+        // Re-apply only goal filter
+        applyGoalFilter();
+        return;
+      }
+      const rows = document.querySelectorAll('.idea-row');
+      rows.forEach(row => {
+        const hasCarried = row.querySelector('.carried-badge') !== null;
+        if (!hasCarried) {
+          row.classList.add('dimmed');
+        } else {
+          // Also check goal filter
+          if (activeGoal !== 'all' && row.getAttribute('data-goal') !== activeGoal) {
+            row.classList.add('dimmed');
+          } else {
+            row.classList.remove('dimmed');
+          }
+        }
+      });
+    }
+
+    // ── EXPAND MORE ──
+    function expandMore(cycleId, btn) {
+      const hidden = document.getElementById(cycleId + '-hidden');
+      const label = btn.querySelector('.more-row-label');
+      const icon = btn.querySelector('.more-row-icon');
+
+      if (hidden.style.display === 'none') {
+        hidden.style.display = 'block';
+        label.textContent = '▴ show less';
+        icon.style.transform = 'rotate(90deg)';
+        btn.classList.add('expanded');
+      } else {
+        hidden.style.display = 'none';
+        label.textContent = '+ 1 more idea';
+        icon.style.transform = '';
+        btn.classList.remove('expanded');
+      }
+    }
+
+    // ── IDEA POPOVER ──
+    const popover = document.getElementById('ideaPopover');
+    let activeRow = null;
+
+    const statusLabels = {
+      done: 'Complete',
+      in_progress: 'In Progress',
+      blocked: 'Blocked',
+      backlog: 'Backlog'
+    };
+
+    const effortLabels = {
+      S: 'Small (1–2 days)',
+      M: 'Medium (3–5 days)',
+      L: 'Large (1–2 weeks)'
+    };
+
+    const assigneeNames = {
+      AM: 'Alice M.',
+      BC: 'Bob C.',
+      DT: 'Dev T.'
+    };
+
+    const assigneeColors = {
+      AM: 'var(--chart-1)',
+      BC: 'var(--chart-3)',
+      DT: 'var(--chart-6)'
+    };
+
+    function showPopover(event, row) {
+      event.stopPropagation();
+
+      // If clicking the same row, close
+      if (activeRow === row && popover.classList.contains('visible')) {
+        closePopover();
+        return;
+      }
+      activeRow = row;
+
+      const title = row.getAttribute('data-title');
+      const desc = row.getAttribute('data-desc');
+      const status = row.getAttribute('data-status');
+      const assignee = row.getAttribute('data-assignee');
+      const effort = row.getAttribute('data-effort');
+      const goalName = row.getAttribute('data-goalname');
+      const goalColor = row.getAttribute('data-goalcolor');
+
+      document.getElementById('popoverTitle').textContent = title;
+      document.getElementById('popoverDesc').textContent = desc;
+      document.getElementById('popoverGoal').textContent = goalName;
+      document.getElementById('popoverGoal').style.color = goalColor;
+
+      const statusDot = document.getElementById('popoverStatusDot');
+      statusDot.className = 'idea-status-dot ' + status;
+
+      const statusText = document.getElementById('popoverStatus');
+      statusText.textContent = statusLabels[status] || status;
+      statusText.className = 'popover-status-text ' + status;
+
+      const effortEl = document.getElementById('popoverEffort');
+      effortEl.textContent = effortLabels[effort] || effort;
+      effortEl.className = 'popover-chip effort-' + effort.toLowerCase();
+
+      const bubble = document.getElementById('popoverAssigneeBubble');
+      bubble.textContent = assignee;
+      bubble.style.background = assigneeColors[assignee] || 'var(--chart-1)';
+
+      document.getElementById('popoverAssigneeName').textContent = assigneeNames[assignee] || assignee;
+
+      // Position
+      const rect = row.getBoundingClientRect();
+      const popW = 300;
+      const popH = 200; // approximate
+
+      let left = rect.right + 8;
+      let top = rect.top;
+
+      // Flip left if off-screen right
+      if (left + popW > window.innerWidth - 16) {
+        left = rect.left - popW - 8;
+      }
+
+      // Flip up if off-screen bottom
+      if (top + popH > window.innerHeight - 16) {
+        top = window.innerHeight - popH - 16;
+      }
+
+      // Keep within viewport top
+      if (top < 60) top = 60;
+      if (left < 8) left = 8;
+
+      popover.style.left = left + 'px';
+      popover.style.top = top + 'px';
+      popover.classList.add('visible');
+    }
+
+    function closePopover() {
+      popover.classList.remove('visible');
+      activeRow = null;
+    }
+
+    document.addEventListener('click', function(e) {
+      if (!popover.contains(e.target) && !e.target.closest('.idea-row')) {
+        closePopover();
+      }
+    });
+
+    document.addEventListener('keydown', function(e) {
+      if (e.key === 'Escape') closePopover();
+    });
+
+    // ── STATUS FILTER (stub) ──
+    function toggleStatusFilter(btn) {
+      // Visual feedback only for mockup
+      btn.style.borderColor = 'var(--border-hover)';
+      setTimeout(() => { btn.style.borderColor = ''; }, 200);
+    }
+
+    // ── SCROLL RESTORE on window resize ──
+    window.addEventListener('resize', function() {
+      // Reposition popover if open
+      if (popover.classList.contains('visible') && activeRow) {
+        showPopover({ stopPropagation: () => {} }, activeRow);
+      }
+    });
+  </script>
+</body>
+</html>
