@@ -1,0 +1,795 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="dark">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Compass Project — Stage 3: Execution (v2, TABS variant)</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+:root, [data-theme="dark"] {
+  --primary: #f05323;
+  --primary-hover: #ff6a3d;
+  --bg-page: #1a1a1a;
+  --bg-surface: #2a2a2a;
+  --bg-surface-secondary: #262626;
+  --bg-hover: #3a3a3a;
+  --text-heading: #ffffff;
+  --text-primary: #bcbec0;
+  --text-secondary: #a0a0a0;
+  --text-muted: #707070;
+  --border-default: #58595b;
+  --border-hover: #707070;
+  --card-bg: rgba(255,255,255,0.03);
+  --card-border: #58595b;
+  --success: #10b981;
+  --success-bg: rgba(16,185,129,0.12);
+  --success-border: rgba(16,185,129,0.30);
+  --warning: #f59e0b;
+  --warning-bg: rgba(245,158,11,0.12);
+  --warning-border: rgba(245,158,11,0.30);
+  --danger: #ef4444;
+  --danger-bg: rgba(239,68,68,0.12);
+  --info: #4A9EFF;
+  --info-bg: rgba(74,158,255,0.12);
+  --info-border: rgba(74,158,255,0.28);
+  --cycle-c1: #f05323;
+  --cycle-c2: #4A9EFF;
+  --cycle-c3: #ef4444;
+}
+* { box-sizing: border-box; margin: 0; padding: 0; }
+body { font-family: 'Inter', sans-serif; background: var(--bg-page); color: var(--text-primary); min-height: 100vh; font-size: 13px; line-height: 1.5; }
+
+.design-notes { background: var(--bg-surface); border-bottom: 1px solid var(--border-default); padding: 12px 24px; font-size: 12px; color: var(--text-secondary); }
+.design-notes summary { cursor: pointer; color: var(--primary); font-weight: 600; font-size: 12px; list-style: none; }
+.design-notes summary::marker { display: none; }
+.design-notes summary::-webkit-details-marker { display: none; }
+.design-notes summary::before { content: "▸ "; display: inline-block; transition: transform 0.15s; }
+.design-notes[open] summary::before { transform: rotate(90deg); }
+.design-notes-body { margin-top: 12px; color: var(--text-primary); line-height: 1.6; max-width: 920px; }
+.design-notes-body h4 { font-size: 11px; text-transform: uppercase; letter-spacing: 0.08em; color: var(--text-muted); margin: 14px 0 6px; }
+.design-notes-body h4:first-child { margin-top: 0; }
+.design-notes-body ul { padding-left: 20px; }
+.design-notes-body li { margin: 3px 0; }
+
+.topbar { position: sticky; top: 0; z-index: 100; background: var(--bg-surface); border-bottom: 1px solid var(--border-default); display: flex; align-items: center; padding: 0 24px; height: 48px; gap: 12px; }
+.topbar-logo { font-size: 15px; font-weight: 700; color: var(--text-heading); letter-spacing: -0.3px; }
+.topbar-logo span { color: var(--primary); }
+.topbar-sep { width: 1px; height: 20px; background: var(--border-default); }
+.topbar-crumbs { font-size: 12px; color: var(--text-secondary); display: flex; align-items: center; gap: 8px; }
+.topbar-crumbs a { color: var(--text-secondary); text-decoration: none; cursor: pointer; }
+.topbar-crumbs a:hover { color: var(--primary); }
+.topbar-crumbs .current { color: var(--text-heading); font-weight: 500; }
+.topbar-spacer { flex: 1; }
+.topbar-btn { padding: 5px 12px; font-size: 12px; font-weight: 500; border-radius: 5px; border: 1px solid var(--border-default); background: transparent; color: var(--text-secondary); cursor: pointer; }
+
+/* Project header */
+.project-header { background: var(--bg-surface); border-bottom: 1px solid var(--border-default); padding: 24px 32px 18px; }
+.stage-label { display: inline-flex; align-items: center; padding: 4px 10px; border-radius: 3px; font-size: 10px; font-weight: 700; letter-spacing: 0.08em; text-transform: uppercase; background: var(--primary); color: #fff; margin-bottom: 6px; }
+.project-header-top { display: flex; align-items: flex-start; gap: 16px; }
+.project-title { font-size: 22px; font-weight: 700; color: var(--text-heading); line-height: 1.25; letter-spacing: -0.3px; }
+.project-subtitle { margin-top: 6px; font-size: 13px; color: var(--text-secondary); max-width: 720px; }
+.project-actions { display: flex; gap: 8px; align-items: center; }
+.btn { padding: 7px 14px; font-size: 12px; font-weight: 600; border-radius: 5px; cursor: pointer; transition: all 0.15s; border: 1px solid; }
+.btn-primary { background: var(--primary); color: #fff; border-color: var(--primary); }
+.btn-primary:hover { background: var(--primary-hover); }
+.btn-secondary { background: transparent; color: var(--text-secondary); border-color: var(--border-default); }
+.btn-secondary:hover { border-color: var(--primary); color: var(--primary); }
+
+.project-meta { display: flex; gap: 28px; flex-wrap: wrap; margin-top: 14px; padding-top: 14px; border-top: 1px solid var(--border-default); }
+.meta-item { display: flex; flex-direction: column; gap: 3px; }
+.meta-label { font-size: 10px; text-transform: uppercase; letter-spacing: 0.06em; color: var(--text-muted); font-weight: 600; }
+.meta-value { font-size: 13px; color: var(--text-primary); font-weight: 500; }
+.cycle-chip-c2 { display: inline-flex; align-items: center; gap: 5px; padding: 2px 8px; border-radius: 3px; font-size: 11px; font-weight: 600; background: rgba(74,158,255,0.15); border: 1px solid rgba(74,158,255,0.30); color: var(--cycle-c2); }
+.avatar { width: 22px; height: 22px; border-radius: 50%; background: var(--primary); color: #fff; font-size: 10px; font-weight: 700; display: inline-flex; align-items: center; justify-content: center; vertical-align: middle; margin-right: 6px; }
+.avatar.blue { background: var(--info); }
+.avatar.green { background: var(--success); }
+.avatar.purple { background: #8b5cf6; }
+.avatar.warning { background: var(--warning); }
+
+/* Tabs */
+.tabs-wrap { background: var(--bg-surface); border-bottom: 1px solid var(--border-default); padding: 0 32px; }
+.tabs { display: flex; gap: 2px; }
+.tab { padding: 12px 16px; font-size: 12px; font-weight: 600; color: var(--text-secondary); cursor: pointer; border-bottom: 2px solid transparent; transition: all 0.15s; display: flex; align-items: center; gap: 6px; }
+.tab:hover { color: var(--text-heading); }
+.tab.active { color: var(--primary); border-bottom-color: var(--primary); }
+.tab .count { font-size: 10px; font-weight: 600; padding: 1px 6px; border-radius: 8px; background: var(--bg-hover); color: var(--text-muted); }
+.tab.active .count { background: rgba(240,83,35,0.18); color: var(--primary); }
+
+/* Layout */
+.layout { display: grid; grid-template-columns: 1fr 320px; gap: 0; max-width: 1400px; margin: 0 auto; }
+.main-col { padding: 24px 32px 64px; }
+.side-col { padding: 24px 24px 64px; border-left: 1px solid var(--border-default); background: var(--bg-surface-secondary); min-height: calc(100vh - 180px); }
+
+.section-head { display: flex; align-items: center; justify-content: space-between; margin: 22px 0 14px; }
+.section-head:first-child { margin-top: 0; }
+.section-title { font-size: 11px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.08em; color: var(--text-muted); }
+.section-link { font-size: 11px; color: var(--primary); cursor: pointer; font-weight: 600; }
+
+/* ─── Tasks + subtasks (the new pattern) ──────────────────────────────── */
+.tasks-wrap { display: flex; flex-direction: column; gap: 10px; }
+.task-card {
+  background: var(--card-bg);
+  border: 1px solid var(--card-border);
+  border-radius: 8px;
+  overflow: hidden;
+  transition: border-color 0.15s;
+}
+.task-card:hover { border-color: var(--border-hover); }
+.task-card.open { border-color: var(--primary); }
+.task-row {
+  display: grid;
+  grid-template-columns: 18px 18px 1fr 120px 100px 28px;
+  align-items: center;
+  gap: 12px;
+  padding: 11px 14px;
+  cursor: pointer;
+}
+.chevron {
+  font-size: 11px;
+  color: var(--text-muted);
+  transition: transform 0.15s;
+  user-select: none;
+}
+.task-card.open .chevron { transform: rotate(90deg); color: var(--primary); }
+.check-box {
+  width: 16px; height: 16px;
+  border-radius: 4px;
+  border: 1.5px solid var(--border-hover);
+  flex-shrink: 0;
+  position: relative;
+  cursor: pointer;
+}
+.check-box.done {
+  background: var(--success);
+  border-color: var(--success);
+}
+.check-box.done::after {
+  content: "✓";
+  position: absolute;
+  inset: 0;
+  color: #fff; font-size: 11px; font-weight: 700;
+  display: flex; align-items: center; justify-content: center;
+}
+.check-box.in-progress {
+  border-color: var(--warning);
+}
+.check-box.in-progress::after {
+  content: "";
+  position: absolute;
+  inset: 3px;
+  background: var(--warning);
+  border-radius: 1px;
+}
+.check-box.blocked {
+  border-color: var(--danger);
+}
+.check-box.blocked::after {
+  content: "!";
+  position: absolute;
+  inset: 0;
+  color: var(--danger); font-size: 12px; font-weight: 800;
+  display: flex; align-items: center; justify-content: center;
+}
+
+.task-title { font-size: 13px; font-weight: 600; color: var(--text-heading); display: flex; align-items: center; gap: 8px; }
+.task-title.done { color: var(--text-muted); text-decoration: line-through; font-weight: 500; }
+.subtask-pill {
+  font-size: 10px;
+  font-weight: 600;
+  padding: 1px 6px;
+  border-radius: 8px;
+  background: var(--bg-hover);
+  color: var(--text-secondary);
+}
+.subtask-pill.all-done { background: var(--success-bg); color: var(--success); border: 1px solid var(--success-border); }
+.task-assignee { display: flex; align-items: center; gap: 5px; font-size: 11.5px; color: var(--text-secondary); }
+.task-due { font-size: 11px; color: var(--text-secondary); }
+.task-due.overdue { color: var(--danger); font-weight: 600; }
+.task-due.due-soon { color: var(--warning); font-weight: 600; }
+.task-menu { color: var(--text-muted); font-size: 14px; }
+
+/* Subtasks panel */
+.subtasks {
+  border-top: 1px solid var(--border-default);
+  background: rgba(0,0,0,0.15);
+  padding: 6px 14px 10px 46px;
+}
+.subtask-row {
+  display: grid;
+  grid-template-columns: 16px 1fr 110px 90px;
+  align-items: center;
+  gap: 10px;
+  padding: 7px 4px;
+  font-size: 12px;
+  border-bottom: 1px solid rgba(255,255,255,0.03);
+}
+.subtask-row:last-child { border-bottom: none; }
+.subtask-title { color: var(--text-primary); }
+.subtask-title.done { color: var(--text-muted); text-decoration: line-through; }
+.subtask-assignee { color: var(--text-muted); font-size: 11px; }
+.subtask-due { color: var(--text-muted); font-size: 11px; }
+.add-subtask {
+  display: flex; align-items: center; gap: 8px;
+  font-size: 12px; color: var(--text-muted);
+  padding: 7px 4px;
+  cursor: pointer;
+}
+.add-subtask:hover { color: var(--primary); }
+.add-subtask .plus { color: var(--primary); }
+
+.task-add-row {
+  display: flex; align-items: center; gap: 10px;
+  padding: 10px 14px;
+  background: var(--bg-surface-secondary);
+  border: 1px dashed var(--border-default);
+  border-radius: 8px;
+  font-size: 12px;
+  color: var(--text-muted);
+  cursor: pointer;
+  margin-top: 6px;
+}
+.task-add-row:hover { border-color: var(--primary); color: var(--primary); }
+.task-add-row .plus { color: var(--primary); font-weight: 700; }
+
+/* Follow-ups */
+.followup-card {
+  background: var(--card-bg);
+  border: 1px solid var(--card-border);
+  border-left: 3px solid var(--info);
+  border-radius: 6px;
+  padding: 11px 14px;
+  margin-bottom: 8px;
+}
+.followup-card.waiting { border-left-color: var(--warning); }
+.followup-card.done { border-left-color: var(--success); opacity: 0.72; }
+.followup-head { display: flex; justify-content: space-between; align-items: flex-start; gap: 12px; margin-bottom: 4px; }
+.followup-title { font-size: 12.5px; font-weight: 600; color: var(--text-heading); }
+.followup-status {
+  font-size: 10px;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  padding: 2px 7px;
+  border-radius: 3px;
+  font-weight: 600;
+  flex-shrink: 0;
+}
+.status-open { background: var(--info-bg); color: var(--info); border: 1px solid var(--info-border); }
+.status-waiting { background: var(--warning-bg); color: var(--warning); border: 1px solid var(--warning-border); }
+.status-done { background: var(--success-bg); color: var(--success); border: 1px solid var(--success-border); }
+.followup-meta { font-size: 11px; color: var(--text-muted); display: flex; gap: 10px; align-items: center; }
+
+/* Activity feed */
+.activity { padding-left: 4px; border-left: 2px solid var(--border-default); margin-left: 6px; }
+.activity-item { position: relative; padding: 8px 0 8px 18px; font-size: 12px; color: var(--text-secondary); line-height: 1.6; }
+.activity-item::before {
+  content: "";
+  position: absolute;
+  left: -7px; top: 13px;
+  width: 10px; height: 10px;
+  border-radius: 50%;
+  background: var(--bg-surface);
+  border: 2px solid var(--border-hover);
+}
+.activity-item.primary::before { border-color: var(--primary); background: var(--primary); }
+.activity-item.success::before { border-color: var(--success); background: var(--success); }
+.activity-item.warning::before { border-color: var(--warning); background: var(--warning); }
+.activity-item strong { color: var(--text-heading); font-weight: 600; }
+.activity-item .when { color: var(--text-muted); font-size: 11px; margin-left: 6px; }
+
+/* Docs list */
+.doc-list { display: flex; flex-direction: column; gap: 6px; }
+.doc-item {
+  display: flex; align-items: center; gap: 10px;
+  padding: 8px 12px;
+  background: var(--card-bg);
+  border: 1px solid var(--card-border);
+  border-radius: 6px;
+  font-size: 12px;
+  cursor: pointer;
+  transition: all 0.15s;
+}
+.doc-item:hover { border-color: var(--primary); }
+.doc-icon {
+  width: 24px; height: 24px; border-radius: 4px;
+  background: var(--info-bg);
+  color: var(--info);
+  display: flex; align-items: center; justify-content: center;
+  font-size: 10px; font-weight: 700;
+  flex-shrink: 0;
+}
+.doc-icon.sheet { background: rgba(16,185,129,0.12); color: var(--success); }
+.doc-icon.pdf { background: var(--danger-bg); color: var(--danger); }
+.doc-name { color: var(--text-heading); font-weight: 500; flex: 1; }
+.doc-meta { color: var(--text-muted); font-size: 11px; }
+
+/* Comments */
+.comments { display: flex; flex-direction: column; gap: 12px; }
+.comment {
+  display: grid;
+  grid-template-columns: 28px 1fr;
+  gap: 10px;
+}
+.comment .avatar { width: 28px; height: 28px; font-size: 11px; margin: 0; }
+.comment-body { display: flex; flex-direction: column; gap: 4px; }
+.comment-head { font-size: 12px; }
+.comment-head strong { color: var(--text-heading); font-weight: 600; }
+.comment-head .when { color: var(--text-muted); font-size: 11px; margin-left: 6px; }
+.comment-text { font-size: 12.5px; color: var(--text-primary); line-height: 1.6; }
+.comment-compose {
+  margin-top: 6px;
+  background: var(--bg-surface);
+  border: 1px solid var(--border-default);
+  border-radius: 6px;
+  padding: 10px 12px;
+  color: var(--text-muted);
+  font-size: 12px;
+  cursor: text;
+}
+.comment-compose:hover, .comment-compose:focus { border-color: var(--primary); }
+
+/* Rail */
+.rail-card { background: var(--bg-surface); border: 1px solid var(--border-default); border-radius: 8px; padding: 14px 16px; margin-bottom: 14px; }
+.rail-label { font-size: 10px; text-transform: uppercase; letter-spacing: 0.06em; color: var(--text-muted); font-weight: 600; margin-bottom: 8px; }
+.rail-row { display: flex; justify-content: space-between; align-items: center; padding: 7px 0; border-top: 1px solid var(--border-default); font-size: 12px; }
+.rail-row:first-of-type { border-top: none; }
+.rail-row .k { color: var(--text-muted); }
+.rail-row .v { color: var(--text-primary); font-weight: 500; }
+.rail-action {
+  display: block; width: 100%;
+  text-align: left;
+  padding: 7px 10px;
+  border-radius: 5px;
+  font-size: 12px;
+  color: var(--text-secondary);
+  background: transparent;
+  border: 1px solid var(--border-default);
+  cursor: pointer;
+  margin-bottom: 5px;
+}
+.rail-action:hover { border-color: var(--primary); color: var(--primary); }
+.rail-action .plus { color: var(--primary); font-weight: 700; margin-right: 6px; }
+
+.progress-wrap { margin-top: 6px; }
+.progress-bar { height: 6px; background: var(--bg-hover); border-radius: 3px; overflow: hidden; }
+.progress-bar .fill { height: 100%; background: var(--primary); }
+.progress-label { font-size: 11px; color: var(--text-muted); margin-top: 6px; }
+
+.status-in-progress { color: var(--warning); }
+.pulse { display: inline-block; width: 7px; height: 7px; border-radius: 50%; background: var(--warning); margin-right: 5px; animation: pulse 2s ease-in-out infinite; vertical-align: middle; }
+@keyframes pulse { 0%,100%{opacity:1} 50%{opacity:0.35} }
+</style>
+</head>
+<body>
+
+<details class="design-notes" open>
+<summary>Design notes — Stage 3: Execution (v2, TABS variant — hero mockup)</summary>
+<div class="design-notes-body">
+<h4>What this shows</h4>
+<p>Project in active execution. This is the mockup that has to earn its keep. Everything populated: tasks with subtasks (collapsible), follow-ups, activity feed, docs, comments. Side rail shows live progress, owner, cycle and quick actions.</p>
+<p><strong>v2 change from v1:</strong> re-framed to reflect the real lifecycle — project workspace opens when an idea is <em>allocated to a 90-day plan/cycle</em> (entering Planning state), then flips to Execution when the cycle kicks off. Approval alone doesn't create a project; allocation does.</p>
+
+<h4>Tasks + subtasks — the new pattern</h4>
+<p><strong>Indented list with chevrons, rendered as cards.</strong> Each parent task is a card row (checkbox + title + subtask-count pill + assignee + due date + menu). Click the chevron (or anywhere on the card head) to expand inline subtasks. Subtasks are 30% lighter: indent via padding-left, smaller checkbox, thinner row divider. Mirrors the follow-up subtasks checklist pattern ux-researcher flagged, so there's one mental model in Compass.</p>
+<p><strong>Why not a tree / kanban / nested cards:</strong> trees feel engineering-y, kanban pushes people to ship columns (we only need status via checkbox state), deeply nested cards waste horizontal room. Indented list + chevrons is the universal "I know what this is" pattern — think Linear, GitHub, Todoist. Checkbox state carries status (todo / in-progress / done / blocked) without a separate status column, keeping the row scannable.</p>
+<p><strong>Parent progress roll-up:</strong> when all subtasks are done, the subtask-count pill flips to success-green ("3/3 done"), the parent checkbox offers a one-click "mark complete" nudge. Never auto-complete — humans close parents.</p>
+
+<h4>Two-column layout</h4>
+<p>Left (1fr) = tabbed work area. Right (320px) = sticky context rail with status, key facts, linked docs, quick actions, related vault notes. Mirrors <code>TicketDetailPage.tsx</code>.</p>
+
+<h4>Tab ordering decision</h4>
+<p>Overview → Tasks → Follow-ups → Docs → Activity. Overview is a one-pager summary (brief + in-flight tasks + recent activity + docs preview) — we're showing it scrolled into its "active" state here with everything visible on one scroll. Tabs give deeper views. Counts on each tab give quick scannability ("oh, 3 open follow-ups").</p>
+
+<h4>Tradeoffs considered</h4>
+<ul>
+<li><strong>Gantt/timeline as primary view</strong> — rejected. 8-person team, sub-10-task projects: Gantt is overkill. A target-start/target-end bar in the rail gives enough temporal context.</li>
+<li><strong>Separate "Status" column on task rows</strong> — rejected. Checkbox state already encodes status (todo / in-progress / done / blocked) with different fills. Saves a column, keeps rows scannable.</li>
+<li><strong>Comments as their own tab</strong> — rejected. Comments live under the activity feed in Overview — project-level discussion; per-task comments live in the task drawer (future).</li>
+<li><strong>Drag-to-reorder tasks</strong> — left for implementation; hover grip handle anticipated.</li>
+</ul>
+
+<h4>Responsive behaviour</h4>
+<p>Below 1080px: rail drops under main. Below 720px: task row grid collapses — assignee + due on a second line, subtasks stay indented. Tabs become horizontal-scroll. Field users viewing on phone get a read-first experience; edits work but the expectation is they're logging updates, not building plans.</p>
+
+<h4>Open questions for Shaun</h4>
+<ul>
+<li>Subtask checkbox states — is 4 states (todo / in-progress / blocked / done) right, or do we collapse to 3 (drop blocked, use a red flag icon instead)?</li>
+<li>Do follow-ups live inside the project as proposed, or stay in the global follow-up KanbanView and just appear here as "linked"?</li>
+<li>Should the activity feed merge task+follow-up+comment events, or split them?</li>
+</ul>
+</div>
+</details>
+
+<div class="topbar">
+  <div class="topbar-logo">Blick<span>.</span>Hub</div>
+  <div class="topbar-sep"></div>
+  <div class="topbar-crumbs">
+    <a>Compass</a> <span style="color:var(--text-muted)">›</span>
+    <a>Cycle 2</a> <span style="color:var(--text-muted)">›</span>
+    <span class="current">Eco-friendly drilling fluid line</span>
+  </div>
+  <div class="topbar-spacer"></div>
+  <button class="topbar-btn">⋯</button>
+</div>
+
+<div class="project-header">
+  <div class="stage-label">Stage · Execution</div>
+  <div class="project-header-top">
+    <div style="flex:1">
+      <h1 class="project-title">Eco-friendly drilling fluid line for AU geothermal market</h1>
+      <p class="project-subtitle">Launch a low-toxicity fluid range positioned for the Todd Energy Superhot project and the broader AU geothermal segment.</p>
+    </div>
+    <div class="project-actions">
+      <button class="btn btn-secondary">Park</button>
+      <button class="btn btn-primary">Close project</button>
+    </div>
+  </div>
+  <div class="project-meta">
+    <div class="meta-item">
+      <div class="meta-label">Status</div>
+      <div class="meta-value status-in-progress"><span class="pulse"></span>In execution · Week 3 of 7</div>
+    </div>
+    <div class="meta-item">
+      <div class="meta-label">Cycle</div>
+      <div class="meta-value"><span class="cycle-chip-c2">● C2</span> Apr – Jun 2026</div>
+    </div>
+    <div class="meta-item">
+      <div class="meta-label">Owner</div>
+      <div class="meta-value"><span class="avatar blue">TW</span>Tim Walters</div>
+    </div>
+    <div class="meta-item">
+      <div class="meta-label">Collaborators</div>
+      <div class="meta-value">
+        <span class="avatar purple">NP</span>
+        <span class="avatar green">ST</span>
+        <span class="avatar warning">BD</span>
+        <span style="color: var(--text-muted); font-size: 11px; margin-left: 4px">+ 2</span>
+      </div>
+    </div>
+    <div class="meta-item">
+      <div class="meta-label">Target end</div>
+      <div class="meta-value">14 Jun 2026</div>
+    </div>
+  </div>
+</div>
+
+<div class="tabs-wrap">
+  <div class="tabs">
+    <div class="tab active">Overview</div>
+    <div class="tab">Tasks <span class="count">8</span></div>
+    <div class="tab">Follow-ups <span class="count">3</span></div>
+    <div class="tab">Docs <span class="count">6</span></div>
+    <div class="tab">Activity <span class="count">24</span></div>
+  </div>
+</div>
+
+<div class="layout">
+  <div class="main-col">
+
+    <!-- Tasks -->
+    <div class="section-head">
+      <div class="section-title">Tasks · 3 of 8 done</div>
+      <div class="section-link">+ Add task</div>
+    </div>
+
+    <div class="tasks-wrap">
+
+      <!-- Task 1 — done with subtasks all done -->
+      <div class="task-card">
+        <div class="task-row">
+          <div class="chevron">›</div>
+          <div class="check-box done"></div>
+          <div class="task-title done">
+            Benchmark competitor eco-fluid PDS specs (AU market)
+            <span class="subtask-pill all-done">3/3 done</span>
+          </div>
+          <div class="task-assignee"><span class="avatar blue" style="width:18px;height:18px;font-size:9px">TW</span>Tim W</div>
+          <div class="task-due">✓ 12 Apr</div>
+          <div class="task-menu">⋯</div>
+        </div>
+      </div>
+
+      <!-- Task 2 — in-progress, expanded, subtasks visible -->
+      <div class="task-card open">
+        <div class="task-row">
+          <div class="chevron">›</div>
+          <div class="check-box in-progress"></div>
+          <div class="task-title">
+            Draft SDS + PDS pack with eco-classification language
+            <span class="subtask-pill">2/5 done</span>
+          </div>
+          <div class="task-assignee"><span class="avatar warning" style="width:18px;height:18px;font-size:9px">BD</span>Brent D</div>
+          <div class="task-due due-soon">Due 28 Apr</div>
+          <div class="task-menu">⋯</div>
+        </div>
+        <div class="subtasks">
+          <div class="subtask-row">
+            <div class="check-box done" style="width:14px;height:14px"></div>
+            <div class="subtask-title done">Pull existing SDS for HT-3000 and HT-3500 base fluids</div>
+            <div class="subtask-assignee">Brent D</div>
+            <div class="subtask-due">✓ 16 Apr</div>
+          </div>
+          <div class="subtask-row">
+            <div class="check-box done" style="width:14px;height:14px"></div>
+            <div class="subtask-title done">Request biodegradability data from Aucklab partner</div>
+            <div class="subtask-assignee">Tim W</div>
+            <div class="subtask-due">✓ 18 Apr</div>
+          </div>
+          <div class="subtask-row">
+            <div class="check-box in-progress" style="width:14px;height:14px"></div>
+            <div class="subtask-title">Rewrite SDS section 12 (eco-toxicity) with new classification</div>
+            <div class="subtask-assignee">Brent D</div>
+            <div class="subtask-due" style="color:var(--warning)">Due 24 Apr</div>
+          </div>
+          <div class="subtask-row">
+            <div class="check-box" style="width:14px;height:14px"></div>
+            <div class="subtask-title">Update PDS datasheet template — add "Eco certified" block</div>
+            <div class="subtask-assignee">Brent D</div>
+            <div class="subtask-due">Due 26 Apr</div>
+          </div>
+          <div class="subtask-row">
+            <div class="check-box" style="width:14px;height:14px"></div>
+            <div class="subtask-title">Shaun review + sign-off before send to Todd procurement</div>
+            <div class="subtask-assignee">Shaun T</div>
+            <div class="subtask-due">Due 28 Apr</div>
+          </div>
+          <div class="add-subtask"><span class="plus">+</span> Add subtask</div>
+        </div>
+      </div>
+
+      <!-- Task 3 — blocked -->
+      <div class="task-card">
+        <div class="task-row">
+          <div class="chevron">›</div>
+          <div class="check-box blocked"></div>
+          <div class="task-title" style="color: var(--danger)">
+            Book Aucklab biodegradability test slot
+            <span class="subtask-pill">0/2 done</span>
+          </div>
+          <div class="task-assignee"><span class="avatar blue" style="width:18px;height:18px;font-size:9px">TW</span>Tim W</div>
+          <div class="task-due overdue">Blocked · 19 Apr</div>
+          <div class="task-menu">⋯</div>
+        </div>
+      </div>
+
+      <!-- Task 4 — to do -->
+      <div class="task-card">
+        <div class="task-row">
+          <div class="chevron">›</div>
+          <div class="check-box"></div>
+          <div class="task-title">
+            Produce Todd Energy tender response pack (draft v1)
+            <span class="subtask-pill">0/4 done</span>
+          </div>
+          <div class="task-assignee"><span class="avatar green" style="width:18px;height:18px;font-size:9px">ST</span>Shaun T</div>
+          <div class="task-due">Due 10 May</div>
+          <div class="task-menu">⋯</div>
+        </div>
+      </div>
+
+      <!-- Task 5 — to do, no subtasks -->
+      <div class="task-card">
+        <div class="task-row">
+          <div class="chevron" style="opacity: 0.3">·</div>
+          <div class="check-box"></div>
+          <div class="task-title">Line up a Superhot-adjacent AU field trial rig</div>
+          <div class="task-assignee"><span class="avatar blue" style="width:18px;height:18px;font-size:9px">TW</span>Tim W</div>
+          <div class="task-due">Due 17 May</div>
+          <div class="task-menu">⋯</div>
+        </div>
+      </div>
+
+      <!-- Task 6 — done -->
+      <div class="task-card">
+        <div class="task-row">
+          <div class="chevron" style="opacity: 0.3">·</div>
+          <div class="check-box done"></div>
+          <div class="task-title done">Kickoff call with Todd Energy procurement (intro)</div>
+          <div class="task-assignee"><span class="avatar blue" style="width:18px;height:18px;font-size:9px">TW</span>Tim W</div>
+          <div class="task-due">✓ 08 Apr</div>
+          <div class="task-menu">⋯</div>
+        </div>
+      </div>
+
+      <!-- Add task scaffold -->
+      <div class="task-add-row"><span class="plus">+</span> Add a task</div>
+    </div>
+
+    <!-- Follow-ups -->
+    <div class="section-head">
+      <div class="section-title">Follow-ups · 3 open</div>
+      <div class="section-link">+ Add follow-up</div>
+    </div>
+
+    <div class="followup-card waiting">
+      <div class="followup-head">
+        <div>
+          <div class="followup-title">Chase Aucklab — confirm biodegradability test slot (blocker)</div>
+          <div class="followup-meta"><span class="avatar blue" style="width:16px;height:16px;font-size:8px">TW</span> Tim W · due today · 2 attempts</div>
+        </div>
+        <span class="followup-status status-waiting">● Waiting reply</span>
+      </div>
+    </div>
+
+    <div class="followup-card">
+      <div class="followup-head">
+        <div>
+          <div class="followup-title">Todd procurement — Sarah Mills — follow up on tender Q&A window</div>
+          <div class="followup-meta"><span class="avatar green" style="width:16px;height:16px;font-size:8px">ST</span> Shaun T · due Fri 26 Apr</div>
+        </div>
+        <span class="followup-status status-open">● Open</span>
+      </div>
+    </div>
+
+    <div class="followup-card done">
+      <div class="followup-head">
+        <div>
+          <div class="followup-title">Brent — sign off SDS biodegradability language</div>
+          <div class="followup-meta"><span class="avatar warning" style="width:16px;height:16px;font-size:8px">BD</span> Closed 18 Apr · resolved in comment</div>
+        </div>
+        <span class="followup-status status-done">✓ Done</span>
+      </div>
+    </div>
+
+    <!-- Recent activity -->
+    <div class="section-head">
+      <div class="section-title">Recent activity</div>
+      <div class="section-link">View all →</div>
+    </div>
+    <div class="activity">
+      <div class="activity-item primary">
+        <strong>Tim Walters</strong> marked subtask <em>Request biodegradability data from Aucklab</em> as done.
+        <span class="when">2h ago</span>
+      </div>
+      <div class="activity-item warning">
+        <strong>Brent Doull</strong> flagged task <em>Book Aucklab test slot</em> as blocked — waiting on Aucklab scheduling.
+        <span class="when">yesterday</span>
+      </div>
+      <div class="activity-item">
+        <strong>Shaun Tubb</strong> commented on the project: <em>"Push the tender response into next week — Todd's Q&A window moved"</em>
+        <span class="when">2 days ago</span>
+      </div>
+      <div class="activity-item success">
+        <strong>Tim Walters</strong> closed follow-up <em>Brent — sign off SDS biodegradability language</em>.
+        <span class="when">5 days ago</span>
+      </div>
+      <div class="activity-item">
+        <strong>Tim Walters</strong> linked doc <em>Aucklab partnership MSA.pdf</em>.
+        <span class="when">5 days ago</span>
+      </div>
+      <div class="activity-item">
+        <strong>Shaun Tubb</strong> assigned <strong>Tim Walters</strong> as owner.
+        <span class="when">6 days ago</span>
+      </div>
+    </div>
+
+    <!-- Docs -->
+    <div class="section-head">
+      <div class="section-title">Linked docs · 6</div>
+      <div class="section-link">+ Link doc</div>
+    </div>
+    <div class="doc-list">
+      <div class="doc-item">
+        <div class="doc-icon">D</div>
+        <div class="doc-name">Eco fluid — brief + positioning (living doc)</div>
+        <div class="doc-meta">Google Doc · edited 2d ago by Tim W</div>
+      </div>
+      <div class="doc-item">
+        <div class="doc-icon sheet">S</div>
+        <div class="doc-name">Eco fluid — cost model + margin scenarios</div>
+        <div class="doc-meta">Google Sheet · edited 4d ago by Shaun T</div>
+      </div>
+      <div class="doc-item">
+        <div class="doc-icon pdf">P</div>
+        <div class="doc-name">Aucklab partnership MSA.pdf</div>
+        <div class="doc-meta">PDF · 5 days ago</div>
+      </div>
+      <div class="doc-item">
+        <div class="doc-icon pdf">P</div>
+        <div class="doc-name">HT-3000 current SDS.pdf</div>
+        <div class="doc-meta">PDF · 1 week ago</div>
+      </div>
+      <div class="doc-item">
+        <div class="doc-icon">D</div>
+        <div class="doc-name">Todd Superhot — tender brief (Nexus vault)</div>
+        <div class="doc-meta">Vault note · last synced 1d ago</div>
+      </div>
+      <div class="doc-item">
+        <div class="doc-icon sheet">S</div>
+        <div class="doc-name">Product conflict register — open items (19 products)</div>
+        <div class="doc-meta">Google Sheet · linked by Shaun</div>
+      </div>
+    </div>
+
+    <!-- Comments -->
+    <div class="section-head">
+      <div class="section-title">Project discussion</div>
+    </div>
+    <div class="comments">
+      <div class="comment">
+        <div class="avatar green">ST</div>
+        <div class="comment-body">
+          <div class="comment-head"><strong>Shaun Tubb</strong> <span class="when">2 days ago</span></div>
+          <div class="comment-text">Spoke with Todd's procurement lead — their Q&A window has moved a week. Let's push the tender response task to 10 May. Tim, can you confirm once Aucklab schedules the slot?</div>
+        </div>
+      </div>
+      <div class="comment">
+        <div class="avatar blue">TW</div>
+        <div class="comment-body">
+          <div class="comment-head"><strong>Tim Walters</strong> <span class="when">2 days ago</span></div>
+          <div class="comment-text">Will do. I've chased Aucklab twice — if I don't hear back by Friday I'll escalate to their CEO (we have the MSA leverage).</div>
+        </div>
+      </div>
+      <div class="comment">
+        <div class="avatar warning">BD</div>
+        <div class="comment-body">
+          <div class="comment-head"><strong>Brent Doull</strong> <span class="when">yesterday</span></div>
+          <div class="comment-text">SDS section 12 rewrite is 80% done. One open question for Shaun — do we cite ECHA's PBT criteria or stick to AU NICNAS? I'd lean NICNAS for the AU tender but ECHA if we want global reuse.</div>
+        </div>
+      </div>
+      <div class="comment-compose">Comment on this project…</div>
+    </div>
+
+  </div>
+
+  <!-- Side rail -->
+  <div class="side-col">
+    <div class="rail-card">
+      <div class="rail-label">Progress</div>
+      <div class="progress-wrap">
+        <div class="progress-bar"><div class="fill" style="width: 38%"></div></div>
+        <div class="progress-label">38% · 3 of 8 tasks done · 7 of 21 subtasks done</div>
+      </div>
+    </div>
+
+    <div class="rail-card">
+      <div class="rail-label">Key facts</div>
+      <div class="rail-row"><span class="k">Owner</span><span class="v">Tim Walters</span></div>
+      <div class="rail-row"><span class="k">Cycle</span><span class="v"><span class="cycle-chip-c2">● C2</span></span></div>
+      <div class="rail-row"><span class="k">Effort</span><span class="v">L · 6–8w</span></div>
+      <div class="rail-row"><span class="k">Started</span><span class="v">01 Apr</span></div>
+      <div class="rail-row"><span class="k">Target end</span><span class="v">14 Jun</span></div>
+      <div class="rail-row"><span class="k">Slip risk</span><span class="v" style="color: var(--warning)">● 1 blocked</span></div>
+    </div>
+
+    <div class="rail-card">
+      <div class="rail-label">Team · 5</div>
+      <div style="display: flex; flex-wrap: wrap; gap: 6px; font-size: 11.5px; color: var(--text-secondary);">
+        <div><span class="avatar blue" style="width:18px;height:18px;font-size:9px">TW</span> Tim (owner)</div>
+        <div><span class="avatar warning" style="width:18px;height:18px;font-size:9px">BD</span> Brent</div>
+        <div><span class="avatar green" style="width:18px;height:18px;font-size:9px">ST</span> Shaun</div>
+        <div><span class="avatar purple" style="width:18px;height:18px;font-size:9px">NP</span> Nisha</div>
+        <div><span class="avatar" style="width:18px;height:18px;font-size:9px; background: var(--text-muted)">LC</span> Lisa (AU lab)</div>
+      </div>
+    </div>
+
+    <div class="rail-card">
+      <div class="rail-label">Quick actions</div>
+      <button class="rail-action"><span class="plus">+</span> Add task</button>
+      <button class="rail-action"><span class="plus">+</span> Add follow-up</button>
+      <button class="rail-action"><span class="plus">+</span> Link doc</button>
+      <button class="rail-action"><span class="plus">+</span> Log comment</button>
+    </div>
+
+    <div class="rail-card">
+      <div class="rail-label">Linked vault notes · 4</div>
+      <div style="font-size: 12px; color: var(--text-secondary); line-height: 1.8;">
+        <div>• <span style="color:var(--info); cursor:pointer">Todd Energy Superhot project</span></div>
+        <div>• <span style="color:var(--info); cursor:pointer">AU geothermal signals 2026-04</span></div>
+        <div>• <span style="color:var(--info); cursor:pointer">Blick Eco fluid PDS draft</span></div>
+        <div>• <span style="color:var(--info); cursor:pointer">Aucklab partnership</span></div>
+      </div>
+    </div>
+
+    <div class="rail-card">
+      <div class="rail-label">Origin</div>
+      <div style="font-size: 11.5px; color: var(--text-secondary); line-height: 1.6;">
+        Allocated from <a style="color: var(--primary); cursor: pointer">idea #c2-014</a> · 9 votes in bank · submitted by <strong style="color: var(--text-primary)">Tim Walters</strong>
+      </div>
+    </div>
+  </div>
+</div>
+
+</body>
+</html>

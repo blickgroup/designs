@@ -1,0 +1,531 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="dark">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Compass Project — Stage 4: Done / Parked (v2, historical record)</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+:root, [data-theme="dark"] {
+  --primary: #f05323;
+  --bg-page: #1a1a1a;
+  --bg-surface: #2a2a2a;
+  --bg-surface-secondary: #262626;
+  --bg-hover: #3a3a3a;
+  --text-heading: #ffffff;
+  --text-primary: #bcbec0;
+  --text-secondary: #a0a0a0;
+  --text-muted: #707070;
+  --border-default: #58595b;
+  --border-hover: #707070;
+  --card-bg: rgba(255,255,255,0.03);
+  --card-border: #58595b;
+  --success: #10b981;
+  --success-bg: rgba(16,185,129,0.12);
+  --success-border: rgba(16,185,129,0.30);
+  --warning: #f59e0b;
+  --warning-bg: rgba(245,158,11,0.12);
+  --warning-border: rgba(245,158,11,0.30);
+  --danger: #ef4444;
+  --info: #4A9EFF;
+  --info-bg: rgba(74,158,255,0.12);
+  --info-border: rgba(74,158,255,0.28);
+  --cycle-c2: #4A9EFF;
+}
+* { box-sizing: border-box; margin: 0; padding: 0; }
+body { font-family: 'Inter', sans-serif; background: var(--bg-page); color: var(--text-primary); min-height: 100vh; font-size: 13px; line-height: 1.5; }
+
+.design-notes { background: var(--bg-surface); border-bottom: 1px solid var(--border-default); padding: 12px 24px; font-size: 12px; color: var(--text-secondary); }
+.design-notes summary { cursor: pointer; color: var(--primary); font-weight: 600; font-size: 12px; list-style: none; }
+.design-notes summary::marker { display: none; }
+.design-notes summary::-webkit-details-marker { display: none; }
+.design-notes summary::before { content: "▸ "; display: inline-block; transition: transform 0.15s; }
+.design-notes[open] summary::before { transform: rotate(90deg); }
+.design-notes-body { margin-top: 12px; color: var(--text-primary); line-height: 1.6; max-width: 920px; }
+.design-notes-body h4 { font-size: 11px; text-transform: uppercase; letter-spacing: 0.08em; color: var(--text-muted); margin: 14px 0 6px; }
+.design-notes-body h4:first-child { margin-top: 0; }
+.design-notes-body ul { padding-left: 20px; }
+.design-notes-body li { margin: 3px 0; }
+
+.topbar { position: sticky; top: 0; z-index: 100; background: var(--bg-surface); border-bottom: 1px solid var(--border-default); display: flex; align-items: center; padding: 0 24px; height: 48px; gap: 12px; }
+.topbar-logo { font-size: 15px; font-weight: 700; color: var(--text-heading); letter-spacing: -0.3px; }
+.topbar-logo span { color: var(--primary); }
+.topbar-sep { width: 1px; height: 20px; background: var(--border-default); }
+.topbar-crumbs { font-size: 12px; color: var(--text-secondary); display: flex; align-items: center; gap: 8px; }
+.topbar-crumbs .current { color: var(--text-heading); font-weight: 500; }
+.topbar-spacer { flex: 1; }
+.topbar-btn { padding: 5px 12px; font-size: 12px; border-radius: 5px; border: 1px solid var(--border-default); background: transparent; color: var(--text-secondary); cursor: pointer; }
+
+/* Done / archive banner */
+.archive-banner {
+  background: linear-gradient(90deg, rgba(16,185,129,0.08) 0%, rgba(16,185,129,0) 60%);
+  border-bottom: 1px solid var(--success-border);
+  padding: 14px 32px;
+  display: flex; align-items: center; gap: 14px;
+}
+.archive-icon {
+  width: 32px; height: 32px;
+  border-radius: 50%;
+  background: var(--success);
+  color: #fff;
+  display: flex; align-items: center; justify-content: center;
+  font-size: 16px; font-weight: 700;
+}
+.archive-title { font-size: 13px; font-weight: 600; color: var(--text-heading); }
+.archive-sub { font-size: 12px; color: var(--text-secondary); margin-top: 2px; }
+
+/* Project header (muted — read-only vibe) */
+.project-header { background: var(--bg-surface); border-bottom: 1px solid var(--border-default); padding: 24px 32px 18px; }
+.stage-label {
+  display: inline-flex; align-items: center;
+  padding: 4px 10px;
+  border-radius: 3px;
+  font-size: 10px;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  background: var(--success);
+  color: #fff;
+  margin-bottom: 6px;
+}
+.project-header-top { display: flex; align-items: flex-start; gap: 16px; }
+.project-title { font-size: 22px; font-weight: 700; color: var(--text-heading); line-height: 1.25; letter-spacing: -0.3px; }
+.project-subtitle { margin-top: 6px; font-size: 13px; color: var(--text-secondary); max-width: 720px; }
+.btn { padding: 7px 14px; font-size: 12px; font-weight: 600; border-radius: 5px; cursor: pointer; border: 1px solid; transition: all 0.15s; }
+.btn-secondary { background: transparent; color: var(--text-secondary); border-color: var(--border-default); }
+.btn-secondary:hover { border-color: var(--primary); color: var(--primary); }
+
+.project-meta { display: flex; gap: 28px; flex-wrap: wrap; margin-top: 14px; padding-top: 14px; border-top: 1px solid var(--border-default); }
+.meta-item { display: flex; flex-direction: column; gap: 3px; }
+.meta-label { font-size: 10px; text-transform: uppercase; letter-spacing: 0.06em; color: var(--text-muted); font-weight: 600; }
+.meta-value { font-size: 13px; color: var(--text-primary); font-weight: 500; }
+.cycle-chip-c2 { display: inline-flex; align-items: center; gap: 5px; padding: 2px 8px; border-radius: 3px; font-size: 11px; font-weight: 600; background: rgba(74,158,255,0.15); border: 1px solid rgba(74,158,255,0.30); color: var(--cycle-c2); }
+.avatar { width: 22px; height: 22px; border-radius: 50%; background: var(--info); color: #fff; font-size: 10px; font-weight: 700; display: inline-flex; align-items: center; justify-content: center; vertical-align: middle; margin-right: 6px; }
+.avatar.green { background: var(--success); }
+.avatar.warning { background: var(--warning); }
+
+/* Tabs */
+.tabs-wrap { background: var(--bg-surface); border-bottom: 1px solid var(--border-default); padding: 0 32px; }
+.tabs { display: flex; gap: 2px; }
+.tab { padding: 12px 16px; font-size: 12px; font-weight: 600; color: var(--text-secondary); cursor: pointer; border-bottom: 2px solid transparent; display: flex; align-items: center; gap: 6px; }
+.tab:hover { color: var(--text-heading); }
+.tab.active { color: var(--primary); border-bottom-color: var(--primary); }
+.tab .count { font-size: 10px; padding: 1px 6px; border-radius: 8px; background: var(--bg-hover); color: var(--text-muted); font-weight: 600; }
+.tab.active .count { background: rgba(240,83,35,0.18); color: var(--primary); }
+
+.layout { display: grid; grid-template-columns: 1fr 320px; gap: 0; max-width: 1400px; margin: 0 auto; }
+.main-col { padding: 24px 32px 64px; }
+.side-col { padding: 24px 24px 64px; border-left: 1px solid var(--border-default); background: var(--bg-surface-secondary); }
+
+.section-head { display: flex; align-items: center; justify-content: space-between; margin: 22px 0 14px; }
+.section-head:first-child { margin-top: 0; }
+.section-title { font-size: 11px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.08em; color: var(--text-muted); }
+
+/* Retro / outcomes block */
+.retro {
+  background: var(--card-bg);
+  border: 1px solid var(--card-border);
+  border-left: 3px solid var(--success);
+  border-radius: 8px;
+  padding: 18px 20px;
+  margin-bottom: 22px;
+}
+.retro h3 {
+  font-size: 13px; font-weight: 600; color: var(--text-heading);
+  margin-bottom: 10px;
+  display: flex; align-items: center; gap: 8px;
+}
+.retro h3 .tag { font-size: 10px; padding: 2px 7px; border-radius: 3px; background: var(--success-bg); color: var(--success); border: 1px solid var(--success-border); text-transform: uppercase; letter-spacing: 0.06em; }
+.retro p { font-size: 12.5px; color: var(--text-primary); line-height: 1.7; margin-bottom: 10px; }
+.retro p:last-child { margin-bottom: 0; }
+.retro ul { padding-left: 20px; font-size: 12.5px; color: var(--text-primary); line-height: 1.7; }
+.retro li { margin: 3px 0; }
+
+/* Timeline of stages */
+.journey {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 0;
+  margin-bottom: 22px;
+  background: var(--bg-surface);
+  border: 1px solid var(--border-default);
+  border-radius: 10px;
+  overflow: hidden;
+}
+.journey-step {
+  padding: 14px 16px;
+  border-right: 1px solid var(--border-default);
+  position: relative;
+}
+.journey-step:last-child { border-right: none; }
+.journey-step.complete::before {
+  content: "";
+  position: absolute;
+  top: 0; left: 0; right: 0;
+  height: 3px;
+  background: var(--success);
+}
+.journey-step.current::before {
+  content: "";
+  position: absolute;
+  top: 0; left: 0; right: 0;
+  height: 3px;
+  background: var(--primary);
+}
+.journey-stage { font-size: 10px; text-transform: uppercase; letter-spacing: 0.08em; color: var(--text-muted); font-weight: 700; margin-bottom: 4px; }
+.journey-stage.current { color: var(--primary); }
+.journey-stage.complete { color: var(--success); }
+.journey-label { font-size: 12.5px; color: var(--text-heading); font-weight: 600; }
+.journey-when { font-size: 11px; color: var(--text-secondary); margin-top: 2px; }
+.journey-duration { font-size: 10px; color: var(--text-muted); margin-top: 6px; }
+
+/* Task rollup — everything done, read-only */
+.tasks-wrap { display: flex; flex-direction: column; gap: 8px; opacity: 0.95; }
+.task-card {
+  background: var(--card-bg);
+  border: 1px solid var(--card-border);
+  border-radius: 8px;
+  padding: 11px 14px;
+  display: grid;
+  grid-template-columns: 18px 1fr 120px 100px;
+  gap: 12px;
+  align-items: center;
+  opacity: 0.88;
+}
+.check-box { width: 16px; height: 16px; border-radius: 4px; position: relative; flex-shrink: 0; background: var(--success); border: 1.5px solid var(--success); }
+.check-box::after { content: "✓"; position: absolute; inset: 0; color: #fff; font-size: 11px; font-weight: 700; display: flex; align-items: center; justify-content: center; }
+.check-box.parked { background: var(--text-muted); border-color: var(--text-muted); }
+.check-box.parked::after { content: "↓"; color: #fff; font-size: 11px; }
+.task-title { font-size: 12.5px; font-weight: 500; color: var(--text-muted); text-decoration: line-through; }
+.task-title.parked { text-decoration: none; font-style: italic; }
+.task-assignee { font-size: 11.5px; color: var(--text-muted); display: flex; align-items: center; gap: 5px; }
+.task-due { font-size: 11px; color: var(--text-muted); }
+
+/* Final activity timeline */
+.activity { padding-left: 4px; border-left: 2px solid var(--border-default); margin-left: 6px; }
+.activity-item { position: relative; padding: 8px 0 8px 18px; font-size: 12px; color: var(--text-secondary); line-height: 1.6; }
+.activity-item::before { content: ""; position: absolute; left: -7px; top: 13px; width: 10px; height: 10px; border-radius: 50%; background: var(--bg-surface); border: 2px solid var(--border-hover); }
+.activity-item.success::before { border-color: var(--success); background: var(--success); }
+.activity-item.primary::before { border-color: var(--primary); background: var(--primary); }
+.activity-item.warning::before { border-color: var(--warning); background: var(--warning); }
+.activity-item strong { color: var(--text-heading); font-weight: 600; }
+.activity-item .when { color: var(--text-muted); font-size: 11px; margin-left: 6px; }
+
+/* Docs */
+.doc-list { display: flex; flex-direction: column; gap: 6px; }
+.doc-item {
+  display: flex; align-items: center; gap: 10px;
+  padding: 8px 12px;
+  background: var(--card-bg);
+  border: 1px solid var(--card-border);
+  border-radius: 6px;
+  font-size: 12px;
+  cursor: pointer;
+}
+.doc-item:hover { border-color: var(--primary); }
+.doc-icon { width: 24px; height: 24px; border-radius: 4px; background: var(--info-bg); color: var(--info); display: flex; align-items: center; justify-content: center; font-size: 10px; font-weight: 700; flex-shrink: 0; }
+.doc-icon.sheet { background: rgba(16,185,129,0.12); color: var(--success); }
+.doc-icon.pdf { background: rgba(239,68,68,0.12); color: var(--danger); }
+.doc-name { color: var(--text-heading); font-weight: 500; flex: 1; }
+.doc-meta { color: var(--text-muted); font-size: 11px; }
+
+/* Rail */
+.rail-card { background: var(--bg-surface); border: 1px solid var(--border-default); border-radius: 8px; padding: 14px 16px; margin-bottom: 14px; }
+.rail-label { font-size: 10px; text-transform: uppercase; letter-spacing: 0.06em; color: var(--text-muted); font-weight: 600; margin-bottom: 8px; }
+.rail-row { display: flex; justify-content: space-between; align-items: center; padding: 7px 0; border-top: 1px solid var(--border-default); font-size: 12px; }
+.rail-row:first-of-type { border-top: none; }
+.rail-row .k { color: var(--text-muted); }
+.rail-row .v { color: var(--text-primary); font-weight: 500; }
+
+.rail-summary {
+  font-size: 20px;
+  font-weight: 700;
+  color: var(--success);
+  margin-bottom: 4px;
+}
+.rail-summary-label { font-size: 11px; color: var(--text-muted); }
+
+.metric-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-top: 10px; }
+.metric {
+  background: var(--card-bg);
+  border: 1px solid var(--card-border);
+  border-radius: 6px;
+  padding: 10px 12px;
+}
+.metric-value { font-size: 16px; font-weight: 700; color: var(--text-heading); }
+.metric-label { font-size: 10px; color: var(--text-muted); text-transform: uppercase; letter-spacing: 0.06em; margin-top: 3px; }
+</style>
+</head>
+<body>
+
+<details class="design-notes" open>
+<summary>Design notes — Stage 4: Done / Parked (v2, historical record)</summary>
+<div class="design-notes-body">
+<h4>What this shows</h4>
+<p>Project completed (or parked). Read-only feel. Full journey is visible — submitted → banked → allocated to cycle → planning → execution → done. Outcomes retro block is prominent (the thing you want to remember next time). Task list is collapsed into a roll-up, all done or parked, greyed down. Activity feed becomes a closing timeline.</p>
+<p><strong>v2 change from v1:</strong> journey strip re-labeled to reflect the real lifecycle — an idea sits in the bank (approved, un-allocated) before being allocated to a 90-day cycle. Allocation is what creates the project.</p>
+
+<h4>Layout choices</h4>
+<ul>
+<li><strong>Archive banner at top</strong> — immediately signals "this is historical" so no-one tries to add a task expecting action.</li>
+<li><strong>Stage badge flips from orange → green.</strong> Preserves the orange section-tag language for <em>active</em> work, green for <em>closed</em>. Matches the success-green throughout Compass.</li>
+<li><strong>Four-step journey strip</strong> replaces live meta cards near the top — gives the full story at a glance, with durations.</li>
+<li><strong>Retro / outcomes block</strong> becomes the hero on this page. Above the task list. What worked, what didn't, what we'd do differently. This is the compounding value — next cycle's planning phase should pull from these notes.</li>
+<li><strong>Side rail flips</strong> from "Quick actions" to "Summary metrics" (duration, tasks completed, slip days, final effort vs estimate).</li>
+</ul>
+
+<h4>Parked vs Done — handled the same way</h4>
+<p>A parked project uses the same layout but the stage badge goes grey, the retro becomes "Why we parked / when to revisit", and parked tasks show a ↓ marker instead of ✓. One template, two end-states. Avoids building two dead-end screens.</p>
+
+<h4>Still editable?</h4>
+<p>Tasks/follow-ups/docs are frozen (read-only). But the outcomes/retro block is editable for ~14 days after close (Shaun can still add learnings). Comments stay editable permanently — the project notes can be annotated forever. After 14 days a "Reopen project" CTA appears in the overflow menu if someone needs to revive it.</p>
+
+<h4>Tradeoffs considered</h4>
+<ul>
+<li><strong>Auto-redirect to a separate archive view</strong> — rejected. Same URL, same layout, just a different mode. Linkable forever; less confusing.</li>
+<li><strong>Strip all the tabs</strong> — rejected. You still want to scroll through tasks historically; keeping tabs preserves the mental model from execution.</li>
+<li><strong>"Promote outcomes to vault" CTA</strong> — considered. Flagged for Shaun (open question).</li>
+</ul>
+
+<h4>Responsive behaviour</h4>
+<p>Journey strip becomes a vertical list below 720px. Retro stays prominent. Rail drops under.</p>
+
+<h4>Open questions for Shaun</h4>
+<ul>
+<li>Should closed projects auto-generate a vault note (Intelligence/projects/eco-fluid-au.md) so outcomes compound into Nexus search?</li>
+<li>Retro edit window — 14 days enough? 30? Forever?</li>
+<li>Should parked projects surface in a different pipeline view from Done, or mix them?</li>
+</ul>
+</div>
+</details>
+
+<div class="topbar">
+  <div class="topbar-logo">Blick<span>.</span>Hub</div>
+  <div class="topbar-sep"></div>
+  <div class="topbar-crumbs">
+    <span>Compass</span> <span style="color:var(--text-muted)">›</span>
+    <span>Cycle 2 · Archive</span> <span style="color:var(--text-muted)">›</span>
+    <span class="current">Eco-friendly drilling fluid line</span>
+  </div>
+  <div class="topbar-spacer"></div>
+  <button class="topbar-btn">⋯</button>
+</div>
+
+<div class="archive-banner">
+  <div class="archive-icon">✓</div>
+  <div>
+    <div class="archive-title">Project closed · Tender submitted, awaiting Todd Energy decision</div>
+    <div class="archive-sub">Closed 14 Jun 2026 by Shaun Tubb · Read-only. Outcomes can still be edited for 14 days.</div>
+  </div>
+</div>
+
+<div class="project-header">
+  <div class="stage-label">Stage · Done</div>
+  <div class="project-header-top">
+    <div style="flex:1">
+      <h1 class="project-title">Eco-friendly drilling fluid line for AU geothermal market</h1>
+      <p class="project-subtitle">Launched a low-toxicity variant range, submitted to Todd Energy's Superhot tender. Outcome pending — decision expected Q3.</p>
+    </div>
+    <div style="display: flex; gap: 8px">
+      <button class="btn btn-secondary">Reopen</button>
+      <button class="btn btn-secondary">Duplicate to C3</button>
+    </div>
+  </div>
+  <div class="project-meta">
+    <div class="meta-item"><div class="meta-label">Final status</div><div class="meta-value" style="color: var(--success)">● Closed (shipped)</div></div>
+    <div class="meta-item"><div class="meta-label">Cycle</div><div class="meta-value"><span class="cycle-chip-c2">● C2</span> Apr – Jun 2026</div></div>
+    <div class="meta-item"><div class="meta-label">Owner</div><div class="meta-value"><span class="avatar">TW</span>Tim Walters</div></div>
+    <div class="meta-item"><div class="meta-label">Duration</div><div class="meta-value">74 days · vs 56 est (+32%)</div></div>
+    <div class="meta-item"><div class="meta-label">Closed</div><div class="meta-value">14 Jun · by Shaun Tubb</div></div>
+  </div>
+</div>
+
+<div class="tabs-wrap">
+  <div class="tabs">
+    <div class="tab active">Overview</div>
+    <div class="tab">Tasks <span class="count">8</span></div>
+    <div class="tab">Docs <span class="count">6</span></div>
+    <div class="tab">Activity <span class="count">58</span></div>
+    <div class="tab">Outcomes</div>
+  </div>
+</div>
+
+<div class="layout">
+  <div class="main-col">
+
+    <!-- Journey strip -->
+    <div class="section-head">
+      <div class="section-title">Full journey</div>
+    </div>
+    <div class="journey">
+      <div class="journey-step complete">
+        <div class="journey-stage complete">Submitted</div>
+        <div class="journey-label">Tim Walters</div>
+        <div class="journey-when">19 Apr · 9 votes</div>
+        <div class="journey-duration">3 days idea → banked</div>
+      </div>
+      <div class="journey-step complete">
+        <div class="journey-stage complete">Planning</div>
+        <div class="journey-label">Owner + 6 tasks scoped</div>
+        <div class="journey-when">22 – 31 Mar</div>
+        <div class="journey-duration">9 days setup</div>
+      </div>
+      <div class="journey-step complete">
+        <div class="journey-stage complete">Execution</div>
+        <div class="journey-label">8 tasks · 21 subtasks</div>
+        <div class="journey-when">01 Apr – 14 Jun</div>
+        <div class="journey-duration">74 days active</div>
+      </div>
+      <div class="journey-step current">
+        <div class="journey-stage current">Done</div>
+        <div class="journey-label">Tender submitted</div>
+        <div class="journey-when">14 Jun 2026</div>
+        <div class="journey-duration">Awaiting Todd decision</div>
+      </div>
+    </div>
+
+    <!-- Outcomes / retro -->
+    <div class="section-head">
+      <div class="section-title">Outcomes · retrospective</div>
+    </div>
+    <div class="retro">
+      <h3>What we shipped <span class="tag">Delivered</span></h3>
+      <ul>
+        <li>Eco-certified SDS + PDS pack for HT-3000 Eco and HT-3500 Eco — signed off by Brent, reviewed by Shaun.</li>
+        <li>Tender response pack submitted to Todd Energy procurement (Sarah Mills), 12 Jun.</li>
+        <li>Biodegradability data from Aucklab — OECD 301B pass on both base fluids.</li>
+        <li>Cost model + margin scenarios built; eco premium holds at ~8% which Todd indicated is acceptable.</li>
+      </ul>
+    </div>
+    <div class="retro" style="border-left-color: var(--warning)">
+      <h3 style="color: var(--warning)">What slipped <span class="tag" style="background: var(--warning-bg); color: var(--warning); border-color: var(--warning-border)">18d over</span></h3>
+      <ul>
+        <li>Aucklab test scheduling cost us 12 days — they double-booked the rheology cell. <strong>Lesson:</strong> book lab slots first, not last.</li>
+        <li>PDS template rewrite took twice as long as Brent estimated because section 12 eco-tox data model had no precedent in Blick's system.</li>
+        <li>Shaun's sign-off waited 6 days in one round — need a clearer "waiting on" signal in-app.</li>
+      </ul>
+    </div>
+    <div class="retro" style="border-left-color: var(--info)">
+      <h3 style="color: var(--info)">What we'd do differently <span class="tag" style="background: var(--info-bg); color: var(--info); border-color: var(--info-border)">For C3+</span></h3>
+      <ul>
+        <li>Kick off lab partner scheduling on day 1, not week 4.</li>
+        <li>Create a shared "eco-tox SDS language" template in the vault so next product family can reuse it.</li>
+        <li>Wire follow-up "waiting reply" count into rail so reviewers' inbox depth is visible.</li>
+      </ul>
+    </div>
+
+    <!-- Task rollup -->
+    <div class="section-head">
+      <div class="section-title">Tasks · 7 done · 1 parked</div>
+    </div>
+    <div class="tasks-wrap">
+      <div class="task-card"><div class="check-box"></div><div class="task-title">Kickoff call with Todd Energy procurement</div><div class="task-assignee">Tim W</div><div class="task-due">✓ 08 Apr</div></div>
+      <div class="task-card"><div class="check-box"></div><div class="task-title">Benchmark competitor eco-fluid PDS specs (AU)</div><div class="task-assignee">Tim W</div><div class="task-due">✓ 12 Apr</div></div>
+      <div class="task-card"><div class="check-box"></div><div class="task-title">Draft SDS + PDS pack with eco-classification language</div><div class="task-assignee">Brent D</div><div class="task-due">✓ 02 May</div></div>
+      <div class="task-card"><div class="check-box"></div><div class="task-title">Book Aucklab biodegradability test slot</div><div class="task-assignee">Tim W</div><div class="task-due">✓ 03 May (+14d slip)</div></div>
+      <div class="task-card"><div class="check-box"></div><div class="task-title">Biodegradability test — OECD 301B</div><div class="task-assignee">Lisa C</div><div class="task-due">✓ 21 May</div></div>
+      <div class="task-card"><div class="check-box"></div><div class="task-title">Produce Todd Energy tender response pack (v1)</div><div class="task-assignee">Shaun T</div><div class="task-due">✓ 03 Jun</div></div>
+      <div class="task-card"><div class="check-box"></div><div class="task-title">Submit tender pack to Todd procurement</div><div class="task-assignee">Shaun T</div><div class="task-due">✓ 12 Jun</div></div>
+      <div class="task-card"><div class="check-box parked"></div><div class="task-title parked">Line up a Superhot-adjacent AU field trial rig</div><div class="task-assignee">Tim W</div><div class="task-due">↓ Parked to C3</div></div>
+    </div>
+
+    <!-- Docs -->
+    <div class="section-head">
+      <div class="section-title">Deliverables · 6</div>
+    </div>
+    <div class="doc-list">
+      <div class="doc-item"><div class="doc-icon pdf">P</div><div class="doc-name">Todd Energy tender response — final submitted.pdf</div><div class="doc-meta">Final · submitted 12 Jun</div></div>
+      <div class="doc-item"><div class="doc-icon pdf">P</div><div class="doc-name">HT-3000 Eco SDS v1.pdf</div><div class="doc-meta">Signed off · 02 May</div></div>
+      <div class="doc-item"><div class="doc-icon pdf">P</div><div class="doc-name">HT-3500 Eco SDS v1.pdf</div><div class="doc-meta">Signed off · 02 May</div></div>
+      <div class="doc-item"><div class="doc-icon pdf">P</div><div class="doc-name">Aucklab OECD 301B test report.pdf</div><div class="doc-meta">Received · 21 May</div></div>
+      <div class="doc-item"><div class="doc-icon sheet">S</div><div class="doc-name">Eco fluid cost model + margin scenarios (final)</div><div class="doc-meta">Frozen · 03 Jun</div></div>
+      <div class="doc-item"><div class="doc-icon">D</div><div class="doc-name">Eco fluid — vault note (Intelligence/products)</div><div class="doc-meta">Auto-created on close</div></div>
+    </div>
+
+    <!-- Closing activity -->
+    <div class="section-head">
+      <div class="section-title">Final activity</div>
+    </div>
+    <div class="activity">
+      <div class="activity-item success">
+        <strong>Shaun Tubb</strong> closed the project — tender submitted, awaiting Todd decision.
+        <span class="when">14 Jun</span>
+      </div>
+      <div class="activity-item success">
+        <strong>Shaun Tubb</strong> sent tender pack to Sarah Mills (Todd Energy procurement).
+        <span class="when">12 Jun</span>
+      </div>
+      <div class="activity-item primary">
+        <strong>Shaun Tubb</strong> added retro notes — "what we'd do differently for C3+".
+        <span class="when">14 Jun</span>
+      </div>
+      <div class="activity-item">
+        <strong>Tim Walters</strong> parked task <em>Line up field trial rig</em> for C3.
+        <span class="when">13 Jun</span>
+      </div>
+      <div class="activity-item success">
+        <strong>Lisa Chen (Aucklab)</strong> delivered OECD 301B test report — both base fluids passed.
+        <span class="when">21 May</span>
+      </div>
+      <div class="activity-item">
+        <em>… 52 earlier events …</em>
+      </div>
+    </div>
+
+  </div>
+
+  <!-- Rail (metrics-focused) -->
+  <div class="side-col">
+    <div class="rail-card">
+      <div class="rail-label">Result</div>
+      <div class="rail-summary">Shipped</div>
+      <div class="rail-summary-label">Tender submitted · awaiting decision</div>
+      <div class="metric-grid">
+        <div class="metric"><div class="metric-value">7/8</div><div class="metric-label">Tasks done</div></div>
+        <div class="metric"><div class="metric-value">21/23</div><div class="metric-label">Subtasks</div></div>
+        <div class="metric"><div class="metric-value">74d</div><div class="metric-label">Duration</div></div>
+        <div class="metric"><div class="metric-value" style="color:var(--warning)">+18d</div><div class="metric-label">Slip</div></div>
+      </div>
+    </div>
+
+    <div class="rail-card">
+      <div class="rail-label">Effort vs estimate</div>
+      <div class="rail-row"><span class="k">Estimated</span><span class="v">L · 6–8 weeks</span></div>
+      <div class="rail-row"><span class="k">Actual</span><span class="v">10.5 weeks</span></div>
+      <div class="rail-row"><span class="k">Variance</span><span class="v" style="color: var(--warning)">+32%</span></div>
+      <div class="rail-row"><span class="k">Team size</span><span class="v">5 people</span></div>
+    </div>
+
+    <div class="rail-card">
+      <div class="rail-label">Provenance</div>
+      <div style="font-size: 11.5px; color: var(--text-secondary); line-height: 1.7;">
+        Allocated from <a style="color: var(--primary); cursor: pointer">idea #c2-014</a> · submitted by <strong style="color: var(--text-primary)">Tim Walters</strong> · 9 votes in bank, allocated to Cycle 2 on 22 Apr.
+      </div>
+    </div>
+
+    <div class="rail-card">
+      <div class="rail-label">Compounded to vault</div>
+      <div style="font-size: 12px; color: var(--text-secondary); line-height: 1.8;">
+        <div>• <span style="color:var(--info); cursor:pointer">Intelligence/products/blick-eco-fluid.md</span></div>
+        <div>• <span style="color:var(--info); cursor:pointer">Intelligence/customers/todd-energy.md</span></div>
+        <div>• <span style="color:var(--info); cursor:pointer">Intelligence/partners/aucklab.md</span></div>
+      </div>
+      <div style="margin-top: 10px; padding-top: 10px; border-top: 1px solid var(--border-default); font-size: 11px; color: var(--text-muted); font-style: italic;">
+        Outcomes, deliverables and retro notes synced to Nexus vault on close.
+      </div>
+    </div>
+
+    <div class="rail-card">
+      <div class="rail-label">Follow-on ideas</div>
+      <div style="font-size: 12px; color: var(--text-secondary); line-height: 1.7;">
+        <div>• <span style="color:var(--primary); cursor:pointer">C3 · AU field trial rig</span> (parked task)</div>
+        <div>• <span style="color:var(--primary); cursor:pointer">C3 · Eco fluid for geothermal — Origin</span> (new idea, 2 votes)</div>
+      </div>
+    </div>
+  </div>
+</div>
+
+</body>
+</html>
