@@ -1,0 +1,630 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="dark">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Compass Project — Stage 2: Planning (v3)</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+:root, [data-theme="dark"] {
+  --primary: #f05323;
+  --primary-hover: #ff6a3d;
+  --bg-page: #1a1a1a;
+  --bg-surface: #2a2a2a;
+  --bg-surface-secondary: #262626;
+  --bg-hover: #3a3a3a;
+  --text-heading: #ffffff;
+  --text-primary: #bcbec0;
+  --text-secondary: #a0a0a0;
+  --text-muted: #707070;
+  --border-default: #58595b;
+  --border-hover: #707070;
+  --card-bg: rgba(255,255,255,0.03);
+  --card-border: #58595b;
+  --card-hover-border: #f05323;
+  --success: #10b981;
+  --success-bg: rgba(16,185,129,0.12);
+  --success-border: rgba(16,185,129,0.30);
+  --warning: #f59e0b;
+  --warning-bg: rgba(245,158,11,0.12);
+  --warning-border: rgba(245,158,11,0.30);
+  --danger: #ef4444;
+  --info: #4A9EFF;
+  --info-bg: rgba(74,158,255,0.12);
+  --info-border: rgba(74,158,255,0.28);
+  --cycle-c1: #f05323;
+  --cycle-c2: #4A9EFF;
+  --cycle-c3: #ef4444;
+}
+* { box-sizing: border-box; margin: 0; padding: 0; }
+body { font-family: 'Inter', sans-serif; background: var(--bg-page); color: var(--text-primary); min-height: 100vh; font-size: 13px; line-height: 1.5; }
+
+.design-notes { background: var(--bg-surface); border-bottom: 1px solid var(--border-default); padding: 12px 24px; font-size: 12px; color: var(--text-secondary); }
+.design-notes summary { cursor: pointer; color: var(--primary); font-weight: 600; font-size: 12px; list-style: none; }
+.design-notes summary::marker { display: none; }
+.design-notes summary::-webkit-details-marker { display: none; }
+.design-notes summary::before { content: "▸ "; transition: transform 0.15s; display: inline-block; }
+.design-notes[open] summary::before { transform: rotate(90deg); }
+.design-notes-body { margin-top: 12px; color: var(--text-primary); line-height: 1.6; max-width: 920px; }
+.design-notes-body h4 { font-size: 11px; text-transform: uppercase; letter-spacing: 0.08em; color: var(--text-muted); margin: 14px 0 6px; }
+.design-notes-body h4:first-child { margin-top: 0; }
+.design-notes-body ul { padding-left: 20px; }
+.design-notes-body li { margin: 3px 0; }
+
+.topbar { position: sticky; top: 0; z-index: 100; background: var(--bg-surface); border-bottom: 1px solid var(--border-default); display: flex; align-items: center; padding: 0 24px; height: 48px; gap: 12px; }
+.topbar-logo { font-size: 15px; font-weight: 700; color: var(--text-heading); letter-spacing: -0.3px; }
+.topbar-logo span { color: var(--primary); }
+.topbar-sep { width: 1px; height: 20px; background: var(--border-default); }
+.topbar-crumbs { font-size: 12px; color: var(--text-secondary); display: flex; align-items: center; gap: 8px; }
+.topbar-crumbs a { color: var(--text-secondary); text-decoration: none; }
+.topbar-crumbs a:hover { color: var(--primary); }
+.topbar-crumbs .current { color: var(--text-heading); font-weight: 500; }
+.topbar-spacer { flex: 1; }
+.topbar-btn { padding: 5px 12px; font-size: 12px; font-weight: 500; border-radius: 5px; border: 1px solid var(--border-default); background: transparent; color: var(--text-secondary); cursor: pointer; }
+.topbar-btn:hover { border-color: var(--primary); color: var(--primary); }
+
+/* Project header */
+.project-header {
+  background: var(--bg-surface);
+  border-bottom: 1px solid var(--border-default);
+  padding: 28px 32px 20px;
+}
+.project-header-top { display: flex; align-items: flex-start; gap: 16px; margin-bottom: 10px; }
+.stage-label {
+  display: inline-flex;
+  align-items: center;
+  padding: 4px 10px;
+  border-radius: 3px;
+  font-size: 10px;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  background: var(--primary);
+  color: #fff;
+  margin-bottom: 6px;
+}
+.project-title {
+  font-size: 24px;
+  font-weight: 700;
+  color: var(--text-heading);
+  line-height: 1.25;
+  letter-spacing: -0.3px;
+}
+.project-subtitle {
+  margin-top: 6px;
+  font-size: 13px;
+  color: var(--text-secondary);
+  max-width: 720px;
+}
+.project-actions { display: flex; gap: 8px; align-items: center; }
+.btn { padding: 7px 14px; font-size: 12px; font-weight: 600; border-radius: 5px; cursor: pointer; transition: all 0.15s; }
+.btn-primary { background: var(--primary); color: #fff; border: 1px solid var(--primary); }
+.btn-primary:hover { background: var(--primary-hover); }
+.btn-secondary { background: transparent; color: var(--text-secondary); border: 1px solid var(--border-default); }
+.btn-secondary:hover { border-color: var(--primary); color: var(--primary); }
+
+.project-meta {
+  display: flex;
+  gap: 28px;
+  flex-wrap: wrap;
+  margin-top: 14px;
+  padding-top: 14px;
+  border-top: 1px solid var(--border-default);
+}
+.meta-item { display: flex; flex-direction: column; gap: 3px; }
+.meta-label { font-size: 10px; text-transform: uppercase; letter-spacing: 0.06em; color: var(--text-muted); font-weight: 600; }
+.meta-value { font-size: 13px; color: var(--text-primary); font-weight: 500; }
+.meta-value.missing { color: var(--text-muted); font-style: italic; font-weight: 400; }
+.cycle-chip-c2 { display: inline-flex; align-items: center; gap: 5px; padding: 2px 8px; border-radius: 3px; font-size: 11px; font-weight: 600; background: rgba(74,158,255,0.15); border: 1px solid rgba(74,158,255,0.30); color: var(--cycle-c2); }
+
+/* Tabs */
+.tabs-wrap { background: var(--bg-surface); border-bottom: 1px solid var(--border-default); padding: 0 32px; }
+.tabs { display: flex; gap: 2px; }
+.tab {
+  padding: 12px 16px;
+  font-size: 12px;
+  font-weight: 600;
+  color: var(--text-secondary);
+  cursor: pointer;
+  border-bottom: 2px solid transparent;
+  transition: all 0.15s;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+.tab:hover { color: var(--text-heading); }
+.tab.active { color: var(--primary); border-bottom-color: var(--primary); }
+.tab .count {
+  font-size: 10px;
+  font-weight: 600;
+  padding: 1px 6px;
+  border-radius: 8px;
+  background: var(--bg-hover);
+  color: var(--text-muted);
+}
+.tab.active .count { background: rgba(240,83,35,0.18); color: var(--primary); }
+
+/* Layout */
+.layout {
+  display: grid;
+  grid-template-columns: 1fr 320px;
+  gap: 0;
+  max-width: 1400px;
+  margin: 0 auto;
+}
+.main-col { padding: 28px 32px 64px; }
+.side-col {
+  padding: 28px 24px 64px;
+  border-left: 1px solid var(--border-default);
+  background: var(--bg-surface-secondary);
+  min-height: calc(100vh - 180px);
+}
+
+/* Section heading */
+.section-head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 14px;
+}
+.section-title {
+  font-size: 11px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  color: var(--text-muted);
+}
+.section-link {
+  font-size: 11px;
+  color: var(--primary);
+  cursor: pointer;
+  font-weight: 600;
+}
+
+/* Empty state cards (scaffolding feel) */
+.empty-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; margin-bottom: 28px; }
+.empty-card {
+  background: var(--card-bg);
+  border: 1.5px dashed var(--card-border);
+  border-radius: 10px;
+  padding: 22px 20px;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  cursor: pointer;
+  transition: all 0.15s;
+}
+.empty-card:hover {
+  border-color: var(--primary);
+  border-style: dashed;
+  background: rgba(240,83,35,0.03);
+}
+.empty-icon {
+  width: 32px;
+  height: 32px;
+  border-radius: 6px;
+  background: rgba(240,83,35,0.12);
+  color: var(--primary);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 16px;
+  font-weight: 700;
+}
+.empty-title { font-size: 13px; font-weight: 600; color: var(--text-heading); }
+.empty-desc { font-size: 11.5px; color: var(--text-secondary); line-height: 1.5; }
+.empty-cta { font-size: 11px; color: var(--primary); font-weight: 600; margin-top: 2px; }
+
+/* Brief block */
+.brief-block {
+  background: var(--card-bg);
+  border: 1px solid var(--card-border);
+  border-radius: 10px;
+  padding: 20px 22px;
+  margin-bottom: 28px;
+}
+.brief-block h3 { font-size: 13px; font-weight: 600; color: var(--text-heading); margin-bottom: 10px; }
+.brief-block p { font-size: 12.5px; color: var(--text-primary); line-height: 1.7; margin-bottom: 10px; }
+.brief-block p:last-child { margin-bottom: 0; }
+.brief-block .edit-link {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  margin-top: 8px;
+  font-size: 11px;
+  color: var(--text-muted);
+  cursor: pointer;
+}
+.brief-block .edit-link:hover { color: var(--primary); }
+
+/* Kickoff checklist */
+.checklist {
+  background: var(--card-bg);
+  border: 1px solid var(--card-border);
+  border-radius: 10px;
+  padding: 14px 16px;
+  margin-bottom: 28px;
+}
+.checklist-item {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 8px 4px;
+  border-bottom: 1px solid var(--border-default);
+}
+.checklist-item:last-child { border-bottom: none; }
+.check-circle {
+  width: 16px; height: 16px;
+  border-radius: 50%;
+  border: 1.5px solid var(--border-hover);
+  flex-shrink: 0;
+}
+.check-circle.done {
+  background: var(--success);
+  border-color: var(--success);
+  position: relative;
+}
+.check-circle.done::after {
+  content: "✓";
+  position: absolute;
+  inset: 0;
+  display: flex; align-items: center; justify-content: center;
+  color: #fff; font-size: 10px; font-weight: 700;
+}
+.check-label { font-size: 12.5px; color: var(--text-primary); flex: 1; }
+.check-label.done { color: var(--text-muted); text-decoration: line-through; }
+.check-hint { font-size: 11px; color: var(--text-muted); }
+
+/* Side rail */
+.rail-card {
+  background: var(--bg-surface);
+  border: 1px solid var(--border-default);
+  border-radius: 8px;
+  padding: 14px 16px;
+  margin-bottom: 14px;
+}
+.rail-label { font-size: 10px; text-transform: uppercase; letter-spacing: 0.06em; color: var(--text-muted); font-weight: 600; margin-bottom: 8px; }
+.rail-value { font-size: 13px; color: var(--text-heading); font-weight: 500; }
+.rail-value.missing { color: var(--text-muted); font-style: italic; font-weight: 400; }
+.rail-row { display: flex; justify-content: space-between; align-items: center; padding: 7px 0; border-top: 1px solid var(--border-default); font-size: 12px; }
+.rail-row:first-of-type { border-top: none; }
+.rail-row .k { color: var(--text-muted); }
+.rail-row .v { color: var(--text-primary); font-weight: 500; }
+.rail-action {
+  display: block;
+  width: 100%;
+  text-align: left;
+  padding: 8px 10px;
+  border-radius: 5px;
+  font-size: 12px;
+  color: var(--text-secondary);
+  background: transparent;
+  border: 1px solid var(--border-default);
+  cursor: pointer;
+  margin-bottom: 6px;
+}
+.rail-action:hover { border-color: var(--primary); color: var(--primary); }
+.rail-action .plus { color: var(--primary); font-weight: 700; margin-right: 6px; }
+
+.progress-placeholder {
+  height: 6px;
+  background: var(--bg-hover);
+  border-radius: 3px;
+  overflow: hidden;
+  margin-top: 6px;
+}
+.progress-placeholder .fill {
+  height: 100%;
+  width: 0%;
+  background: var(--primary);
+}
+.progress-label { font-size: 11px; color: var(--text-muted); margin-top: 6px; }
+
+.banner {
+  background: rgba(240,83,35,0.06);
+  border: 1px solid rgba(240,83,35,0.28);
+  border-radius: 8px;
+  padding: 12px 16px;
+  font-size: 12px;
+  color: var(--text-primary);
+  margin-bottom: 22px;
+  display: flex;
+  gap: 10px;
+  align-items: flex-start;
+}
+.banner-icon {
+  font-size: 16px;
+  color: var(--primary);
+  line-height: 1;
+  margin-top: 1px;
+}
+.banner strong { color: var(--text-heading); }
+</style>
+</head>
+<body>
+
+<details class="design-notes" open>
+<summary>Design notes — Stage 2: Planning (v3 — activity-centred)</summary>
+<div class="design-notes-body">
+<h4>v3 changes from v2</h4>
+<ul>
+<li><strong>Owner is assigned at allocation</strong> — shown in the meta strip, not editable by default. Small <em>Reassign</em> link visible only to admins (mocked as a muted, disabled-looking control with a role-gate label).</li>
+<li><strong>"Tasks" renamed to "Follow-ups"</strong> everywhere — matches hub-wide language (follow-ups = the unit of work in Blick). Tab, CTAs, empty-state, side rail, checklist.</li>
+<li><strong>Setup scaffolding collapsed.</strong> The "Get set up" empty-card grid and "Kickoff checklist" dominated v2. Those are first-day concerns. v3 collapses setup into a single dismissible banner with inline CTAs. The page is now lived-in: Activity feed + Documents own the main column.</li>
+<li><strong>Definition of Done — new.</strong> Every project gets the standard template (docs + files, process on Blickopedia, team comms, training). Owner can add project-specific items. Items must be ticked to close — <em>or</em> a reason-why-not must be recorded. Stops projects sliding to Done without closing the loop.</li>
+<li><strong>Related vault notes removed from this stage.</strong> Not useful in planning. Will appear on Execution/Done where the links have earned context.</li>
+</ul>
+
+<h4>Focus of the planning page</h4>
+<p>The earlier planning page was "scaffold a thing." This one says "manage a thing through planning." Setup lives as a banner you dismiss; the real surface is activity + docs + a clear Definition of Done to work toward. Matches how planning actually feels — you spend more time reading updates and filing docs than populating empty fields.</p>
+
+<h4>Definition of Done — template</h4>
+<p>Admin-editable template applied to every project on creation. Template items as of this mockup:</p>
+<ol>
+<li>Documentation + files filed (Drive + project docs tab)</li>
+<li>Process documented on Blickopedia</li>
+<li>Team communication sent (what shipped, what changed)</li>
+<li>Training delivered where required (or marked N/A with reason)</li>
+</ol>
+<p>Owner can append project-specific items below the template. Closing a project = all ticked, or each un-ticked item has a reason recorded. Reason text appears on the Done page in the historical record so it's visible at retro time.</p>
+
+<h4>Owner reassignment permission</h4>
+<p>Reassign control is visible but role-gated. Non-admins see Owner as read-only. Admins see a small "Reassign" link. Tooltip for non-admins: "Contact an admin to reassign". Backend check on the API route, not just frontend hide — standard hub pattern.</p>
+
+<h4>Nav + layout</h4>
+<p>Tabs at top (Overview / Follow-ups / Docs / Activity) — "Tasks" tab removed, follow-ups is the unit. Two-column skeleton kept: main (~1fr) + sticky rail (320px).</p>
+
+<h4>Open questions for Shaun</h4>
+<ul>
+<li>Who counts as admin for reassignment — Shaun + partners only, or a broader admin role?</li>
+<li>Is Blickopedia the actual system, or are we parking that name and using Drive/vault until we build it?</li>
+<li>Definition of Done — can admins edit the <em>template</em> per cycle, or is it a global template edited rarely?</li>
+<li>Should DoD reasons for skipped items require admin sign-off, or owner's word is enough?</li>
+</ul>
+</div>
+</details>
+
+<div class="topbar">
+  <div class="topbar-logo">Blick<span>.</span>Hub</div>
+  <div class="topbar-sep"></div>
+  <div class="topbar-crumbs">
+    <a>Compass</a> <span style="color:var(--text-muted)">›</span>
+    <a>Cycle 2</a> <span style="color:var(--text-muted)">›</span>
+    <span class="current">Eco-friendly drilling fluid line</span>
+  </div>
+  <div class="topbar-spacer"></div>
+  <button class="topbar-btn">⋯</button>
+</div>
+
+<div class="project-header">
+  <div class="stage-label">Stage · Planning</div>
+  <div class="project-header-top">
+    <div style="flex:1">
+      <h1 class="project-title">Eco-friendly drilling fluid line for AU geothermal market</h1>
+      <p class="project-subtitle">Launch a low-toxicity fluid range positioned for the Todd Energy Superhot project and the broader AU geothermal segment. Allocated to Cycle 2 · 9 votes from bank.</p>
+    </div>
+    <div class="project-actions">
+      <button class="btn btn-secondary">Park</button>
+      <button class="btn btn-primary">Start execution →</button>
+    </div>
+  </div>
+  <div class="project-meta">
+    <div class="meta-item">
+      <div class="meta-label">Cycle</div>
+      <div class="meta-value"><span class="cycle-chip-c2">● C2</span> Apr – Jun 2026</div>
+    </div>
+    <div class="meta-item">
+      <div class="meta-label">Owner</div>
+      <div class="meta-value">
+        <span style="display:inline-flex;align-items:center;gap:8px">
+          <span style="width:22px;height:22px;border-radius:50%;background:#c48a1b;color:#fff;font-size:10px;font-weight:700;display:inline-flex;align-items:center;justify-content:center">T</span>
+          Tim Walters
+        </span>
+        <span style="font-size:10px;color:var(--text-muted);margin-left:8px;padding:2px 6px;border-radius:3px;border:1px solid var(--border-default);cursor:not-allowed" title="Admin only — contact Shaun to reassign">Reassign · admin only</span>
+      </div>
+    </div>
+    <div class="meta-item">
+      <div class="meta-label">Effort size</div>
+      <div class="meta-value">L · 6–8 weeks</div>
+    </div>
+    <div class="meta-item">
+      <div class="meta-label">Allocated</div>
+      <div class="meta-value">22 Apr 2026 · by Shaun Tubb</div>
+    </div>
+    <div class="meta-item">
+      <div class="meta-label">Submitted by</div>
+      <div class="meta-value">Tim Walters</div>
+    </div>
+  </div>
+</div>
+
+<div class="tabs-wrap">
+  <div class="tabs">
+    <div class="tab active">Overview</div>
+    <div class="tab">Follow-ups <span class="count">0</span></div>
+    <div class="tab">Docs <span class="count">0</span></div>
+    <div class="tab">Activity <span class="count">3</span></div>
+  </div>
+</div>
+
+<div class="layout">
+  <div class="main-col">
+
+    <!-- Collapsed setup nudge — dismissible, single row -->
+    <div class="banner" style="display:flex;align-items:center;gap:14px;justify-content:space-between">
+      <div style="display:flex;align-items:flex-start;gap:12px;flex:1">
+        <div class="banner-icon">◐</div>
+        <div>
+          <strong>Planning — 2 items outstanding before execution.</strong>
+          <span style="color:var(--text-secondary)"> Add at least one follow-up and set a target end date. Definition of Done is already applied.</span>
+        </div>
+      </div>
+      <div style="display:flex;gap:8px;flex-shrink:0">
+        <button class="btn btn-secondary" style="font-size:11px;padding:5px 10px">+ Follow-up</button>
+        <button class="btn btn-secondary" style="font-size:11px;padding:5px 10px">Set dates</button>
+        <button class="btn btn-secondary" style="font-size:11px;padding:5px 10px;border-color:transparent;color:var(--text-muted)" title="Dismiss">✕</button>
+      </div>
+    </div>
+
+    <div class="section-head">
+      <div class="section-title">Brief — carried from idea</div>
+      <div class="section-link">Edit brief</div>
+    </div>
+    <div class="brief-block">
+      <p><strong>Problem.</strong> AU geothermal operators (Todd Energy, Origin) increasingly specify low-toxicity mud systems. Our current Blick fluid range is strong on cost/performance but has gaps on environmental classification and biodegradability data.</p>
+      <p><strong>Proposal.</strong> Package an eco-branded variant of our existing high-temp fluid line with refreshed SDS, a biodegradability test from the AU lab partner, and a PDS+COA pack aligned to operator tender templates. Target the Todd Superhot tender (Q3) as the launch account.</p>
+      <p><strong>Why now.</strong> Tender window closes Sep 2026. Tim has spoken with Todd's procurement lead. Blick's 2026 AU plan flags geothermal as a priority segment.</p>
+      <span class="edit-link">✎ Expand / edit</span>
+    </div>
+
+    <!-- Definition of Done -->
+    <div class="section-head">
+      <div class="section-title">Definition of Done</div>
+      <div class="section-link">Standard template · admin-editable</div>
+    </div>
+    <div class="brief-block" style="padding:0">
+      <div style="padding:14px 18px;border-bottom:1px solid var(--border-default);font-size:12px;color:var(--text-secondary);background:var(--bg-surface-secondary)">
+        Every item ticked on close — or a reason recorded for each one skipped. Reasons appear on the project's Done view for the retro.
+      </div>
+      <div style="padding:6px 0">
+        <!-- Template item 1 -->
+        <div style="display:flex;gap:12px;padding:12px 18px;border-bottom:1px solid var(--border-default)">
+          <div class="check-circle" style="margin-top:2px"></div>
+          <div style="flex:1">
+            <div style="font-weight:500;color:var(--text-heading);font-size:13px">Documentation + files filed</div>
+            <div style="font-size:11px;color:var(--text-muted);margin-top:2px">All project docs in Drive · linked to this project's Docs tab</div>
+          </div>
+          <span style="font-size:10px;color:var(--primary);background:var(--bg-surface-secondary);padding:3px 8px;border-radius:3px;align-self:flex-start;border:1px solid var(--border-default)">TEMPLATE</span>
+        </div>
+        <!-- Template item 2 -->
+        <div style="display:flex;gap:12px;padding:12px 18px;border-bottom:1px solid var(--border-default)">
+          <div class="check-circle" style="margin-top:2px"></div>
+          <div style="flex:1">
+            <div style="font-weight:500;color:var(--text-heading);font-size:13px">Process documented on Blickopedia</div>
+            <div style="font-size:11px;color:var(--text-muted);margin-top:2px">Anyone taking this over later knows how it works</div>
+          </div>
+          <span style="font-size:10px;color:var(--primary);background:var(--bg-surface-secondary);padding:3px 8px;border-radius:3px;align-self:flex-start;border:1px solid var(--border-default)">TEMPLATE</span>
+        </div>
+        <!-- Template item 3 -->
+        <div style="display:flex;gap:12px;padding:12px 18px;border-bottom:1px solid var(--border-default)">
+          <div class="check-circle" style="margin-top:2px"></div>
+          <div style="flex:1">
+            <div style="font-weight:500;color:var(--text-heading);font-size:13px">Team communication sent</div>
+            <div style="font-size:11px;color:var(--text-muted);margin-top:2px">What shipped, what changed. Slack, email, or all-hands — owner's call</div>
+          </div>
+          <span style="font-size:10px;color:var(--primary);background:var(--bg-surface-secondary);padding:3px 8px;border-radius:3px;align-self:flex-start;border:1px solid var(--border-default)">TEMPLATE</span>
+        </div>
+        <!-- Template item 4 -->
+        <div style="display:flex;gap:12px;padding:12px 18px;border-bottom:1px solid var(--border-default)">
+          <div class="check-circle" style="margin-top:2px"></div>
+          <div style="flex:1">
+            <div style="font-weight:500;color:var(--text-heading);font-size:13px">Training delivered where required</div>
+            <div style="font-size:11px;color:var(--text-muted);margin-top:2px">Or marked N/A with a reason (e.g. "no workflow change for field team")</div>
+          </div>
+          <span style="font-size:10px;color:var(--primary);background:var(--bg-surface-secondary);padding:3px 8px;border-radius:3px;align-self:flex-start;border:1px solid var(--border-default)">TEMPLATE</span>
+        </div>
+        <!-- Add custom -->
+        <div style="padding:12px 18px;font-size:12px;color:var(--text-muted);cursor:pointer">
+          <span style="color:var(--primary);font-weight:500">+ Add project-specific criterion</span>
+          <span style="margin-left:8px;color:var(--text-muted)">e.g. "Todd Energy tender submitted", "SDS approved by AU lab"</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- Activity — now the main surface -->
+    <div class="section-head" style="margin-top:28px">
+      <div class="section-title">Activity</div>
+      <div class="section-link">All activity →</div>
+    </div>
+    <div class="brief-block" style="padding:0">
+      <div style="padding:14px 18px;display:flex;gap:12px;border-bottom:1px solid var(--border-default)">
+        <div style="width:28px;height:28px;border-radius:50%;background:var(--primary);color:#fff;font-size:11px;font-weight:700;display:inline-flex;align-items:center;justify-content:center;flex-shrink:0">S</div>
+        <div style="flex:1">
+          <div style="font-size:13px;color:var(--text-primary)"><strong style="color:var(--text-heading)">Shaun Tubb</strong> allocated this to <strong style="color:var(--text-heading)">Cycle 2</strong> and assigned <strong style="color:var(--text-heading)">Tim Walters</strong> as owner</div>
+          <div style="font-size:11px;color:var(--text-muted);margin-top:2px">22 Apr · 10:14am</div>
+        </div>
+      </div>
+      <div style="padding:14px 18px;display:flex;gap:12px;border-bottom:1px solid var(--border-default)">
+        <div style="width:28px;height:28px;border-radius:50%;background:#c48a1b;color:#fff;font-size:11px;font-weight:700;display:inline-flex;align-items:center;justify-content:center;flex-shrink:0">T</div>
+        <div style="flex:1">
+          <div style="font-size:13px;color:var(--text-primary)"><strong style="color:var(--text-heading)">Tim Walters</strong> added a comment</div>
+          <div style="font-size:12px;color:var(--text-secondary);margin-top:4px;padding:8px 10px;background:var(--bg-surface-secondary);border-radius:4px;border-left:2px solid var(--primary)">Spoke to Todd procurement Monday. Tender closes Sep 5, so we need SDS + biodegradability report locked by mid-August. I'll line up the AU lab booking this week.</div>
+          <div style="font-size:11px;color:var(--text-muted);margin-top:6px">22 Apr · 2:47pm</div>
+        </div>
+      </div>
+      <div style="padding:14px 18px;display:flex;gap:12px">
+        <div style="width:28px;height:28px;border-radius:50%;background:var(--info);color:#fff;font-size:11px;font-weight:700;display:inline-flex;align-items:center;justify-content:center;flex-shrink:0">◈</div>
+        <div style="flex:1">
+          <div style="font-size:13px;color:var(--text-primary)"><strong style="color:var(--text-heading)">System</strong> applied <strong style="color:var(--text-heading)">Definition of Done</strong> template · 4 items</div>
+          <div style="font-size:11px;color:var(--text-muted);margin-top:2px">22 Apr · 10:14am</div>
+        </div>
+      </div>
+      <div style="padding:12px 18px;text-align:center;border-top:1px solid var(--border-default);background:var(--bg-surface-secondary)">
+        <span style="font-size:12px;color:var(--primary);cursor:pointer">+ Add comment or update</span>
+      </div>
+    </div>
+
+    <!-- Documents — primary surface alongside activity -->
+    <div class="section-head" style="margin-top:28px">
+      <div class="section-title">Documents · 0</div>
+      <div class="section-link">+ Link a doc</div>
+    </div>
+    <div class="brief-block" style="text-align:center;padding:28px 18px;border-style:dashed">
+      <div style="font-size:13px;color:var(--text-secondary);margin-bottom:8px">No documents linked yet.</div>
+      <div style="font-size:12px;color:var(--text-muted);margin-bottom:14px">PDS, SDS, COA, tender packs, vendor quotes — drop a Drive link or paste a URL.</div>
+      <div style="display:inline-flex;gap:8px">
+        <button class="btn btn-secondary" style="font-size:12px">+ Link Drive doc</button>
+        <button class="btn btn-secondary" style="font-size:12px">+ Paste URL</button>
+      </div>
+    </div>
+
+  </div>
+
+  <div class="side-col">
+    <div class="rail-card">
+      <div class="rail-label">Status</div>
+      <div class="rail-value" style="color: var(--primary)">● Planning</div>
+      <div class="progress-placeholder"><div class="fill" style="width: 25%"></div></div>
+      <div class="progress-label">0 follow-ups · 0/4 DoD ticked</div>
+    </div>
+
+    <div class="rail-card">
+      <div class="rail-label">Key facts</div>
+      <div class="rail-row">
+        <span class="k">Owner</span>
+        <span class="v" style="display:inline-flex;align-items:center;gap:6px">
+          <span style="width:18px;height:18px;border-radius:50%;background:#c48a1b;color:#fff;font-size:9px;font-weight:700;display:inline-flex;align-items:center;justify-content:center">T</span>
+          Tim Walters
+        </span>
+      </div>
+      <div class="rail-row"><span class="k">Cycle</span><span class="v"><span class="cycle-chip-c2">● C2</span></span></div>
+      <div class="rail-row"><span class="k">Effort</span><span class="v">L · 6–8w</span></div>
+      <div class="rail-row"><span class="k">Target start</span><span class="v missing">Not set</span></div>
+      <div class="rail-row"><span class="k">Target end</span><span class="v missing">Not set</span></div>
+      <div class="rail-row"><span class="k">Votes from bank</span><span class="v">9</span></div>
+    </div>
+
+    <div class="rail-card">
+      <div class="rail-label">Definition of Done</div>
+      <div style="font-size:12px;color:var(--text-secondary);line-height:1.6">
+        <div style="display:flex;justify-content:space-between"><span>Docs + files</span><span style="color:var(--text-muted)">—</span></div>
+        <div style="display:flex;justify-content:space-between"><span>Blickopedia</span><span style="color:var(--text-muted)">—</span></div>
+        <div style="display:flex;justify-content:space-between"><span>Team comms</span><span style="color:var(--text-muted)">—</span></div>
+        <div style="display:flex;justify-content:space-between"><span>Training</span><span style="color:var(--text-muted)">—</span></div>
+      </div>
+      <div style="font-size:11px;color:var(--text-muted);margin-top:10px;padding-top:10px;border-top:1px solid var(--border-default)">0 / 4 ticked. Owner can skip items with a reason at close.</div>
+    </div>
+
+    <div class="rail-card">
+      <div class="rail-label">Quick actions</div>
+      <button class="rail-action"><span class="plus">+</span> Add follow-up</button>
+      <button class="rail-action"><span class="plus">+</span> Link a doc</button>
+      <button class="rail-action"><span class="plus">+</span> Log comment</button>
+    </div>
+  </div>
+</div>
+
+</body>
+</html>
