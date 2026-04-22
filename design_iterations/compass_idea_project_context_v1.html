@@ -1,0 +1,412 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="dark">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Compass Idea — Stage 1: Submitted / Voting (context)</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+:root, [data-theme="dark"] {
+  --primary: #f05323;
+  --primary-hover: #ff6a3d;
+  --bg-page: #1a1a1a;
+  --bg-surface: #2a2a2a;
+  --bg-surface-secondary: #262626;
+  --bg-hover: #3a3a3a;
+  --text-heading: #ffffff;
+  --text-primary: #bcbec0;
+  --text-secondary: #a0a0a0;
+  --text-muted: #707070;
+  --border-default: #58595b;
+  --border-hover: #707070;
+  --card-bg: rgba(255,255,255,0.03);
+  --card-border: #58595b;
+  --card-hover-border: #f05323;
+  --success: #10b981;
+  --success-bg: rgba(16,185,129,0.12);
+  --success-border: rgba(16,185,129,0.30);
+  --warning: #f59e0b;
+  --warning-bg: rgba(245,158,11,0.12);
+  --warning-border: rgba(245,158,11,0.30);
+  --danger: #ef4444;
+  --danger-bg: rgba(239,68,68,0.12);
+  --info: #4A9EFF;
+  --info-bg: rgba(74,158,255,0.12);
+  --info-border: rgba(74,158,255,0.28);
+  --cycle-c1: #f05323;
+  --cycle-c2: #4A9EFF;
+  --cycle-c3: #ef4444;
+}
+* { box-sizing: border-box; margin: 0; padding: 0; }
+body {
+  font-family: 'Inter', sans-serif;
+  background: var(--bg-page);
+  color: var(--text-primary);
+  min-height: 100vh;
+  font-size: 13px;
+  line-height: 1.5;
+}
+
+/* Design notes bar */
+.design-notes {
+  background: var(--bg-surface);
+  border-bottom: 1px solid var(--border-default);
+  padding: 12px 24px;
+  font-size: 12px;
+  color: var(--text-secondary);
+}
+.design-notes summary {
+  cursor: pointer;
+  color: var(--primary);
+  font-weight: 600;
+  font-size: 12px;
+  list-style: none;
+}
+.design-notes summary::marker { display: none; }
+.design-notes summary::-webkit-details-marker { display: none; }
+.design-notes summary::before { content: "▸ "; display: inline-block; transition: transform 0.15s; }
+.design-notes[open] summary::before { transform: rotate(90deg); }
+.design-notes-body { margin-top: 12px; color: var(--text-primary); line-height: 1.6; max-width: 920px; }
+.design-notes-body h4 { font-size: 11px; text-transform: uppercase; letter-spacing: 0.08em; color: var(--text-muted); margin: 14px 0 6px; }
+.design-notes-body h4:first-child { margin-top: 0; }
+.design-notes-body ul { padding-left: 20px; }
+.design-notes-body li { margin: 3px 0; }
+
+/* Topbar */
+.topbar {
+  position: sticky; top: 0; z-index: 100;
+  background: var(--bg-surface);
+  border-bottom: 1px solid var(--border-default);
+  display: flex; align-items: center;
+  padding: 0 24px; height: 48px; gap: 12px;
+}
+.topbar-logo { font-size: 15px; font-weight: 700; color: var(--text-heading); letter-spacing: -0.3px; }
+.topbar-logo span { color: var(--primary); }
+.topbar-sep { width: 1px; height: 20px; background: var(--border-default); }
+.topbar-title { font-size: 13px; color: var(--text-secondary); }
+.topbar-spacer { flex: 1; }
+.topbar-action {
+  padding: 5px 12px;
+  font-size: 12px;
+  font-weight: 500;
+  border-radius: 5px;
+  border: 1px solid var(--primary);
+  background: var(--primary);
+  color: #fff;
+  cursor: pointer;
+}
+
+/* Main */
+.main { max-width: 1400px; margin: 0 auto; padding: 32px 24px 64px; }
+
+.page-title {
+  font-size: 20px;
+  font-weight: 700;
+  color: var(--text-heading);
+  margin-bottom: 4px;
+}
+.page-sub {
+  font-size: 13px;
+  color: var(--text-secondary);
+  margin-bottom: 28px;
+}
+
+/* Section label (orange header pattern) */
+.section-label {
+  display: inline-flex;
+  align-items: center;
+  padding: 4px 10px;
+  border-radius: 3px;
+  font-size: 10px;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  background: var(--primary);
+  color: #fff;
+  margin-bottom: 14px;
+}
+
+/* Table-ish idea rows */
+.idea-table {
+  background: var(--bg-surface);
+  border: 1px solid var(--border-default);
+  border-radius: 10px;
+  overflow: hidden;
+}
+.idea-row {
+  display: grid;
+  grid-template-columns: 1fr 120px 120px 160px 100px;
+  align-items: center;
+  gap: 16px;
+  padding: 14px 18px;
+  border-bottom: 1px solid var(--border-default);
+  cursor: pointer;
+  transition: background 0.15s;
+}
+.idea-row:hover { background: var(--bg-hover); }
+.idea-row:last-child { border-bottom: none; }
+.idea-row.header {
+  background: var(--bg-surface-secondary);
+  cursor: default;
+  padding: 10px 18px;
+  font-size: 10px;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  color: var(--text-muted);
+  font-weight: 600;
+}
+.idea-row.header:hover { background: var(--bg-surface-secondary); }
+.idea-title {
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--text-heading);
+  line-height: 1.35;
+  margin-bottom: 3px;
+}
+.idea-submitter {
+  font-size: 11px;
+  color: var(--text-muted);
+}
+.idea-submitter strong { color: var(--text-secondary); font-weight: 500; }
+
+.status-chip {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  padding: 3px 8px;
+  border-radius: 4px;
+  font-size: 10px;
+  font-weight: 600;
+  border: 1px solid;
+}
+.chip-submitted {
+  background: var(--info-bg);
+  border-color: var(--info-border);
+  color: var(--info);
+}
+.chip-voting {
+  background: rgba(139,92,246,0.12);
+  border-color: rgba(139,92,246,0.28);
+  color: #a78bfa;
+}
+.chip-approved {
+  background: var(--success-bg);
+  border-color: var(--success-border);
+  color: var(--success);
+}
+
+.vote-bar {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+.vote-count {
+  font-size: 13px;
+  font-weight: 700;
+  color: var(--text-heading);
+  min-width: 22px;
+}
+.vote-pips {
+  display: flex;
+  gap: 2px;
+}
+.pip {
+  width: 14px;
+  height: 4px;
+  background: var(--border-default);
+  border-radius: 2px;
+}
+.pip.on { background: var(--primary); }
+
+.effort-cell {
+  font-size: 11px;
+  color: var(--text-secondary);
+}
+.effort-cell strong { color: var(--text-heading); font-weight: 600; }
+
+.row-meta { font-size: 11px; color: var(--text-muted); }
+.row-meta .date { color: var(--text-secondary); }
+
+.cta-col { text-align: right; }
+.row-cta {
+  padding: 5px 12px;
+  font-size: 11px;
+  font-weight: 600;
+  border-radius: 4px;
+  border: 1px solid var(--border-default);
+  background: transparent;
+  color: var(--text-secondary);
+  cursor: pointer;
+}
+.row-cta:hover {
+  border-color: var(--primary);
+  color: var(--primary);
+}
+.row-cta.primary {
+  background: var(--primary);
+  border-color: var(--primary);
+  color: #fff;
+}
+
+.context-callout {
+  margin-top: 22px;
+  padding: 14px 16px;
+  background: rgba(74,158,255,0.06);
+  border: 1px dashed var(--info-border);
+  border-radius: 8px;
+  font-size: 12px;
+  color: var(--text-secondary);
+  line-height: 1.6;
+}
+.context-callout strong { color: var(--info); }
+</style>
+</head>
+<body>
+
+<details class="design-notes" open>
+<summary>Design notes — Stage 1: Submitted / Voting (context only)</summary>
+<div class="design-notes-body">
+<h4>What this shows</h4>
+<p>This is today's pattern — ideas listed in a table, one row per idea. Shown for <em>reference only</em> so later stages can be understood in sequence. No redesign proposed here; the row → modal-become-page transition happens at stage 2 (planning). Clicking an approved row takes the user to the full-page project workspace in stage 2–4.</p>
+
+<h4>Layout choices</h4>
+<ul>
+<li>Table pattern preserved — Compass already uses rows-in-card for submitted items and it scales to ~50 ideas per cycle.</li>
+<li>Status chip drives next action — Submitted = vote, Voting = vote more/approve, Approved = "Open project" CTA launches stage 2.</li>
+<li>Vote count + pips mirror Compass execution card effort chip styling, reusing the 10px uppercase visual language.</li>
+</ul>
+
+<h4>Tradeoffs considered</h4>
+<ul>
+<li><strong>Card grid vs table</strong> — rejected. Table compares vote counts and efforts at a glance; cards force scanning.</li>
+<li><strong>Inline expansion</strong> — rejected. Opening a project is a mode shift, not a peek; full-page is correct at approval time.</li>
+</ul>
+
+<h4>Responsive behaviour</h4>
+<p>Under 900px the vote column collapses into the title cell (secondary line), effort/submitted cells stack under title, CTA column stays rightmost. Field users on phone rarely submit — this is a desktop-weighted surface.</p>
+
+<h4>Open questions for Shaun</h4>
+<ul>
+<li>Should a "Voting closed — awaiting approval" intermediate state be visible, or does voting → approved happen atomically in cycle planning?</li>
+<li>Who can click "Open project" for an approved idea — only the assigned owner, or anyone in the cycle?</li>
+</ul>
+</div>
+</details>
+
+<div class="topbar">
+  <div class="topbar-logo">Blick<span>.</span>Hub</div>
+  <div class="topbar-sep"></div>
+  <div class="topbar-title">Compass · Ideas</div>
+  <div class="topbar-spacer"></div>
+  <button class="topbar-action">+ Submit Idea</button>
+</div>
+
+<div class="main">
+  <div class="section-label">Ideas · Cycle 2 (Current)</div>
+  <h1 class="page-title">Idea Pipeline</h1>
+  <p class="page-sub">Submit, vote, approve. Approved ideas become next cycle's projects.</p>
+
+  <div class="idea-table">
+    <div class="idea-row header">
+      <div>Idea</div>
+      <div>Status</div>
+      <div>Votes</div>
+      <div>Effort · Size</div>
+      <div></div>
+    </div>
+
+    <div class="idea-row">
+      <div>
+        <div class="idea-title">Eco-friendly drilling fluid line for AU geothermal market</div>
+        <div class="idea-submitter">submitted by <strong>Tim Walters</strong> · 3 days ago · #products #AU</div>
+      </div>
+      <div><span class="status-chip chip-approved">● Approved</span></div>
+      <div class="vote-bar">
+        <span class="vote-count">9</span>
+        <div class="vote-pips">
+          <div class="pip on"></div><div class="pip on"></div><div class="pip on"></div>
+          <div class="pip on"></div><div class="pip on"></div><div class="pip"></div>
+        </div>
+      </div>
+      <div class="effort-cell"><strong>L</strong> · 6–8 weeks</div>
+      <div class="cta-col"><button class="row-cta primary">Open project →</button></div>
+    </div>
+
+    <div class="idea-row">
+      <div>
+        <div class="idea-title">Replace the paper incident reporting form with a mobile flow</div>
+        <div class="idea-submitter">submitted by <strong>Nisha Prasad</strong> · 6 days ago · #H&S #rigs</div>
+      </div>
+      <div><span class="status-chip chip-voting">● Voting</span></div>
+      <div class="vote-bar">
+        <span class="vote-count">7</span>
+        <div class="vote-pips">
+          <div class="pip on"></div><div class="pip on"></div><div class="pip on"></div>
+          <div class="pip on"></div><div class="pip"></div><div class="pip"></div>
+        </div>
+      </div>
+      <div class="effort-cell"><strong>M</strong> · 3–4 weeks</div>
+      <div class="cta-col"><button class="row-cta">Vote +1</button></div>
+    </div>
+
+    <div class="idea-row">
+      <div>
+        <div class="idea-title">Standardise rig pre-start checklists across NZ + AU fleets</div>
+        <div class="idea-submitter">submitted by <strong>Shaun Tubb</strong> · 1 week ago · #H&S #ops</div>
+      </div>
+      <div><span class="status-chip chip-voting">● Voting</span></div>
+      <div class="vote-bar">
+        <span class="vote-count">5</span>
+        <div class="vote-pips">
+          <div class="pip on"></div><div class="pip on"></div><div class="pip on"></div>
+          <div class="pip"></div><div class="pip"></div><div class="pip"></div>
+        </div>
+      </div>
+      <div class="effort-cell"><strong>S</strong> · 1–2 weeks</div>
+      <div class="cta-col"><button class="row-cta">Vote +1</button></div>
+    </div>
+
+    <div class="idea-row">
+      <div>
+        <div class="idea-title">Brent Doull — quarterly product review cadence + conflict register SLA</div>
+        <div class="idea-submitter">submitted by <strong>Shaun Tubb</strong> · 2 days ago · #products #quality</div>
+      </div>
+      <div><span class="status-chip chip-submitted">● Submitted</span></div>
+      <div class="vote-bar">
+        <span class="vote-count">2</span>
+        <div class="vote-pips">
+          <div class="pip on"></div><div class="pip on"></div><div class="pip"></div>
+          <div class="pip"></div><div class="pip"></div><div class="pip"></div>
+        </div>
+      </div>
+      <div class="effort-cell"><strong>S</strong> · 1 week</div>
+      <div class="cta-col"><button class="row-cta">Vote +1</button></div>
+    </div>
+
+    <div class="idea-row">
+      <div>
+        <div class="idea-title">Nexus brief → Compass action one-click promote</div>
+        <div class="idea-submitter">submitted by <strong>Claude / Nexus</strong> · 1 day ago · #internal-tooling</div>
+      </div>
+      <div><span class="status-chip chip-submitted">● Submitted</span></div>
+      <div class="vote-bar">
+        <span class="vote-count">1</span>
+        <div class="vote-pips">
+          <div class="pip on"></div><div class="pip"></div><div class="pip"></div>
+          <div class="pip"></div><div class="pip"></div><div class="pip"></div>
+        </div>
+      </div>
+      <div class="effort-cell"><strong>M</strong> · 2–3 weeks</div>
+      <div class="cta-col"><button class="row-cta">Vote +1</button></div>
+    </div>
+  </div>
+
+  <div class="context-callout">
+    <strong>Context:</strong> This is today's pattern. Once an idea hits <em>Approved</em>, clicking "Open project →" launches the full-page project workspace — see stages 2 (planning), 3 (execution), and 4 (done). The modal that previously served for both viewing and editing an idea is retired: full-page project view replaces it.
+  </div>
+</div>
+
+</body>
+</html>

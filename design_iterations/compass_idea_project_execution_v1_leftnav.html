@@ -1,0 +1,417 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="dark">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Compass Project — Stage 3: Execution (LEFT NAV variant)</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+:root, [data-theme="dark"] {
+  --primary: #f05323;
+  --primary-hover: #ff6a3d;
+  --bg-page: #1a1a1a;
+  --bg-surface: #2a2a2a;
+  --bg-surface-secondary: #262626;
+  --bg-hover: #3a3a3a;
+  --text-heading: #ffffff;
+  --text-primary: #bcbec0;
+  --text-secondary: #a0a0a0;
+  --text-muted: #707070;
+  --border-default: #58595b;
+  --border-hover: #707070;
+  --card-bg: rgba(255,255,255,0.03);
+  --card-border: #58595b;
+  --success: #10b981;
+  --success-bg: rgba(16,185,129,0.12);
+  --success-border: rgba(16,185,129,0.30);
+  --warning: #f59e0b;
+  --warning-bg: rgba(245,158,11,0.12);
+  --warning-border: rgba(245,158,11,0.30);
+  --danger: #ef4444;
+  --danger-bg: rgba(239,68,68,0.12);
+  --info: #4A9EFF;
+  --info-bg: rgba(74,158,255,0.12);
+  --info-border: rgba(74,158,255,0.28);
+  --cycle-c2: #4A9EFF;
+}
+* { box-sizing: border-box; margin: 0; padding: 0; }
+body { font-family: 'Inter', sans-serif; background: var(--bg-page); color: var(--text-primary); min-height: 100vh; font-size: 13px; line-height: 1.5; }
+
+.design-notes { background: var(--bg-surface); border-bottom: 1px solid var(--border-default); padding: 12px 24px; font-size: 12px; color: var(--text-secondary); }
+.design-notes summary { cursor: pointer; color: var(--primary); font-weight: 600; font-size: 12px; list-style: none; }
+.design-notes summary::marker { display: none; }
+.design-notes summary::-webkit-details-marker { display: none; }
+.design-notes summary::before { content: "▸ "; display: inline-block; transition: transform 0.15s; }
+.design-notes[open] summary::before { transform: rotate(90deg); }
+.design-notes-body { margin-top: 12px; color: var(--text-primary); line-height: 1.6; max-width: 920px; }
+.design-notes-body h4 { font-size: 11px; text-transform: uppercase; letter-spacing: 0.08em; color: var(--text-muted); margin: 14px 0 6px; }
+.design-notes-body h4:first-child { margin-top: 0; }
+.design-notes-body ul { padding-left: 20px; }
+.design-notes-body li { margin: 3px 0; }
+
+.topbar { position: sticky; top: 0; z-index: 100; background: var(--bg-surface); border-bottom: 1px solid var(--border-default); display: flex; align-items: center; padding: 0 24px; height: 48px; gap: 12px; }
+.topbar-logo { font-size: 15px; font-weight: 700; color: var(--text-heading); letter-spacing: -0.3px; }
+.topbar-logo span { color: var(--primary); }
+.topbar-sep { width: 1px; height: 20px; background: var(--border-default); }
+.topbar-crumbs { font-size: 12px; color: var(--text-secondary); display: flex; align-items: center; gap: 8px; }
+.topbar-crumbs .current { color: var(--text-heading); font-weight: 500; }
+.topbar-spacer { flex: 1; }
+.topbar-btn { padding: 5px 12px; font-size: 12px; border-radius: 5px; border: 1px solid var(--border-default); background: transparent; color: var(--text-secondary); cursor: pointer; }
+
+/* Project header */
+.project-header { background: var(--bg-surface); border-bottom: 1px solid var(--border-default); padding: 24px 32px 18px; }
+.stage-label { display: inline-flex; align-items: center; padding: 4px 10px; border-radius: 3px; font-size: 10px; font-weight: 700; letter-spacing: 0.08em; text-transform: uppercase; background: var(--primary); color: #fff; margin-bottom: 6px; }
+.project-header-top { display: flex; align-items: flex-start; gap: 16px; }
+.project-title { font-size: 22px; font-weight: 700; color: var(--text-heading); line-height: 1.25; letter-spacing: -0.3px; }
+.project-subtitle { margin-top: 6px; font-size: 13px; color: var(--text-secondary); max-width: 720px; }
+.btn { padding: 7px 14px; font-size: 12px; font-weight: 600; border-radius: 5px; cursor: pointer; border: 1px solid; transition: all 0.15s; }
+.btn-primary { background: var(--primary); color: #fff; border-color: var(--primary); }
+.btn-primary:hover { background: var(--primary-hover); }
+.btn-secondary { background: transparent; color: var(--text-secondary); border-color: var(--border-default); }
+.btn-secondary:hover { border-color: var(--primary); color: var(--primary); }
+
+.project-meta { display: flex; gap: 28px; flex-wrap: wrap; margin-top: 14px; padding-top: 14px; border-top: 1px solid var(--border-default); }
+.meta-item { display: flex; flex-direction: column; gap: 3px; }
+.meta-label { font-size: 10px; text-transform: uppercase; letter-spacing: 0.06em; color: var(--text-muted); font-weight: 600; }
+.meta-value { font-size: 13px; color: var(--text-primary); font-weight: 500; }
+.cycle-chip-c2 { display: inline-flex; align-items: center; gap: 5px; padding: 2px 8px; border-radius: 3px; font-size: 11px; font-weight: 600; background: rgba(74,158,255,0.15); border: 1px solid rgba(74,158,255,0.30); color: var(--cycle-c2); }
+.avatar { width: 22px; height: 22px; border-radius: 50%; background: var(--primary); color: #fff; font-size: 10px; font-weight: 700; display: inline-flex; align-items: center; justify-content: center; vertical-align: middle; margin-right: 6px; }
+.avatar.blue { background: var(--info); }
+.avatar.green { background: var(--success); }
+.avatar.purple { background: #8b5cf6; }
+.avatar.warning { background: var(--warning); }
+
+/* THREE COLUMN: left-nav / main / rail */
+.layout { display: grid; grid-template-columns: 220px 1fr 320px; gap: 0; max-width: 1400px; margin: 0 auto; min-height: calc(100vh - 200px); }
+
+/* Left nav */
+.left-nav {
+  padding: 24px 14px 64px;
+  border-right: 1px solid var(--border-default);
+  background: var(--bg-surface-secondary);
+}
+.nav-label { font-size: 10px; text-transform: uppercase; letter-spacing: 0.08em; color: var(--text-muted); font-weight: 700; padding: 0 10px; margin-bottom: 10px; }
+.nav-item {
+  display: flex; align-items: center; justify-content: space-between;
+  padding: 9px 12px;
+  font-size: 12.5px;
+  font-weight: 500;
+  color: var(--text-secondary);
+  border-radius: 6px;
+  cursor: pointer;
+  margin-bottom: 2px;
+  transition: all 0.15s;
+}
+.nav-item:hover { background: var(--bg-hover); color: var(--text-heading); }
+.nav-item.active { background: rgba(240,83,35,0.12); color: var(--primary); font-weight: 600; }
+.nav-item.active .nav-count { background: rgba(240,83,35,0.22); color: var(--primary); }
+.nav-item-left { display: flex; align-items: center; gap: 10px; }
+.nav-icon { width: 14px; text-align: center; font-size: 12px; color: var(--text-muted); }
+.nav-item.active .nav-icon { color: var(--primary); }
+.nav-count { font-size: 10px; padding: 1px 6px; border-radius: 8px; background: var(--bg-hover); color: var(--text-muted); font-weight: 600; }
+.nav-divider { height: 1px; background: var(--border-default); margin: 14px 0; }
+
+/* Main + rail (reuse all styles from tabs variant) */
+.main-col { padding: 24px 32px 64px; }
+.side-col { padding: 24px 24px 64px; border-left: 1px solid var(--border-default); background: var(--bg-surface-secondary); }
+
+.section-head { display: flex; align-items: center; justify-content: space-between; margin: 22px 0 14px; }
+.section-head:first-child { margin-top: 0; }
+.section-title { font-size: 11px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.08em; color: var(--text-muted); }
+.section-link { font-size: 11px; color: var(--primary); cursor: pointer; font-weight: 600; }
+
+/* Tasks */
+.tasks-wrap { display: flex; flex-direction: column; gap: 10px; }
+.task-card { background: var(--card-bg); border: 1px solid var(--card-border); border-radius: 8px; overflow: hidden; transition: border-color 0.15s; }
+.task-card:hover { border-color: var(--border-hover); }
+.task-card.open { border-color: var(--primary); }
+.task-row { display: grid; grid-template-columns: 18px 18px 1fr 120px 100px 28px; align-items: center; gap: 12px; padding: 11px 14px; cursor: pointer; }
+.chevron { font-size: 11px; color: var(--text-muted); transition: transform 0.15s; }
+.task-card.open .chevron { transform: rotate(90deg); color: var(--primary); }
+.check-box { width: 16px; height: 16px; border-radius: 4px; border: 1.5px solid var(--border-hover); flex-shrink: 0; position: relative; cursor: pointer; }
+.check-box.done { background: var(--success); border-color: var(--success); }
+.check-box.done::after { content: "✓"; position: absolute; inset: 0; color: #fff; font-size: 11px; font-weight: 700; display: flex; align-items: center; justify-content: center; }
+.check-box.in-progress { border-color: var(--warning); }
+.check-box.in-progress::after { content: ""; position: absolute; inset: 3px; background: var(--warning); border-radius: 1px; }
+.check-box.blocked { border-color: var(--danger); }
+.check-box.blocked::after { content: "!"; position: absolute; inset: 0; color: var(--danger); font-size: 12px; font-weight: 800; display: flex; align-items: center; justify-content: center; }
+.task-title { font-size: 13px; font-weight: 600; color: var(--text-heading); display: flex; align-items: center; gap: 8px; }
+.task-title.done { color: var(--text-muted); text-decoration: line-through; font-weight: 500; }
+.subtask-pill { font-size: 10px; font-weight: 600; padding: 1px 6px; border-radius: 8px; background: var(--bg-hover); color: var(--text-secondary); }
+.subtask-pill.all-done { background: var(--success-bg); color: var(--success); border: 1px solid var(--success-border); }
+.task-assignee { display: flex; align-items: center; gap: 5px; font-size: 11.5px; color: var(--text-secondary); }
+.task-due { font-size: 11px; color: var(--text-secondary); }
+.task-due.overdue { color: var(--danger); font-weight: 600; }
+.task-due.due-soon { color: var(--warning); font-weight: 600; }
+.task-menu { color: var(--text-muted); font-size: 14px; }
+.subtasks { border-top: 1px solid var(--border-default); background: rgba(0,0,0,0.15); padding: 6px 14px 10px 46px; }
+.subtask-row { display: grid; grid-template-columns: 16px 1fr 110px 90px; align-items: center; gap: 10px; padding: 7px 4px; font-size: 12px; border-bottom: 1px solid rgba(255,255,255,0.03); }
+.subtask-row:last-child { border-bottom: none; }
+.subtask-title { color: var(--text-primary); }
+.subtask-title.done { color: var(--text-muted); text-decoration: line-through; }
+.subtask-assignee { color: var(--text-muted); font-size: 11px; }
+.subtask-due { color: var(--text-muted); font-size: 11px; }
+.add-subtask { display: flex; align-items: center; gap: 8px; font-size: 12px; color: var(--text-muted); padding: 7px 4px; cursor: pointer; }
+.add-subtask:hover { color: var(--primary); }
+.add-subtask .plus { color: var(--primary); }
+.task-add-row { display: flex; align-items: center; gap: 10px; padding: 10px 14px; background: var(--bg-surface-secondary); border: 1px dashed var(--border-default); border-radius: 8px; font-size: 12px; color: var(--text-muted); cursor: pointer; margin-top: 6px; }
+.task-add-row:hover { border-color: var(--primary); color: var(--primary); }
+.task-add-row .plus { color: var(--primary); font-weight: 700; }
+
+/* Rail */
+.rail-card { background: var(--bg-surface); border: 1px solid var(--border-default); border-radius: 8px; padding: 14px 16px; margin-bottom: 14px; }
+.rail-label { font-size: 10px; text-transform: uppercase; letter-spacing: 0.06em; color: var(--text-muted); font-weight: 600; margin-bottom: 8px; }
+.rail-row { display: flex; justify-content: space-between; align-items: center; padding: 7px 0; border-top: 1px solid var(--border-default); font-size: 12px; }
+.rail-row:first-of-type { border-top: none; }
+.rail-row .k { color: var(--text-muted); }
+.rail-row .v { color: var(--text-primary); font-weight: 500; }
+.rail-action { display: block; width: 100%; text-align: left; padding: 7px 10px; border-radius: 5px; font-size: 12px; color: var(--text-secondary); background: transparent; border: 1px solid var(--border-default); cursor: pointer; margin-bottom: 5px; }
+.rail-action:hover { border-color: var(--primary); color: var(--primary); }
+.rail-action .plus { color: var(--primary); font-weight: 700; margin-right: 6px; }
+.progress-bar { height: 6px; background: var(--bg-hover); border-radius: 3px; overflow: hidden; }
+.progress-bar .fill { height: 100%; background: var(--primary); }
+.progress-label { font-size: 11px; color: var(--text-muted); margin-top: 6px; }
+
+.section-view-heading {
+  font-size: 16px;
+  font-weight: 700;
+  color: var(--text-heading);
+  margin-bottom: 4px;
+}
+.section-view-sub { font-size: 12px; color: var(--text-secondary); margin-bottom: 18px; }
+</style>
+</head>
+<body>
+
+<details class="design-notes" open>
+<summary>Design notes — Stage 3: Execution (LEFT-NAV variant, for comparison)</summary>
+<div class="design-notes-body">
+<h4>What this shows</h4>
+<p>Same project, same content, same side rail — but the tabs have been swapped for a <strong>left nav rail</strong>. Produced side-by-side with the tabs variant so Shaun can pick.</p>
+
+<h4>Why left-nav (the case for)</h4>
+<ul>
+<li>Scales to more sections without getting crowded — e.g. if we add Risks, Decisions, Budget later.</li>
+<li>Sections stay visible always, so you can see at-a-glance that there are 8 tasks and 3 open follow-ups without clicking.</li>
+<li>Mirrors app-level nav pattern (Compass lives in a left nav already), so nesting feels consistent.</li>
+</ul>
+
+<h4>Why NOT left-nav (the case against — why I lean tabs)</h4>
+<ul>
+<li>Eats ~220px of horizontal room that could be task detail. With a 320px right rail already, we're down to ~860px for the main column at 1400px max-width — task rows feel cramped on 13" laptops.</li>
+<li>Double-chrome feeling: app nav + project nav + rail = three navigation surfaces. Tabs keep it to two.</li>
+<li>Only 5 sections planned — tabs handle 5–7 beautifully, nav is overkill below 8.</li>
+<li>Existing Compass mockups all use horizontal nav + section labels; tabs inherit that language.</li>
+</ul>
+
+<h4>Shown here</h4>
+<p>This mockup displays only the Tasks view to keep the comparison focused on nav chrome. Content/patterns (task+subtask cards, checkbox state, rail) are identical to the tabs variant.</p>
+
+<h4>Responsive behaviour</h4>
+<p>Below 1080px: left nav collapses to icons-only. Below 820px: left nav goes drawer (hamburger). Below 640px: drawer + rail stacked under main content. More brittle on mobile than tabs because we lose the nav context entirely in the drawer.</p>
+
+<h4>Tradeoffs</h4>
+<p>This is a near-mirror of tabs. Deliberate — the decision is <em>chrome style</em>, not <em>information architecture</em>. The right answer may depend on whether we plan to add more sections later (→ left nav) or stay lean (→ tabs).</p>
+</div>
+</details>
+
+<div class="topbar">
+  <div class="topbar-logo">Blick<span>.</span>Hub</div>
+  <div class="topbar-sep"></div>
+  <div class="topbar-crumbs">
+    <span>Compass</span> <span style="color:var(--text-muted)">›</span>
+    <span>Cycle 2</span> <span style="color:var(--text-muted)">›</span>
+    <span class="current">Eco-friendly drilling fluid line</span>
+  </div>
+  <div class="topbar-spacer"></div>
+  <button class="topbar-btn">⋯</button>
+</div>
+
+<div class="project-header">
+  <div class="stage-label">Stage · Execution</div>
+  <div class="project-header-top">
+    <div style="flex:1">
+      <h1 class="project-title">Eco-friendly drilling fluid line for AU geothermal market</h1>
+      <p class="project-subtitle">Launch a low-toxicity fluid range positioned for Todd Energy's Superhot project and the broader AU geothermal segment.</p>
+    </div>
+    <div style="display: flex; gap: 8px">
+      <button class="btn btn-secondary">Park</button>
+      <button class="btn btn-primary">Close project</button>
+    </div>
+  </div>
+  <div class="project-meta">
+    <div class="meta-item"><div class="meta-label">Status</div><div class="meta-value" style="color: var(--warning)">● In execution · Week 3 of 7</div></div>
+    <div class="meta-item"><div class="meta-label">Cycle</div><div class="meta-value"><span class="cycle-chip-c2">● C2</span></div></div>
+    <div class="meta-item"><div class="meta-label">Owner</div><div class="meta-value"><span class="avatar blue">TW</span>Tim Walters</div></div>
+    <div class="meta-item"><div class="meta-label">Target end</div><div class="meta-value">14 Jun 2026</div></div>
+  </div>
+</div>
+
+<div class="layout">
+
+  <!-- Left nav -->
+  <div class="left-nav">
+    <div class="nav-label">Project</div>
+    <div class="nav-item">
+      <div class="nav-item-left"><span class="nav-icon">⌂</span>Overview</div>
+    </div>
+    <div class="nav-item active">
+      <div class="nav-item-left"><span class="nav-icon">✓</span>Tasks</div>
+      <span class="nav-count">8</span>
+    </div>
+    <div class="nav-item">
+      <div class="nav-item-left"><span class="nav-icon">→</span>Follow-ups</div>
+      <span class="nav-count">3</span>
+    </div>
+    <div class="nav-item">
+      <div class="nav-item-left"><span class="nav-icon">◈</span>Docs</div>
+      <span class="nav-count">6</span>
+    </div>
+    <div class="nav-item">
+      <div class="nav-item-left"><span class="nav-icon">◌</span>Discussion</div>
+      <span class="nav-count">14</span>
+    </div>
+    <div class="nav-item">
+      <div class="nav-item-left"><span class="nav-icon">↻</span>Activity</div>
+      <span class="nav-count">24</span>
+    </div>
+
+    <div class="nav-divider"></div>
+
+    <div class="nav-label">Linked</div>
+    <div class="nav-item">
+      <div class="nav-item-left"><span class="nav-icon">⧉</span>Origin idea</div>
+    </div>
+    <div class="nav-item">
+      <div class="nav-item-left"><span class="nav-icon">▦</span>Vault notes</div>
+      <span class="nav-count">4</span>
+    </div>
+  </div>
+
+  <!-- Main -->
+  <div class="main-col">
+    <h2 class="section-view-heading">Tasks</h2>
+    <p class="section-view-sub">3 of 8 done · 7 of 21 subtasks complete · 1 blocked</p>
+
+    <div class="tasks-wrap">
+      <!-- Same task structure as tabs variant -->
+      <div class="task-card">
+        <div class="task-row">
+          <div class="chevron">›</div>
+          <div class="check-box done"></div>
+          <div class="task-title done">
+            Benchmark competitor eco-fluid PDS specs (AU market)
+            <span class="subtask-pill all-done">3/3 done</span>
+          </div>
+          <div class="task-assignee"><span class="avatar blue" style="width:18px;height:18px;font-size:9px">TW</span>Tim W</div>
+          <div class="task-due">✓ 12 Apr</div>
+          <div class="task-menu">⋯</div>
+        </div>
+      </div>
+
+      <div class="task-card open">
+        <div class="task-row">
+          <div class="chevron">›</div>
+          <div class="check-box in-progress"></div>
+          <div class="task-title">
+            Draft SDS + PDS pack with eco-classification language
+            <span class="subtask-pill">2/5 done</span>
+          </div>
+          <div class="task-assignee"><span class="avatar warning" style="width:18px;height:18px;font-size:9px">BD</span>Brent D</div>
+          <div class="task-due due-soon">Due 28 Apr</div>
+          <div class="task-menu">⋯</div>
+        </div>
+        <div class="subtasks">
+          <div class="subtask-row"><div class="check-box done" style="width:14px;height:14px"></div><div class="subtask-title done">Pull existing SDS for HT-3000 and HT-3500 base fluids</div><div class="subtask-assignee">Brent D</div><div class="subtask-due">✓ 16 Apr</div></div>
+          <div class="subtask-row"><div class="check-box done" style="width:14px;height:14px"></div><div class="subtask-title done">Request biodegradability data from Aucklab partner</div><div class="subtask-assignee">Tim W</div><div class="subtask-due">✓ 18 Apr</div></div>
+          <div class="subtask-row"><div class="check-box in-progress" style="width:14px;height:14px"></div><div class="subtask-title">Rewrite SDS section 12 (eco-toxicity) with new classification</div><div class="subtask-assignee">Brent D</div><div class="subtask-due" style="color: var(--warning)">Due 24 Apr</div></div>
+          <div class="subtask-row"><div class="check-box" style="width:14px;height:14px"></div><div class="subtask-title">Update PDS datasheet template — add "Eco certified" block</div><div class="subtask-assignee">Brent D</div><div class="subtask-due">Due 26 Apr</div></div>
+          <div class="subtask-row"><div class="check-box" style="width:14px;height:14px"></div><div class="subtask-title">Shaun review + sign-off before send to Todd procurement</div><div class="subtask-assignee">Shaun T</div><div class="subtask-due">Due 28 Apr</div></div>
+          <div class="add-subtask"><span class="plus">+</span> Add subtask</div>
+        </div>
+      </div>
+
+      <div class="task-card">
+        <div class="task-row">
+          <div class="chevron">›</div>
+          <div class="check-box blocked"></div>
+          <div class="task-title" style="color: var(--danger)">
+            Book Aucklab biodegradability test slot
+            <span class="subtask-pill">0/2 done</span>
+          </div>
+          <div class="task-assignee"><span class="avatar blue" style="width:18px;height:18px;font-size:9px">TW</span>Tim W</div>
+          <div class="task-due overdue">Blocked · 19 Apr</div>
+          <div class="task-menu">⋯</div>
+        </div>
+      </div>
+
+      <div class="task-card">
+        <div class="task-row">
+          <div class="chevron">›</div>
+          <div class="check-box"></div>
+          <div class="task-title">
+            Produce Todd Energy tender response pack (draft v1)
+            <span class="subtask-pill">0/4 done</span>
+          </div>
+          <div class="task-assignee"><span class="avatar green" style="width:18px;height:18px;font-size:9px">ST</span>Shaun T</div>
+          <div class="task-due">Due 10 May</div>
+          <div class="task-menu">⋯</div>
+        </div>
+      </div>
+
+      <div class="task-card">
+        <div class="task-row">
+          <div class="chevron" style="opacity: 0.3">·</div>
+          <div class="check-box"></div>
+          <div class="task-title">Line up a Superhot-adjacent AU field trial rig</div>
+          <div class="task-assignee"><span class="avatar blue" style="width:18px;height:18px;font-size:9px">TW</span>Tim W</div>
+          <div class="task-due">Due 17 May</div>
+          <div class="task-menu">⋯</div>
+        </div>
+      </div>
+
+      <div class="task-card">
+        <div class="task-row">
+          <div class="chevron" style="opacity: 0.3">·</div>
+          <div class="check-box done"></div>
+          <div class="task-title done">Kickoff call with Todd Energy procurement (intro)</div>
+          <div class="task-assignee"><span class="avatar blue" style="width:18px;height:18px;font-size:9px">TW</span>Tim W</div>
+          <div class="task-due">✓ 08 Apr</div>
+          <div class="task-menu">⋯</div>
+        </div>
+      </div>
+
+      <div class="task-add-row"><span class="plus">+</span> Add a task</div>
+    </div>
+  </div>
+
+  <!-- Rail (same shape as tabs variant) -->
+  <div class="side-col">
+    <div class="rail-card">
+      <div class="rail-label">Progress</div>
+      <div class="progress-bar"><div class="fill" style="width: 38%"></div></div>
+      <div class="progress-label">38% · 3 of 8 tasks done</div>
+    </div>
+    <div class="rail-card">
+      <div class="rail-label">Key facts</div>
+      <div class="rail-row"><span class="k">Owner</span><span class="v">Tim Walters</span></div>
+      <div class="rail-row"><span class="k">Cycle</span><span class="v"><span class="cycle-chip-c2">● C2</span></span></div>
+      <div class="rail-row"><span class="k">Effort</span><span class="v">L · 6–8w</span></div>
+      <div class="rail-row"><span class="k">Started</span><span class="v">01 Apr</span></div>
+      <div class="rail-row"><span class="k">Target end</span><span class="v">14 Jun</span></div>
+      <div class="rail-row"><span class="k">Slip risk</span><span class="v" style="color: var(--warning)">● 1 blocked</span></div>
+    </div>
+    <div class="rail-card">
+      <div class="rail-label">Quick actions</div>
+      <button class="rail-action"><span class="plus">+</span> Add task</button>
+      <button class="rail-action"><span class="plus">+</span> Add follow-up</button>
+      <button class="rail-action"><span class="plus">+</span> Link doc</button>
+    </div>
+  </div>
+
+</div>
+
+</body>
+</html>
