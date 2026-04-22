@@ -1,0 +1,526 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Compass · Ideas Bank — History filter</title>
+<style>
+  :root {
+    --bg: #ffffff;
+    --bg-muted: #f7f7f5;
+    --surface: #ffffff;
+    --border: #e5e5e2;
+    --border-strong: #d4d4d0;
+    --text: #1a1a1a;
+    --text-muted: #6b6b68;
+    --text-subtle: #9a9a97;
+    --brand: #f05323;
+    --brand-soft: #fef1ec;
+    --cyan: #2aa7b5;
+    --c1: #f05323;
+    --c2: #2aa7b5;
+    --c3: #d64545;
+    --ok: #2f9e6d;
+    --warn: #c48a1b;
+    --radius: 10px;
+    --radius-sm: 6px;
+    --shadow: 0 1px 2px rgba(0,0,0,.04), 0 2px 8px rgba(0,0,0,.03);
+  }
+  * { box-sizing: border-box; }
+  body {
+    margin: 0;
+    font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+    background: var(--bg-muted);
+    color: var(--text);
+    font-size: 14px;
+    line-height: 1.45;
+  }
+  .page { max-width: 1280px; margin: 0 auto; padding: 32px 28px; }
+
+  /* Section tag — inherited from existing Compass mockups */
+  .section-tag {
+    display: inline-flex; align-items: center; gap: 6px;
+    font-size: 10px; font-weight: 600; text-transform: uppercase;
+    letter-spacing: 0.08em; color: #fff;
+    background: var(--brand); padding: 5px 10px;
+    border-radius: 4px; margin-bottom: 18px;
+  }
+
+  /* Header */
+  .hdr h1 { margin: 0; font-size: 26px; font-weight: 700; letter-spacing: -0.01em; }
+  .hdr .sub { margin: 6px 0 0; color: var(--text-muted); font-size: 14px; }
+  .hdr-row { display: flex; align-items: flex-start; justify-content: space-between; gap: 24px; margin-bottom: 24px; }
+  .submit-btn {
+    background: var(--brand); color: #fff; border: 0;
+    padding: 10px 18px; border-radius: var(--radius-sm);
+    font-weight: 600; font-size: 13px; cursor: pointer;
+    transition: background .15s ease;
+  }
+  .submit-btn:hover { background: #d94619; }
+
+  /* View toggle — the new bit */
+  .view-toggle {
+    display: inline-flex; background: var(--surface);
+    border: 1px solid var(--border); border-radius: var(--radius-sm);
+    padding: 3px; margin-bottom: 18px;
+  }
+  .view-toggle button {
+    background: transparent; border: 0; padding: 7px 14px;
+    font-size: 12px; font-weight: 600; color: var(--text-muted);
+    border-radius: 4px; cursor: pointer;
+    font-family: inherit;
+  }
+  .view-toggle button.active {
+    background: var(--text); color: #fff;
+  }
+  .view-toggle .count {
+    margin-left: 6px; padding: 1px 7px; border-radius: 10px;
+    background: rgba(0,0,0,.08); font-size: 10px; font-weight: 700;
+  }
+  .view-toggle button.active .count { background: rgba(255,255,255,.2); }
+
+  /* Filter bar — inherited */
+  .filter-bar {
+    display: flex; gap: 8px; flex-wrap: wrap; margin-bottom: 20px;
+  }
+  .filter-chip {
+    display: inline-flex; align-items: center; gap: 6px;
+    padding: 7px 12px; border-radius: 20px;
+    background: var(--surface); border: 1px solid var(--border);
+    font-size: 12px; font-weight: 500; color: var(--text-muted);
+    cursor: pointer; font-family: inherit;
+    transition: all .15s ease;
+  }
+  .filter-chip:hover { border-color: var(--border-strong); color: var(--text); }
+  .filter-chip.active { background: var(--text); color: #fff; border-color: var(--text); }
+  .filter-chip .chip-count {
+    font-size: 10px; padding: 1px 6px; border-radius: 8px;
+    background: rgba(0,0,0,.06); font-weight: 700;
+  }
+  .filter-chip.active .chip-count { background: rgba(255,255,255,.2); }
+
+  /* Plan filter (history only) */
+  .plan-filter {
+    display: flex; gap: 8px; align-items: center; margin-bottom: 20px;
+    font-size: 12px; color: var(--text-muted);
+  }
+  .plan-filter select {
+    padding: 6px 10px; border: 1px solid var(--border);
+    border-radius: var(--radius-sm); background: var(--surface);
+    font-family: inherit; font-size: 12px; color: var(--text);
+  }
+
+  /* Ideas grid — matches real IdeasBankView */
+  .ideas-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(340px, 1fr));
+    gap: 16px;
+  }
+  .idea-card {
+    background: var(--surface); border: 1px solid var(--border);
+    border-radius: var(--radius); padding: 18px;
+    display: flex; flex-direction: column; gap: 12px;
+    cursor: pointer; transition: all .15s ease;
+    position: relative;
+  }
+  .idea-card:hover {
+    border-color: var(--border-strong);
+    box-shadow: var(--shadow);
+    transform: translateY(-1px);
+  }
+
+  /* History-state card variant — muted, non-votable */
+  .idea-card.allocated { background: #fafaf9; }
+  .idea-card.allocated:hover { border-color: var(--brand); }
+
+  /* Plan/cycle strip — only on allocated cards */
+  .plan-strip {
+    display: flex; align-items: center; justify-content: space-between;
+    margin: -18px -18px 0; padding: 8px 18px;
+    background: var(--brand-soft);
+    border-bottom: 1px solid #fadfd2;
+    border-radius: var(--radius) var(--radius) 0 0;
+    font-size: 11px; font-weight: 600;
+  }
+  .plan-strip .plan-label {
+    display: flex; align-items: center; gap: 8px;
+    color: var(--brand); text-transform: uppercase; letter-spacing: 0.06em;
+  }
+  .plan-strip .cycle-dot {
+    width: 7px; height: 7px; border-radius: 50%;
+    background: currentColor;
+  }
+  .plan-strip .plan-link {
+    color: var(--brand); text-decoration: none; font-size: 11px;
+    display: inline-flex; align-items: center; gap: 4px;
+  }
+  .plan-strip .plan-link:hover { text-decoration: underline; }
+
+  /* Status chip on allocated cards */
+  .status-chip {
+    display: inline-flex; align-items: center; gap: 5px;
+    padding: 3px 9px; border-radius: 4px;
+    font-size: 10px; font-weight: 600; text-transform: uppercase;
+    letter-spacing: 0.05em;
+  }
+  .status-chip .dot { width: 6px; height: 6px; border-radius: 50%; background: currentColor; }
+  .status-chip.planning { background: #eef4ff; color: #3461c9; }
+  .status-chip.execution { background: #e6f6f0; color: var(--ok); }
+  .status-chip.done { background: #ededeb; color: var(--text-muted); }
+  .status-chip.parked { background: #fdf3e6; color: var(--warn); }
+
+  /* Badges — inherited exactly */
+  .idea-badges { display: flex; flex-wrap: wrap; gap: 6px; }
+  .goal-badge, .effort-badge, .impact-badge {
+    font-size: 11px; font-weight: 500;
+    padding: 3px 9px; border-radius: 12px;
+    border: 1px solid transparent;
+    display: inline-flex; align-items: center; gap: 4px;
+  }
+  .goal-badge { background: #eef4ff; color: #3461c9; border-color: #d5e2fb; }
+  .goal-badge.g-tech { background: #f0e8ff; color: #7842d8; border-color: #dec8fa; }
+  .goal-badge.g-safety { background: #fde8e8; color: #c93434; border-color: #fbd1d1; }
+  .goal-badge.g-efficiency { background: #e6f6f0; color: var(--ok); border-color: #c8eadb; }
+  .effort-badge { background: var(--bg-muted); color: var(--text-muted); border-color: var(--border); }
+  .impact-badge { background: #fff8e8; color: #a47a1a; border-color: #f2e2b7; }
+
+  /* Title + description */
+  .idea-title {
+    font-size: 15px; font-weight: 600; margin: 0;
+    line-height: 1.35; color: var(--text);
+  }
+  .idea-description {
+    margin: 0; font-size: 13px; color: var(--text-muted);
+    line-height: 1.5;
+  }
+
+  /* Footer */
+  .idea-footer {
+    display: flex; align-items: center; justify-content: space-between;
+    padding-top: 12px; border-top: 1px solid var(--border);
+    gap: 12px;
+  }
+  .submitter {
+    display: inline-flex; align-items: center; gap: 8px;
+    font-size: 12px; color: var(--text-muted);
+  }
+  .avatar {
+    width: 22px; height: 22px; border-radius: 50%;
+    display: inline-flex; align-items: center; justify-content: center;
+    color: #fff; font-size: 10px; font-weight: 700;
+  }
+  .meta-dot { color: var(--text-subtle); }
+
+  /* Vote button (active cards) */
+  .vote-btn {
+    display: inline-flex; align-items: center; gap: 6px;
+    padding: 6px 11px; border-radius: 20px;
+    background: var(--surface); border: 1px solid var(--border);
+    font-size: 12px; font-weight: 600; color: var(--text-muted);
+    cursor: pointer; font-family: inherit;
+    transition: all .15s ease;
+  }
+  .vote-btn:hover { border-color: var(--brand); color: var(--brand); }
+  .vote-btn.voted { background: #e6f6f0; border-color: #c8eadb; color: var(--ok); }
+  .vote-btn .heart { font-size: 14px; }
+
+  /* "View project" on allocated cards */
+  .view-project {
+    display: inline-flex; align-items: center; gap: 5px;
+    padding: 6px 12px; border-radius: var(--radius-sm);
+    background: var(--text); color: #fff; border: 0;
+    font-size: 11px; font-weight: 600;
+    cursor: pointer; font-family: inherit;
+    text-decoration: none;
+    transition: background .15s ease;
+  }
+  .view-project:hover { background: #000; }
+  .view-project .arrow { font-size: 12px; }
+
+  /* Muted vote count on allocated */
+  .final-votes {
+    display: inline-flex; align-items: center; gap: 5px;
+    font-size: 11px; color: var(--text-subtle);
+  }
+
+  /* Design notes */
+  details.notes {
+    margin-bottom: 28px; padding: 14px 18px;
+    background: var(--bg-muted); border: 1px solid var(--border);
+    border-radius: var(--radius); font-size: 13px;
+  }
+  details.notes summary {
+    cursor: pointer; font-weight: 600; color: var(--brand);
+    user-select: none; list-style: none;
+  }
+  details.notes summary::before { content: '▸ '; font-size: 10px; }
+  details.notes[open] summary::before { content: '▾ '; }
+  details.notes h4 {
+    margin: 14px 0 6px; font-size: 11px;
+    text-transform: uppercase; letter-spacing: 0.08em;
+    color: var(--text-muted);
+  }
+  details.notes p, details.notes li { margin: 4px 0; color: var(--text); line-height: 1.5; }
+  details.notes ul { margin: 6px 0 10px; padding-left: 20px; }
+
+  @media (max-width: 760px) {
+    .ideas-grid { grid-template-columns: 1fr; }
+    .hdr-row { flex-direction: column; }
+  }
+</style>
+</head>
+<body>
+<div class="page">
+
+  <details class="notes">
+    <summary>Design notes — Ideas Bank: History filter (v1)</summary>
+    <h4>What this adds</h4>
+    <p>A toggle on the existing Ideas Bank to flip between <strong>Active</strong> (today's default — un-allocated ideas, votable) and <strong>History</strong> (previously banked ideas that have been allocated to a plan/cycle, not votable).</p>
+    <h4>What this does NOT add</h4>
+    <ul>
+      <li>No change to the active ideas bank — card grid, goal/effort/impact badges, vote button, submitter + time all stay as-is</li>
+      <li>No new status chip on active cards — being in the bank means approved; highlighting it is noise</li>
+      <li>Allocated ideas still drop out of the default view — bank stays clean</li>
+    </ul>
+    <h4>History-card differences (only applied when view toggle = History)</h4>
+    <ul>
+      <li><strong>Plan strip</strong> at top — orange-soft band showing "CYCLE 2 · PLAN NAME" + a text link back to the cycle plan</li>
+      <li><strong>Status chip</strong> in the badges row — In Planning / In Execution / Done / Parked — colour-coded</li>
+      <li><strong>Vote button replaced</strong> with a muted "9 votes" readout — historical record, not actionable</li>
+      <li><strong>View project</strong> CTA (black) takes the user to the full-page project workspace (stages 2–4 in the other mockups)</li>
+      <li>Slightly muted card background (#fafaf9) to visually separate from active cards if both were ever shown together</li>
+    </ul>
+    <h4>Plan/cycle filter</h4>
+    <p>In History view only, a dropdown narrows by cycle (All cycles / Cycle 1 / Cycle 2 / …). Goal filter chips still apply on top.</p>
+    <h4>Tradeoffs considered</h4>
+    <ul>
+      <li><strong>Single unified view with status chips on everything</strong> — rejected. Muddies the active bank, invites voting on allocated ideas, and clutters the default mode with information nobody needs day-to-day.</li>
+      <li><strong>Separate "Project Archive" nav item</strong> — rejected. Discovery problem: people looking for a banked idea will look in the bank first. A filter is where they'd expect it.</li>
+      <li><strong>Status chip only, no plan strip</strong> — rejected. The plan/cycle context is the primary reason someone looks at history ("what did Cycle 1 actually ship?"). Surfacing it in the card saves a click.</li>
+    </ul>
+    <h4>Open questions for Shaun</h4>
+    <ul>
+      <li>Should History show <em>all</em> allocated ideas including Parked and Rejected, or split Parked/Rejected into a separate filter?</li>
+      <li>Within History, should cards group by cycle (section headers) or stay as a flat grid with the plan strip carrying context?</li>
+      <li>Default sort in History — most recent cycle first, or alphabetical?</li>
+    </ul>
+  </details>
+
+  <div class="section-tag">COMPASS · IDEAS BANK</div>
+
+  <div class="hdr-row">
+    <div class="hdr">
+      <h1>Ideas Bank</h1>
+      <p class="sub">Share your ideas to make Blick better. Anyone can submit.</p>
+    </div>
+    <button class="submit-btn">+ Submit Idea</button>
+  </div>
+
+  <!-- Active / History toggle -->
+  <div class="view-toggle">
+    <button>Active<span class="count">7</span></button>
+    <button class="active">History<span class="count">24</span></button>
+  </div>
+
+  <!-- Plan filter (History only) -->
+  <div class="plan-filter">
+    <span>Cycle:</span>
+    <select>
+      <option>All cycles</option>
+      <option>Cycle 2 (current)</option>
+      <option selected>Cycle 1</option>
+      <option>Cycle 0 (kickoff)</option>
+    </select>
+    <span style="margin-left: 16px;">Status:</span>
+    <select>
+      <option>All statuses</option>
+      <option>In Planning</option>
+      <option>In Execution</option>
+      <option selected>Done</option>
+      <option>Parked</option>
+    </select>
+  </div>
+
+  <!-- Goal filter (inherited from active view) -->
+  <div class="filter-bar">
+    <button class="filter-chip active">All<span class="chip-count">24</span></button>
+    <button class="filter-chip">◆ Tech<span class="chip-count">6</span></button>
+    <button class="filter-chip">● Safety<span class="chip-count">4</span></button>
+    <button class="filter-chip">▲ Efficiency<span class="chip-count">9</span></button>
+    <button class="filter-chip">◈ Quality<span class="chip-count">3</span></button>
+    <button class="filter-chip">◊ People<span class="chip-count">2</span></button>
+  </div>
+
+  <!-- Ideas grid — history variant -->
+  <div class="ideas-grid">
+
+    <!-- Card 1: Done -->
+    <article class="idea-card allocated">
+      <div class="plan-strip">
+        <span class="plan-label"><span class="cycle-dot" style="color: var(--c1);"></span>Cycle 1 · Drilling Fluids Launch</span>
+        <a class="plan-link" href="#">View cycle ›</a>
+      </div>
+      <div class="idea-badges">
+        <span class="goal-badge g-tech">◆ Tech</span>
+        <span class="effort-badge">L · 6–8 weeks</span>
+        <span class="status-chip done"><span class="dot"></span>Done</span>
+      </div>
+      <h3 class="idea-title">Eco-friendly drilling fluid line for AU geothermal market</h3>
+      <p class="idea-description">PDS + COA packs for Todd Energy superhot project. Three-product line positioned against Baroid and M-I SWACO...</p>
+      <div class="idea-footer">
+        <div class="submitter">
+          <div class="avatar" style="background: #c48a1b;">T</div>
+          <span>Tim Walters</span>
+          <span class="meta-dot">·</span>
+          <span>3 months ago</span>
+        </div>
+        <div style="display: flex; gap: 8px; align-items: center;">
+          <span class="final-votes">♡ 9</span>
+          <a class="view-project" href="#">View project <span class="arrow">→</span></a>
+        </div>
+      </div>
+    </article>
+
+    <!-- Card 2: Execution -->
+    <article class="idea-card allocated">
+      <div class="plan-strip">
+        <span class="plan-label"><span class="cycle-dot" style="color: var(--c2);"></span>Cycle 2 · Rig Safety & Mobility</span>
+        <a class="plan-link" href="#">View cycle ›</a>
+      </div>
+      <div class="idea-badges">
+        <span class="goal-badge g-safety">● Safety</span>
+        <span class="effort-badge">M · 3–4 weeks</span>
+        <span class="status-chip execution"><span class="dot"></span>In Execution</span>
+      </div>
+      <h3 class="idea-title">Replace the paper incident reporting form with a mobile flow</h3>
+      <p class="idea-description">Drillers fill incident reports on phone in the yard — photos attached, auto-sync when signal returns. Cuts 2 days off...</p>
+      <div class="idea-footer">
+        <div class="submitter">
+          <div class="avatar" style="background: #7842d8;">N</div>
+          <span>Nisha Prasad</span>
+          <span class="meta-dot">·</span>
+          <span>5 weeks ago</span>
+        </div>
+        <div style="display: flex; gap: 8px; align-items: center;">
+          <span class="final-votes">♡ 7</span>
+          <a class="view-project" href="#">View project <span class="arrow">→</span></a>
+        </div>
+      </div>
+    </article>
+
+    <!-- Card 3: In Planning -->
+    <article class="idea-card allocated">
+      <div class="plan-strip">
+        <span class="plan-label"><span class="cycle-dot" style="color: var(--c2);"></span>Cycle 2 · Rig Safety & Mobility</span>
+        <a class="plan-link" href="#">View cycle ›</a>
+      </div>
+      <div class="idea-badges">
+        <span class="goal-badge g-safety">● Safety</span>
+        <span class="effort-badge">S · 1–2 weeks</span>
+        <span class="status-chip planning"><span class="dot"></span>In Planning</span>
+      </div>
+      <h3 class="idea-title">Standardise rig pre-start checklists across NZ + AU fleets</h3>
+      <p class="idea-description">One checklist, two regulatory overlays. Reduces driller context-switching when moving between rigs...</p>
+      <div class="idea-footer">
+        <div class="submitter">
+          <div class="avatar" style="background: #f05323;">S</div>
+          <span>Shaun Tubb</span>
+          <span class="meta-dot">·</span>
+          <span>2 weeks ago</span>
+        </div>
+        <div style="display: flex; gap: 8px; align-items: center;">
+          <span class="final-votes">♡ 5</span>
+          <a class="view-project" href="#">View project <span class="arrow">→</span></a>
+        </div>
+      </div>
+    </article>
+
+    <!-- Card 4: Parked -->
+    <article class="idea-card allocated">
+      <div class="plan-strip">
+        <span class="plan-label"><span class="cycle-dot" style="color: var(--c1);"></span>Cycle 1 · Drilling Fluids Launch</span>
+        <a class="plan-link" href="#">View cycle ›</a>
+      </div>
+      <div class="idea-badges">
+        <span class="goal-badge g-efficiency">▲ Efficiency</span>
+        <span class="effort-badge">M · 2–3 weeks</span>
+        <span class="status-chip parked"><span class="dot"></span>Parked</span>
+      </div>
+      <h3 class="idea-title">Nexus brief → Compass action one-click promote</h3>
+      <p class="idea-description">Parked at Cycle 1 retro — depends on action register phase 2. Revisit Cycle 3 planning...</p>
+      <div class="idea-footer">
+        <div class="submitter">
+          <div class="avatar" style="background: #2aa7b5;">C</div>
+          <span>Claude / Nexus</span>
+          <span class="meta-dot">·</span>
+          <span>4 months ago</span>
+        </div>
+        <div style="display: flex; gap: 8px; align-items: center;">
+          <span class="final-votes">♡ 1</span>
+          <a class="view-project" href="#">View project <span class="arrow">→</span></a>
+        </div>
+      </div>
+    </article>
+
+    <!-- Card 5: Done -->
+    <article class="idea-card allocated">
+      <div class="plan-strip">
+        <span class="plan-label"><span class="cycle-dot" style="color: var(--c1);"></span>Cycle 1 · Drilling Fluids Launch</span>
+        <a class="plan-link" href="#">View cycle ›</a>
+      </div>
+      <div class="idea-badges">
+        <span class="goal-badge g-efficiency">▲ Efficiency</span>
+        <span class="effort-badge">S · 1 week</span>
+        <span class="status-chip done"><span class="dot"></span>Done</span>
+      </div>
+      <h3 class="idea-title">Brent Doull — quarterly product review cadence + conflict register SLA</h3>
+      <p class="idea-description">Monthly cadence locked in, 50-item conflict register at 12 open / 38 resolved. Handoff to Tim for steady state...</p>
+      <div class="idea-footer">
+        <div class="submitter">
+          <div class="avatar" style="background: #f05323;">S</div>
+          <span>Shaun Tubb</span>
+          <span class="meta-dot">·</span>
+          <span>3 months ago</span>
+        </div>
+        <div style="display: flex; gap: 8px; align-items: center;">
+          <span class="final-votes">♡ 2</span>
+          <a class="view-project" href="#">View project <span class="arrow">→</span></a>
+        </div>
+      </div>
+    </article>
+
+    <!-- Card 6: Done -->
+    <article class="idea-card allocated">
+      <div class="plan-strip">
+        <span class="plan-label"><span class="cycle-dot" style="color: var(--c1);"></span>Cycle 1 · Drilling Fluids Launch</span>
+        <a class="plan-link" href="#">View cycle ›</a>
+      </div>
+      <div class="idea-badges">
+        <span class="goal-badge g-tech">◆ Tech</span>
+        <span class="effort-badge">M · 3 weeks</span>
+        <span class="status-chip done"><span class="dot"></span>Done</span>
+      </div>
+      <h3 class="idea-title">Vault writeback — compound claims into product notes</h3>
+      <p class="idea-description">Gemma extraction pipeline with match-quality scoring. 211 notes backfilled with freshness tracking...</p>
+      <div class="idea-footer">
+        <div class="submitter">
+          <div class="avatar" style="background: #2aa7b5;">C</div>
+          <span>Claude / Nexus</span>
+          <span class="meta-dot">·</span>
+          <span>2 months ago</span>
+        </div>
+        <div style="display: flex; gap: 8px; align-items: center;">
+          <span class="final-votes">♡ 6</span>
+          <a class="view-project" href="#">View project <span class="arrow">→</span></a>
+        </div>
+      </div>
+    </article>
+
+  </div>
+
+</div>
+</body>
+</html>
+</content>
+</injected_filename_to_write>
+</invoke>
