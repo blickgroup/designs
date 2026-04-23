@@ -1,0 +1,784 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="dark">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Compass Project — Stage 2: Planning (v5 — updates composer + reviewer routing)</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+:root, [data-theme="dark"] {
+  --primary: #f05323;
+  --primary-hover: #ff6a3d;
+  --bg-page: #1a1a1a;
+  --bg-surface: #2a2a2a;
+  --bg-surface-secondary: #262626;
+  --bg-hover: #3a3a3a;
+  --text-heading: #ffffff;
+  --text-primary: #bcbec0;
+  --text-secondary: #a0a0a0;
+  --text-muted: #707070;
+  --border-default: #58595b;
+  --border-hover: #707070;
+  --card-bg: rgba(255,255,255,0.03);
+  --card-border: #58595b;
+  --card-hover-border: #f05323;
+  --success: #10b981;
+  --success-bg: rgba(16,185,129,0.12);
+  --success-border: rgba(16,185,129,0.30);
+  --warning: #f59e0b;
+  --warning-bg: rgba(245,158,11,0.12);
+  --warning-border: rgba(245,158,11,0.30);
+  --danger: #ef4444;
+  --info: #4A9EFF;
+  --info-bg: rgba(74,158,255,0.12);
+  --info-border: rgba(74,158,255,0.28);
+  --cycle-c1: #f05323;
+  --cycle-c2: #4A9EFF;
+  --cycle-c3: #ef4444;
+}
+* { box-sizing: border-box; margin: 0; padding: 0; }
+body { font-family: 'Inter', sans-serif; background: var(--bg-page); color: var(--text-primary); min-height: 100vh; font-size: 13px; line-height: 1.5; }
+
+.design-notes { background: var(--bg-surface); border-bottom: 1px solid var(--border-default); padding: 12px 24px; font-size: 12px; color: var(--text-secondary); }
+.design-notes summary { cursor: pointer; color: var(--primary); font-weight: 600; font-size: 12px; list-style: none; }
+.design-notes summary::marker { display: none; }
+.design-notes summary::-webkit-details-marker { display: none; }
+.design-notes summary::before { content: "▸ "; transition: transform 0.15s; display: inline-block; }
+.design-notes[open] summary::before { transform: rotate(90deg); }
+.design-notes-body { margin-top: 12px; color: var(--text-primary); line-height: 1.6; max-width: 920px; }
+.design-notes-body h4 { font-size: 11px; text-transform: uppercase; letter-spacing: 0.08em; color: var(--text-muted); margin: 14px 0 6px; }
+.design-notes-body h4:first-child { margin-top: 0; }
+.design-notes-body ul { padding-left: 20px; }
+.design-notes-body li { margin: 3px 0; }
+
+.topbar { position: sticky; top: 0; z-index: 100; background: var(--bg-surface); border-bottom: 1px solid var(--border-default); display: flex; align-items: center; padding: 0 24px; height: 48px; gap: 12px; }
+.topbar-logo { font-size: 15px; font-weight: 700; color: var(--text-heading); letter-spacing: -0.3px; }
+.topbar-logo span { color: var(--primary); }
+.topbar-sep { width: 1px; height: 20px; background: var(--border-default); }
+.topbar-crumbs { font-size: 12px; color: var(--text-secondary); display: flex; align-items: center; gap: 8px; }
+.topbar-crumbs a { color: var(--text-secondary); text-decoration: none; }
+.topbar-crumbs a:hover { color: var(--primary); }
+.topbar-crumbs .current { color: var(--text-heading); font-weight: 500; }
+.topbar-spacer { flex: 1; }
+.topbar-btn { padding: 5px 12px; font-size: 12px; font-weight: 500; border-radius: 5px; border: 1px solid var(--border-default); background: transparent; color: var(--text-secondary); cursor: pointer; }
+.topbar-btn:hover { border-color: var(--primary); color: var(--primary); }
+
+/* Project header */
+.project-header {
+  background: var(--bg-surface);
+  border-bottom: 1px solid var(--border-default);
+  padding: 28px 32px 20px;
+}
+.project-header-top { display: flex; align-items: flex-start; gap: 16px; margin-bottom: 10px; }
+.stage-label {
+  display: inline-flex;
+  align-items: center;
+  padding: 4px 10px;
+  border-radius: 3px;
+  font-size: 10px;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  background: var(--primary);
+  color: #fff;
+  margin-bottom: 6px;
+}
+.project-title {
+  font-size: 24px;
+  font-weight: 700;
+  color: var(--text-heading);
+  line-height: 1.25;
+  letter-spacing: -0.3px;
+}
+.project-subtitle {
+  margin-top: 6px;
+  font-size: 13px;
+  color: var(--text-secondary);
+  max-width: 720px;
+}
+.project-actions { display: flex; gap: 8px; align-items: center; }
+.btn { padding: 7px 14px; font-size: 12px; font-weight: 600; border-radius: 5px; cursor: pointer; transition: all 0.15s; }
+.btn-primary { background: var(--primary); color: #fff; border: 1px solid var(--primary); }
+.btn-primary:hover { background: var(--primary-hover); }
+.btn-secondary { background: transparent; color: var(--text-secondary); border: 1px solid var(--border-default); }
+.btn-secondary:hover { border-color: var(--primary); color: var(--primary); }
+
+.project-meta {
+  display: flex;
+  gap: 28px;
+  flex-wrap: wrap;
+  margin-top: 14px;
+  padding-top: 14px;
+  border-top: 1px solid var(--border-default);
+}
+.meta-item { display: flex; flex-direction: column; gap: 3px; }
+.meta-label { font-size: 10px; text-transform: uppercase; letter-spacing: 0.06em; color: var(--text-muted); font-weight: 600; }
+.meta-value { font-size: 13px; color: var(--text-primary); font-weight: 500; }
+.meta-value.missing { color: var(--text-muted); font-style: italic; font-weight: 400; }
+.cycle-chip-c2 { display: inline-flex; align-items: center; gap: 5px; padding: 2px 8px; border-radius: 3px; font-size: 11px; font-weight: 600; background: rgba(74,158,255,0.15); border: 1px solid rgba(74,158,255,0.30); color: var(--cycle-c2); }
+
+/* Tabs */
+.tabs-wrap { background: var(--bg-surface); border-bottom: 1px solid var(--border-default); padding: 0 32px; }
+.tabs { display: flex; gap: 2px; }
+.tab {
+  padding: 12px 16px;
+  font-size: 12px;
+  font-weight: 600;
+  color: var(--text-secondary);
+  cursor: pointer;
+  border-bottom: 2px solid transparent;
+  transition: all 0.15s;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+.tab:hover { color: var(--text-heading); }
+.tab.active { color: var(--primary); border-bottom-color: var(--primary); }
+.tab .count {
+  font-size: 10px;
+  font-weight: 600;
+  padding: 1px 6px;
+  border-radius: 8px;
+  background: var(--bg-hover);
+  color: var(--text-muted);
+}
+.tab.active .count { background: rgba(240,83,35,0.18); color: var(--primary); }
+
+/* Layout */
+.layout {
+  display: grid;
+  grid-template-columns: 1fr 320px;
+  gap: 0;
+  max-width: 1400px;
+  margin: 0 auto;
+}
+.main-col { padding: 28px 32px 64px; }
+.side-col {
+  padding: 28px 24px 64px;
+  border-left: 1px solid var(--border-default);
+  background: var(--bg-surface-secondary);
+  min-height: calc(100vh - 180px);
+}
+
+/* Section heading */
+.section-head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 14px;
+}
+.section-title {
+  font-size: 11px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  color: var(--text-muted);
+}
+.section-link {
+  font-size: 11px;
+  color: var(--primary);
+  cursor: pointer;
+  font-weight: 600;
+}
+
+/* Empty state cards (scaffolding feel) */
+.empty-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; margin-bottom: 28px; }
+.empty-card {
+  background: var(--card-bg);
+  border: 1.5px dashed var(--card-border);
+  border-radius: 10px;
+  padding: 22px 20px;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  cursor: pointer;
+  transition: all 0.15s;
+}
+.empty-card:hover {
+  border-color: var(--primary);
+  border-style: dashed;
+  background: rgba(240,83,35,0.03);
+}
+.empty-icon {
+  width: 32px;
+  height: 32px;
+  border-radius: 6px;
+  background: rgba(240,83,35,0.12);
+  color: var(--primary);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 16px;
+  font-weight: 700;
+}
+.empty-title { font-size: 13px; font-weight: 600; color: var(--text-heading); }
+.empty-desc { font-size: 11.5px; color: var(--text-secondary); line-height: 1.5; }
+.empty-cta { font-size: 11px; color: var(--primary); font-weight: 600; margin-top: 2px; }
+
+/* Brief block */
+.brief-block {
+  background: var(--card-bg);
+  border: 1px solid var(--card-border);
+  border-radius: 10px;
+  padding: 20px 22px;
+  margin-bottom: 28px;
+}
+.brief-block h3 { font-size: 13px; font-weight: 600; color: var(--text-heading); margin-bottom: 10px; }
+.brief-block p { font-size: 12.5px; color: var(--text-primary); line-height: 1.7; margin-bottom: 10px; }
+.brief-block p:last-child { margin-bottom: 0; }
+.brief-block .edit-link {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  margin-top: 8px;
+  font-size: 11px;
+  color: var(--text-muted);
+  cursor: pointer;
+}
+.brief-block .edit-link:hover { color: var(--primary); }
+
+/* Kickoff checklist */
+.checklist {
+  background: var(--card-bg);
+  border: 1px solid var(--card-border);
+  border-radius: 10px;
+  padding: 14px 16px;
+  margin-bottom: 28px;
+}
+.checklist-item {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 8px 4px;
+  border-bottom: 1px solid var(--border-default);
+}
+.checklist-item:last-child { border-bottom: none; }
+.check-circle {
+  width: 16px; height: 16px;
+  border-radius: 50%;
+  border: 1.5px solid var(--border-hover);
+  flex-shrink: 0;
+}
+.check-circle.done {
+  background: var(--success);
+  border-color: var(--success);
+  position: relative;
+}
+.check-circle.done::after {
+  content: "✓";
+  position: absolute;
+  inset: 0;
+  display: flex; align-items: center; justify-content: center;
+  color: #fff; font-size: 10px; font-weight: 700;
+}
+.check-label { font-size: 12.5px; color: var(--text-primary); flex: 1; }
+.check-label.done { color: var(--text-muted); text-decoration: line-through; }
+.check-hint { font-size: 11px; color: var(--text-muted); }
+
+/* Side rail */
+.rail-card {
+  background: var(--bg-surface);
+  border: 1px solid var(--border-default);
+  border-radius: 8px;
+  padding: 14px 16px;
+  margin-bottom: 14px;
+}
+.rail-label { font-size: 10px; text-transform: uppercase; letter-spacing: 0.06em; color: var(--text-muted); font-weight: 600; margin-bottom: 8px; }
+.rail-value { font-size: 13px; color: var(--text-heading); font-weight: 500; }
+.rail-value.missing { color: var(--text-muted); font-style: italic; font-weight: 400; }
+.rail-row { display: flex; justify-content: space-between; align-items: center; padding: 7px 0; border-top: 1px solid var(--border-default); font-size: 12px; }
+.rail-row:first-of-type { border-top: none; }
+.rail-row .k { color: var(--text-muted); }
+.rail-row .v { color: var(--text-primary); font-weight: 500; }
+.rail-action {
+  display: block;
+  width: 100%;
+  text-align: left;
+  padding: 8px 10px;
+  border-radius: 5px;
+  font-size: 12px;
+  color: var(--text-secondary);
+  background: transparent;
+  border: 1px solid var(--border-default);
+  cursor: pointer;
+  margin-bottom: 6px;
+}
+.rail-action:hover { border-color: var(--primary); color: var(--primary); }
+.rail-action .plus { color: var(--primary); font-weight: 700; margin-right: 6px; }
+
+.progress-placeholder {
+  height: 6px;
+  background: var(--bg-hover);
+  border-radius: 3px;
+  overflow: hidden;
+  margin-top: 6px;
+}
+.progress-placeholder .fill {
+  height: 100%;
+  width: 0%;
+  background: var(--primary);
+}
+.progress-label { font-size: 11px; color: var(--text-muted); margin-top: 6px; }
+
+.banner {
+  background: rgba(240,83,35,0.06);
+  border: 1px solid rgba(240,83,35,0.28);
+  border-radius: 8px;
+  padding: 12px 16px;
+  font-size: 12px;
+  color: var(--text-primary);
+  margin-bottom: 22px;
+  display: flex;
+  gap: 10px;
+  align-items: flex-start;
+}
+.banner-icon {
+  font-size: 16px;
+  color: var(--primary);
+  line-height: 1;
+  margin-top: 1px;
+}
+.banner strong { color: var(--text-heading); }
+</style>
+</head>
+<body>
+
+<details class="design-notes" open>
+<summary>Design notes — Stage 2: Planning (v5 — updates composer + reviewer routing)</summary>
+<div class="design-notes-body">
+<h4>v5 changes from v4</h4>
+<ul>
+<li><strong>Updates / comments composer under Brief.</strong> The team's daily surface for notes, file attachments, and URLs. Uses the <code>FileUploadInput</code> pattern (dashed drop zone, pill cards for attached files) and --chart-N avatar rotation so it looks and feels like the rest of the hub. Populated with two example updates so you can see the shape.</li>
+<li><strong>Close-gate modal now includes "How is this being communicated?" field.</strong> Owner writes the closing message inside the modal. On close, this text saves as the project's closing announcement <em>and</em> auto-creates a follow-up on the owner to actually post it (Chat, email, all-hands — their call). No phantom Chat-bot integration. Watercooler-ready: when it ships, the announcement feed seeds from here.</li>
+<li><strong>Reviewer banner, dynamic.</strong> When any DoD item is skipped, the modal footer shows the named reviewer ("Shaun Tubb — GM Operations — will review before close"). Updates live as items flip between ticked and skipped. Zero skips = direct close, no review.</li>
+<li><strong>Reviewer resolution algorithm — role-based.</strong> Not a shared admin pool. Lookup walks the owner's manager chain in Google Workspace:
+  <pre style="background:var(--bg-surface-secondary);padding:8px 12px;border-radius:4px;font-size:11px;line-height:1.5;margin:6px 0">reviewer(owner):
+  if owner == Tim:   return Shaun
+  if owner == Shaun: return Tim
+  walk manager chain from owner
+    — first person found who is Tim or Shaun → reviewer
+    — if chain exhausted / broken / null → Shaun (fallback)</pre>
+  Self-approval prevented. Sales team (Tim's reports) walks up to Tim (GM Sales); everyone else walks up to Shaun (GM Operations).</li>
+<li><strong>Admin review is a follow-up, not a new surface.</strong> If any items skipped, project enters <em>Awaiting admin review</em> state. A single review follow-up fires on the routed GM — lives in their existing IAM follow-ups inbox. Approve → project closes, comms follow-up fires on owner. Reject with comment → owner addresses, resubmits.</li>
+</ul>
+
+<h4>Component vocabulary used</h4>
+<ul>
+<li><strong>Comment composer:</strong> greenfield — no canonical <code>CommentInput</code> exists today (just textarea + post button in <code>IdeaDetailModal</code>). v5 composes from the <code>FileUploadInput</code> shape + existing input styling. Flagged as build-time opportunity: promote this pattern to a shared component.</li>
+<li><strong>Attachments:</strong> <code>FileUploadInput</code> pattern — dashed border drop zone, pill cards for attached files, file icon + filename + size + remove ×.</li>
+<li><strong>Follow-up card:</strong> mirror <code>FollowUpDetailPanel</code> — assignee avatar + title + status chip + due date.</li>
+<li><strong>Status chips:</strong> canonical hub vocabulary — success-bg/text for done, info-bg/text for in-progress, warning-bg/text for todo, bg-tertiary for cancelled.</li>
+<li><strong>Avatar:</strong> --chart-1 to --chart-8 rotation via name hash. 26–28px in card rows, 22px in rails, 40px in modal headers.</li>
+<li><strong>Modal shell:</strong> <code>ModalShell</code> proportions — ~680px max-width, header+body+footer with borders, 20px/24px padding, overlay uses rgba dimming.</li>
+</ul>
+
+<h4>Backend dependency — small</h4>
+<p>The user lookup API at <code>services/operations-api/index.js:254</code> currently SELECTs email, full_name, country only. The BigQuery <code>blick_identity.user_profiles</code> table already has <code>department_head_email</code> + <code>intermediate_manager_email</code> columns synced from Google Workspace. We need to expose these two columns on the <code>/api/health-safety/users</code> response and add to <code>UserRecord</code> type + Zod schema. ~10 line change. No new table, no migration, no new data source. Routing logic is pure frontend on top of those two fields.</p>
+
+<h4>Edge cases handled in reviewer routing</h4>
+<ul>
+<li>Owner = Tim → Shaun reviews (mutual escalation)</li>
+<li>Owner = Shaun → Tim reviews (same)</li>
+<li>Owner has no manager in GWS → Shaun (default fallback)</li>
+<li>Owner's manager is not Tim or Shaun (e.g. senior engineer managing a junior) → walk up the chain until Tim or Shaun is found</li>
+</ul>
+
+<h4>Open questions for Shaun</h4>
+<ul>
+<li>Does the reviewer see the skipped-item reasons inline in their follow-up, or do they click through to the project Done preview to see them in context?</li>
+<li>Should "reject" require a comment from the reviewer (my lean: yes — silent rejections leave owner guessing)?</li>
+<li>Is the comms follow-up auto-created at approval, or at the moment the owner submits (even if pending review)?</li>
+<li>When Watercooler ships, should closing announcements post automatically to it, or still require the owner to do it manually via their comms follow-up?</li>
+</ul>
+</div>
+</details>
+
+<div class="topbar">
+  <div class="topbar-logo">Blick<span>.</span>Hub</div>
+  <div class="topbar-sep"></div>
+  <div class="topbar-crumbs">
+    <a>Compass</a> <span style="color:var(--text-muted)">›</span>
+    <a>Cycle 2</a> <span style="color:var(--text-muted)">›</span>
+    <span class="current">Eco-friendly drilling fluid line</span>
+  </div>
+  <div class="topbar-spacer"></div>
+  <button class="topbar-btn">⋯</button>
+</div>
+
+<div class="project-header">
+  <div class="stage-label">Stage · Planning</div>
+  <div class="project-header-top">
+    <div style="flex:1">
+      <h1 class="project-title">Eco-friendly drilling fluid line for AU geothermal market</h1>
+      <p class="project-subtitle">Launch a low-toxicity fluid range positioned for the Todd Energy Superhot project and the broader AU geothermal segment. Allocated to Cycle 2 · 9 votes from bank.</p>
+    </div>
+    <div class="project-actions">
+      <button class="btn btn-secondary">Park</button>
+      <button class="btn btn-secondary">Mark complete</button>
+      <button class="btn btn-primary">Start execution →</button>
+    </div>
+  </div>
+  <div class="project-meta">
+    <div class="meta-item">
+      <div class="meta-label">Cycle</div>
+      <div class="meta-value"><span class="cycle-chip-c2">● C2</span> Apr – Jun 2026</div>
+    </div>
+    <div class="meta-item">
+      <div class="meta-label">Owner</div>
+      <div class="meta-value">
+        <span style="display:inline-flex;align-items:center;gap:8px">
+          <span style="width:22px;height:22px;border-radius:50%;background:#c48a1b;color:#fff;font-size:10px;font-weight:700;display:inline-flex;align-items:center;justify-content:center">T</span>
+          Tim Walters
+        </span>
+        <span style="font-size:10px;color:var(--text-muted);margin-left:8px;padding:2px 6px;border-radius:3px;border:1px solid var(--border-default);cursor:not-allowed" title="Admin only — contact Shaun to reassign">Reassign · admin only</span>
+      </div>
+    </div>
+    <div class="meta-item">
+      <div class="meta-label">Effort size</div>
+      <div class="meta-value">L · 6–8 weeks</div>
+    </div>
+    <div class="meta-item">
+      <div class="meta-label">Allocated</div>
+      <div class="meta-value">22 Apr 2026 · by Shaun Tubb</div>
+    </div>
+    <div class="meta-item">
+      <div class="meta-label">Submitted by</div>
+      <div class="meta-value">Tim Walters</div>
+    </div>
+  </div>
+</div>
+
+<div class="tabs-wrap">
+  <div class="tabs">
+    <div class="tab active">Overview</div>
+    <div class="tab">Follow-ups <span class="count">0</span></div>
+    <div class="tab">Docs <span class="count">0</span></div>
+    <div class="tab">Activity <span class="count">3</span></div>
+  </div>
+</div>
+
+<div class="layout">
+  <div class="main-col">
+
+    <!-- Collapsed setup nudge — dismissible, single row -->
+    <div class="banner" style="display:flex;align-items:center;gap:14px;justify-content:space-between">
+      <div style="display:flex;align-items:flex-start;gap:12px;flex:1">
+        <div class="banner-icon">◐</div>
+        <div>
+          <strong>Planning — 2 items outstanding before execution.</strong>
+          <span style="color:var(--text-secondary)"> Add at least one follow-up and set a target end date. Definition of Done is already applied.</span>
+        </div>
+      </div>
+      <div style="display:flex;gap:8px;flex-shrink:0">
+        <button class="btn btn-secondary" style="font-size:11px;padding:5px 10px">+ Follow-up</button>
+        <button class="btn btn-secondary" style="font-size:11px;padding:5px 10px">Set dates</button>
+        <button class="btn btn-secondary" style="font-size:11px;padding:5px 10px;border-color:transparent;color:var(--text-muted)" title="Dismiss">✕</button>
+      </div>
+    </div>
+
+    <div class="section-head">
+      <div class="section-title">Brief — carried from idea</div>
+      <div class="section-link">Edit brief</div>
+    </div>
+    <div class="brief-block">
+      <p><strong>Problem.</strong> AU geothermal operators (Todd Energy, Origin) increasingly specify low-toxicity mud systems. Our current Blick fluid range is strong on cost/performance but has gaps on environmental classification and biodegradability data.</p>
+      <p><strong>Proposal.</strong> Package an eco-branded variant of our existing high-temp fluid line with refreshed SDS, a biodegradability test from the AU lab partner, and a PDS+COA pack aligned to operator tender templates. Target the Todd Superhot tender (Q3) as the launch account.</p>
+      <p><strong>Why now.</strong> Tender window closes Sep 2026. Tim has spoken with Todd's procurement lead. Blick's 2026 AU plan flags geothermal as a priority segment.</p>
+      <span class="edit-link">✎ Expand / edit</span>
+    </div>
+
+    <!-- Updates / comments — daily team surface -->
+    <div class="section-head">
+      <div class="section-title">Updates · 2</div>
+      <div class="section-link">All updates →</div>
+    </div>
+
+    <!-- Composer -->
+    <div class="brief-block" style="padding:0;margin-bottom:14px">
+      <div style="padding:14px 16px;display:flex;gap:12px">
+        <div style="width:28px;height:28px;border-radius:50%;background:var(--primary);color:#fff;font-size:11px;font-weight:700;display:inline-flex;align-items:center;justify-content:center;flex-shrink:0">S</div>
+        <div style="flex:1">
+          <textarea placeholder="Post an update, note, or question for the team…" style="width:100%;min-height:64px;background:var(--bg-surface-secondary);border:1px solid var(--border-default);border-radius:6px;padding:10px 12px;color:var(--text-primary);font-family:inherit;font-size:13px;line-height:1.5;resize:vertical;box-sizing:border-box"></textarea>
+          <!-- Attachment drop zone (FileUploadInput pattern) -->
+          <div style="margin-top:8px;padding:10px 12px;border:2px dashed var(--border-default);border-radius:6px;text-align:center;font-size:11px;color:var(--text-muted);cursor:pointer">
+            <span style="color:var(--text-secondary)">◈ Drop files or</span>
+            <span style="color:var(--primary);font-weight:500">click to attach</span>
+            <span style="color:var(--text-muted)"> · or paste a URL</span>
+          </div>
+          <div style="margin-top:10px;display:flex;justify-content:space-between;align-items:center">
+            <div style="font-size:11px;color:var(--text-muted)">Shift+Enter for newline · @ to mention</div>
+            <button class="btn btn-primary" style="font-size:12px;padding:6px 14px">Post update</button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Existing updates -->
+    <div class="brief-block" style="padding:0">
+      <!-- Update 1 with attachment -->
+      <div style="padding:14px 16px;display:flex;gap:12px;border-bottom:1px solid var(--border-default)">
+        <div style="width:28px;height:28px;border-radius:50%;background:#c48a1b;color:#fff;font-size:11px;font-weight:700;display:inline-flex;align-items:center;justify-content:center;flex-shrink:0">T</div>
+        <div style="flex:1;min-width:0">
+          <div style="display:flex;align-items:baseline;gap:8px;margin-bottom:4px">
+            <strong style="color:var(--text-heading);font-size:13px">Tim Walters</strong>
+            <span style="font-size:11px;color:var(--text-muted)">posted an update · 23 Apr · 9:12am</span>
+          </div>
+          <div style="font-size:13px;color:var(--text-primary);line-height:1.55">AU lab has confirmed a slot for biodegradability testing week of 12 May — we send samples by 5 May. SDS draft attached — flagged three claims that need chemistry review before it's tender-ready.</div>
+          <!-- Attachment pill (FileUploadInput rendered-state pattern) -->
+          <div style="margin-top:10px;display:inline-flex;align-items:center;gap:10px;padding:7px 10px;background:var(--bg-surface-secondary);border:1px solid var(--border-default);border-radius:6px;max-width:100%">
+            <span style="font-size:14px">📄</span>
+            <div style="min-width:0">
+              <div style="font-size:12px;color:var(--primary);font-weight:500;white-space:nowrap;overflow:hidden;text-overflow:ellipsis">Blick-Eco-Fluid-HT-SDS-draft-v0.3.pdf</div>
+              <div style="font-size:10px;color:var(--text-muted)">842 KB · uploaded by Tim</div>
+            </div>
+          </div>
+          <div style="margin-top:8px;display:flex;gap:14px;font-size:11px;color:var(--text-muted)">
+            <span style="cursor:pointer">↩ Reply</span>
+            <span style="cursor:pointer">◌ 1 reply</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- Update 2 with URL -->
+      <div style="padding:14px 16px;display:flex;gap:12px">
+        <div style="width:28px;height:28px;border-radius:50%;background:#2aa7b5;color:#fff;font-size:11px;font-weight:700;display:inline-flex;align-items:center;justify-content:center;flex-shrink:0">N</div>
+        <div style="flex:1;min-width:0">
+          <div style="display:flex;align-items:baseline;gap:8px;margin-bottom:4px">
+            <strong style="color:var(--text-heading);font-size:13px">Nisha Prasad</strong>
+            <span style="font-size:11px;color:var(--text-muted)">posted an update · 22 Apr · 4:30pm</span>
+          </div>
+          <div style="font-size:13px;color:var(--text-primary);line-height:1.55">Todd Energy tender spec — sharing so we align packaging to their template from day one.</div>
+          <!-- URL pill -->
+          <div style="margin-top:10px;display:inline-flex;align-items:center;gap:10px;padding:7px 10px;background:var(--bg-surface-secondary);border:1px solid var(--border-default);border-radius:6px;max-width:100%">
+            <span style="font-size:14px">↗</span>
+            <div style="min-width:0">
+              <div style="font-size:12px;color:var(--primary);font-weight:500;white-space:nowrap;overflow:hidden;text-overflow:ellipsis">docs.google.com/document/d/todd-superhot-tender-spec</div>
+              <div style="font-size:10px;color:var(--text-muted)">External URL</div>
+            </div>
+          </div>
+          <div style="margin-top:8px;display:flex;gap:14px;font-size:11px;color:var(--text-muted)">
+            <span style="cursor:pointer">↩ Reply</span>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Follow-ups — primary surface alongside activity and docs -->
+    <div class="section-head" style="margin-top:28px">
+      <div class="section-title">Follow-ups · 0</div>
+      <div class="section-link">+ New follow-up</div>
+    </div>
+    <div class="brief-block" style="text-align:center;padding:22px 18px;border-style:dashed">
+      <div style="font-size:13px;color:var(--text-secondary);margin-bottom:6px">No follow-ups yet.</div>
+      <div style="font-size:12px;color:var(--text-muted);margin-bottom:12px">Break the work into follow-ups. Each can have subtasks, an owner, and a due date.</div>
+      <button class="btn btn-secondary" style="font-size:12px">+ Add first follow-up</button>
+    </div>
+
+    <!-- Activity -->
+    <div class="section-head" style="margin-top:28px">
+      <div class="section-title">Activity</div>
+      <div class="section-link">All activity →</div>
+    </div>
+    <div class="brief-block" style="padding:0">
+      <div style="padding:14px 18px;display:flex;gap:12px;border-bottom:1px solid var(--border-default)">
+        <div style="width:28px;height:28px;border-radius:50%;background:var(--primary);color:#fff;font-size:11px;font-weight:700;display:inline-flex;align-items:center;justify-content:center;flex-shrink:0">S</div>
+        <div style="flex:1">
+          <div style="font-size:13px;color:var(--text-primary)"><strong style="color:var(--text-heading)">Shaun Tubb</strong> allocated this to <strong style="color:var(--text-heading)">Cycle 2</strong> and assigned <strong style="color:var(--text-heading)">Tim Walters</strong> as owner</div>
+          <div style="font-size:11px;color:var(--text-muted);margin-top:2px">22 Apr · 10:14am</div>
+        </div>
+      </div>
+      <div style="padding:14px 18px;display:flex;gap:12px;border-bottom:1px solid var(--border-default)">
+        <div style="width:28px;height:28px;border-radius:50%;background:#c48a1b;color:#fff;font-size:11px;font-weight:700;display:inline-flex;align-items:center;justify-content:center;flex-shrink:0">T</div>
+        <div style="flex:1">
+          <div style="font-size:13px;color:var(--text-primary)"><strong style="color:var(--text-heading)">Tim Walters</strong> added a comment</div>
+          <div style="font-size:12px;color:var(--text-secondary);margin-top:4px;padding:8px 10px;background:var(--bg-surface-secondary);border-radius:4px;border-left:2px solid var(--primary)">Spoke to Todd procurement Monday. Tender closes Sep 5, so we need SDS + biodegradability report locked by mid-August. I'll line up the AU lab booking this week.</div>
+          <div style="font-size:11px;color:var(--text-muted);margin-top:6px">22 Apr · 2:47pm</div>
+        </div>
+      </div>
+      <div style="padding:14px 18px;display:flex;gap:12px">
+        <div style="width:28px;height:28px;border-radius:50%;background:var(--info);color:#fff;font-size:11px;font-weight:700;display:inline-flex;align-items:center;justify-content:center;flex-shrink:0">◈</div>
+        <div style="flex:1">
+          <div style="font-size:13px;color:var(--text-primary)"><strong style="color:var(--text-heading)">System</strong> applied <strong style="color:var(--text-heading)">Definition of Done</strong> template · 4 items</div>
+          <div style="font-size:11px;color:var(--text-muted);margin-top:2px">22 Apr · 10:14am</div>
+        </div>
+      </div>
+      <div style="padding:12px 18px;text-align:center;border-top:1px solid var(--border-default);background:var(--bg-surface-secondary)">
+        <span style="font-size:12px;color:var(--primary);cursor:pointer">+ Add comment or update</span>
+      </div>
+    </div>
+
+    <!-- Documents — primary surface alongside activity -->
+    <div class="section-head" style="margin-top:28px">
+      <div class="section-title">Documents · 0</div>
+      <div class="section-link">+ Link a doc</div>
+    </div>
+    <div class="brief-block" style="text-align:center;padding:28px 18px;border-style:dashed">
+      <div style="font-size:13px;color:var(--text-secondary);margin-bottom:8px">No documents linked yet.</div>
+      <div style="font-size:12px;color:var(--text-muted);margin-bottom:14px">PDS, SDS, COA, tender packs, vendor quotes — drop a Drive link or paste a URL.</div>
+      <div style="display:inline-flex;gap:8px">
+        <button class="btn btn-secondary" style="font-size:12px">+ Link Drive doc</button>
+        <button class="btn btn-secondary" style="font-size:12px">+ Paste URL</button>
+      </div>
+    </div>
+
+  </div>
+
+  <div class="side-col">
+    <div class="rail-card">
+      <div class="rail-label">Status</div>
+      <div class="rail-value" style="color: var(--primary)">● Planning</div>
+      <div class="progress-placeholder"><div class="fill" style="width: 25%"></div></div>
+      <div class="progress-label">0 follow-ups · 0/4 DoD ticked</div>
+    </div>
+
+    <div class="rail-card">
+      <div class="rail-label">Key facts</div>
+      <div class="rail-row">
+        <span class="k">Owner</span>
+        <span class="v" style="display:inline-flex;align-items:center;gap:6px">
+          <span style="width:18px;height:18px;border-radius:50%;background:#c48a1b;color:#fff;font-size:9px;font-weight:700;display:inline-flex;align-items:center;justify-content:center">T</span>
+          Tim Walters
+        </span>
+      </div>
+      <div class="rail-row"><span class="k">Cycle</span><span class="v"><span class="cycle-chip-c2">● C2</span></span></div>
+      <div class="rail-row"><span class="k">Effort</span><span class="v">L · 6–8w</span></div>
+      <div class="rail-row"><span class="k">Target start</span><span class="v missing">Not set</span></div>
+      <div class="rail-row"><span class="k">Target end</span><span class="v missing">Not set</span></div>
+      <div class="rail-row"><span class="k">Votes from bank</span><span class="v">9</span></div>
+    </div>
+
+    <div class="rail-card" style="padding:10px 14px">
+      <div style="display:flex;align-items:center;justify-content:space-between;font-size:12px">
+        <span style="color:var(--text-muted)">Close-out</span>
+        <span style="color:var(--text-secondary)">0 / 4 <span style="color:var(--text-muted);margin-left:4px">›</span></span>
+      </div>
+    </div>
+
+    <div class="rail-card">
+      <div class="rail-label">Quick actions</div>
+      <button class="rail-action"><span class="plus">+</span> Add follow-up</button>
+      <button class="rail-action"><span class="plus">+</span> Link a doc</button>
+      <button class="rail-action"><span class="plus">+</span> Log comment</button>
+    </div>
+  </div>
+</div>
+
+<!-- Close-gate modal — shown overlaid to demonstrate the at-close experience -->
+<div style="position:fixed;inset:0;background:rgba(0,0,0,0.6);display:flex;align-items:flex-start;justify-content:center;padding:60px 20px;z-index:200;overflow-y:auto">
+  <div style="background:var(--bg-surface);border:1px solid var(--border-default);border-radius:8px;max-width:680px;width:100%;box-shadow:0 20px 60px rgba(0,0,0,0.5)">
+    <!-- Modal header -->
+    <div style="padding:20px 24px;border-bottom:1px solid var(--border-default);display:flex;align-items:flex-start;justify-content:space-between;gap:16px">
+      <div>
+        <div style="font-size:10px;font-weight:600;letter-spacing:0.08em;color:var(--primary);text-transform:uppercase;margin-bottom:6px">Mark project complete · close-out</div>
+        <h2 style="font-size:18px;font-weight:700;color:var(--text-heading);margin:0">Eco-friendly drilling fluid line for AU geothermal market</h2>
+        <p style="font-size:12px;color:var(--text-secondary);margin:6px 0 0">Tick each item as done, or skip with a recorded reason. Reasons appear on the Done view for the cycle retro.</p>
+      </div>
+      <button class="topbar-btn" style="flex-shrink:0">✕</button>
+    </div>
+
+    <!-- Items -->
+    <div style="padding:4px 0">
+      <!-- Row 1: ticked -->
+      <div style="padding:14px 24px;border-bottom:1px solid var(--border-default);display:flex;gap:14px;align-items:flex-start">
+        <div style="flex:1">
+          <div style="font-size:13px;font-weight:500;color:var(--text-heading);margin-bottom:3px">Documentation + files filed</div>
+          <div style="font-size:11px;color:var(--text-muted)">All project docs in Drive · linked to this project's Docs tab</div>
+        </div>
+        <div style="display:flex;gap:6px;flex-shrink:0">
+          <button style="font-size:11px;padding:5px 11px;border-radius:4px;border:1px solid var(--success-border);background:var(--success-bg);color:var(--success);font-weight:600;cursor:pointer">✓ Done</button>
+          <button style="font-size:11px;padding:5px 11px;border-radius:4px;border:1px solid var(--border-default);background:transparent;color:var(--text-muted);font-weight:500;cursor:pointer">↷ Skip</button>
+        </div>
+      </div>
+
+      <!-- Row 2: ticked -->
+      <div style="padding:14px 24px;border-bottom:1px solid var(--border-default);display:flex;gap:14px;align-items:flex-start">
+        <div style="flex:1">
+          <div style="font-size:13px;font-weight:500;color:var(--text-heading);margin-bottom:3px">Process documented on Blickopedia</div>
+          <div style="font-size:11px;color:var(--text-muted)">Anyone taking this over later knows how it works</div>
+        </div>
+        <div style="display:flex;gap:6px;flex-shrink:0">
+          <button style="font-size:11px;padding:5px 11px;border-radius:4px;border:1px solid var(--success-border);background:var(--success-bg);color:var(--success);font-weight:600;cursor:pointer">✓ Done</button>
+          <button style="font-size:11px;padding:5px 11px;border-radius:4px;border:1px solid var(--border-default);background:transparent;color:var(--text-muted);font-weight:500;cursor:pointer">↷ Skip</button>
+        </div>
+      </div>
+
+      <!-- Row 3: skipped with reason field open -->
+      <div style="padding:14px 24px;border-bottom:1px solid var(--border-default)">
+        <div style="display:flex;gap:14px;align-items:flex-start">
+          <div style="flex:1">
+            <div style="font-size:13px;font-weight:500;color:var(--text-heading);margin-bottom:3px">Team communication sent</div>
+            <div style="font-size:11px;color:var(--text-muted);margin-bottom:10px">What shipped, what changed</div>
+          </div>
+          <div style="display:flex;gap:6px;flex-shrink:0">
+            <button style="font-size:11px;padding:5px 11px;border-radius:4px;border:1px solid var(--border-default);background:transparent;color:var(--text-muted);font-weight:500;cursor:pointer">✓ Done</button>
+            <button style="font-size:11px;padding:5px 11px;border-radius:4px;border:1px solid var(--warning-border);background:var(--warning-bg);color:var(--warning);font-weight:600;cursor:pointer">↷ Skipped</button>
+          </div>
+        </div>
+        <div style="margin-top:4px;padding:10px 12px;background:var(--bg-surface-secondary);border-radius:4px;border-left:2px solid var(--warning)">
+          <div style="font-size:10px;color:var(--text-muted);text-transform:uppercase;letter-spacing:0.05em;margin-bottom:4px">Skip reason (required)</div>
+          <div style="font-size:12px;color:var(--text-primary);line-height:1.5">Internal-only workflow change, no external team affected. Tim walked through changes at Tuesday's drilling team standup (22 May) — no formal broadcast needed.</div>
+        </div>
+      </div>
+
+      <!-- Row 4: not yet chosen (blocks submit) -->
+      <div style="padding:14px 24px;border-bottom:1px solid var(--border-default);display:flex;gap:14px;align-items:flex-start;background:rgba(239,68,68,0.04)">
+        <div style="flex:1">
+          <div style="font-size:13px;font-weight:500;color:var(--text-heading);margin-bottom:3px">Training delivered where required</div>
+          <div style="font-size:11px;color:var(--danger)">Required — pick done or skip with reason before closing.</div>
+        </div>
+        <div style="display:flex;gap:6px;flex-shrink:0">
+          <button style="font-size:11px;padding:5px 11px;border-radius:4px;border:1px solid var(--border-default);background:transparent;color:var(--text-secondary);font-weight:500;cursor:pointer">✓ Done</button>
+          <button style="font-size:11px;padding:5px 11px;border-radius:4px;border:1px solid var(--border-default);background:transparent;color:var(--text-secondary);font-weight:500;cursor:pointer">↷ Skip</button>
+        </div>
+      </div>
+
+      <!-- Custom project-specific item -->
+      <div style="padding:14px 24px;border-bottom:1px solid var(--border-default);display:flex;gap:14px;align-items:flex-start">
+        <div style="flex:1">
+          <div style="font-size:13px;font-weight:500;color:var(--text-heading);margin-bottom:3px">
+            Todd Energy tender submitted
+            <span style="font-size:10px;color:var(--text-muted);margin-left:8px;padding:2px 6px;border-radius:3px;border:1px solid var(--border-default);background:var(--bg-surface-secondary);font-weight:500">CUSTOM</span>
+          </div>
+          <div style="font-size:11px;color:var(--text-muted)">Added by Tim Walters · 2 Jun</div>
+        </div>
+        <div style="display:flex;gap:6px;flex-shrink:0">
+          <button style="font-size:11px;padding:5px 11px;border-radius:4px;border:1px solid var(--success-border);background:var(--success-bg);color:var(--success);font-weight:600;cursor:pointer">✓ Done</button>
+          <button style="font-size:11px;padding:5px 11px;border-radius:4px;border:1px solid var(--border-default);background:transparent;color:var(--text-muted);font-weight:500;cursor:pointer">↷ Skip</button>
+        </div>
+      </div>
+
+      <!-- Add custom -->
+      <div style="padding:12px 24px;font-size:12px;color:var(--primary);cursor:pointer;border-bottom:1px solid var(--border-default)">+ Add another project-specific criterion</div>
+
+      <!-- Comms field -->
+      <div style="padding:18px 24px;border-bottom:1px solid var(--border-default)">
+        <div style="font-size:13px;font-weight:500;color:var(--text-heading);margin-bottom:4px">How is this being communicated to the team?</div>
+        <div style="font-size:11px;color:var(--text-muted);margin-bottom:10px">Short summary of what shipped. A follow-up will be created on you to actually post it (Chat, email, all-hands — your call). Shows on the project's Done view.</div>
+        <textarea placeholder="e.g. New eco fluid range is live. Three SKUs on the price book, PDS+COA in the Drive. Field team briefed at Tuesday standup. Submitting to Todd tender 5 Sep." style="width:100%;min-height:80px;background:var(--bg-surface-secondary);border:1px solid var(--border-default);border-radius:6px;padding:10px 12px;color:var(--text-primary);font-family:inherit;font-size:13px;line-height:1.5;resize:vertical;box-sizing:border-box">New eco fluid range is live across NZ + AU. Three SKUs (Eco-HT 15, 22, 35) loaded to the price book. PDS and COA packs in the Drive, linked from this project's Docs tab. Field team walked through at Tuesday's drilling standup. Next step — Todd Superhot tender submission due 5 Sep.</textarea>
+      </div>
+
+      <!-- Dynamic reviewer banner — shown because 1 item skipped -->
+      <div style="padding:14px 24px;background:rgba(245,158,11,0.06);border-bottom:1px solid var(--border-default);display:flex;gap:12px;align-items:flex-start">
+        <div style="width:32px;height:32px;border-radius:50%;background:var(--primary);color:#fff;font-size:12px;font-weight:700;display:inline-flex;align-items:center;justify-content:center;flex-shrink:0">S</div>
+        <div style="flex:1">
+          <div style="font-size:12px;color:var(--text-heading);font-weight:500;line-height:1.45"><strong>Shaun Tubb</strong> <span style="color:var(--text-secondary);font-weight:400">(GM Operations)</span> will review before this closes.</div>
+          <div style="font-size:11px;color:var(--text-muted);margin-top:3px;line-height:1.5">Because 1 item was skipped. Reviewer resolved from owner's manager chain in Google Workspace. If no items were skipped, the project would close immediately.</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Modal footer -->
+    <div style="padding:16px 24px;border-top:1px solid var(--border-default);display:flex;align-items:center;justify-content:space-between;gap:16px;background:var(--bg-surface-secondary);border-radius:0 0 8px 8px">
+      <div style="font-size:12px;color:var(--text-secondary)"><strong style="color:var(--text-heading)">3 of 5</strong> resolved · 1 skipped with reason · 1 still needs a decision</div>
+      <div style="display:flex;gap:8px">
+        <button class="btn btn-secondary">Cancel</button>
+        <button class="btn btn-primary" style="opacity:0.5;cursor:not-allowed" title="Resolve all items before submitting">Submit for review →</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+</body>
+</html>
