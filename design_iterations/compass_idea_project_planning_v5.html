@@ -665,9 +665,14 @@ body { font-family: 'Inter', sans-serif; background: var(--bg-page); color: var(
   </div>
 </div>
 
-<!-- Close-gate modal — shown overlaid to demonstrate the at-close experience -->
-<div style="position:fixed;inset:0;background:rgba(0,0,0,0.6);display:flex;align-items:flex-start;justify-content:center;padding:60px 20px;z-index:200;overflow-y:auto">
-  <div style="background:var(--bg-surface);border:1px solid var(--border-default);border-radius:8px;max-width:680px;width:100%;box-shadow:0 20px 60px rgba(0,0,0,0.5)">
+<!-- Close-gate modal — flattened inline for mockup readability.
+     In the real app this renders as an overlay modal; shown inline here so
+     the planning page behind it stays visible for comparison. -->
+<div style="padding:40px 20px;background:var(--bg-page);border-top:1px dashed var(--border-default)">
+  <div style="max-width:920px;margin:0 auto;padding:0 16px">
+    <div style="font-size:10px;text-transform:uppercase;letter-spacing:0.08em;color:var(--text-muted);font-weight:600;margin-bottom:10px">— MOCKUP PREVIEW OF CLOSE-GATE MODAL (shown inline; real app: overlay) —</div>
+  </div>
+  <div style="background:var(--bg-surface);border:1px solid var(--border-default);border-radius:8px;max-width:680px;width:calc(100% - 40px);margin:0 auto;box-shadow:0 20px 60px rgba(0,0,0,0.3)">
     <!-- Modal header -->
     <div style="padding:20px 24px;border-bottom:1px solid var(--border-default);display:flex;align-items:flex-start;justify-content:space-between;gap:16px">
       <div>
