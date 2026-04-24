@@ -1,0 +1,429 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="dark">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Compass — Idea-as-project lifecycle flow (v1)</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+:root, [data-theme="dark"] {
+  --primary: #f05323;
+  --primary-hover: #ff6a3d;
+  --bg-page: #1a1a1a;
+  --bg-surface: #2a2a2a;
+  --bg-surface-secondary: #262626;
+  --bg-hover: #3a3a3a;
+  --text-heading: #ffffff;
+  --text-primary: #bcbec0;
+  --text-secondary: #a0a0a0;
+  --text-muted: #707070;
+  --border-default: #58595b;
+  --border-hover: #707070;
+  --card-bg: rgba(255,255,255,0.03);
+  --card-border: #58595b;
+  --success: #10b981;
+  --success-bg: rgba(16,185,129,0.12);
+  --warning: #f59e0b;
+  --warning-bg: rgba(245,158,11,0.12);
+  --danger: #ef4444;
+  --info: #4A9EFF;
+  --info-bg: rgba(74,158,255,0.12);
+}
+* { box-sizing: border-box; margin: 0; padding: 0; }
+body { font-family: 'Inter', sans-serif; background: var(--bg-page); color: var(--text-primary); font-size: 13px; line-height: 1.55; padding-bottom: 80px; }
+
+.topbar { position: sticky; top: 0; z-index: 100; background: var(--bg-surface); border-bottom: 1px solid var(--border-default); display: flex; align-items: center; padding: 0 24px; height: 48px; gap: 12px; }
+.topbar-logo { font-size: 15px; font-weight: 700; color: var(--text-heading); letter-spacing: -0.3px; }
+.topbar-logo span { color: var(--primary); }
+.topbar-sep { width: 1px; height: 20px; background: var(--border-default); }
+.topbar-crumbs { font-size: 12px; color: var(--text-secondary); display: flex; align-items: center; gap: 8px; }
+
+.wrap { max-width: 1180px; margin: 0 auto; padding: 40px 32px; }
+
+.tag { display: inline-flex; align-items: center; padding: 4px 10px; border-radius: 3px; font-size: 10px; font-weight: 600; text-transform: uppercase; letter-spacing: 0.08em; color: #fff; background: var(--primary); margin-bottom: 16px; }
+
+h1 { font-size: 28px; font-weight: 700; color: var(--text-heading); letter-spacing: -0.01em; margin-bottom: 10px; }
+.sub { font-size: 14px; color: var(--text-secondary); max-width: 720px; margin-bottom: 40px; line-height: 1.6; }
+
+h2 { font-size: 11px; font-weight: 600; text-transform: uppercase; letter-spacing: 0.1em; color: var(--text-muted); margin: 40px 0 14px; }
+
+/* Flow chain */
+.flow { display: flex; flex-direction: column; gap: 0; margin-top: 8px; }
+
+.node {
+  background: var(--bg-surface);
+  border: 1px solid var(--border-default);
+  border-radius: 8px;
+  padding: 20px 22px;
+  position: relative;
+}
+.node.start { border-left: 3px solid var(--info); }
+.node.middle { border-left: 3px solid var(--primary); }
+.node.end-ok { border-left: 3px solid var(--success); }
+.node.end-parked { border-left: 3px solid var(--warning); }
+
+.node-head { display: flex; align-items: flex-start; justify-content: space-between; gap: 16px; margin-bottom: 12px; }
+.node-title { font-size: 16px; font-weight: 600; color: var(--text-heading); margin-bottom: 3px; }
+.node-subtitle { font-size: 12px; color: var(--text-secondary); }
+.stage-num { font-size: 10px; font-weight: 700; letter-spacing: 0.1em; color: var(--primary); text-transform: uppercase; margin-bottom: 6px; }
+
+.node-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+  gap: 14px;
+  margin-top: 14px;
+  padding-top: 14px;
+  border-top: 1px solid var(--border-default);
+}
+.node-grid .label { font-size: 10px; text-transform: uppercase; letter-spacing: 0.06em; color: var(--text-muted); margin-bottom: 4px; font-weight: 600; }
+.node-grid .val { font-size: 12px; color: var(--text-primary); line-height: 1.5; }
+
+.chip { display: inline-flex; align-items: center; padding: 3px 8px; border-radius: 3px; font-size: 10px; font-weight: 600; letter-spacing: 0.03em; }
+.chip.info { background: var(--info-bg); color: var(--info); }
+.chip.success { background: var(--success-bg); color: var(--success); }
+.chip.warning { background: var(--warning-bg); color: var(--warning); }
+.chip.primary { background: rgba(240,83,35,0.14); color: var(--primary); }
+.chip.muted { background: var(--bg-surface-secondary); color: var(--text-muted); border: 1px solid var(--border-default); }
+
+.mock-link { display: inline-flex; align-items: center; gap: 6px; font-size: 11px; color: var(--primary); text-decoration: none; padding: 4px 9px; border: 1px solid var(--primary); border-radius: 4px; font-weight: 500; }
+.mock-link:hover { background: rgba(240,83,35,0.1); }
+.mock-link.none { color: var(--text-muted); border-color: var(--border-default); cursor: default; }
+.mock-link.none:hover { background: transparent; }
+
+/* Arrow between nodes */
+.arrow {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 14px 0 6px;
+  position: relative;
+}
+.arrow-body {
+  background: var(--bg-surface-secondary);
+  border: 1px solid var(--border-default);
+  border-radius: 20px;
+  padding: 6px 14px;
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 11px;
+  color: var(--text-secondary);
+  max-width: 620px;
+}
+.arrow-body strong { color: var(--text-heading); font-weight: 600; }
+.arrow::before, .arrow::after {
+  content: '';
+  position: absolute;
+  left: 50%;
+  width: 1px;
+  background: var(--border-default);
+}
+.arrow::before { top: 0; height: 14px; }
+.arrow::after { bottom: -4px; height: 14px; }
+.arrow .caret { color: var(--primary); font-size: 14px; line-height: 1; }
+
+/* Branch pair (done vs parked) */
+.branch {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 14px;
+  margin-top: 6px;
+}
+@media (max-width: 720px) {
+  .branch { grid-template-columns: 1fr; }
+}
+
+/* Actor / State visualisation */
+.legend {
+  background: var(--bg-surface);
+  border: 1px solid var(--border-default);
+  border-radius: 8px;
+  padding: 16px 20px;
+  margin-top: 12px;
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+  gap: 14px;
+}
+.legend-item .label { font-size: 10px; text-transform: uppercase; letter-spacing: 0.06em; color: var(--text-muted); margin-bottom: 4px; font-weight: 600; }
+.legend-item .val { font-size: 12px; color: var(--text-primary); line-height: 1.55; }
+
+.callout {
+  background: var(--bg-surface);
+  border: 1px solid var(--border-default);
+  border-left: 3px solid var(--primary);
+  border-radius: 6px;
+  padding: 14px 18px;
+  margin-top: 10px;
+  font-size: 12px;
+  color: var(--text-secondary);
+  line-height: 1.6;
+}
+.callout strong { color: var(--text-heading); }
+
+</style>
+</head>
+<body>
+
+<div class="topbar">
+  <div class="topbar-logo">Blick<span>.</span>Hub</div>
+  <div class="topbar-sep"></div>
+  <div class="topbar-crumbs">
+    <a style="color:var(--text-secondary);text-decoration:none">Compass</a>
+    <span style="color:var(--text-muted)">›</span>
+    <span style="color:var(--text-heading);font-weight:500">Idea-as-project lifecycle</span>
+  </div>
+</div>
+
+<div class="wrap">
+
+  <div class="tag">COMPASS · LIFECYCLE FLOW</div>
+  <h1>How an idea becomes a project</h1>
+  <p class="sub">End-to-end map of an idea's journey — from submission through voting, allocation, planning, execution, and closure. Each stage shows the trigger to move, the actor, where the idea lives in the UI, and which mockup represents it. Stages 1 and 3 keep today's UI. Stages 2, 4, 5 and 6 are what we've been designing.</p>
+
+  <h2>Legend</h2>
+  <div class="legend">
+    <div class="legend-item">
+      <div class="label">Actor chips</div>
+      <div class="val">
+        <span class="chip info">Anyone</span>
+        <span class="chip primary">Owner</span>
+        <span class="chip warning">GM · Shaun/Tim</span>
+        <span class="chip muted">System</span>
+      </div>
+    </div>
+    <div class="legend-item">
+      <div class="label">Surface</div>
+      <div class="val">Where the idea shows up in the UI at this stage — which tab, which list, which route.</div>
+    </div>
+    <div class="legend-item">
+      <div class="label">Data state</div>
+      <div class="val">The BigQuery <code style="font-size:11px;color:var(--text-heading)">ideas</code> row's status + any related tables (<code style="font-size:11px;color:var(--text-heading)">follow_ups</code>, <code style="font-size:11px;color:var(--text-heading)">entity_tasks</code>) with <code style="font-size:11px;color:var(--text-heading)">entity_type='idea'</code>.</div>
+    </div>
+  </div>
+
+  <h2>Flow</h2>
+  <div class="flow">
+
+    <!-- STAGE 1: SUBMITTED -->
+    <div class="node start">
+      <div class="stage-num">Stage 1</div>
+      <div class="node-head">
+        <div>
+          <div class="node-title">Submitted</div>
+          <div class="node-subtitle">Anyone in Blick posts an idea — title, description, goal category, effort estimate, impact tags.</div>
+        </div>
+        <a class="mock-link none">Today's UI · no change</a>
+      </div>
+      <div class="node-grid">
+        <div><div class="label">Actor</div><div class="val"><span class="chip info">Anyone</span></div></div>
+        <div><div class="label">Trigger in</div><div class="val">Submit Idea button · Ideas Bank header</div></div>
+        <div><div class="label">Surface</div><div class="val">Ideas Bank · Active view (default)</div></div>
+        <div><div class="label">Data state</div><div class="val"><code style="font-size:11px">status='submitted'</code></div></div>
+      </div>
+    </div>
+
+    <div class="arrow"><div class="arrow-body">Moves automatically once the team can see + vote <span class="caret">▼</span></div></div>
+
+    <!-- STAGE 2: VOTING / BANKED -->
+    <div class="node middle">
+      <div class="stage-num">Stage 2</div>
+      <div class="node-head">
+        <div>
+          <div class="node-title">Banked · votable</div>
+          <div class="node-subtitle">The idea sits in the Ideas Bank. Anyone can vote. Goal filters + counts visible. Approval is implicit — being in the bank means the idea has cleared triage.</div>
+        </div>
+        <a class="mock-link none">Today's UI · no change</a>
+      </div>
+      <div class="node-grid">
+        <div><div class="label">Actor</div><div class="val"><span class="chip info">Anyone</span> votes · <span class="chip warning">GM</span> allocates</div></div>
+        <div><div class="label">Trigger out</div><div class="val">Allocation to a 90-day cycle</div></div>
+        <div><div class="label">Surface</div><div class="val">Ideas Bank · Active view</div></div>
+        <div><div class="label">Data state</div><div class="val"><code style="font-size:11px">status='approved'</code>, <code style="font-size:11px">plan_id=NULL</code></div></div>
+      </div>
+    </div>
+
+    <div class="arrow"><div class="arrow-body">On allocation: <strong>plan_id</strong> is set, idea drops from Active bank view, owner assigned from GWS manager of submitter (or GM picks), DoD template applied, workspace opens in Planning <span class="caret">▼</span></div></div>
+
+    <!-- STAGE 3: ALLOCATED / PLANNING -->
+    <div class="node middle" style="border-left-color: var(--primary)">
+      <div class="stage-num">Stage 3</div>
+      <div class="node-head">
+        <div>
+          <div class="node-title">Allocated · Planning</div>
+          <div class="node-subtitle">The idea is now a project. Full-page workspace opens at <code style="color:var(--primary);font-size:12px">/compass/ideas/:id</code>. Owner scaffolds the work: adds follow-ups, links docs, posts updates. Cycle hasn't started yet.</div>
+        </div>
+        <a class="mock-link" href="compass_idea_project_planning_v5.html" target="_blank">Planning v5 →</a>
+      </div>
+      <div class="node-grid">
+        <div><div class="label">Actor</div><div class="val"><span class="chip primary">Owner</span> · team posts updates</div></div>
+        <div><div class="label">Trigger out</div><div class="val">Cycle kickoff · owner flips to execution</div></div>
+        <div><div class="label">Surface</div><div class="val">Project workspace (Planning stage). Ideas Bank · History shows it.</div></div>
+        <div><div class="label">Data state</div><div class="val"><code style="font-size:11px">status='in_planning'</code>, <code style="font-size:11px">plan_id</code> set, DoD template applied</div></div>
+      </div>
+      <div class="callout">
+        <strong>Key design decisions locked in v5:</strong> updates/comments composer under Brief (FileUploadInput pattern). Close-out is a small side-rail pill — not a dashboard. Owner assigned at allocation, non-admins can't reassign. "Tasks" is called "Follow-ups" everywhere.
+      </div>
+    </div>
+
+    <div class="arrow"><div class="arrow-body">Owner clicks <strong>Start execution</strong> when the cycle is live and scaffolding is ready <span class="caret">▼</span></div></div>
+
+    <!-- STAGE 4: EXECUTION -->
+    <div class="node middle">
+      <div class="stage-num">Stage 4</div>
+      <div class="node-head">
+        <div>
+          <div class="node-title">In execution</div>
+          <div class="node-subtitle">Work is happening. Follow-ups are being ticked, comments flying, docs getting uploaded. This is the page owners and teams live in for weeks.</div>
+        </div>
+        <a class="mock-link" href="compass_idea_project_execution_v2_tabs.html" target="_blank">Execution v2 →</a>
+      </div>
+      <div class="node-grid">
+        <div><div class="label">Actor</div><div class="val"><span class="chip primary">Owner</span> + team</div></div>
+        <div><div class="label">Trigger out</div><div class="val">Owner clicks <strong>Mark complete</strong> · close-gate modal opens</div></div>
+        <div><div class="label">Surface</div><div class="val">Project workspace (Execution stage). Shown in cycle execution table.</div></div>
+        <div><div class="label">Data state</div><div class="val"><code style="font-size:11px">status='in_execution'</code></div></div>
+      </div>
+      <div class="callout">
+        <strong>Carry-forward from v5 planning (pending v3 execution mockup):</strong> same updates composer under Brief, same follow-ups/docs/activity tabs, same close-out side-rail pill, same Mark-complete action.
+      </div>
+    </div>
+
+    <div class="arrow"><div class="arrow-body">Close-gate modal: owner ticks or skips each DoD item (reason required to skip). Writes closing comms. <strong>If any skips → admin review. If none → closes directly.</strong> <span class="caret">▼</span></div></div>
+
+    <!-- STAGE 5: ADMIN REVIEW (conditional) -->
+    <div class="node middle" style="border-left-color: var(--warning)">
+      <div class="stage-num">Stage 5 · conditional</div>
+      <div class="node-head">
+        <div>
+          <div class="node-title">Awaiting admin review</div>
+          <div class="node-subtitle">Only reached if any DoD items were skipped. Single review follow-up fires on the routed GM (walk-up-the-chain from owner's GWS manager → Tim for sales, Shaun for everyone else). Lives in that GM's existing IAM inbox — no new surface.</div>
+        </div>
+        <a class="mock-link none">In planning v5 modal</a>
+      </div>
+      <div class="node-grid">
+        <div><div class="label">Actor</div><div class="val"><span class="chip warning">GM · Tim or Shaun</span></div></div>
+        <div><div class="label">Trigger out</div><div class="val">Approve → closes · Reject+comment → bounces to owner</div></div>
+        <div><div class="label">Surface</div><div class="val">GM's IAM follow-ups list · project workspace shows "Awaiting review" state</div></div>
+        <div><div class="label">Data state</div><div class="val"><code style="font-size:11px">status='awaiting_review'</code>, review follow-up created</div></div>
+      </div>
+      <div class="callout">
+        <strong>Reviewer resolution algorithm:</strong> if owner=Tim → Shaun. If owner=Shaun → Tim. Otherwise walk owner's manager chain in GWS until Tim or Shaun is found. No match → Shaun (default fallback). Self-approval prevented.
+      </div>
+    </div>
+
+    <div class="arrow"><div class="arrow-body">GM approves → project closes. Comms follow-up fires on owner to post what shipped <span class="caret">▼</span></div></div>
+
+    <!-- STAGE 6: DONE / PARKED (branch) -->
+    <div class="branch">
+      <div class="node end-ok">
+        <div class="stage-num">Stage 6a</div>
+        <div class="node-head">
+          <div>
+            <div class="node-title">Done</div>
+            <div class="node-subtitle">Project complete. Read-only. Shows closing comms, journey, skipped DoD items + reasons, retro block, final metrics.</div>
+          </div>
+          <a class="mock-link" href="compass_idea_project_done_v2.html" target="_blank">Done v2 →</a>
+        </div>
+        <div style="margin-top:10px">
+          <div style="font-size:10px;text-transform:uppercase;color:var(--text-muted);letter-spacing:0.06em;font-weight:600;margin-bottom:4px">Trigger in</div>
+          <div style="font-size:12px">Close-gate modal submit (if no skips) · OR GM approval of review</div>
+        </div>
+        <div style="margin-top:10px">
+          <div style="font-size:10px;text-transform:uppercase;color:var(--text-muted);letter-spacing:0.06em;font-weight:600;margin-bottom:4px">Data state</div>
+          <div style="font-size:12px"><code style="font-size:11px">status='done'</code></div>
+        </div>
+      </div>
+      <div class="node end-parked">
+        <div class="stage-num">Stage 6b</div>
+        <div class="node-head">
+          <div>
+            <div class="node-title">Parked</div>
+            <div class="node-subtitle">Not completed — shelved at a retro or mid-cycle. Owner records why. Can be un-parked in a later cycle (re-allocated) or left as historical record.</div>
+          </div>
+          <a class="mock-link" href="compass_idea_project_done_v2.html" target="_blank">Done v2 →</a>
+        </div>
+        <div style="margin-top:10px">
+          <div style="font-size:10px;text-transform:uppercase;color:var(--text-muted);letter-spacing:0.06em;font-weight:600;margin-bottom:4px">Trigger in</div>
+          <div style="font-size:12px">Owner clicks Park · OR cycle ends with project open</div>
+        </div>
+        <div style="margin-top:10px">
+          <div style="font-size:10px;text-transform:uppercase;color:var(--text-muted);letter-spacing:0.06em;font-weight:600;margin-bottom:4px">Data state</div>
+          <div style="font-size:12px"><code style="font-size:11px">status='parked'</code></div>
+        </div>
+      </div>
+    </div>
+
+    <div class="arrow" style="padding-top:18px"><div class="arrow-body">Both Done and Parked appear in <strong>Ideas Bank · History</strong> with plan/cycle + status chip + link back to project <span class="caret">▼</span></div></div>
+
+    <!-- FINAL: HISTORY -->
+    <div class="node middle" style="border-left-color: var(--text-muted)">
+      <div class="stage-num">Historical</div>
+      <div class="node-head">
+        <div>
+          <div class="node-title">Ideas Bank · History view</div>
+          <div class="node-subtitle">Toggle on the Ideas Bank. Allocated ideas (dropped from Active view) re-surface here with plan/cycle, status, and a link back to the project workspace. Filter by cycle or status.</div>
+        </div>
+        <a class="mock-link" href="compass_idea_bank_history_v1.html" target="_blank">Bank history v1 →</a>
+      </div>
+      <div class="node-grid">
+        <div><div class="label">Actor</div><div class="val"><span class="chip info">Anyone</span> · read-only</div></div>
+        <div><div class="label">Trigger in</div><div class="val">Any idea that left the Active bank shows up here</div></div>
+        <div><div class="label">Surface</div><div class="val">Ideas Bank · History toggle</div></div>
+        <div><div class="label">Data state</div><div class="val">Any <code style="font-size:11px">plan_id IS NOT NULL</code></div></div>
+      </div>
+    </div>
+
+  </div>
+
+  <h2>Side systems the flow depends on</h2>
+  <div class="legend">
+    <div class="legend-item">
+      <div class="label">Definition of Done</div>
+      <div class="val">Standard 4-item template applied at allocation: <strong>docs + files</strong> · <strong>Blickopedia</strong> · <strong>team comms</strong> · <strong>training</strong>. Owner can add project-specific items. Skipping any requires a recorded reason. Admin-editable globally.</div>
+    </div>
+    <div class="legend-item">
+      <div class="label">Follow-ups (IAM)</div>
+      <div class="val">Blick's polymorphic follow-ups table. Compass project creates them with <code style="font-size:11px">entity_type='idea'</code>. Review-on-skip fires a follow-up on the GM. Comms-on-close fires one on the owner. No new surface — reviewers act from their existing IAM inbox.</div>
+    </div>
+    <div class="legend-item">
+      <div class="label">Entity tasks (subtasks)</div>
+      <div class="val">Same polymorphic pattern. Each follow-up can have subtasks. Parent status rolls up but parent closes manually.</div>
+    </div>
+    <div class="legend-item">
+      <div class="label">File attachments</div>
+      <div class="val">Polymorphic <code style="font-size:11px">file_attachments</code> table. Updates, comments, and DoD evidence all attach via <code style="font-size:11px">FileUploadInput</code>.</div>
+    </div>
+    <div class="legend-item">
+      <div class="label">GWS manager chain</div>
+      <div class="val">Reviewer routing reads <code style="font-size:11px">department_head_email</code> + <code style="font-size:11px">intermediate_manager_email</code> from <code style="font-size:11px">blick_identity.user_profiles</code>. Fields already synced from Google Workspace but not yet exposed on users API — ~10-line backend change flagged.</div>
+    </div>
+    <div class="legend-item">
+      <div class="label">Watercooler (future)</div>
+      <div class="val">Closing comms field is Watercooler-ready. When it ships, closing announcements can auto-post. For now, owner gets a follow-up to post manually via Chat/email/standup.</div>
+    </div>
+  </div>
+
+  <h2>What's designed vs. pending</h2>
+  <div class="legend">
+    <div class="legend-item">
+      <div class="label">Designed</div>
+      <div class="val">Stages 1–2 (today's UI, no change), Stage 3 Planning (v5 complete), Stage 5 Admin review (modal + routing in Planning v5), Bank History (v1), Flow doc (this page).</div>
+    </div>
+    <div class="legend-item">
+      <div class="label">Pending v3 roll-forward</div>
+      <div class="val">Stage 4 Execution and Stage 6 Done currently show v2 mockups. Need to carry v5 planning decisions forward — updates composer, FileUploadInput attachments, follow-ups language, close-gate modal surfaced from execution, GWS-routed reviewer banner.</div>
+    </div>
+    <div class="legend-item">
+      <div class="label">Backend prerequisites</div>
+      <div class="val">Expose <code style="font-size:11px">department_head_email</code> + <code style="font-size:11px">intermediate_manager_email</code> on users API. Add <code style="font-size:11px">'idea'</code> to allowed <code style="font-size:11px">entity_type</code> enums on follow-ups + entity_tasks + file_attachments validators. No schema migration.</div>
+    </div>
+  </div>
+
+</div>
+
+</body>
+</html>
+</content>
+</invoke>
