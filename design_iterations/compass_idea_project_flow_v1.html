@@ -357,6 +357,32 @@ h2 { font-size: 11px; font-weight: 600; text-transform: uppercase; letter-spacin
 
     <div class="arrow" style="padding-top:18px"><div class="arrow-body">Both Done and Parked appear in <strong>Ideas Bank · History</strong> with plan/cycle + status chip + link back to project <span class="caret">▼</span></div></div>
 
+    <!-- EDGE CASES -->
+    <div class="callout" style="border-left-color:var(--warning);margin-top:24px">
+      <strong>Edge case · Pulling an idea back from a plan</strong><br>
+      Once an idea is allocated to a cycle, it's a project. Going back to "just an idea in the bank" loses the trail of work already done. Two allowed paths instead:<br>
+      <span style="color:var(--text-muted);display:block;margin-top:8px;line-height:1.7">
+        <strong style="color:var(--text-heading)">Move cycle.</strong> Swap <code style="font-size:11px;color:var(--text-heading)">plan_id</code> from C2 → C3. Workspace continues. Status stays as-is (planning or execution depending on where it was).<br>
+        <strong style="color:var(--text-heading)">Park.</strong> Status flips to <code style="font-size:11px;color:var(--text-heading)">parked</code>. Workspace becomes read-only. Can be un-parked later by re-allocating to a future cycle (status returns to <code style="font-size:11px;color:var(--text-heading)">in_planning</code>).
+      </span>
+      <span style="color:var(--text-muted);display:block;margin-top:8px">No "back to bank" path. Once committed — even partially — it's a project that's alive, parked, or done.</span>
+    </div>
+
+    <div class="callout" style="border-left-color:var(--danger);margin-top:14px">
+      <strong>Edge case · GM rejects the close</strong><br>
+      <span style="color:var(--text-muted);display:block;margin-top:8px;line-height:1.7">
+        Reject requires a comment explaining <em>what needs to change</em> — not just "no". Three valid reject reasons:
+      </span>
+      <ul style="margin:8px 0 8px 22px;color:var(--text-secondary);line-height:1.7">
+        <li>"Actually do the items you skipped" — owner ticks instead of skips, resubmits</li>
+        <li>"Your skip reason isn't good enough" — owner edits the reason, resubmits</li>
+        <li>"More work needed" — owner adds follow-ups, completes them, resubmits</li>
+      </ul>
+      <span style="color:var(--text-muted);display:block;line-height:1.7">
+        On reject: status flips to <code style="font-size:11px;color:var(--text-heading)">in_execution</code>, owner notified via follow-up with the reviewer's comment attached. When owner re-opens the close-gate modal, <strong>previous DoD state is pre-filled</strong> — they don't redo everything, just address the contested items. Round-trip continues until approved or owner parks the project.
+      </span>
+    </div>
+
     <!-- FINAL: HISTORY -->
     <div class="node middle" style="border-left-color: var(--text-muted)">
       <div class="stage-num">Historical</div>
