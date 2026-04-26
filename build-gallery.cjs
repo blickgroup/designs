@@ -542,7 +542,6 @@ function buildVideoViewerHTML(compositionFilename, brief) {
     .composition-wrap {
       width: 100%;
       max-width: 960px;
-      aspect-ratio: 16/9;
       position: relative;
       background: #000;
       border-radius: 8px;
@@ -550,13 +549,11 @@ function buildVideoViewerHTML(compositionFilename, brief) {
       border: 1px solid rgba(255,255,255,0.1);
     }
     .composition-wrap iframe {
-      position: absolute;
-      top: 0; left: 0;
+      display: block;
       width: 1920px;
       height: 1080px;
       border: none;
       transform-origin: top left;
-      /* Scale is set by JS based on actual rendered width */
     }
 
     .play-notice {
@@ -743,7 +740,7 @@ function buildVideoViewerHTML(compositionFilename, brief) {
   <div class="hero">
     ${compositionFilename ? `
     <div class="composition-wrap" id="compWrap">
-      <iframe id="compFrame" src="${compositionFilename}" scrolling="no" sandbox="allow-scripts allow-same-origin"></iframe>
+      <iframe id="compFrame" src="${compositionFilename}" scrolling="no"></iframe>
     </div>` : brief.mp4File ? `
     <div class="video-player-wrap">
       <video controls autoplay muted loop playsinline style="max-width:960px;width:100%;border-radius:8px;background:#000;">
@@ -805,16 +802,20 @@ function buildVideoViewerHTML(compositionFilename, brief) {
   </div>
 
   <script>
-    // Scale the 1920×1080 iframe to fit its container
     function scaleFrame() {
       const wrap = document.getElementById('compWrap');
       const frame = document.getElementById('compFrame');
+      if (!wrap || !frame) return;
       const scale = wrap.offsetWidth / 1920;
       frame.style.transform = 'scale(' + scale + ')';
-      wrap.style.height = (1080 * scale) + 'px';
+      frame.style.transformOrigin = 'top left';
+      wrap.style.height = Math.round(1080 * scale) + 'px';
     }
+    // Run after layout settles
     scaleFrame();
     window.addEventListener('resize', scaleFrame);
+    // Re-run after fonts/styles load in case layout shifts
+    window.addEventListener('load', scaleFrame);
   </script>
 </body>
 </html>`;
