@@ -1,0 +1,46 @@
+{
+  "title": "Blick Brand Explainer",
+  "version": "v1",
+  "duration": 30,
+  "format": "16:9 1920×1080",
+  "status": "iteration",
+  "created": "2026-04-27",
+  "purpose": "30-second brand explainer for blick.group — introduces Blick to new visitors, covers what we do, why choose us, and ends with a clear CTA.",
+  "audience": "Prospective drilling customers in AU/NZ. Owner-operators and site managers, 40s–60s, practical and direct.",
+  "scenes": [
+    {
+      "name": "Hero",
+      "timing": "0–10s",
+      "message": "Better drilling starts here.",
+      "notes": "Orange sweep wipe reveals headline on black. Tagline + sub-copy. Brand confidence play."
+    },
+    {
+      "name": "Three Pillars",
+      "timing": "10–22s",
+      "message": "Quality that performs / There when you need us / Your expert partner",
+      "notes": "Dark background, three cards stagger in. Maps directly to brand voice pillars from Brand Voice Guide."
+    },
+    {
+      "name": "Close",
+      "timing": "22–30s",
+      "message": "Your wins are our wins.",
+      "notes": "Full orange close. Strong brand colour finish. blick.group URL. Brand tagline quote."
+    }
+  ],
+  "brand": {
+    "primary": "#f05323",
+    "dark": "#58595b",
+    "light": "#bcbec0",
+    "black": "#000000",
+    "font": "Nunito Sans (Proxima Nova substitute — web safe)",
+    "voice": "Expert mate — confident, plain-spoken, field-focused"
+  },
+  "nextSteps": [
+    "Review scene timing — is 12s on pillars long enough to read?",
+    "Add Blick logo SVG asset (currently B lettermark only)",
+    "Consider adding a field photography background to Scene 1",
+    "Render to MP4 once approved: cd blick-explainer && npx hyperframes render",
+    "Decide on music/voiceover — silent or narrated?"
+  ],
+  "renderCommand": "cd /Volumes/NewmanDrive/development/blick-explainer && HYPERFRAMES_NO_TELEMETRY=1 npx hyperframes render"
+}

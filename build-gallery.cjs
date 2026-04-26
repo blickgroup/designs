@@ -62,7 +62,7 @@ function humanName(filename) {
 function scanDir(dir, status, projectId) {
   if (!fs.existsSync(dir)) return [];
   return fs.readdirSync(dir)
-    .filter(f => f.endsWith('.html') && f !== 'index.html')
+    .filter(f => f.endsWith('.html') && f !== 'index.html' && !f.endsWith('.raw.html'))
     .map(f => {
       const fullPath = path.join(dir, f);
       const stat = fs.statSync(fullPath);
@@ -456,6 +456,325 @@ function buildGalleryHTML(projects, allDesigns) {
 </html>`;
 }
 
+// ── Generate a viewer wrapper for a video composition ──
+// Raw Hyperframes HTML is 1920×1080 and won't display correctly in a browser
+// without the player. This wraps it in a scaled iframe with brief metadata.
+function buildVideoViewerHTML(compositionFilename, brief) {
+  const scenes = (brief.scenes || []).map(s => `
+        <div class="scene">
+          <div class="scene-timing">${s.timing}</div>
+          <div class="scene-name">${s.name}</div>
+          <div class="scene-message">"${s.message}"</div>
+          ${s.notes ? `<div class="scene-notes">${s.notes}</div>` : ''}
+        </div>`).join('');
+
+  const nextSteps = (brief.nextSteps || []).map(s => `<li>${s}</li>`).join('');
+
+  return `<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>${brief.title} — Blick Design Library</title>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --orange: #f05323;
+      --bg: #f3f6fa;
+      --surface: #fff;
+      --line: #dce3ec;
+      --text: #1e2a36;
+      --soft: #607286;
+      --muted: #8a99ab;
+      --font: Inter, ui-sans-serif, system-ui, sans-serif;
+    }
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body { font-family: var(--font); background: var(--bg); color: var(--text); }
+
+    .topbar {
+      background: var(--surface);
+      border-bottom: 1px solid var(--line);
+      padding: 14px 32px;
+      display: flex;
+      align-items: center;
+      gap: 16px;
+    }
+    .topbar a {
+      font-size: 13px;
+      color: var(--muted);
+      text-decoration: none;
+    }
+    .topbar a:hover { color: var(--orange); }
+    .topbar .sep { color: var(--line); }
+    .topbar .current { color: var(--text); font-weight: 600; font-size: 13px; }
+
+    .hero {
+      background: #111;
+      padding: 40px 32px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 24px;
+    }
+
+    /* Scale the 1920×1080 composition to fit the viewport */
+    .composition-wrap {
+      width: 100%;
+      max-width: 960px;
+      aspect-ratio: 16/9;
+      position: relative;
+      background: #000;
+      border-radius: 8px;
+      overflow: hidden;
+      border: 1px solid rgba(255,255,255,0.1);
+    }
+    .composition-wrap iframe {
+      position: absolute;
+      top: 0; left: 0;
+      width: 1920px;
+      height: 1080px;
+      border: none;
+      transform-origin: top left;
+      /* Scale is set by JS based on actual rendered width */
+    }
+
+    .play-notice {
+      font-size: 13px;
+      color: rgba(255,255,255,0.4);
+      text-align: center;
+    }
+    .play-notice strong { color: rgba(255,255,255,0.7); }
+
+    .content {
+      max-width: 960px;
+      margin: 0 auto;
+      padding: 40px 32px 64px;
+      display: grid;
+      grid-template-columns: 1fr 340px;
+      gap: 32px;
+    }
+
+    .main-col {}
+    .side-col {}
+
+    h1 {
+      font-size: 28px;
+      font-weight: 800;
+      letter-spacing: -0.03em;
+      margin-bottom: 6px;
+    }
+    h1 .v { color: var(--muted); font-weight: 500; font-size: 18px; margin-left: 8px; }
+
+    .meta-row {
+      display: flex;
+      gap: 12px;
+      flex-wrap: wrap;
+      margin-bottom: 28px;
+    }
+    .chip {
+      padding: 4px 10px;
+      border-radius: 999px;
+      font-size: 12px;
+      font-weight: 600;
+      background: rgba(240,83,35,0.1);
+      color: var(--orange);
+    }
+    .chip.neutral {
+      background: rgba(96,114,134,0.1);
+      color: var(--soft);
+    }
+
+    h2 {
+      font-size: 14px;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.06em;
+      color: var(--muted);
+      margin-bottom: 14px;
+      margin-top: 28px;
+    }
+    h2:first-of-type { margin-top: 0; }
+
+    .purpose-text {
+      font-size: 16px;
+      line-height: 1.6;
+      color: var(--soft);
+      margin-bottom: 4px;
+    }
+
+    .audience-text {
+      font-size: 14px;
+      line-height: 1.6;
+      color: var(--soft);
+    }
+
+    .scenes { display: flex; flex-direction: column; gap: 12px; }
+    .scene {
+      background: var(--surface);
+      border: 1px solid var(--line);
+      border-left: 4px solid var(--orange);
+      border-radius: 8px;
+      padding: 14px 16px;
+    }
+    .scene-timing {
+      font-size: 11px;
+      font-weight: 700;
+      color: var(--orange);
+      text-transform: uppercase;
+      letter-spacing: 0.06em;
+      margin-bottom: 4px;
+    }
+    .scene-name {
+      font-size: 15px;
+      font-weight: 700;
+      margin-bottom: 4px;
+    }
+    .scene-message {
+      font-size: 14px;
+      color: var(--soft);
+      font-style: italic;
+      margin-bottom: 6px;
+    }
+    .scene-notes {
+      font-size: 13px;
+      color: var(--muted);
+      line-height: 1.5;
+    }
+
+    /* Side column */
+    .card {
+      background: var(--surface);
+      border: 1px solid var(--line);
+      border-radius: 12px;
+      padding: 20px;
+      margin-bottom: 16px;
+    }
+    .card h2 { margin-top: 0; }
+
+    .brand-swatches { display: flex; gap: 8px; margin-bottom: 12px; }
+    .swatch {
+      width: 32px; height: 32px;
+      border-radius: 6px;
+      border: 1px solid rgba(0,0,0,0.08);
+    }
+    .brand-detail { font-size: 13px; color: var(--soft); line-height: 1.6; }
+
+    .next-steps { padding-left: 18px; }
+    .next-steps li {
+      font-size: 13px;
+      color: var(--soft);
+      line-height: 1.6;
+      margin-bottom: 6px;
+    }
+
+    .render-box {
+      background: #111;
+      border-radius: 8px;
+      padding: 14px 16px;
+      margin-top: 12px;
+    }
+    .render-label {
+      font-size: 11px;
+      font-weight: 700;
+      color: var(--muted);
+      text-transform: uppercase;
+      letter-spacing: 0.06em;
+      margin-bottom: 8px;
+    }
+    .render-cmd {
+      font-family: 'SF Mono', 'Fira Code', monospace;
+      font-size: 12px;
+      color: #7dd3a8;
+      word-break: break-all;
+      line-height: 1.5;
+    }
+
+    @media (max-width: 800px) {
+      .content { grid-template-columns: 1fr; padding: 24px 16px; }
+      .hero { padding: 24px 16px; }
+    }
+  </style>
+</head>
+<body>
+  <div class="topbar">
+    <a href="../../index.html">Design Library</a>
+    <span class="sep">›</span>
+    <a href="../../index.html#video">Video</a>
+    <span class="sep">›</span>
+    <span class="current">${brief.title}</span>
+  </div>
+
+  <div class="hero">
+    <div class="composition-wrap" id="compWrap">
+      <iframe id="compFrame" src="${compositionFilename}" scrolling="no"></iframe>
+    </div>
+    <div class="play-notice">
+      <strong>Static preview</strong> — this is a Hyperframes composition.
+      To play the animation: <code>cd blick-explainer &amp;&amp; npx hyperframes preview</code>
+    </div>
+  </div>
+
+  <div class="content">
+    <div class="main-col">
+      <h1>${brief.title}<span class="v">${brief.version}</span></h1>
+      <div class="meta-row">
+        <span class="chip">${brief.duration}s</span>
+        <span class="chip">${brief.format}</span>
+        <span class="chip neutral">${brief.status}</span>
+        <span class="chip neutral">${brief.created}</span>
+      </div>
+
+      <h2>Purpose</h2>
+      <p class="purpose-text">${brief.purpose}</p>
+
+      <h2>Audience</h2>
+      <p class="audience-text">${brief.audience}</p>
+
+      <h2>Scenes</h2>
+      <div class="scenes">${scenes}</div>
+    </div>
+
+    <div class="side-col">
+      <div class="card">
+        <h2>Brand</h2>
+        <div class="brand-swatches">
+          ${Object.entries(brief.brand || {}).filter(([k]) => k !== 'font' && k !== 'voice').map(([k, v]) =>
+            `<div class="swatch" style="background:${v}" title="${k}: ${v}"></div>`
+          ).join('')}
+        </div>
+        <div class="brand-detail">
+          <strong>Font:</strong> ${brief.brand?.font || '—'}<br>
+          <strong>Voice:</strong> ${brief.brand?.voice || '—'}
+        </div>
+      </div>
+
+      <div class="card">
+        <h2>Next Steps</h2>
+        <ul class="next-steps">${nextSteps}</ul>
+        <div class="render-box">
+          <div class="render-label">Render to MP4</div>
+          <div class="render-cmd">${brief.renderCommand || ''}</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    // Scale the 1920×1080 iframe to fit its container
+    function scaleFrame() {
+      const wrap = document.getElementById('compWrap');
+      const frame = document.getElementById('compFrame');
+      const scale = wrap.offsetWidth / 1920;
+      frame.style.transform = 'scale(' + scale + ')';
+      wrap.style.height = (1080 * scale) + 'px';
+    }
+    scaleFrame();
+    window.addEventListener('resize', scaleFrame);
+  </script>
+</body>
+</html>`;
+}
+
 // ── Sync video / hyperframes compositions ──
 function syncVideoDesigns() {
   const hyperframesRoot = path.resolve(ROOT, '..', 'blick-explainer');
@@ -470,10 +789,16 @@ function syncVideoDesigns() {
     return;
   }
 
-  // Copy index.html as the versioned iteration name
-  const dest = path.join(externalDir, 'iterations', 'blick-explainer-v1.html');
-  fs.copyFileSync(path.join(hyperframesRoot, 'index.html'), dest);
-  console.log('  Synced blick-explainer composition');
+  // Copy index.html as the raw composition (used inside the viewer wrapper)
+  const rawDest = path.join(externalDir, 'iterations', 'blick-explainer-v1.raw.html');
+  fs.copyFileSync(path.join(hyperframesRoot, 'index.html'), rawDest);
+
+  // Generate the viewer wrapper (references the raw file via relative path)
+  const briefPath = path.join(externalDir, 'iterations', 'blick-explainer-v1.brief.json');
+  const brief = fs.existsSync(briefPath) ? JSON.parse(fs.readFileSync(briefPath, 'utf8')) : { title: 'Blick Explainer', version: 'v1', duration: 30, format: '16:9 1920×1080', status: 'iteration', created: '2026-04-27', purpose: '', audience: '', scenes: [], nextSteps: [], brand: {}, renderCommand: '' };
+  const viewerHTML = buildVideoViewerHTML('blick-explainer-v1.raw.html', brief);
+  fs.writeFileSync(path.join(externalDir, 'iterations', 'blick-explainer-v1.html'), viewerHTML);
+  console.log('  Synced blick-explainer composition + viewer');
 }
 
 // ── Sync external project designs ──
@@ -538,6 +863,11 @@ PROJECTS.forEach(project => {
   fs.mkdirSync(projectOut, { recursive: true });
   result.all.forEach(d => {
     fs.copyFileSync(d.sourcePath, path.join(projectOut, d.filename));
+    // For video projects, also copy the raw composition file (referenced by viewer)
+    const rawSrc = d.sourcePath.replace(/\.html$/, '.raw.html');
+    if (fs.existsSync(rawSrc)) {
+      fs.copyFileSync(rawSrc, path.join(projectOut, d.filename.replace(/\.html$/, '.raw.html')));
+    }
   });
 
   const counts = `${result.approved.length}A ${result.iterations.length}I ${result.archived.length}X`;

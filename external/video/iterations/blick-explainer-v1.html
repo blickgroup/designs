@@ -1,329 +1,319 @@
-<!doctype html>
+<!DOCTYPE html>
 <html lang="en">
-  <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=1920, height=1080" />
-    <script src="https://cdn.jsdelivr.net/npm/gsap@3.14.2/dist/gsap.min.js"></script>
-    <style>
-      @import url('https://fonts.googleapis.com/css2?family=Nunito+Sans:wght@400;600;700;800&display=swap');
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Blick Brand Explainer — Blick Design Library</title>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --orange: #f05323;
+      --bg: #f3f6fa;
+      --surface: #fff;
+      --line: #dce3ec;
+      --text: #1e2a36;
+      --soft: #607286;
+      --muted: #8a99ab;
+      --font: Inter, ui-sans-serif, system-ui, sans-serif;
+    }
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body { font-family: var(--font); background: var(--bg); color: var(--text); }
 
-      * { margin: 0; padding: 0; box-sizing: border-box; }
+    .topbar {
+      background: var(--surface);
+      border-bottom: 1px solid var(--line);
+      padding: 14px 32px;
+      display: flex;
+      align-items: center;
+      gap: 16px;
+    }
+    .topbar a {
+      font-size: 13px;
+      color: var(--muted);
+      text-decoration: none;
+    }
+    .topbar a:hover { color: var(--orange); }
+    .topbar .sep { color: var(--line); }
+    .topbar .current { color: var(--text); font-weight: 600; font-size: 13px; }
 
-      html, body {
-        margin: 0;
-        width: 1920px;
-        height: 1080px;
-        overflow: hidden;
-        background: #000;
-        font-family: 'Nunito Sans', 'Arial', sans-serif;
-      }
+    .hero {
+      background: #111;
+      padding: 40px 32px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 24px;
+    }
 
-      /* ── Scene backgrounds ── */
-      .bg {
-        position: absolute;
-        inset: 0;
-        width: 1920px;
-        height: 1080px;
-      }
+    /* Scale the 1920×1080 composition to fit the viewport */
+    .composition-wrap {
+      width: 100%;
+      max-width: 960px;
+      aspect-ratio: 16/9;
+      position: relative;
+      background: #000;
+      border-radius: 8px;
+      overflow: hidden;
+      border: 1px solid rgba(255,255,255,0.1);
+    }
+    .composition-wrap iframe {
+      position: absolute;
+      top: 0; left: 0;
+      width: 1920px;
+      height: 1080px;
+      border: none;
+      transform-origin: top left;
+      /* Scale is set by JS based on actual rendered width */
+    }
 
-      .bg-black { background: #000; }
-      .bg-orange { background: #f05323; }
-      .bg-dark  { background: #111; }
+    .play-notice {
+      font-size: 13px;
+      color: rgba(255,255,255,0.4);
+      text-align: center;
+    }
+    .play-notice strong { color: rgba(255,255,255,0.7); }
 
-      /* ── Orange accent bar ── */
-      .accent-bar {
-        position: absolute;
-        left: 0; bottom: 0;
-        width: 100%;
-        height: 8px;
-        background: #f05323;
-      }
+    .content {
+      max-width: 960px;
+      margin: 0 auto;
+      padding: 40px 32px 64px;
+      display: grid;
+      grid-template-columns: 1fr 340px;
+      gap: 32px;
+    }
 
-      /* ── Logo mark (circle + wordmark) ── */
-      .logo-wrap {
-        position: absolute;
-        display: flex;
-        align-items: center;
-        gap: 28px;
-      }
+    .main-col {}
+    .side-col {}
 
-      .logo-circle {
-        width: 96px;
-        height: 96px;
-        border-radius: 50%;
-        background: #f05323;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-      }
+    h1 {
+      font-size: 28px;
+      font-weight: 800;
+      letter-spacing: -0.03em;
+      margin-bottom: 6px;
+    }
+    h1 .v { color: var(--muted); font-weight: 500; font-size: 18px; margin-left: 8px; }
 
-      .logo-circle span {
-        font-size: 52px;
-        font-weight: 800;
-        color: #fff;
-        letter-spacing: -2px;
-      }
+    .meta-row {
+      display: flex;
+      gap: 12px;
+      flex-wrap: wrap;
+      margin-bottom: 28px;
+    }
+    .chip {
+      padding: 4px 10px;
+      border-radius: 999px;
+      font-size: 12px;
+      font-weight: 600;
+      background: rgba(240,83,35,0.1);
+      color: var(--orange);
+    }
+    .chip.neutral {
+      background: rgba(96,114,134,0.1);
+      color: var(--soft);
+    }
 
-      .logo-wordmark {
-        font-size: 64px;
-        font-weight: 800;
-        color: #fff;
-        letter-spacing: -1px;
-        text-transform: uppercase;
-      }
+    h2 {
+      font-size: 14px;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.06em;
+      color: var(--muted);
+      margin-bottom: 14px;
+      margin-top: 28px;
+    }
+    h2:first-of-type { margin-top: 0; }
 
-      /* ── Scene 1: Hero ── */
-      #scene-hero {
-        position: absolute;
-        inset: 0;
-        background: #000;
-      }
+    .purpose-text {
+      font-size: 16px;
+      line-height: 1.6;
+      color: var(--soft);
+      margin-bottom: 4px;
+    }
 
-      #hero-orange-fill {
-        position: absolute;
-        left: 0; top: 0;
-        width: 0;
-        height: 1080px;
-        background: #f05323;
-      }
+    .audience-text {
+      font-size: 14px;
+      line-height: 1.6;
+      color: var(--soft);
+    }
 
-      #hero-tagline {
-        position: absolute;
-        top: 50%;
-        left: 50%;
-        transform: translate(-50%, -50%);
-        text-align: center;
-        width: 1400px;
-      }
+    .scenes { display: flex; flex-direction: column; gap: 12px; }
+    .scene {
+      background: var(--surface);
+      border: 1px solid var(--line);
+      border-left: 4px solid var(--orange);
+      border-radius: 8px;
+      padding: 14px 16px;
+    }
+    .scene-timing {
+      font-size: 11px;
+      font-weight: 700;
+      color: var(--orange);
+      text-transform: uppercase;
+      letter-spacing: 0.06em;
+      margin-bottom: 4px;
+    }
+    .scene-name {
+      font-size: 15px;
+      font-weight: 700;
+      margin-bottom: 4px;
+    }
+    .scene-message {
+      font-size: 14px;
+      color: var(--soft);
+      font-style: italic;
+      margin-bottom: 6px;
+    }
+    .scene-notes {
+      font-size: 13px;
+      color: var(--muted);
+      line-height: 1.5;
+    }
 
-      #hero-tagline h1 {
-        font-size: 112px;
-        font-weight: 800;
-        color: #fff;
-        line-height: 1.05;
-        letter-spacing: -3px;
-        text-transform: uppercase;
-      }
+    /* Side column */
+    .card {
+      background: var(--surface);
+      border: 1px solid var(--line);
+      border-radius: 12px;
+      padding: 20px;
+      margin-bottom: 16px;
+    }
+    .card h2 { margin-top: 0; }
 
-      #hero-tagline h1 .orange { color: #f05323; }
+    .brand-swatches { display: flex; gap: 8px; margin-bottom: 12px; }
+    .swatch {
+      width: 32px; height: 32px;
+      border-radius: 6px;
+      border: 1px solid rgba(0,0,0,0.08);
+    }
+    .brand-detail { font-size: 13px; color: var(--soft); line-height: 1.6; }
 
-      #hero-tagline p {
-        margin-top: 32px;
-        font-size: 40px;
-        font-weight: 400;
-        color: rgba(255,255,255,0.75);
-        letter-spacing: 0.5px;
-      }
+    .next-steps { padding-left: 18px; }
+    .next-steps li {
+      font-size: 13px;
+      color: var(--soft);
+      line-height: 1.6;
+      margin-bottom: 6px;
+    }
 
-      /* ── Scene 2: Three pillars ── */
-      #scene-pillars {
-        position: absolute;
-        inset: 0;
-        background: #111;
-      }
+    .render-box {
+      background: #111;
+      border-radius: 8px;
+      padding: 14px 16px;
+      margin-top: 12px;
+    }
+    .render-label {
+      font-size: 11px;
+      font-weight: 700;
+      color: var(--muted);
+      text-transform: uppercase;
+      letter-spacing: 0.06em;
+      margin-bottom: 8px;
+    }
+    .render-cmd {
+      font-family: 'SF Mono', 'Fira Code', monospace;
+      font-size: 12px;
+      color: #7dd3a8;
+      word-break: break-all;
+      line-height: 1.5;
+    }
 
-      .pillar-card {
-        position: absolute;
-        top: 180px;
-        width: 500px;
-        padding: 52px 48px;
-        border-top: 6px solid #f05323;
-        background: #1a1a1a;
-      }
+    @media (max-width: 800px) {
+      .content { grid-template-columns: 1fr; padding: 24px 16px; }
+      .hero { padding: 24px 16px; }
+    }
+  </style>
+</head>
+<body>
+  <div class="topbar">
+    <a href="../../index.html">Design Library</a>
+    <span class="sep">›</span>
+    <a href="../../index.html#video">Video</a>
+    <span class="sep">›</span>
+    <span class="current">Blick Brand Explainer</span>
+  </div>
 
-      #pillar-1 { left: 160px; }
-      #pillar-2 { left: 710px; }
-      #pillar-3 { left: 1260px; }
+  <div class="hero">
+    <div class="composition-wrap" id="compWrap">
+      <iframe id="compFrame" src="blick-explainer-v1.raw.html" scrolling="no"></iframe>
+    </div>
+    <div class="play-notice">
+      <strong>Static preview</strong> — this is a Hyperframes composition.
+      To play the animation: <code>cd blick-explainer &amp;&amp; npx hyperframes preview</code>
+    </div>
+  </div>
 
-      .pillar-number {
-        font-size: 96px;
-        font-weight: 800;
-        color: #f05323;
-        line-height: 1;
-        margin-bottom: 20px;
-        opacity: 0.25;
-      }
-
-      .pillar-title {
-        font-size: 44px;
-        font-weight: 800;
-        color: #fff;
-        line-height: 1.1;
-        margin-bottom: 20px;
-        text-transform: uppercase;
-        letter-spacing: -0.5px;
-      }
-
-      .pillar-body {
-        font-size: 26px;
-        font-weight: 400;
-        color: rgba(255,255,255,0.6);
-        line-height: 1.5;
-      }
-
-      #scene-pillars .section-label {
-        position: absolute;
-        top: 80px;
-        left: 160px;
-        font-size: 22px;
-        font-weight: 700;
-        color: #f05323;
-        letter-spacing: 4px;
-        text-transform: uppercase;
-      }
-
-      /* ── Scene 3: Tagline close ── */
-      #scene-close {
-        position: absolute;
-        inset: 0;
-        background: #f05323;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        flex-direction: column;
-        gap: 48px;
-      }
-
-      #close-headline {
-        font-size: 108px;
-        font-weight: 800;
-        color: #fff;
-        text-transform: uppercase;
-        letter-spacing: -3px;
-        text-align: center;
-        line-height: 1.0;
-      }
-
-      #close-url {
-        font-size: 40px;
-        font-weight: 600;
-        color: rgba(255,255,255,0.75);
-        letter-spacing: 1px;
-      }
-
-      #close-logo {
-        bottom: 56px;
-        right: 80px;
-        position: absolute;
-      }
-
-      /* ── Shared logo (scenes 1 + 2) ── */
-      .scene-logo {
-        position: absolute;
-        top: 48px;
-        left: 72px;
-      }
-
-      .scene-logo .logo-wordmark { font-size: 42px; }
-      .scene-logo .logo-circle   { width: 58px; height: 58px; }
-      .scene-logo .logo-circle span { font-size: 32px; }
-    </style>
-  </head>
-  <body>
-    <div
-      id="root"
-      data-composition-id="main"
-      data-start="0"
-      data-duration="30"
-      data-width="1920"
-      data-height="1080"
-    >
-
-      <!-- ══ SCENE 1: Hero  0–10s ══ -->
-      <div id="scene-hero" class="clip" data-start="0" data-duration="10" data-track-index="1">
-        <div id="hero-orange-fill"></div>
-
-        <div id="hero-tagline">
-          <h1>Better drilling<br><span class="orange">starts here.</span></h1>
-          <p>Quality drilling fluids. Expert advice. Australia &amp; New Zealand.</p>
-        </div>
-
-        <!-- Logo top-left -->
-        <div class="scene-logo logo-wrap">
-          <div class="logo-circle"><span>B</span></div>
-          <div class="logo-wordmark">Blick</div>
-        </div>
-
-        <div class="accent-bar"></div>
+  <div class="content">
+    <div class="main-col">
+      <h1>Blick Brand Explainer<span class="v">v1</span></h1>
+      <div class="meta-row">
+        <span class="chip">30s</span>
+        <span class="chip">16:9 1920×1080</span>
+        <span class="chip neutral">iteration</span>
+        <span class="chip neutral">2026-04-27</span>
       </div>
 
-      <!-- ══ SCENE 2: Three pillars  10–22s ══ -->
-      <div id="scene-pillars" class="clip" data-start="10" data-duration="12" data-track-index="1">
+      <h2>Purpose</h2>
+      <p class="purpose-text">30-second brand explainer for blick.group — introduces Blick to new visitors, covers what we do, why choose us, and ends with a clear CTA.</p>
 
-        <div class="section-label">Why Blick</div>
+      <h2>Audience</h2>
+      <p class="audience-text">Prospective drilling customers in AU/NZ. Owner-operators and site managers, 40s–60s, practical and direct.</p>
 
-        <div id="pillar-1" class="pillar-card">
-          <div class="pillar-number">01</div>
-          <div class="pillar-title">Quality<br>that performs</div>
-          <div class="pillar-body">Tested formulas that hold up in the toughest conditions — so your bore stays clean and your job keeps moving.</div>
+      <h2>Scenes</h2>
+      <div class="scenes">
+        <div class="scene">
+          <div class="scene-timing">0–10s</div>
+          <div class="scene-name">Hero</div>
+          <div class="scene-message">"Better drilling starts here."</div>
+          <div class="scene-notes">Orange sweep wipe reveals headline on black. Tagline + sub-copy. Brand confidence play.</div>
         </div>
-
-        <div id="pillar-2" class="pillar-card">
-          <div class="pillar-number">02</div>
-          <div class="pillar-title">There when<br>you need us</div>
-          <div class="pillar-body">You call. We deliver. No drama. Reliable supply so downtime doesn't cost you the job.</div>
+        <div class="scene">
+          <div class="scene-timing">10–22s</div>
+          <div class="scene-name">Three Pillars</div>
+          <div class="scene-message">"Quality that performs / There when you need us / Your expert partner"</div>
+          <div class="scene-notes">Dark background, three cards stagger in. Maps directly to brand voice pillars from Brand Voice Guide.</div>
         </div>
-
-        <div id="pillar-3" class="pillar-card">
-          <div class="pillar-number">03</div>
-          <div class="pillar-title">Your expert<br>partner</div>
-          <div class="pillar-body">We're in the field with you — not just behind a desk. Real advice from people who know drilling.</div>
-        </div>
-
-        <!-- Logo top-left -->
-        <div class="scene-logo logo-wrap">
-          <div class="logo-circle"><span>B</span></div>
-          <div class="logo-wordmark">Blick</div>
-        </div>
-
-        <div class="accent-bar"></div>
-      </div>
-
-      <!-- ══ SCENE 3: Close  22–30s ══ -->
-      <div id="scene-close" class="clip" data-start="22" data-duration="8" data-track-index="1">
-        <div id="close-headline">Your wins<br>are our wins.</div>
-        <div id="close-url">blick.group</div>
-
-        <div id="close-logo" class="logo-wrap">
-          <div class="logo-circle"><span>B</span></div>
-          <div class="logo-wordmark" style="color:#fff; font-size:38px;">Blick</div>
-        </div>
-      </div>
-
+        <div class="scene">
+          <div class="scene-timing">22–30s</div>
+          <div class="scene-name">Close</div>
+          <div class="scene-message">"Your wins are our wins."</div>
+          <div class="scene-notes">Full orange close. Strong brand colour finish. blick.group URL. Brand tagline quote.</div>
+        </div></div>
     </div>
 
-    <script>
-      window.__timelines = window.__timelines || {};
-      const tl = gsap.timeline({ paused: true });
+    <div class="side-col">
+      <div class="card">
+        <h2>Brand</h2>
+        <div class="brand-swatches">
+          <div class="swatch" style="background:#f05323" title="primary: #f05323"></div><div class="swatch" style="background:#58595b" title="dark: #58595b"></div><div class="swatch" style="background:#bcbec0" title="light: #bcbec0"></div><div class="swatch" style="background:#000000" title="black: #000000"></div>
+        </div>
+        <div class="brand-detail">
+          <strong>Font:</strong> Nunito Sans (Proxima Nova substitute — web safe)<br>
+          <strong>Voice:</strong> Expert mate — confident, plain-spoken, field-focused
+        </div>
+      </div>
 
-      // ── Scene 1: Hero ──
-      // Orange fill sweeps in from left
-      tl.fromTo("#hero-orange-fill", { width: 0 }, { width: 1920, duration: 0.6, ease: "power3.inOut" }, 0.1)
-        .to("#hero-orange-fill", { width: 0, left: 1920, duration: 0.5, ease: "power3.in" }, 0.7)
-      // Headline drops in
-        .from("#hero-tagline h1", { y: 60, opacity: 0, duration: 0.7, ease: "power3.out" }, 0.5)
-        .from("#hero-tagline p",  { y: 30, opacity: 0, duration: 0.5, ease: "power2.out" }, 1.0)
-      // Logo fades in
-        .from(".scene-logo", { opacity: 0, duration: 0.4 }, 0.4)
-      // Scene 1 exit — headline fades up
-        .to("#hero-tagline", { y: -40, opacity: 0, duration: 0.5, ease: "power2.in" }, 9.2);
+      <div class="card">
+        <h2>Next Steps</h2>
+        <ul class="next-steps"><li>Review scene timing — is 12s on pillars long enough to read?</li><li>Add Blick logo SVG asset (currently B lettermark only)</li><li>Consider adding a field photography background to Scene 1</li><li>Render to MP4 once approved: cd blick-explainer && npx hyperframes render</li><li>Decide on music/voiceover — silent or narrated?</li></ul>
+        <div class="render-box">
+          <div class="render-label">Render to MP4</div>
+          <div class="render-cmd">cd /Volumes/NewmanDrive/development/blick-explainer && HYPERFRAMES_NO_TELEMETRY=1 npx hyperframes render</div>
+        </div>
+      </div>
+    </div>
+  </div>
 
-      // ── Scene 2: Pillars (start at t=10) ──
-      tl.from("#scene-pillars .section-label", { opacity: 0, y: 20, duration: 0.4 }, 10.3)
-        .from("#pillar-1", { y: 60, opacity: 0, duration: 0.5, ease: "power2.out" }, 10.5)
-        .from("#pillar-2", { y: 60, opacity: 0, duration: 0.5, ease: "power2.out" }, 10.8)
-        .from("#pillar-3", { y: 60, opacity: 0, duration: 0.5, ease: "power2.out" }, 11.1)
-      // Scene 2 exit
-        .to("#scene-pillars", { opacity: 0, duration: 0.5, ease: "power2.in" }, 21.5);
-
-      // ── Scene 3: Close (start at t=22) ──
-      tl.from("#close-headline", { scale: 0.9, opacity: 0, duration: 0.7, ease: "back.out(1.4)" }, 22.2)
-        .from("#close-url",      { opacity: 0, y: 20, duration: 0.5 }, 22.8)
-        .from("#close-logo",     { opacity: 0, duration: 0.4 }, 23.2)
-      // Final hold — gentle pulse on headline
-        .to("#close-headline",   { scale: 1.02, duration: 2.5, ease: "sine.inOut", yoyo: true, repeat: 1 }, 24.5);
-
-      window.__timelines["main"] = tl;
-    </script>
-  </body>
+  <script>
+    // Scale the 1920×1080 iframe to fit its container
+    function scaleFrame() {
+      const wrap = document.getElementById('compWrap');
+      const frame = document.getElementById('compFrame');
+      const scale = wrap.offsetWidth / 1920;
+      frame.style.transform = 'scale(' + scale + ')';
+      wrap.style.height = (1080 * scale) + 'px';
+    }
+    scaleFrame();
+    window.addEventListener('resize', scaleFrame);
+  </script>
+</body>
 </html>

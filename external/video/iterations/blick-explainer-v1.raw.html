@@ -1,0 +1,329 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=1920, height=1080" />
+    <script src="https://cdn.jsdelivr.net/npm/gsap@3.14.2/dist/gsap.min.js"></script>
+    <style>
+      @import url('https://fonts.googleapis.com/css2?family=Nunito+Sans:wght@400;600;700;800&display=swap');
+
+      * { margin: 0; padding: 0; box-sizing: border-box; }
+
+      html, body {
+        margin: 0;
+        width: 1920px;
+        height: 1080px;
+        overflow: hidden;
+        background: #000;
+        font-family: 'Nunito Sans', 'Arial', sans-serif;
+      }
+
+      /* ── Scene backgrounds ── */
+      .bg {
+        position: absolute;
+        inset: 0;
+        width: 1920px;
+        height: 1080px;
+      }
+
+      .bg-black { background: #000; }
+      .bg-orange { background: #f05323; }
+      .bg-dark  { background: #111; }
+
+      /* ── Orange accent bar ── */
+      .accent-bar {
+        position: absolute;
+        left: 0; bottom: 0;
+        width: 100%;
+        height: 8px;
+        background: #f05323;
+      }
+
+      /* ── Logo mark (circle + wordmark) ── */
+      .logo-wrap {
+        position: absolute;
+        display: flex;
+        align-items: center;
+        gap: 28px;
+      }
+
+      .logo-circle {
+        width: 96px;
+        height: 96px;
+        border-radius: 50%;
+        background: #f05323;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+      }
+
+      .logo-circle span {
+        font-size: 52px;
+        font-weight: 800;
+        color: #fff;
+        letter-spacing: -2px;
+      }
+
+      .logo-wordmark {
+        font-size: 64px;
+        font-weight: 800;
+        color: #fff;
+        letter-spacing: -1px;
+        text-transform: uppercase;
+      }
+
+      /* ── Scene 1: Hero ── */
+      #scene-hero {
+        position: absolute;
+        inset: 0;
+        background: #000;
+      }
+
+      #hero-orange-fill {
+        position: absolute;
+        left: 0; top: 0;
+        width: 0;
+        height: 1080px;
+        background: #f05323;
+      }
+
+      #hero-tagline {
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        text-align: center;
+        width: 1400px;
+      }
+
+      #hero-tagline h1 {
+        font-size: 112px;
+        font-weight: 800;
+        color: #fff;
+        line-height: 1.05;
+        letter-spacing: -3px;
+        text-transform: uppercase;
+      }
+
+      #hero-tagline h1 .orange { color: #f05323; }
+
+      #hero-tagline p {
+        margin-top: 32px;
+        font-size: 40px;
+        font-weight: 400;
+        color: rgba(255,255,255,0.75);
+        letter-spacing: 0.5px;
+      }
+
+      /* ── Scene 2: Three pillars ── */
+      #scene-pillars {
+        position: absolute;
+        inset: 0;
+        background: #111;
+      }
+
+      .pillar-card {
+        position: absolute;
+        top: 180px;
+        width: 500px;
+        padding: 52px 48px;
+        border-top: 6px solid #f05323;
+        background: #1a1a1a;
+      }
+
+      #pillar-1 { left: 160px; }
+      #pillar-2 { left: 710px; }
+      #pillar-3 { left: 1260px; }
+
+      .pillar-number {
+        font-size: 96px;
+        font-weight: 800;
+        color: #f05323;
+        line-height: 1;
+        margin-bottom: 20px;
+        opacity: 0.25;
+      }
+
+      .pillar-title {
+        font-size: 44px;
+        font-weight: 800;
+        color: #fff;
+        line-height: 1.1;
+        margin-bottom: 20px;
+        text-transform: uppercase;
+        letter-spacing: -0.5px;
+      }
+
+      .pillar-body {
+        font-size: 26px;
+        font-weight: 400;
+        color: rgba(255,255,255,0.6);
+        line-height: 1.5;
+      }
+
+      #scene-pillars .section-label {
+        position: absolute;
+        top: 80px;
+        left: 160px;
+        font-size: 22px;
+        font-weight: 700;
+        color: #f05323;
+        letter-spacing: 4px;
+        text-transform: uppercase;
+      }
+
+      /* ── Scene 3: Tagline close ── */
+      #scene-close {
+        position: absolute;
+        inset: 0;
+        background: #f05323;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        flex-direction: column;
+        gap: 48px;
+      }
+
+      #close-headline {
+        font-size: 108px;
+        font-weight: 800;
+        color: #fff;
+        text-transform: uppercase;
+        letter-spacing: -3px;
+        text-align: center;
+        line-height: 1.0;
+      }
+
+      #close-url {
+        font-size: 40px;
+        font-weight: 600;
+        color: rgba(255,255,255,0.75);
+        letter-spacing: 1px;
+      }
+
+      #close-logo {
+        bottom: 56px;
+        right: 80px;
+        position: absolute;
+      }
+
+      /* ── Shared logo (scenes 1 + 2) ── */
+      .scene-logo {
+        position: absolute;
+        top: 48px;
+        left: 72px;
+      }
+
+      .scene-logo .logo-wordmark { font-size: 42px; }
+      .scene-logo .logo-circle   { width: 58px; height: 58px; }
+      .scene-logo .logo-circle span { font-size: 32px; }
+    </style>
+  </head>
+  <body>
+    <div
+      id="root"
+      data-composition-id="main"
+      data-start="0"
+      data-duration="30"
+      data-width="1920"
+      data-height="1080"
+    >
+
+      <!-- ══ SCENE 1: Hero  0–10s ══ -->
+      <div id="scene-hero" class="clip" data-start="0" data-duration="10" data-track-index="1">
+        <div id="hero-orange-fill"></div>
+
+        <div id="hero-tagline">
+          <h1>Better drilling<br><span class="orange">starts here.</span></h1>
+          <p>Quality drilling fluids. Expert advice. Australia &amp; New Zealand.</p>
+        </div>
+
+        <!-- Logo top-left -->
+        <div class="scene-logo logo-wrap">
+          <div class="logo-circle"><span>B</span></div>
+          <div class="logo-wordmark">Blick</div>
+        </div>
+
+        <div class="accent-bar"></div>
+      </div>
+
+      <!-- ══ SCENE 2: Three pillars  10–22s ══ -->
+      <div id="scene-pillars" class="clip" data-start="10" data-duration="12" data-track-index="1">
+
+        <div class="section-label">Why Blick</div>
+
+        <div id="pillar-1" class="pillar-card">
+          <div class="pillar-number">01</div>
+          <div class="pillar-title">Quality<br>that performs</div>
+          <div class="pillar-body">Tested formulas that hold up in the toughest conditions — so your bore stays clean and your job keeps moving.</div>
+        </div>
+
+        <div id="pillar-2" class="pillar-card">
+          <div class="pillar-number">02</div>
+          <div class="pillar-title">There when<br>you need us</div>
+          <div class="pillar-body">You call. We deliver. No drama. Reliable supply so downtime doesn't cost you the job.</div>
+        </div>
+
+        <div id="pillar-3" class="pillar-card">
+          <div class="pillar-number">03</div>
+          <div class="pillar-title">Your expert<br>partner</div>
+          <div class="pillar-body">We're in the field with you — not just behind a desk. Real advice from people who know drilling.</div>
+        </div>
+
+        <!-- Logo top-left -->
+        <div class="scene-logo logo-wrap">
+          <div class="logo-circle"><span>B</span></div>
+          <div class="logo-wordmark">Blick</div>
+        </div>
+
+        <div class="accent-bar"></div>
+      </div>
+
+      <!-- ══ SCENE 3: Close  22–30s ══ -->
+      <div id="scene-close" class="clip" data-start="22" data-duration="8" data-track-index="1">
+        <div id="close-headline">Your wins<br>are our wins.</div>
+        <div id="close-url">blick.group</div>
+
+        <div id="close-logo" class="logo-wrap">
+          <div class="logo-circle"><span>B</span></div>
+          <div class="logo-wordmark" style="color:#fff; font-size:38px;">Blick</div>
+        </div>
+      </div>
+
+    </div>
+
+    <script>
+      window.__timelines = window.__timelines || {};
+      const tl = gsap.timeline({ paused: true });
+
+      // ── Scene 1: Hero ──
+      // Orange fill sweeps in from left
+      tl.fromTo("#hero-orange-fill", { width: 0 }, { width: 1920, duration: 0.6, ease: "power3.inOut" }, 0.1)
+        .to("#hero-orange-fill", { width: 0, left: 1920, duration: 0.5, ease: "power3.in" }, 0.7)
+      // Headline drops in
+        .from("#hero-tagline h1", { y: 60, opacity: 0, duration: 0.7, ease: "power3.out" }, 0.5)
+        .from("#hero-tagline p",  { y: 30, opacity: 0, duration: 0.5, ease: "power2.out" }, 1.0)
+      // Logo fades in
+        .from(".scene-logo", { opacity: 0, duration: 0.4 }, 0.4)
+      // Scene 1 exit — headline fades up
+        .to("#hero-tagline", { y: -40, opacity: 0, duration: 0.5, ease: "power2.in" }, 9.2);
+
+      // ── Scene 2: Pillars (start at t=10) ──
+      tl.from("#scene-pillars .section-label", { opacity: 0, y: 20, duration: 0.4 }, 10.3)
+        .from("#pillar-1", { y: 60, opacity: 0, duration: 0.5, ease: "power2.out" }, 10.5)
+        .from("#pillar-2", { y: 60, opacity: 0, duration: 0.5, ease: "power2.out" }, 10.8)
+        .from("#pillar-3", { y: 60, opacity: 0, duration: 0.5, ease: "power2.out" }, 11.1)
+      // Scene 2 exit
+        .to("#scene-pillars", { opacity: 0, duration: 0.5, ease: "power2.in" }, 21.5);
+
+      // ── Scene 3: Close (start at t=22) ──
+      tl.from("#close-headline", { scale: 0.9, opacity: 0, duration: 0.7, ease: "back.out(1.4)" }, 22.2)
+        .from("#close-url",      { opacity: 0, y: 20, duration: 0.5 }, 22.8)
+        .from("#close-logo",     { opacity: 0, duration: 0.4 }, 23.2)
+      // Final hold — gentle pulse on headline
+        .to("#close-headline",   { scale: 1.02, duration: 2.5, ease: "sine.inOut", yoyo: true, repeat: 1 }, 24.5);
+
+      window.__timelines["main"] = tl;
+    </script>
+  </body>
+</html>
