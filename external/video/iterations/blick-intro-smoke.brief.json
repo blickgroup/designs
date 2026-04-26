@@ -1,0 +1,24 @@
+{
+  "title": "Blick Intro — Smoke",
+  "version": "v1",
+  "duration": null,
+  "format": "MP4",
+  "status": "iteration",
+  "created": "2025-01-01",
+  "type": "existing-asset",
+  "assetPath": "/Volumes/NewmanDrive/development/nexus/Marketing/Video/Blick Intro - Smoke.mp4",
+  "purpose": "Existing brand intro video with smoke visual theme. Used on website and in presentations. Reference asset for new video compositions — smoke/fluid aesthetic directly relevant to drilling fluids brand.",
+  "audience": "Prospective customers, website visitors, presentation audiences.",
+  "scenes": [],
+  "brand": {
+    "primary": "#f05323",
+    "font": "Proxima Nova",
+    "voice": "Expert mate — confident, plain-spoken, field-focused"
+  },
+  "nextSteps": [
+    "Review smoke intro as style reference — fluid/smoke aesthetic aligns well with drilling fluids brand",
+    "Consider smoke/fluid motion as a design direction for Hyperframes compositions",
+    "Upload to YouTube/LinkedIn for social distribution"
+  ],
+  "renderCommand": ""
+}

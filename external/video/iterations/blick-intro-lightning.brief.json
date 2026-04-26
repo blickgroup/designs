@@ -1,0 +1,24 @@
+{
+  "title": "Blick Intro — Lightning",
+  "version": "v1",
+  "duration": null,
+  "format": "MP4",
+  "status": "iteration",
+  "created": "2025-01-01",
+  "type": "existing-asset",
+  "assetPath": "/Volumes/NewmanDrive/development/nexus/Marketing/Video/Blick Intro - lightning.mp4",
+  "purpose": "Existing brand intro video with lightning visual theme. Used on website and in presentations. Reference asset for new video compositions.",
+  "audience": "Prospective customers, website visitors, presentation audiences.",
+  "scenes": [],
+  "brand": {
+    "primary": "#f05323",
+    "font": "Proxima Nova",
+    "voice": "Expert mate — confident, plain-spoken, field-focused"
+  },
+  "nextSteps": [
+    "Review lightning intro as style reference for Hyperframes compositions",
+    "Determine if this should be replaced or complemented by animated HTML version",
+    "Upload to YouTube/LinkedIn for social distribution"
+  ],
+  "renderCommand": ""
+}

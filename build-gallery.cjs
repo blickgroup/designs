@@ -66,6 +66,15 @@ function scanDir(dir, status, projectId) {
     .map(f => {
       const fullPath = path.join(dir, f);
       const stat = fs.statSync(fullPath);
+      // For video projects, read brief sidecar for metadata
+      let meta = null;
+      if (projectId === 'video') {
+        const briefPath = path.join(dir, f.replace('.html', '.brief.json'));
+        if (fs.existsSync(briefPath)) {
+          const b = JSON.parse(fs.readFileSync(briefPath, 'utf8'));
+          meta = { duration: b.duration, format: b.format, type: b.type };
+        }
+      }
       return {
         filename: f,
         name: humanName(f),
@@ -74,6 +83,7 @@ function scanDir(dir, status, projectId) {
         modified: stat.mtime.toISOString().split('T')[0],
         size: Math.round(stat.size / 1024),
         sourcePath: fullPath,
+        meta,
       };
     })
     .sort((a, b) => b.modified.localeCompare(a.modified));
@@ -92,14 +102,21 @@ function buildGalleryHTML(projects, allDesigns) {
       ? 'background:rgba(18,163,109,0.12);color:#12a36d'
       : d.status === 'archived'
       ? 'background:rgba(138,153,171,0.12);color:#8a99ab'
-      : 'background:rgba(240,94,34,0.12);color:#f05e22';
+      : 'background:rgba(240,83,35,0.12);color:#f05323';
     const badgeLabel = d.status === 'approved' ? 'Approved' : d.status === 'archived' ? 'Archived' : 'Iteration';
+
+    const previewHTML = d.project === 'video'
+      ? `<div class="preview video-preview">
+           <div class="video-thumb">
+             <div class="play-icon">▶</div>
+             <div class="video-label">${d.meta?.duration ? d.meta.duration + 's' : 'Video'} · ${d.meta?.format || 'Hyperframes'}</div>
+           </div>
+         </div>`
+      : `<div class="preview"><iframe src="designs/${d.project}/${d.filename}" loading="lazy" sandbox></iframe></div>`;
 
     return `
       <a href="designs/${d.project}/${d.filename}" class="card" data-project="${d.project}" target="_blank">
-        <div class="preview">
-          <iframe src="designs/${d.project}/${d.filename}" loading="lazy" sandbox></iframe>
-        </div>
+        ${previewHTML}
         <div class="card-body">
           <div class="card-top">
             <span class="badge" style="${badgeColor}">${badgeLabel}</span>
@@ -139,7 +156,7 @@ function buildGalleryHTML(projects, allDesigns) {
       --text: #1e2a36;
       --text-soft: #607286;
       --text-muted: #8a99ab;
-      --primary: #f05e22;
+      --primary: #f05323;
       --radius: 16px;
       --font: Inter, ui-sans-serif, system-ui, -apple-system, sans-serif;
     }
@@ -345,6 +362,10 @@ function buildGalleryHTML(projects, allDesigns) {
       color: var(--text-muted);
     }
     .card.hidden { display: none; }
+    .video-preview { background: #111; display: flex; align-items: center; justify-content: center; }
+    .video-thumb { display: flex; flex-direction: column; align-items: center; gap: 12px; }
+    .play-icon { width: 56px; height: 56px; background: #f05323; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 20px; color: #fff; padding-left: 4px; }
+    .video-label { font-size: 12px; color: rgba(255,255,255,0.4); font-family: var(--font); }
     .empty {
       grid-column: 1 / -1;
       text-align: center;
@@ -688,6 +709,21 @@ function buildVideoViewerHTML(compositionFilename, brief) {
       word-break: break-all;
       line-height: 1.5;
     }
+    .asset-notice {
+      display: flex;
+      align-items: center;
+      gap: 20px;
+      background: rgba(255,255,255,0.05);
+      border: 1px solid rgba(255,255,255,0.1);
+      border-radius: 12px;
+      padding: 28px 32px;
+      max-width: 720px;
+      width: 100%;
+    }
+    .asset-icon { font-size: 48px; }
+    .asset-text { font-size: 14px; color: rgba(255,255,255,0.6); line-height: 1.7; }
+    .asset-text strong { color: rgba(255,255,255,0.9); }
+    .asset-text code { font-family: monospace; font-size: 12px; color: #7dd3a8; word-break: break-all; }
 
     @media (max-width: 800px) {
       .content { grid-template-columns: 1fr; padding: 24px 16px; }
@@ -705,13 +741,21 @@ function buildVideoViewerHTML(compositionFilename, brief) {
   </div>
 
   <div class="hero">
+    ${compositionFilename ? `
     <div class="composition-wrap" id="compWrap">
-      <iframe id="compFrame" src="${compositionFilename}" scrolling="no"></iframe>
+      <iframe id="compFrame" src="${compositionFilename}" scrolling="no" sandbox="allow-scripts allow-same-origin"></iframe>
     </div>
     <div class="play-notice">
       <strong>Static preview</strong> — this is a Hyperframes composition.
       To play the animation: <code>cd blick-explainer &amp;&amp; npx hyperframes preview</code>
-    </div>
+    </div>` : `
+    <div class="asset-notice">
+      <div class="asset-icon">🎬</div>
+      <div class="asset-text">
+        <strong>Existing MP4 asset</strong><br>
+        <code>${brief.assetPath || 'See asset path in brief'}</code>
+      </div>
+    </div>`}
   </div>
 
   <div class="content">
@@ -793,12 +837,19 @@ function syncVideoDesigns() {
   const rawDest = path.join(externalDir, 'iterations', 'blick-explainer-v1.raw.html');
   fs.copyFileSync(path.join(hyperframesRoot, 'index.html'), rawDest);
 
-  // Generate the viewer wrapper (references the raw file via relative path)
-  const briefPath = path.join(externalDir, 'iterations', 'blick-explainer-v1.brief.json');
-  const brief = fs.existsSync(briefPath) ? JSON.parse(fs.readFileSync(briefPath, 'utf8')) : { title: 'Blick Explainer', version: 'v1', duration: 30, format: '16:9 1920×1080', status: 'iteration', created: '2026-04-27', purpose: '', audience: '', scenes: [], nextSteps: [], brand: {}, renderCommand: '' };
-  const viewerHTML = buildVideoViewerHTML('blick-explainer-v1.raw.html', brief);
-  fs.writeFileSync(path.join(externalDir, 'iterations', 'blick-explainer-v1.html'), viewerHTML);
-  console.log('  Synced blick-explainer composition + viewer');
+  // Generate viewer wrappers for all .brief.json files in iterations dir
+  const iterDir = path.join(externalDir, 'iterations');
+  const briefs = fs.readdirSync(iterDir).filter(f => f.endsWith('.brief.json'));
+  briefs.forEach(bf => {
+    const brief = JSON.parse(fs.readFileSync(path.join(iterDir, bf), 'utf8'));
+    const baseName = bf.replace('.brief.json', '');
+    const rawFile = baseName + '.raw.html';
+    // Only generate HTML viewer if raw composition exists, or it's a reference-only asset
+    const compositionSrc = fs.existsSync(path.join(iterDir, rawFile)) ? rawFile : null;
+    const viewerHTML = buildVideoViewerHTML(compositionSrc, brief);
+    fs.writeFileSync(path.join(iterDir, baseName + '.html'), viewerHTML);
+  });
+  console.log(`  Synced ${briefs.length} video brief(s) + viewers`);
 }
 
 // ── Sync external project designs ──
@@ -863,10 +914,14 @@ PROJECTS.forEach(project => {
   fs.mkdirSync(projectOut, { recursive: true });
   result.all.forEach(d => {
     fs.copyFileSync(d.sourcePath, path.join(projectOut, d.filename));
-    // For video projects, also copy the raw composition file (referenced by viewer)
+    // For video projects, also copy the raw composition and brief sidecar
     const rawSrc = d.sourcePath.replace(/\.html$/, '.raw.html');
     if (fs.existsSync(rawSrc)) {
       fs.copyFileSync(rawSrc, path.join(projectOut, d.filename.replace(/\.html$/, '.raw.html')));
+    }
+    const briefSrc = d.sourcePath.replace(/\.html$/, '.brief.json');
+    if (fs.existsSync(briefSrc)) {
+      fs.copyFileSync(briefSrc, path.join(projectOut, d.filename.replace(/\.html$/, '.brief.json')));
     }
   });
 
