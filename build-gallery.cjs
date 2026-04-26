@@ -744,10 +744,11 @@ function buildVideoViewerHTML(compositionFilename, brief) {
     ${compositionFilename ? `
     <div class="composition-wrap" id="compWrap">
       <iframe id="compFrame" src="${compositionFilename}" scrolling="no" sandbox="allow-scripts allow-same-origin"></iframe>
-    </div>
-    <div class="play-notice">
-      <strong>Static preview</strong> — this is a Hyperframes composition.
-      To play the animation: <code>cd blick-explainer &amp;&amp; npx hyperframes preview</code>
+    </div>` : brief.mp4File ? `
+    <div class="video-player-wrap">
+      <video controls autoplay muted loop playsinline style="max-width:960px;width:100%;border-radius:8px;background:#000;">
+        <source src="${brief.mp4File}" type="video/mp4">
+      </video>
     </div>` : `
     <div class="asset-notice">
       <div class="asset-icon">🎬</div>
@@ -837,19 +838,23 @@ function syncVideoDesigns() {
   const rawDest = path.join(externalDir, 'iterations', 'blick-explainer-v1.raw.html');
   fs.copyFileSync(path.join(hyperframesRoot, 'index.html'), rawDest);
 
-  // Generate viewer wrappers for all .brief.json files in iterations dir
-  const iterDir = path.join(externalDir, 'iterations');
-  const briefs = fs.readdirSync(iterDir).filter(f => f.endsWith('.brief.json'));
-  briefs.forEach(bf => {
-    const brief = JSON.parse(fs.readFileSync(path.join(iterDir, bf), 'utf8'));
-    const baseName = bf.replace('.brief.json', '');
-    const rawFile = baseName + '.raw.html';
-    // Only generate HTML viewer if raw composition exists, or it's a reference-only asset
-    const compositionSrc = fs.existsSync(path.join(iterDir, rawFile)) ? rawFile : null;
-    const viewerHTML = buildVideoViewerHTML(compositionSrc, brief);
-    fs.writeFileSync(path.join(iterDir, baseName + '.html'), viewerHTML);
+  // Generate viewer wrappers for all .brief.json files in all status dirs
+  let totalBriefs = 0;
+  ['iterations', 'approved', 'archive'].forEach(subdir => {
+    const dir = path.join(externalDir, subdir);
+    if (!fs.existsSync(dir)) return;
+    const briefs = fs.readdirSync(dir).filter(f => f.endsWith('.brief.json'));
+    briefs.forEach(bf => {
+      const brief = JSON.parse(fs.readFileSync(path.join(dir, bf), 'utf8'));
+      const baseName = bf.replace('.brief.json', '');
+      const rawFile = baseName + '.raw.html';
+      const compositionSrc = fs.existsSync(path.join(dir, rawFile)) ? rawFile : null;
+      const viewerHTML = buildVideoViewerHTML(compositionSrc, brief);
+      fs.writeFileSync(path.join(dir, baseName + '.html'), viewerHTML);
+      totalBriefs++;
+    });
   });
-  console.log(`  Synced ${briefs.length} video brief(s) + viewers`);
+  console.log(`  Synced ${totalBriefs} video brief(s) + viewers`);
 }
 
 // ── Sync external project designs ──
@@ -922,6 +927,14 @@ PROJECTS.forEach(project => {
     const briefSrc = d.sourcePath.replace(/\.html$/, '.brief.json');
     if (fs.existsSync(briefSrc)) {
       fs.copyFileSync(briefSrc, path.join(projectOut, d.filename.replace(/\.html$/, '.brief.json')));
+      // Also copy the MP4 if referenced in the brief
+      const brief = JSON.parse(fs.readFileSync(briefSrc, 'utf8'));
+      if (brief.mp4File) {
+        const mp4Src = path.join(path.dirname(d.sourcePath), brief.mp4File);
+        if (fs.existsSync(mp4Src)) {
+          fs.copyFileSync(mp4Src, path.join(projectOut, brief.mp4File));
+        }
+      }
     }
   });
 

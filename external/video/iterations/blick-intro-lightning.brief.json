@@ -7,8 +7,10 @@
   "created": "2025-01-01",
   "type": "existing-asset",
   "assetPath": "/Volumes/NewmanDrive/development/nexus/Marketing/Video/Blick Intro - lightning.mp4",
-  "purpose": "Existing brand intro video with lightning visual theme. Used on website and in presentations. Reference asset for new video compositions.",
-  "audience": "Prospective customers, website visitors, presentation audiences.",
+  "mp4File": "blick-intro-lightning.mp4",
+  "purpose": "Alternate Blick brand intro with lightning visual theme. Used occasionally for variety — more energetic/impact-driven feel vs the standard smoke intro.",
+  "usageRule": "ALTERNATE — mix in occasionally for variety. High-energy contexts: trade show stings, event openers, campaign launches. Do not use as default.",
+  "audience": "Prospective customers, event attendees, campaign audiences.",
   "scenes": [],
   "brand": {
     "primary": "#f05323",
@@ -16,9 +18,8 @@
     "voice": "Expert mate — confident, plain-spoken, field-focused"
   },
   "nextSteps": [
-    "Review lightning intro as style reference for Hyperframes compositions",
-    "Determine if this should be replaced or complemented by animated HTML version",
-    "Upload to YouTube/LinkedIn for social distribution"
+    "Use for trade show or event opener contexts where more energy is needed",
+    "Consider lightning motion as direction for high-impact Hyperframes variants (e.g. campaign launches)"
   ],
   "renderCommand": ""
 }

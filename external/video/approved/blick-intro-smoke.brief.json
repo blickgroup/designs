@@ -1,0 +1,26 @@
+{
+  "title": "Blick Intro — Smoke",
+  "version": "v1",
+  "duration": null,
+  "format": "MP4",
+  "status": "approved",
+  "created": "2025-01-01",
+  "type": "existing-asset",
+  "assetPath": "/Volumes/NewmanDrive/development/nexus/Marketing/Video/Blick Intro - Smoke.mp4",
+  "mp4File": "blick-intro-smoke.mp4",
+  "purpose": "Standard Blick brand intro. Smoke/fluid visual theme — the default brand video for all standard contexts. Fluid motion aligns directly with drilling fluids brand identity.",
+  "usageRule": "DEFAULT — use for all standard contexts: website, presentations, LinkedIn, email, trade shows. Smoke is the canonical Blick intro.",
+  "audience": "Prospective customers, website visitors, presentation audiences.",
+  "scenes": [],
+  "brand": {
+    "primary": "#f05323",
+    "font": "Proxima Nova",
+    "voice": "Expert mate — confident, plain-spoken, field-focused"
+  },
+  "nextSteps": [
+    "Embed on blick.group homepage as the hero brand video",
+    "Upload to YouTube as the canonical brand intro",
+    "Use smoke/fluid motion as the primary visual direction reference for all Hyperframes compositions"
+  ],
+  "renderCommand": ""
+}
