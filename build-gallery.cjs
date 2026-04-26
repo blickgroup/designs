@@ -763,7 +763,7 @@ function buildVideoViewerHTML(compositionFilename, brief) {
     <div class="main-col">
       <h1>${brief.title}<span class="v">${brief.version}</span></h1>
       <div class="meta-row">
-        <span class="chip">${brief.duration}s</span>
+        ${brief.duration ? `<span class="chip">${brief.duration}s</span>` : ''}
         <span class="chip">${brief.format}</span>
         <span class="chip neutral">${brief.status}</span>
         <span class="chip neutral">${brief.created}</span>
