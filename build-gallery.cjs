@@ -40,6 +40,14 @@ const PROJECTS = [
     approvedDir: path.join(ROOT, 'external', 'website', 'approved'),
     archiveDir: path.join(ROOT, 'external', 'website', 'archive'),
   },
+  {
+    id: 'video',
+    label: 'Video',
+    description: 'Hyperframes video compositions',
+    iterationsDir: path.join(ROOT, 'external', 'video', 'iterations'),
+    approvedDir: path.join(ROOT, 'external', 'video', 'approved'),
+    archiveDir: path.join(ROOT, 'external', 'video', 'archive'),
+  },
 ];
 
 function humanName(filename) {
@@ -448,6 +456,26 @@ function buildGalleryHTML(projects, allDesigns) {
 </html>`;
 }
 
+// ── Sync video / hyperframes compositions ──
+function syncVideoDesigns() {
+  const hyperframesRoot = path.resolve(ROOT, '..', 'blick-explainer');
+  const externalDir = path.join(ROOT, 'external', 'video');
+
+  fs.mkdirSync(path.join(externalDir, 'iterations'), { recursive: true });
+  fs.mkdirSync(path.join(externalDir, 'approved'), { recursive: true });
+  fs.mkdirSync(path.join(externalDir, 'archive'), { recursive: true });
+
+  if (!fs.existsSync(hyperframesRoot)) {
+    console.log('  blick-explainer not found — using committed external/video files');
+    return;
+  }
+
+  // Copy index.html as the versioned iteration name
+  const dest = path.join(externalDir, 'iterations', 'blick-explainer-v1.html');
+  fs.copyFileSync(path.join(hyperframesRoot, 'index.html'), dest);
+  console.log('  Synced blick-explainer composition');
+}
+
 // ── Sync external project designs ──
 function syncWebsiteDesigns() {
   // Sibling directory in the workspace
@@ -495,8 +523,9 @@ console.log('Building multi-project design gallery...');
 if (fs.existsSync(OUT)) fs.rmSync(OUT, { recursive: true });
 fs.mkdirSync(DESIGNS_OUT, { recursive: true });
 
-// Sync external designs (website-test repo)
+// Sync external designs
 syncWebsiteDesigns();
+syncVideoDesigns();
 
 // Scan all projects
 let allDesigns = [];
