@@ -556,12 +556,25 @@ function buildVideoViewerHTML(compositionFilename, brief) {
       transform-origin: top left;
     }
 
-    .play-notice {
-      font-size: 13px;
-      color: rgba(255,255,255,0.4);
-      text-align: center;
+    .comp-controls {
+      display: flex;
+      align-items: center;
+      gap: 10px;
     }
-    .play-notice strong { color: rgba(255,255,255,0.7); }
+    .comp-controls button {
+      padding: 8px 18px;
+      background: rgba(255,255,255,0.1);
+      border: 1px solid rgba(255,255,255,0.2);
+      border-radius: 6px;
+      color: #fff;
+      font-size: 13px;
+      font-weight: 600;
+      cursor: pointer;
+      font-family: var(--font);
+      transition: 0.15s;
+    }
+    .comp-controls button:hover { background: rgba(255,255,255,0.2); }
+    .comp-hint { font-size: 12px; color: rgba(255,255,255,0.35); margin-left: 6px; }
 
     .content {
       max-width: 960px;
@@ -741,6 +754,12 @@ function buildVideoViewerHTML(compositionFilename, brief) {
     ${compositionFilename ? `
     <div class="composition-wrap" id="compWrap">
       <iframe id="compFrame" src="${compositionFilename}" scrolling="no"></iframe>
+    </div>
+    <div class="comp-controls">
+      <button onclick="document.getElementById('compFrame').contentWindow.postMessage('replay','*')">&#8635; Replay</button>
+      <button onclick="document.getElementById('compFrame').contentWindow.postMessage('pause','*')">&#9646;&#9646; Pause</button>
+      <button onclick="document.getElementById('compFrame').contentWindow.postMessage('play','*')">&#9654; Play</button>
+      <span class="comp-hint">Loops automatically &middot; ${brief.duration || 30}s</span>
     </div>` : brief.mp4File ? `
     <div class="video-player-wrap">
       <video controls autoplay muted loop playsinline style="max-width:960px;width:100%;border-radius:8px;background:#000;">
