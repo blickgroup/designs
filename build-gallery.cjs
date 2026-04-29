@@ -410,8 +410,8 @@ function buildGalleryHTML(projects, allDesigns) {
       <div class="stat"><span>${archivedCount}</span> archived</div>
     </div>
     <div class="filters">
-      <button class="filter-btn active" data-filter="all">All</button>
-      <button class="filter-btn" data-filter="approved">Approved</button>
+      <button class="filter-btn" data-filter="all">All</button>
+      <button class="filter-btn active" data-filter="approved">Approved</button>
       <button class="filter-btn" data-filter="iteration">Iterations</button>
       <button class="filter-btn" data-filter="archived">Archived</button>
     </div>
@@ -427,7 +427,7 @@ function buildGalleryHTML(projects, allDesigns) {
     const search = document.querySelector('.search');
     const filterBtns = document.querySelectorAll('.filter-btn');
     const tabs = document.querySelectorAll('.tab');
-    let activeFilter = 'all';
+    let activeFilter = 'approved';
     let activeProject = 'all';
 
     function applyFilters() {
