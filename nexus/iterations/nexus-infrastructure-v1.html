@@ -1,0 +1,1306 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Nexus Infrastructure — Blick Group System Map</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:ital,wght@0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,300;1,400&display=swap" rel="stylesheet">
+<style>
+/* ─── Reset & Base ─────────────────────────────────────── */
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+:root {
+  --bg:       #000;
+  --surface:  #0a0a0a;
+  --surface2: #111;
+  --surface3: #1a1a1a;
+  --line:     #1f1f1f;
+  --line2:    #2a2a2a;
+  --text:     #e8e8ed;
+  --text2:    #98989f;
+  --text3:    #545458;
+  --orange:   #ff6b35;
+  --cyan:     #32d2c0;
+  --blue:     #3b82f6;
+  --purple:   #a855f7;
+  --green:    #30d158;
+  --yellow:   #ffd60a;
+  --red:      #ff453a;
+  --r:        14px;
+
+  /* Zone colours */
+  --zone-local:   #ff6b35;
+  --zone-compute: #3b82f6;
+  --zone-data:    #32d2c0;
+  --zone-ai:      #a855f7;
+  --zone-ext:     #30d158;
+}
+
+html { scroll-behavior: smooth; }
+
+body {
+  font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+  background: var(--bg);
+  color: var(--text);
+  font-size: 14px;
+  line-height: 1.6;
+  -webkit-font-smoothing: antialiased;
+  overflow-x: hidden;
+}
+
+/* ─── Nav ───────────────────────────────────────────────── */
+nav {
+  position: fixed;
+  top: 0; left: 0; right: 0;
+  z-index: 100;
+  height: 52px;
+  display: flex;
+  align-items: center;
+  background: rgba(0,0,0,0.88);
+  backdrop-filter: saturate(180%) blur(20px);
+  -webkit-backdrop-filter: saturate(180%) blur(20px);
+  border-bottom: 1px solid rgba(255,255,255,0.06);
+}
+.nav-inner {
+  max-width: 1440px;
+  margin: 0 auto;
+  padding: 0 40px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  width: 100%;
+}
+.nav-brand { display: flex; align-items: center; gap: 10px; }
+.nav-logo {
+  width: 28px; height: 28px;
+  background: var(--orange);
+  border-radius: 7px;
+  display: flex; align-items: center; justify-content: center;
+  font-size: 13px; font-weight: 800; color: #000;
+}
+.nav-name { font-size: 14px; font-weight: 600; color: var(--text); }
+.nav-sub  { font-size: 12px; color: var(--text3); margin-left: 2px; }
+.nav-badge {
+  font-size: 10px; font-weight: 600;
+  letter-spacing: 0.1em; text-transform: uppercase;
+  color: var(--orange);
+  border: 1px solid rgba(255,107,53,0.3);
+  border-radius: 4px;
+  padding: 2px 7px;
+}
+
+/* ─── Hero ──────────────────────────────────────────────── */
+.hero {
+  padding: 140px 40px 80px;
+  max-width: 1440px;
+  margin: 0 auto;
+  border-bottom: 1px solid var(--line);
+}
+.hero-eyebrow {
+  font-size: 11px; font-weight: 600;
+  letter-spacing: 0.14em; text-transform: uppercase;
+  color: var(--text3); margin-bottom: 20px;
+}
+.hero h1 {
+  font-size: clamp(40px, 5vw, 68px);
+  font-weight: 700; letter-spacing: -0.03em; line-height: 1.05;
+  margin-bottom: 20px;
+}
+.hero h1 span {
+  background: linear-gradient(135deg, var(--orange) 0%, #ff9a6c 100%);
+  -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+.hero-desc { font-size: 17px; color: var(--text2); max-width: 560px; line-height: 1.7; }
+
+/* ─── Legend ────────────────────────────────────────────── */
+.legend-bar {
+  padding: 24px 40px;
+  max-width: 1440px;
+  margin: 0 auto;
+  display: flex; align-items: center; gap: 32px; flex-wrap: wrap;
+  border-bottom: 1px solid var(--line);
+}
+.legend-title {
+  font-size: 11px; font-weight: 600; letter-spacing: 0.12em;
+  text-transform: uppercase; color: var(--text3); margin-right: 8px;
+}
+.legend-item { display: flex; align-items: center; gap: 8px; }
+.legend-dot {
+  width: 10px; height: 10px; border-radius: 50%;
+  flex-shrink: 0;
+}
+.legend-label { font-size: 12px; font-weight: 500; color: var(--text2); }
+
+.edge-legend { display: flex; align-items: center; gap: 8px; }
+.edge-line {
+  width: 28px; height: 2px;
+  position: relative; flex-shrink: 0;
+}
+.edge-line::after {
+  content: '';
+  position: absolute;
+  right: -1px; top: 50%;
+  transform: translateY(-50%);
+  border-left: 5px solid currentColor;
+  border-top: 3px solid transparent;
+  border-bottom: 3px solid transparent;
+}
+
+/* ─── Diagram Canvas ────────────────────────────────────── */
+.diagram-wrap {
+  padding: 60px 40px 80px;
+  max-width: 1440px;
+  margin: 0 auto;
+  overflow-x: auto;
+}
+
+.diagram-canvas {
+  position: relative;
+  width: 1360px;
+  /* height set inline per layout */
+  min-height: 1200px;
+}
+
+/* ─── Zone Regions ──────────────────────────────────────── */
+.zone {
+  position: absolute;
+  border-radius: 20px;
+  border: 1px solid rgba(255,255,255,0.06);
+  padding: 0;
+}
+.zone-header {
+  position: absolute;
+  top: -12px; left: 20px;
+  display: flex; align-items: center; gap: 7px;
+  background: var(--bg);
+  padding: 0 10px;
+}
+.zone-dot-lg {
+  width: 8px; height: 8px; border-radius: 50%; flex-shrink: 0;
+}
+.zone-label {
+  font-size: 10px; font-weight: 700;
+  letter-spacing: 0.15em; text-transform: uppercase;
+}
+
+/* ─── Nodes ─────────────────────────────────────────────── */
+.node {
+  position: absolute;
+  background: var(--surface2);
+  border: 1px solid var(--line2);
+  border-radius: var(--r);
+  padding: 14px 16px;
+  min-width: 160px;
+  cursor: default;
+  transition: border-color 0.2s, box-shadow 0.2s;
+}
+.node:hover {
+  border-color: rgba(255,255,255,0.15);
+  box-shadow: 0 8px 32px rgba(0,0,0,0.6);
+  z-index: 10;
+}
+.node-header { display: flex; align-items: flex-start; gap: 10px; margin-bottom: 8px; }
+.node-icon {
+  width: 34px; height: 34px; border-radius: 9px;
+  display: flex; align-items: center; justify-content: center;
+  font-size: 17px; flex-shrink: 0;
+}
+.node-title-wrap { flex: 1; min-width: 0; }
+.node-name { font-size: 13px; font-weight: 600; color: var(--text); line-height: 1.3; }
+.node-type { font-size: 10px; color: var(--text3); font-weight: 500; letter-spacing: 0.05em; }
+.node-tags {
+  display: flex; flex-wrap: wrap; gap: 4px; margin-top: 8px;
+}
+.node-tag {
+  font-size: 10px; font-weight: 500;
+  color: var(--text3); background: var(--surface3);
+  border: 1px solid var(--line);
+  border-radius: 4px; padding: 1px 6px;
+  white-space: nowrap;
+}
+
+/* Primary node — larger, more prominent */
+.node-primary {
+  background: #0d0d0d;
+  border-color: var(--line2);
+  min-width: 200px;
+}
+.node-primary .node-name { font-size: 14px; }
+
+/* ─── SVG Edges ─────────────────────────────────────────── */
+.edges-svg {
+  position: absolute;
+  top: 0; left: 0;
+  width: 100%; height: 100%;
+  pointer-events: none;
+  overflow: visible;
+}
+
+.edge { fill: none; stroke-width: 1.5; }
+.edge-primary { stroke-width: 2; }
+
+/* Edge label bubbles */
+.edge-label-bg {
+  fill: var(--surface2);
+  rx: 4; ry: 4;
+}
+.edge-label-text {
+  font-family: 'Inter', sans-serif;
+  font-size: 9px; font-weight: 600;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  fill: var(--text3);
+}
+
+/* Arrowhead markers — defined in SVG defs */
+
+/* ─── Section divider ───────────────────────────────────── */
+.section-note {
+  padding: 48px 40px 0;
+  max-width: 1440px;
+  margin: 0 auto;
+}
+.section-note h2 {
+  font-size: 11px; font-weight: 600;
+  letter-spacing: 0.14em; text-transform: uppercase;
+  color: var(--text3); margin-bottom: 8px;
+}
+.section-note p { font-size: 14px; color: var(--text2); max-width: 700px; }
+
+/* ─── Connection Table ──────────────────────────────────── */
+.conn-table-wrap {
+  padding: 60px 40px 100px;
+  max-width: 1440px;
+  margin: 0 auto;
+  border-top: 1px solid var(--line);
+}
+.conn-table-header { margin-bottom: 32px; }
+.conn-table-header h2 {
+  font-size: clamp(22px, 3vw, 34px);
+  font-weight: 700; letter-spacing: -0.02em;
+  margin-bottom: 8px;
+}
+.conn-table-header p { color: var(--text2); font-size: 15px; }
+
+table { width: 100%; border-collapse: collapse; }
+thead th {
+  font-size: 10px; font-weight: 600; letter-spacing: 0.1em;
+  text-transform: uppercase; color: var(--text3);
+  padding: 10px 16px; text-align: left;
+  border-bottom: 1px solid var(--line2);
+}
+tbody tr {
+  border-bottom: 1px solid var(--line);
+  transition: background 0.15s;
+}
+tbody tr:hover { background: rgba(255,255,255,0.02); }
+tbody td {
+  padding: 12px 16px; font-size: 13px;
+  color: var(--text2); vertical-align: top;
+}
+tbody td:first-child { color: var(--text); font-weight: 500; }
+.proto-badge {
+  font-size: 10px; font-weight: 600;
+  padding: 2px 7px; border-radius: 4px;
+  display: inline-block; white-space: nowrap;
+}
+
+/* ─── Footer ────────────────────────────────────────────── */
+footer {
+  border-top: 1px solid var(--line);
+  padding: 32px 40px;
+  max-width: 1440px; margin: 0 auto;
+  display: flex; align-items: center; justify-content: space-between;
+  flex-wrap: wrap; gap: 12px;
+}
+footer p { font-size: 12px; color: var(--text3); }
+footer strong { color: var(--text2); }
+</style>
+</head>
+<body>
+
+<!-- ─── Nav ──────────────────────────────────────────────── -->
+<nav>
+  <div class="nav-inner">
+    <div class="nav-brand">
+      <div class="nav-logo">B</div>
+      <span class="nav-name">Blick Group</span>
+      <span class="nav-sub">/ Nexus</span>
+    </div>
+    <span class="nav-badge">Infrastructure Map</span>
+  </div>
+</nav>
+
+<!-- ─── Hero ─────────────────────────────────────────────── -->
+<div class="hero">
+  <p class="hero-eyebrow">System Architecture · 2026</p>
+  <h1>Blick &amp; Nexus<br><span>Infrastructure Map</span></h1>
+  <p class="hero-desc">
+    Physical and logical topology of the Blick AI operating system — machines, cloud services, data stores, and every labelled connection between them.
+  </p>
+</div>
+
+<!-- ─── Legend ───────────────────────────────────────────── -->
+<div class="legend-bar">
+  <span class="legend-title">Zone</span>
+  <div class="legend-item">
+    <div class="legend-dot" style="background:var(--zone-local)"></div>
+    <span class="legend-label">Local / Hardware</span>
+  </div>
+  <div class="legend-item">
+    <div class="legend-dot" style="background:var(--zone-compute)"></div>
+    <span class="legend-label">Cloud Compute</span>
+  </div>
+  <div class="legend-item">
+    <div class="legend-dot" style="background:var(--zone-data)"></div>
+    <span class="legend-label">Data &amp; Storage</span>
+  </div>
+  <div class="legend-item">
+    <div class="legend-dot" style="background:var(--zone-ai)"></div>
+    <span class="legend-label">AI / LLM</span>
+  </div>
+  <div class="legend-item">
+    <div class="legend-dot" style="background:var(--zone-ext)"></div>
+    <span class="legend-label">External Services</span>
+  </div>
+
+  <div style="width:1px;background:var(--line);height:20px;margin:0 8px;flex-shrink:0"></div>
+  <span class="legend-title">Edge</span>
+
+  <div class="edge-legend">
+    <div class="edge-line" style="background:var(--orange);color:var(--orange)"></div>
+    <span class="legend-label">Deploy / write</span>
+  </div>
+  <div class="edge-legend">
+    <div class="edge-line" style="background:var(--cyan);color:var(--cyan)"></div>
+    <span class="legend-label">Query / read</span>
+  </div>
+  <div class="edge-legend">
+    <div class="edge-line" style="background:var(--blue);color:var(--blue)"></div>
+    <span class="legend-label">API call</span>
+  </div>
+  <div class="edge-legend">
+    <div class="edge-line" style="background:var(--text3);color:var(--text3)"></div>
+    <span class="legend-label">Internal / bidirectional</span>
+  </div>
+</div>
+
+<!-- ─── Diagram ───────────────────────────────────────────── -->
+<div class="diagram-wrap">
+<div class="diagram-canvas" style="height:1320px">
+
+<!-- ══════════════════════════════════════════════════════════
+     SVG EDGES  (drawn first so nodes sit on top)
+     ══════════════════════════════════════════════════════════ -->
+<svg class="edges-svg" xmlns="http://www.w3.org/2000/svg">
+<defs>
+  <!-- Arrowheads per colour -->
+  <marker id="arr-orange" markerWidth="8" markerHeight="8" refX="6" refY="3" orient="auto">
+    <path d="M0,0 L6,3 L0,6 Z" fill="#ff6b35"/>
+  </marker>
+  <marker id="arr-cyan" markerWidth="8" markerHeight="8" refX="6" refY="3" orient="auto">
+    <path d="M0,0 L6,3 L0,6 Z" fill="#32d2c0"/>
+  </marker>
+  <marker id="arr-blue" markerWidth="8" markerHeight="8" refX="6" refY="3" orient="auto">
+    <path d="M0,0 L6,3 L0,6 Z" fill="#3b82f6"/>
+  </marker>
+  <marker id="arr-purple" markerWidth="8" markerHeight="8" refX="6" refY="3" orient="auto">
+    <path d="M0,0 L6,3 L0,6 Z" fill="#a855f7"/>
+  </marker>
+  <marker id="arr-green" markerWidth="8" markerHeight="8" refX="6" refY="3" orient="auto">
+    <path d="M0,0 L6,3 L0,6 Z" fill="#30d158"/>
+  </marker>
+  <marker id="arr-grey" markerWidth="8" markerHeight="8" refX="6" refY="3" orient="auto">
+    <path d="M0,0 L6,3 L0,6 Z" fill="#545458"/>
+  </marker>
+  <marker id="arr-grey-r" markerWidth="8" markerHeight="8" refX="0" refY="3" orient="auto-start-reverse">
+    <path d="M6,0 L0,3 L6,6 Z" fill="#545458"/>
+  </marker>
+  <marker id="arr-yellow" markerWidth="8" markerHeight="8" refX="6" refY="3" orient="auto">
+    <path d="M0,0 L6,3 L0,6 Z" fill="#ffd60a"/>
+  </marker>
+</defs>
+
+<!-- ─────────────────────────────────────────────────────────
+     LAYOUT REFERENCE (node centres, approximate):
+     Mac Mini developer:   left=60, top=220  → centre ~(240, 330)
+     MacBook:              left=60, top=580  → centre ~(178, 648)
+     Mac Mini newman:      left=60, top=790  → centre ~(168, 858)
+     BlickVault:           left=300,top=230  → centre ~(388, 300)
+     Ollama:               left=300,top=400  → centre ~(382, 468)
+     Tailscale:            left=60, top=1000 → centre ~(162, 1050)
+
+     Fly.io zone:          left=520, top=60
+       frontend:           left=540,top=100  → centre ~(650, 168)
+       compass-api:        left=540,top=230  → centre ~(638, 298)
+       rig-api:            left=720,top=100  → centre ~(814, 168)
+       h-s-api:            left=720,top=230  → centre ~(808, 298)
+       n8n:                left=620,top=360  → centre ~(706, 428)
+
+     GCP zone:             left=520, top=470
+       Cloud Run:          left=540,top=520  → centre ~(636, 590)
+       BigQuery:           left=730,top=480  → centre ~(830, 548)
+       Drive:              left=540,top=640  → centre ~(632, 710)
+       Gmail/Cal:          left=740,top=640  → centre ~(828, 710)
+
+     GitHub:               left=950,top=60   → centre ~(1080, 148)
+     Sentry:               left=950,top=220  → centre ~(1072, 298)
+     Unleashed:            left=950,top=370  → centre ~(1070, 438)
+
+     AI zone:              left=950, top=490
+       Anthropic:          left=970,top=530  → centre ~(1082, 600)
+       XAI/Grok:           left=1150,top=530 → centre ~(1246, 600)
+       Brave/Firecrawl:    left=970,top=650  → centre ~(1072, 718)
+       NotebookLM:         left=1140,top=650 → centre ~(1244, 718)
+     ───────────────────────────────────────────────────────── -->
+
+<!-- ── Mac Mini developer → Fly.io (flyctl deploy) ── -->
+<path class="edge edge-primary" d="M370,310 C450,310 480,168 540,168"
+  stroke="#ff6b35" stroke-dasharray="none"
+  marker-end="url(#arr-orange)"/>
+<text font-family="Inter,sans-serif" font-size="9" font-weight="600" letter-spacing="0.04em" fill="#ff6b35" opacity="0.8">
+  <textPath href="#edge-path-fly" startOffset="40%">flyctl deploy</textPath>
+</text>
+<path id="edge-path-fly" d="M370,310 C450,310 480,168 540,168" fill="none" stroke="none"/>
+
+<!-- ── Mac Mini developer → compass-api (flyctl) ── -->
+<path class="edge" d="M370,320 C480,320 500,298 540,298"
+  stroke="#ff6b35" opacity="0.5"
+  marker-end="url(#arr-orange)"/>
+
+<!-- ── Mac Mini developer → Cloud Run (gcloud builds) ── -->
+<path class="edge edge-primary" d="M370,340 C490,340 510,590 540,590"
+  stroke="#ff6b35" stroke-dasharray="6 3"
+  marker-end="url(#arr-orange)"/>
+
+<!-- ── Mac Mini developer → BigQuery (query) ── -->
+<path class="edge edge-primary" d="M370,350 C510,350 600,548 730,548"
+  stroke="#32d2c0"
+  marker-end="url(#arr-cyan)"/>
+
+<!-- ── Mac Mini developer → Google Drive (nexus-drive MCP) ── -->
+<path class="edge" d="M370,360 C500,360 530,710 540,710"
+  stroke="#32d2c0" stroke-dasharray="4 3" opacity="0.7"
+  marker-end="url(#arr-cyan)"/>
+
+<!-- ── Mac Mini developer → GitHub (git push / gh CLI) ── -->
+<path class="edge edge-primary" d="M370,280 C600,280 800,148 950,148"
+  stroke="#545458"
+  marker-end="url(#arr-grey)"/>
+
+<!-- ── Mac Mini developer → Sentry (MCP HTTP) ── -->
+<path class="edge" d="M370,290 C700,200 850,298 950,298"
+  stroke="#32d2c0" stroke-dasharray="4 3" opacity="0.7"
+  marker-end="url(#arr-cyan)"/>
+
+<!-- ── Mac Mini developer → Unleashed (sync) ── -->
+<path class="edge" d="M370,370 C760,370 880,438 950,438"
+  stroke="#30d158" stroke-dasharray="4 3" opacity="0.7"
+  marker-end="url(#arr-green)"/>
+
+<!-- ── Mac Mini developer → n8n (REST API) ── -->
+<path class="edge" d="M370,380 C500,380 580,428 620,428"
+  stroke="#ffd60a" stroke-dasharray="4 3" opacity="0.7"
+  marker-end="url(#arr-yellow)"/>
+
+<!-- ── Mac Mini developer → Anthropic API ── -->
+<path class="edge edge-primary" d="M370,300 C740,200 920,600 970,600"
+  stroke="#a855f7"
+  marker-end="url(#arr-purple)"/>
+
+<!-- ── Mac Mini developer → XAI / Grok ── -->
+<path class="edge" d="M370,310 C750,180 1000,580 1150,600"
+  stroke="#a855f7" stroke-dasharray="4 3" opacity="0.6"
+  marker-end="url(#arr-purple)"/>
+
+<!-- ── Mac Mini developer → Brave/Firecrawl ── -->
+<path class="edge" d="M370,330 C750,200 900,718 970,718"
+  stroke="#30d158" stroke-dasharray="4 3" opacity="0.6"
+  marker-end="url(#arr-green)"/>
+
+<!-- ── MacBook ↔ Mac Mini developer (Tailscale) ── -->
+<path class="edge edge-primary" d="M178,636 C178,550 240,420 240,400"
+  stroke="#545458" stroke-dasharray="6 3"
+  marker-end="url(#arr-grey)" marker-start="url(#arr-grey-r)"/>
+
+<!-- ── MacBook → BlickVault (SMB) ── -->
+<path class="edge" d="M250,620 C300,520 340,380 388,350"
+  stroke="#32d2c0" stroke-dasharray="4 3" opacity="0.6"
+  marker-end="url(#arr-cyan)"/>
+
+<!-- ── MacBook → developer (VNC) ── -->
+<path class="edge" d="M200,620 C160,520 200,450 224,400"
+  stroke="#545458" stroke-dasharray="2 3" opacity="0.5"
+  marker-end="url(#arr-grey)"/>
+
+<!-- ── Mac Mini newman ↔ developer (Tailscale) ── -->
+<path class="edge" d="M168,846 C168,700 200,520 220,400"
+  stroke="#545458" stroke-dasharray="6 3" opacity="0.6"
+  marker-end="url(#arr-grey)" marker-start="url(#arr-grey-r)"/>
+
+<!-- ── Hub frontend → compass-api / rig-api (internal) ── -->
+<path class="edge" d="M650,156 L638,228"
+  stroke="#3b82f6" stroke-dasharray="none" opacity="0.7"
+  marker-end="url(#arr-blue)"/>
+<path class="edge" d="M700,168 L814,168"
+  stroke="#3b82f6" stroke-dasharray="none" opacity="0.5"
+  marker-end="url(#arr-blue)"/>
+
+<!-- ── compass-api → BigQuery ── -->
+<path class="edge" d="M736,298 C770,298 800,420 800,480"
+  stroke="#32d2c0" opacity="0.6"
+  marker-end="url(#arr-cyan)"/>
+
+<!-- ── n8n → BigQuery (MERGE SQL) ── -->
+<path class="edge" d="M792,428 C810,428 810,480 820,480"
+  stroke="#ffd60a" stroke-dasharray="4 3" opacity="0.6"
+  marker-end="url(#arr-yellow)"/>
+
+<!-- ── n8n → Unleashed (inventory sync) ── -->
+<path class="edge" d="M792,440 C880,440 930,438 950,438"
+  stroke="#30d158" stroke-dasharray="4 3" opacity="0.5"
+  marker-end="url(#arr-green)"/>
+
+<!-- ── GitHub → Pages (auto-deploy Actions) ── -->
+<path class="edge" d="M1080,196 C1080,220 1080,240 1080,260"
+  stroke="#545458" stroke-dasharray="4 3" opacity="0.5"
+  marker-end="url(#arr-grey)"/>
+
+<!-- ── Unleashed → BigQuery (sync) ── -->
+<path class="edge" d="M1000,456 C960,500 900,530 870,530"
+  stroke="#30d158" stroke-dasharray="4 3" opacity="0.5"
+  marker-end="url(#arr-green)"/>
+
+<!-- label overlays: small text along key edges -->
+<g font-family="Inter,sans-serif" font-size="9" font-weight="600" letter-spacing="0.04em">
+  <!-- flyctl label -->
+  <rect x="434" y="224" width="46" height="14" rx="3" fill="#0a0a0a"/>
+  <text x="457" y="234" text-anchor="middle" fill="#ff6b35">flyctl</text>
+
+  <!-- gcloud label -->
+  <rect x="418" y="446" width="54" height="14" rx="3" fill="#0a0a0a"/>
+  <text x="445" y="456" text-anchor="middle" fill="#ff6b35">gcloud</text>
+
+  <!-- BigQuery query label -->
+  <rect x="530" y="334" width="48" height="14" rx="3" fill="#0a0a0a"/>
+  <text x="554" y="344" text-anchor="middle" fill="#32d2c0">BQ query</text>
+
+  <!-- Drive MCP label -->
+  <rect x="440" y="516" width="66" height="14" rx="3" fill="#0a0a0a"/>
+  <text x="473" y="526" text-anchor="middle" fill="#32d2c0">nexus-drive</text>
+
+  <!-- git push label -->
+  <rect x="628" y="248" width="50" height="14" rx="3" fill="#0a0a0a"/>
+  <text x="653" y="258" text-anchor="middle" fill="#545458">git push</text>
+
+  <!-- Sentry MCP label -->
+  <rect x="686" y="218" width="58" height="14" rx="3" fill="#0a0a0a"/>
+  <text x="715" y="228" text-anchor="middle" fill="#32d2c0">MCP HTTP</text>
+
+  <!-- REST API n8n label -->
+  <rect x="484" y="390" width="50" height="14" rx="3" fill="#0a0a0a"/>
+  <text x="509" y="400" text-anchor="middle" fill="#ffd60a">REST API</text>
+
+  <!-- Anthropic label -->
+  <rect x="746" y="350" width="58" height="14" rx="3" fill="#0a0a0a"/>
+  <text x="775" y="360" text-anchor="middle" fill="#a855f7">Sonnet/Opus</text>
+
+  <!-- XAI label -->
+  <rect x="858" y="318" width="52" height="14" rx="3" fill="#0a0a0a"/>
+  <text x="884" y="328" text-anchor="middle" fill="#a855f7">autoresearch</text>
+
+  <!-- Tailscale MacBook label -->
+  <rect x="110" y="506" width="58" height="14" rx="3" fill="#0a0a0a"/>
+  <text x="139" y="516" text-anchor="middle" fill="#545458">Tailscale VPN</text>
+
+  <!-- SMB label -->
+  <rect x="260" y="476" width="36" height="14" rx="3" fill="#0a0a0a"/>
+  <text x="278" y="486" text-anchor="middle" fill="#32d2c0">SMB</text>
+
+  <!-- VNC label -->
+  <rect x="160" y="484" width="32" height="14" rx="3" fill="#0a0a0a"/>
+  <text x="176" y="494" text-anchor="middle" fill="#545458">VNC</text>
+
+  <!-- newman tailscale label -->
+  <rect x="104" y="650" width="58" height="14" rx="3" fill="#0a0a0a"/>
+  <text x="133" y="660" text-anchor="middle" fill="#545458">Tailscale VPN</text>
+
+  <!-- compass→BQ label -->
+  <rect x="750" y="368" width="40" height="14" rx="3" fill="#0a0a0a"/>
+  <text x="770" y="378" text-anchor="middle" fill="#32d2c0">SQL reads</text>
+
+  <!-- n8n→BQ label -->
+  <rect x="800" y="452" width="44" height="14" rx="3" fill="#0a0a0a"/>
+  <text x="822" y="462" text-anchor="middle" fill="#ffd60a">MERGE SQL</text>
+</g>
+</svg>
+
+<!-- ══════════════════════════════════════════════════════════
+     ZONES (background regions)
+     ══════════════════════════════════════════════════════════ -->
+
+<!-- LOCAL zone -->
+<div class="zone" style="left:40px;top:170px;width:460px;height:760px;border-color:rgba(255,107,53,0.2);background:rgba(255,107,53,0.02)">
+  <div class="zone-header">
+    <div class="zone-dot-lg" style="background:var(--zone-local)"></div>
+    <span class="zone-label" style="color:var(--zone-local)">Local / Hardware</span>
+  </div>
+</div>
+
+<!-- CLOUD COMPUTE zone (Fly + GCP) -->
+<div class="zone" style="left:515px;top:50px;width:400px;height:720px;border-color:rgba(59,130,246,0.2);background:rgba(59,130,246,0.02)">
+  <div class="zone-header">
+    <div class="zone-dot-lg" style="background:var(--zone-compute)"></div>
+    <span class="zone-label" style="color:var(--zone-compute)">Cloud Compute</span>
+  </div>
+</div>
+
+<!-- DATA zone -->
+<div class="zone" style="left:515px;top:780px;width:400px;height:200px;border-color:rgba(50,210,192,0.2);background:rgba(50,210,192,0.02)">
+  <div class="zone-header">
+    <div class="zone-dot-lg" style="background:var(--zone-data)"></div>
+    <span class="zone-label" style="color:var(--zone-data)">Data &amp; Storage</span>
+  </div>
+</div>
+
+<!-- EXTERNAL zone -->
+<div class="zone" style="left:935px;top:50px;width:390px;height:440px;border-color:rgba(48,209,88,0.2);background:rgba(48,209,88,0.02)">
+  <div class="zone-header">
+    <div class="zone-dot-lg" style="background:var(--zone-ext)"></div>
+    <span class="zone-label" style="color:var(--zone-ext)">External Services</span>
+  </div>
+</div>
+
+<!-- AI / LLM zone -->
+<div class="zone" style="left:935px;top:500px;width:390px;height:460px;border-color:rgba(168,85,247,0.2);background:rgba(168,85,247,0.02)">
+  <div class="zone-header">
+    <div class="zone-dot-lg" style="background:var(--zone-ai)"></div>
+    <span class="zone-label" style="color:var(--zone-ai)">AI / LLM Providers</span>
+  </div>
+</div>
+
+<!-- ══════════════════════════════════════════════════════════
+     NODES
+     ══════════════════════════════════════════════════════════ -->
+
+<!-- ─── LOCAL HARDWARE ─────────────────────────────────── -->
+
+<!-- Mac Mini developer (PRIMARY) -->
+<div class="node node-primary" style="left:60px;top:200px;width:270px;border-color:rgba(255,107,53,0.35)">
+  <div class="node-header">
+    <div class="node-icon" style="background:rgba(255,107,53,0.12);color:var(--orange)">🖥️</div>
+    <div class="node-title-wrap">
+      <div class="node-name">Mac Mini "developer"</div>
+      <div class="node-type">Brain · Always On · M-series</div>
+    </div>
+  </div>
+  <div class="node-tags">
+    <span class="node-tag" style="color:var(--orange);border-color:rgba(255,107,53,0.25)">Nexus Engine</span>
+    <span class="node-tag">4 MCP servers</span>
+    <span class="node-tag">25 launchd agents</span>
+    <span class="node-tag">Ollama 3 models</span>
+    <span class="node-tag">BlickVault host</span>
+    <span class="node-tag">/Volumes/NewmanDrive/</span>
+  </div>
+</div>
+
+<!-- Ollama (sub-node) -->
+<div class="node" style="left:300px;top:200px;width:190px">
+  <div class="node-header">
+    <div class="node-icon" style="background:rgba(168,85,247,0.12);color:var(--purple)">🧠</div>
+    <div class="node-title-wrap">
+      <div class="node-name">Ollama</div>
+      <div class="node-type">Local LLM runtime</div>
+    </div>
+  </div>
+  <div class="node-tags">
+    <span class="node-tag">gemma-4-e4b</span>
+    <span class="node-tag">gemma-4-26b</span>
+    <span class="node-tag">nomic-embed</span>
+  </div>
+</div>
+
+<!-- BlickVault (sub-node) -->
+<div class="node" style="left:300px;top:350px;width:190px">
+  <div class="node-header">
+    <div class="node-icon" style="background:rgba(50,210,192,0.12);color:var(--cyan)">📚</div>
+    <div class="node-title-wrap">
+      <div class="node-name">BlickVault</div>
+      <div class="node-type">Obsidian Knowledge Base</div>
+    </div>
+  </div>
+  <div class="node-tags">
+    <span class="node-tag">Markdown notes</span>
+    <span class="node-tag">BM25 + vector index</span>
+    <span class="node-tag">SMB shared</span>
+  </div>
+</div>
+
+<!-- MCP Servers (sub-node) -->
+<div class="node" style="left:60px;top:500px;width:240px">
+  <div class="node-header">
+    <div class="node-icon" style="background:rgba(255,107,53,0.10);color:var(--orange)">🔌</div>
+    <div class="node-title-wrap">
+      <div class="node-name">MCP Servers (local)</div>
+      <div class="node-type">Model Context Protocol</div>
+    </div>
+  </div>
+  <div class="node-tags">
+    <span class="node-tag">mcpvault</span>
+    <span class="node-tag">nexus</span>
+    <span class="node-tag">nexus-drive</span>
+    <span class="node-tag">sentry-mcp</span>
+  </div>
+</div>
+
+<!-- launchd Scheduler -->
+<div class="node" style="left:310px;top:500px;width:180px">
+  <div class="node-header">
+    <div class="node-icon" style="background:rgba(255,214,10,0.10);color:var(--yellow)">⏱️</div>
+    <div class="node-title-wrap">
+      <div class="node-name">launchd</div>
+      <div class="node-type">macOS scheduler</div>
+    </div>
+  </div>
+  <div class="node-tags">
+    <span class="node-tag">25 agents</span>
+    <span class="node-tag">brief pipeline</span>
+    <span class="node-tag">health checks</span>
+    <span class="node-tag">self-healing</span>
+  </div>
+</div>
+
+<!-- MacBook -->
+<div class="node" style="left:60px;top:660px;width:220px">
+  <div class="node-header">
+    <div class="node-icon" style="background:rgba(255,107,53,0.10);color:var(--orange)">💻</div>
+    <div class="node-title-wrap">
+      <div class="node-name">MacBook (mobile)</div>
+      <div class="node-type">Developer workstation</div>
+    </div>
+  </div>
+  <div class="node-tags">
+    <span class="node-tag">Obsidian (SMB mount)</span>
+    <span class="node-tag">Claude Code CLI</span>
+    <span class="node-tag">Tailscale client</span>
+  </div>
+</div>
+
+<!-- Mac Mini newman -->
+<div class="node" style="left:60px;top:840px;width:220px">
+  <div class="node-header">
+    <div class="node-icon" style="background:rgba(255,107,53,0.08);color:var(--text3)">🖥️</div>
+    <div class="node-title-wrap">
+      <div class="node-name">Mac Mini "newman"</div>
+      <div class="node-type">Sandbox · OC only</div>
+    </div>
+  </div>
+  <div class="node-tags">
+    <span class="node-tag">Tailscale peer</span>
+    <span class="node-tag">isolated env</span>
+  </div>
+</div>
+
+<!-- Tailscale mesh -->
+<div class="node" style="left:60px;top:1020px;width:220px;border-color:rgba(59,130,246,0.25)">
+  <div class="node-header">
+    <div class="node-icon" style="background:rgba(59,130,246,0.12);color:var(--blue)">🔒</div>
+    <div class="node-title-wrap">
+      <div class="node-name">Tailscale</div>
+      <div class="node-type">VPN Mesh Network</div>
+    </div>
+  </div>
+  <div class="node-tags">
+    <span class="node-tag">developer ↔ MacBook</span>
+    <span class="node-tag">developer ↔ newman</span>
+    <span class="node-tag">100.95.117.46</span>
+  </div>
+</div>
+
+<!-- ─── CLOUD COMPUTE ──────────────────────────────────── -->
+
+<!-- Fly.io sub-header -->
+<div style="position:absolute;left:528px;top:68px;font-size:10px;font-weight:700;letter-spacing:0.12em;text-transform:uppercase;color:#545458">Fly.io</div>
+
+<!-- blick-hub-frontend -->
+<div class="node" style="left:528px;top:90px;width:178px">
+  <div class="node-header">
+    <div class="node-icon" style="background:rgba(59,130,246,0.12);color:var(--blue)">🌐</div>
+    <div class="node-title-wrap">
+      <div class="node-name">Hub Frontend</div>
+      <div class="node-type">blick-hub-frontend</div>
+    </div>
+  </div>
+  <div class="node-tags">
+    <span class="node-tag">React / Vite</span>
+    <span class="node-tag">Fly.io</span>
+  </div>
+</div>
+
+<!-- blick-rig-api -->
+<div class="node" style="left:716px;top:90px;width:178px">
+  <div class="node-header">
+    <div class="node-icon" style="background:rgba(59,130,246,0.10);color:var(--blue)">⚙️</div>
+    <div class="node-title-wrap">
+      <div class="node-name">Rig API</div>
+      <div class="node-type">blick-rig-api</div>
+    </div>
+  </div>
+  <div class="node-tags">
+    <span class="node-tag">Node.js</span>
+    <span class="node-tag">Fly.io</span>
+  </div>
+</div>
+
+<!-- blick-compass-api -->
+<div class="node" style="left:528px;top:220px;width:178px">
+  <div class="node-header">
+    <div class="node-icon" style="background:rgba(59,130,246,0.10);color:var(--blue)">🧭</div>
+    <div class="node-title-wrap">
+      <div class="node-name">Compass API</div>
+      <div class="node-type">blick-compass-api</div>
+    </div>
+  </div>
+  <div class="node-tags">
+    <span class="node-tag">prod-only</span>
+    <span class="node-tag">Fly.io</span>
+  </div>
+</div>
+
+<!-- blick-health-safety-api -->
+<div class="node" style="left:716px;top:220px;width:178px">
+  <div class="node-header">
+    <div class="node-icon" style="background:rgba(59,130,246,0.10);color:var(--blue)">🏥</div>
+    <div class="node-title-wrap">
+      <div class="node-name">H&amp;S API</div>
+      <div class="node-type">blick-health-safety-api</div>
+    </div>
+  </div>
+  <div class="node-tags">
+    <span class="node-tag">Node.js</span>
+    <span class="node-tag">Fly.io</span>
+  </div>
+</div>
+
+<!-- n8n -->
+<div class="node" style="left:612px;top:350px;width:190px;border-color:rgba(255,214,10,0.25)">
+  <div class="node-header">
+    <div class="node-icon" style="background:rgba(255,214,10,0.10);color:var(--yellow)">⚡</div>
+    <div class="node-title-wrap">
+      <div class="node-name">n8n</div>
+      <div class="node-type">Workflow automation · Fly.io</div>
+    </div>
+  </div>
+  <div class="node-tags">
+    <span class="node-tag">self-hosted</span>
+    <span class="node-tag">BQ pipelines</span>
+    <span class="node-tag">Unleashed sync</span>
+  </div>
+</div>
+
+<!-- GCP sub-header -->
+<div style="position:absolute;left:528px;top:474px;font-size:10px;font-weight:700;letter-spacing:0.12em;text-transform:uppercase;color:#545458">Google Cloud Platform</div>
+
+<!-- Cloud Run -->
+<div class="node" style="left:528px;top:498px;width:190px">
+  <div class="node-header">
+    <div class="node-icon" style="background:rgba(59,130,246,0.10);color:var(--blue)">☁️</div>
+    <div class="node-title-wrap">
+      <div class="node-name">Cloud Run</div>
+      <div class="node-type">Google Cloud</div>
+    </div>
+  </div>
+  <div class="node-tags">
+    <span class="node-tag">copper-api</span>
+    <span class="node-tag">btc-treasury-monitor</span>
+    <span class="node-tag">gcloud builds</span>
+  </div>
+</div>
+
+<!-- BigQuery -->
+<div class="node" style="left:726px;top:460px;width:178px;border-color:rgba(50,210,192,0.25)">
+  <div class="node-header">
+    <div class="node-icon" style="background:rgba(50,210,192,0.12);color:var(--cyan)">📊</div>
+    <div class="node-title-wrap">
+      <div class="node-name">BigQuery</div>
+      <div class="node-type">unleashed-sales-data project</div>
+    </div>
+  </div>
+  <div class="node-tags">
+    <span class="node-tag">blick_identity</span>
+    <span class="node-tag">ops data</span>
+    <span class="node-tag">trading data</span>
+    <span class="node-tag">10 active tables</span>
+  </div>
+</div>
+
+<!-- Google Drive -->
+<div class="node" style="left:528px;top:620px;width:178px">
+  <div class="node-header">
+    <div class="node-icon" style="background:rgba(50,210,192,0.10);color:var(--cyan)">📁</div>
+    <div class="node-title-wrap">
+      <div class="node-name">Google Drive</div>
+      <div class="node-type">Nexus Shared Drive</div>
+    </div>
+  </div>
+  <div class="node-tags">
+    <span class="node-tag">briefs sync</span>
+    <span class="node-tag">nexus-drive MCP</span>
+    <span class="node-tag">drive-sync.js</span>
+  </div>
+</div>
+
+<!-- Gmail + Calendar -->
+<div class="node" style="left:716px;top:620px;width:178px">
+  <div class="node-header">
+    <div class="node-icon" style="background:rgba(59,130,246,0.10);color:var(--blue)">📧</div>
+    <div class="node-title-wrap">
+      <div class="node-name">Gmail · Calendar</div>
+      <div class="node-type">Google Workspace</div>
+    </div>
+  </div>
+  <div class="node-tags">
+    <span class="node-tag">Gmail MCP</span>
+    <span class="node-tag">google-workspace MCP</span>
+  </div>
+</div>
+
+<!-- DATA ZONE nodes -->
+<!-- Operations API (mention as shared) -->
+<div class="node" style="left:528px;top:800px;width:360px;border-color:rgba(50,210,192,0.2)">
+  <div class="node-header">
+    <div class="node-icon" style="background:rgba(50,210,192,0.10);color:var(--cyan)">🗄️</div>
+    <div class="node-title-wrap">
+      <div class="node-name">Operations API</div>
+      <div class="node-type">blick-operations-api · Fly.io · reads BigQuery</div>
+    </div>
+  </div>
+  <div class="node-tags">
+    <span class="node-tag">user_profiles</span>
+    <span class="node-tag">products NZ+AU</span>
+    <span class="node-tag">warehouse inventory</span>
+  </div>
+</div>
+
+<!-- ─── EXTERNAL SERVICES ──────────────────────────────── -->
+
+<!-- GitHub -->
+<div class="node" style="left:948px;top:68px;width:200px;border-color:rgba(48,209,88,0.2)">
+  <div class="node-header">
+    <div class="node-icon" style="background:rgba(48,209,88,0.10);color:var(--green)">🐙</div>
+    <div class="node-title-wrap">
+      <div class="node-name">GitHub</div>
+      <div class="node-type">blickgroup/hub-app</div>
+    </div>
+  </div>
+  <div class="node-tags">
+    <span class="node-tag">source control</span>
+    <span class="node-tag">Actions CI</span>
+    <span class="node-tag">Pages (design gallery)</span>
+    <span class="node-tag">13 repos monitored</span>
+  </div>
+</div>
+
+<!-- Sentry -->
+<div class="node" style="left:948px;top:220px;width:200px">
+  <div class="node-header">
+    <div class="node-icon" style="background:rgba(255,69,58,0.10);color:var(--red)">🚨</div>
+    <div class="node-title-wrap">
+      <div class="node-name">Sentry</div>
+      <div class="node-type">Error monitoring</div>
+    </div>
+  </div>
+  <div class="node-tags">
+    <span class="node-tag">MCP HTTP remote</span>
+    <span class="node-tag">org-scoped</span>
+    <span class="node-tag">5k errors/mo</span>
+  </div>
+</div>
+
+<!-- Unleashed ERP -->
+<div class="node" style="left:948px;top:360px;width:200px;border-color:rgba(48,209,88,0.2)">
+  <div class="node-header">
+    <div class="node-icon" style="background:rgba(48,209,88,0.10);color:var(--green)">📦</div>
+    <div class="node-title-wrap">
+      <div class="node-name">Unleashed ERP</div>
+      <div class="node-type">Inventory / orders</div>
+    </div>
+  </div>
+  <div class="node-tags">
+    <span class="node-tag">n8n sync</span>
+    <span class="node-tag">BQ write-back</span>
+    <span class="node-tag">NZ + AU</span>
+  </div>
+</div>
+
+<!-- ─── AI / LLM ───────────────────────────────────────── -->
+
+<!-- Anthropic -->
+<div class="node" style="left:948px;top:520px;width:190px;border-color:rgba(168,85,247,0.3)">
+  <div class="node-header">
+    <div class="node-icon" style="background:rgba(168,85,247,0.12);color:var(--purple)">🤖</div>
+    <div class="node-title-wrap">
+      <div class="node-name">Anthropic API</div>
+      <div class="node-type">Claude models</div>
+    </div>
+  </div>
+  <div class="node-tags">
+    <span class="node-tag" style="color:var(--purple);border-color:rgba(168,85,247,0.25)">claude-sonnet-4-6</span>
+    <span class="node-tag">claude-opus-4</span>
+    <span class="node-tag">orchestration</span>
+  </div>
+</div>
+
+<!-- XAI / Grok -->
+<div class="node" style="left:1150px;top:520px;width:160px;border-color:rgba(168,85,247,0.2)">
+  <div class="node-header">
+    <div class="node-icon" style="background:rgba(168,85,247,0.10);color:var(--purple)">✨</div>
+    <div class="node-title-wrap">
+      <div class="node-name">xAI / Grok</div>
+      <div class="node-type">Web research LLM</div>
+    </div>
+  </div>
+  <div class="node-tags">
+    <span class="node-tag">autoresearch</span>
+    <span class="node-tag">live web</span>
+  </div>
+</div>
+
+<!-- Brave + Firecrawl -->
+<div class="node" style="left:948px;top:650px;width:190px">
+  <div class="node-header">
+    <div class="node-icon" style="background:rgba(48,209,88,0.10);color:var(--green)">🔍</div>
+    <div class="node-title-wrap">
+      <div class="node-name">Brave · Firecrawl</div>
+      <div class="node-type">Web search &amp; scraping</div>
+    </div>
+  </div>
+  <div class="node-tags">
+    <span class="node-tag">Brave Search MCP</span>
+    <span class="node-tag">Tavily MCP</span>
+    <span class="node-tag">1k searches/mo</span>
+  </div>
+</div>
+
+<!-- NotebookLM / Gemini -->
+<div class="node" style="left:1150px;top:650px;width:160px;border-color:rgba(168,85,247,0.2)">
+  <div class="node-header">
+    <div class="node-icon" style="background:rgba(168,85,247,0.10);color:var(--purple)">📓</div>
+    <div class="node-title-wrap">
+      <div class="node-name">NotebookLM</div>
+      <div class="node-type">Gemini 2.5 Pro</div>
+    </div>
+  </div>
+  <div class="node-tags">
+    <span class="node-tag">15 notebooks</span>
+    <span class="node-tag">free tier</span>
+    <span class="node-tag">notebooklm-py</span>
+  </div>
+</div>
+
+<!-- Alpha Vantage / market data -->
+<div class="node" style="left:948px;top:780px;width:200px">
+  <div class="node-header">
+    <div class="node-icon" style="background:rgba(255,214,10,0.10);color:var(--yellow)">📈</div>
+    <div class="node-title-wrap">
+      <div class="node-name">Alpha Vantage</div>
+      <div class="node-type">Market data API</div>
+    </div>
+  </div>
+  <div class="node-tags">
+    <span class="node-tag">BTC/equity/macro</span>
+    <span class="node-tag">→ BigQuery</span>
+    <span class="node-tag">btc-treasury-monitor</span>
+  </div>
+</div>
+
+<!-- Canva / SuperDesign -->
+<div class="node" style="left:1158px;top:780px;width:158px">
+  <div class="node-header">
+    <div class="node-icon" style="background:rgba(168,85,247,0.10);color:var(--purple)">🎨</div>
+    <div class="node-title-wrap">
+      <div class="node-name">Canva · SuperDesign</div>
+      <div class="node-type">Design &amp; brand tools</div>
+    </div>
+  </div>
+  <div class="node-tags">
+    <span class="node-tag">MCP connectors</span>
+    <span class="node-tag">investor assets</span>
+  </div>
+</div>
+
+</div><!-- /diagram-canvas -->
+</div><!-- /diagram-wrap -->
+
+<!-- ─── Connection Table ───────────────────────────────── -->
+<div class="conn-table-wrap">
+  <div class="conn-table-header">
+    <h2>Connection Reference</h2>
+    <p>Every labelled edge in the diagram above — source, destination, protocol, and direction.</p>
+  </div>
+  <table>
+    <thead>
+      <tr>
+        <th>From</th>
+        <th>To</th>
+        <th>Protocol / Tool</th>
+        <th>Direction</th>
+        <th>Notes</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td>Mac Mini developer</td>
+        <td>Fly.io (all apps)</td>
+        <td><span class="proto-badge" style="background:rgba(255,107,53,0.12);color:var(--orange)">flyctl deploy</span></td>
+        <td>→ outbound</td>
+        <td>Direct CLI deploy; GitHub Actions <em>not</em> used for Fly</td>
+      </tr>
+      <tr>
+        <td>Mac Mini developer</td>
+        <td>Cloud Run</td>
+        <td><span class="proto-badge" style="background:rgba(255,107,53,0.12);color:var(--orange)">gcloud builds submit</span></td>
+        <td>→ outbound</td>
+        <td>copper-api &amp; btc-treasury-monitor via Cloud Build</td>
+      </tr>
+      <tr>
+        <td>Mac Mini developer</td>
+        <td>BigQuery</td>
+        <td><span class="proto-badge" style="background:rgba(50,210,192,0.12);color:var(--cyan)">BQ query API</span></td>
+        <td>→ read/write</td>
+        <td>Nexus engine queries; always INSERT via bigquery.query() — no streaming API</td>
+      </tr>
+      <tr>
+        <td>Mac Mini developer</td>
+        <td>Google Drive</td>
+        <td><span class="proto-badge" style="background:rgba(50,210,192,0.12);color:var(--cyan)">nexus-drive MCP</span></td>
+        <td>→ read/write</td>
+        <td>Gemma privacy gateway; drive-sync.js for brief uploads</td>
+      </tr>
+      <tr>
+        <td>Mac Mini developer</td>
+        <td>GitHub</td>
+        <td><span class="proto-badge" style="background:rgba(84,84,88,0.2);color:var(--text2)">git / gh CLI</span></td>
+        <td>↔ bidirectional</td>
+        <td>git push, PRs, gh run watch; gh-monitor polls Anthropic repos daily</td>
+      </tr>
+      <tr>
+        <td>Mac Mini developer</td>
+        <td>Sentry</td>
+        <td><span class="proto-badge" style="background:rgba(50,210,192,0.12);color:var(--cyan)">MCP HTTP</span></td>
+        <td>→ read</td>
+        <td>Remote MCP at mcp.sentry.dev; OAuth-auth; error triage</td>
+      </tr>
+      <tr>
+        <td>Mac Mini developer</td>
+        <td>Unleashed ERP</td>
+        <td><span class="proto-badge" style="background:rgba(48,209,88,0.12);color:var(--green)">REST API</span></td>
+        <td>→ outbound</td>
+        <td>Sync triggers via nexus; data lands in BigQuery</td>
+      </tr>
+      <tr>
+        <td>Mac Mini developer</td>
+        <td>n8n</td>
+        <td><span class="proto-badge" style="background:rgba(255,214,10,0.12);color:var(--yellow)">REST API</span></td>
+        <td>→ outbound</td>
+        <td>Self-hosted on Fly.io; n8n-workflow-tool.py for edits; not MCP</td>
+      </tr>
+      <tr>
+        <td>Mac Mini developer</td>
+        <td>Anthropic API</td>
+        <td><span class="proto-badge" style="background:rgba(168,85,247,0.12);color:var(--purple)">HTTPS / SDK</span></td>
+        <td>→ outbound</td>
+        <td>Sonnet for execution, Opus for orchestration; prompt caching active</td>
+      </tr>
+      <tr>
+        <td>Mac Mini developer</td>
+        <td>xAI / Grok</td>
+        <td><span class="proto-badge" style="background:rgba(168,85,247,0.12);color:var(--purple)">HTTPS</span></td>
+        <td>→ outbound</td>
+        <td>autoresearch.js — live web research leg</td>
+      </tr>
+      <tr>
+        <td>Mac Mini developer</td>
+        <td>Brave · Firecrawl</td>
+        <td><span class="proto-badge" style="background:rgba(48,209,88,0.12);color:var(--green)">HTTPS / MCP</span></td>
+        <td>→ outbound</td>
+        <td>Tavily primary (1k/mo); Brave fallback; Firecrawl scrape</td>
+      </tr>
+      <tr>
+        <td>MacBook</td>
+        <td>Mac Mini developer</td>
+        <td><span class="proto-badge" style="background:rgba(84,84,88,0.2);color:var(--text2)">Tailscale VPN</span></td>
+        <td>↔ bidirectional</td>
+        <td>100.95.117.46 — encrypted mesh; VNC screen share</td>
+      </tr>
+      <tr>
+        <td>MacBook</td>
+        <td>BlickVault</td>
+        <td><span class="proto-badge" style="background:rgba(50,210,192,0.12);color:var(--cyan)">SMB</span></td>
+        <td>→ mount</td>
+        <td>smb://developer@100.95.117.46/BlickVault — Obsidian live edit</td>
+      </tr>
+      <tr>
+        <td>Mac Mini newman</td>
+        <td>Mac Mini developer</td>
+        <td><span class="proto-badge" style="background:rgba(84,84,88,0.2);color:var(--text2)">Tailscale VPN</span></td>
+        <td>↔ bidirectional</td>
+        <td>Sandbox isolation; OC experiments only</td>
+      </tr>
+      <tr>
+        <td>Hub Frontend</td>
+        <td>Compass API · Rig API · Ops API</td>
+        <td><span class="proto-badge" style="background:rgba(59,130,246,0.12);color:var(--blue)">HTTPS / JSON</span></td>
+        <td>→ internal</td>
+        <td>TanStack Query; Zod-validated responses</td>
+      </tr>
+      <tr>
+        <td>Compass API</td>
+        <td>BigQuery</td>
+        <td><span class="proto-badge" style="background:rgba(50,210,192,0.12);color:var(--cyan)">BQ query API</span></td>
+        <td>→ read</td>
+        <td>blick_identity.user_profiles; ops data; prod-only deployment</td>
+      </tr>
+      <tr>
+        <td>n8n</td>
+        <td>BigQuery</td>
+        <td><span class="proto-badge" style="background:rgba(255,214,10,0.12);color:var(--yellow)">MERGE SQL</span></td>
+        <td>→ write</td>
+        <td>Dynamic MERGE via bigquery.query(); never streaming insert</td>
+      </tr>
+      <tr>
+        <td>n8n</td>
+        <td>Unleashed ERP</td>
+        <td><span class="proto-badge" style="background:rgba(48,209,88,0.12);color:var(--green)">REST API</span></td>
+        <td>→ sync</td>
+        <td>Inventory pipeline; MERGE watermark pattern</td>
+      </tr>
+      <tr>
+        <td>GitHub Actions</td>
+        <td>GitHub Pages</td>
+        <td><span class="proto-badge" style="background:rgba(84,84,88,0.2);color:var(--text2)">Auto-deploy</span></td>
+        <td>→ outbound</td>
+        <td>Design gallery at blickgroup.github.io/hub-app/; Actions → Pages only</td>
+      </tr>
+      <tr>
+        <td>Ollama (local)</td>
+        <td>Mac Mini developer</td>
+        <td><span class="proto-badge" style="background:rgba(168,85,247,0.12);color:var(--purple)">HTTP localhost</span></td>
+        <td>↔ internal</td>
+        <td>gemma-4-e4b for scan/filter/verify; gemma-4-26b for codegen; nomic-embed for vectors</td>
+      </tr>
+    </tbody>
+  </table>
+</div>
+
+<!-- ─── Footer ────────────────────────────────────────────── -->
+<footer>
+  <p><strong>Blick Group</strong> — Nexus AI Operating System — Infrastructure Map v1</p>
+  <p>Generated 2026 · Confidential — for internal and investor use</p>
+</footer>
+
+</body>
+</html>

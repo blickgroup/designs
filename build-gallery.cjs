@@ -48,6 +48,14 @@ const PROJECTS = [
     approvedDir: path.join(ROOT, 'external', 'video', 'approved'),
     archiveDir: path.join(ROOT, 'external', 'video', 'archive'),
   },
+  {
+    id: 'nexus',
+    label: 'Nexus',
+    description: 'AI operating model, internal tools, and intelligence system',
+    iterationsDir: path.join(ROOT, 'nexus', 'iterations'),
+    approvedDir: path.join(ROOT, 'nexus', 'approved'),
+    archiveDir: path.join(ROOT, 'nexus', 'archive'),
+  },
 ];
 
 function humanName(filename) {
@@ -191,7 +199,11 @@ function buildGalleryHTML(projects, allDesigns) {
       gap: 0;
       border-bottom: 2px solid var(--line);
       margin-bottom: 16px;
+      overflow-x: auto;
+      -webkit-overflow-scrolling: touch;
+      scrollbar-width: none;
     }
+    .tabs::-webkit-scrollbar { display: none; }
     .tab {
       padding: 12px 20px;
       border: none;

@@ -1,0 +1,683 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Meet the Team — Blick's AI Operating Model</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap');
+
+  :root {
+    --orange: #f05323;
+    --orange-light: #f8784f;
+    --orange-pale: #fef0eb;
+    --dark: #1a1a1a;
+    --grey-dark: #58595b;
+    --grey-mid: #8a8b8d;
+    --grey-light: #bcbec0;
+    --grey-bg: #f4f4f5;
+    --white: #ffffff;
+    --card-bg: #ffffff;
+    --shadow: 0 2px 16px rgba(0,0,0,0.08);
+    --shadow-hover: 0 8px 32px rgba(240,83,35,0.15);
+  }
+
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+
+  body {
+    font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+    background: var(--grey-bg);
+    color: var(--dark);
+    line-height: 1.5;
+    min-height: 100vh;
+  }
+
+  /* ── COVER ── */
+  .cover {
+    background: var(--dark);
+    color: var(--white);
+    padding: 80px 40px 64px;
+    text-align: center;
+    position: relative;
+    overflow: hidden;
+  }
+
+  .cover::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: radial-gradient(ellipse at 70% 20%, rgba(240,83,35,0.18) 0%, transparent 60%),
+                radial-gradient(ellipse at 20% 80%, rgba(240,83,35,0.10) 0%, transparent 50%);
+  }
+
+  .cover-inner { position: relative; max-width: 680px; margin: 0 auto; }
+
+  .cover-logo {
+    display: inline-flex;
+    align-items: center;
+    gap: 10px;
+    margin-bottom: 48px;
+  }
+
+  /* Blick B icon — CSS only */
+  .blick-icon {
+    width: 36px;
+    height: 36px;
+    background: var(--orange);
+    border-radius: 8px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: 800;
+    font-size: 20px;
+    color: white;
+    letter-spacing: -1px;
+  }
+
+  .blick-wordmark {
+    font-size: 22px;
+    font-weight: 700;
+    letter-spacing: 0.04em;
+    color: white;
+  }
+
+  .cover-eyebrow {
+    font-size: 12px;
+    font-weight: 600;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: var(--orange);
+    margin-bottom: 16px;
+  }
+
+  .cover-title {
+    font-size: clamp(32px, 6vw, 52px);
+    font-weight: 800;
+    line-height: 1.1;
+    margin-bottom: 20px;
+    letter-spacing: -0.02em;
+  }
+
+  .cover-title span { color: var(--orange); }
+
+  .cover-sub {
+    font-size: 17px;
+    font-weight: 400;
+    color: var(--grey-light);
+    max-width: 480px;
+    margin: 0 auto 48px;
+    line-height: 1.6;
+  }
+
+  .cover-divider {
+    width: 48px;
+    height: 3px;
+    background: var(--orange);
+    border-radius: 2px;
+    margin: 0 auto;
+  }
+
+  /* ── INTRO ── */
+  .intro {
+    max-width: 720px;
+    margin: 56px auto 0;
+    padding: 0 32px;
+    text-align: center;
+  }
+
+  .intro h2 {
+    font-size: 13px;
+    font-weight: 600;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--orange);
+    margin-bottom: 16px;
+  }
+
+  .intro p {
+    font-size: 17px;
+    color: var(--grey-dark);
+    line-height: 1.7;
+  }
+
+  /* ── GRID ── */
+  .grid {
+    max-width: 1100px;
+    margin: 56px auto 80px;
+    padding: 0 32px;
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+    gap: 24px;
+  }
+
+  /* ── CARD ── */
+  .card {
+    background: var(--card-bg);
+    border-radius: 20px;
+    padding: 32px 28px;
+    box-shadow: var(--shadow);
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+    position: relative;
+    overflow: hidden;
+  }
+
+  .card::after {
+    content: '';
+    position: absolute;
+    bottom: 0; left: 0; right: 0;
+    height: 3px;
+    background: var(--card-accent, var(--orange));
+    opacity: 0;
+    transition: opacity 0.2s;
+  }
+
+  .card:hover {
+    transform: translateY(-3px);
+    box-shadow: var(--shadow-hover);
+  }
+
+  .card:hover::after { opacity: 1; }
+
+  .card-header {
+    display: flex;
+    align-items: flex-start;
+    gap: 18px;
+    margin-bottom: 20px;
+  }
+
+  /* ── AVATARS (CSS art) ── */
+  .avatar {
+    width: 64px;
+    height: 64px;
+    border-radius: 16px;
+    flex-shrink: 0;
+    position: relative;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    overflow: visible;
+  }
+
+  /* Nexus — glowing neural node */
+  .avatar-nexus {
+    background: linear-gradient(135deg, #1a1a2e 0%, #16213e 100%);
+  }
+  .avatar-nexus svg { filter: drop-shadow(0 0 6px rgba(240,83,35,0.7)); }
+
+  /* The Briefer — morning sun / coffee */
+  .avatar-briefer {
+    background: linear-gradient(135deg, #fff3e0 0%, #ffe0b2 100%);
+  }
+
+  /* Watchman — shield / moon */
+  .avatar-watchman {
+    background: linear-gradient(135deg, #0d1b2a 0%, #1b2838 100%);
+  }
+
+  /* Vault — book / safe */
+  .avatar-vault {
+    background: linear-gradient(135deg, #2d2d2d 0%, #3d3d3d 100%);
+  }
+
+  /* Skills — toolbox */
+  .avatar-skills {
+    background: linear-gradient(135deg, #e8f5e9 0%, #c8e6c9 100%);
+  }
+
+  /* Gateway — lock / shield */
+  .avatar-gateway {
+    background: linear-gradient(135deg, #e8eaf6 0%, #c5cae9 100%);
+  }
+
+  /* Wiring — pipes / nodes */
+  .avatar-wiring {
+    background: linear-gradient(135deg, #fce4ec 0%, #f8bbd0 100%);
+  }
+
+  /* Hub — dashboard squares */
+  .avatar-hub {
+    background: linear-gradient(135deg, #e0f7fa 0%, #b2ebf2 100%);
+  }
+
+  .card-meta { flex: 1; }
+
+  .card-number {
+    font-size: 11px;
+    font-weight: 700;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--grey-light);
+    margin-bottom: 4px;
+  }
+
+  .card-name {
+    font-size: 22px;
+    font-weight: 800;
+    color: var(--dark);
+    letter-spacing: -0.02em;
+    line-height: 1.1;
+  }
+
+  .card-title {
+    font-size: 13px;
+    font-weight: 500;
+    color: var(--card-accent, var(--orange));
+    margin-top: 3px;
+  }
+
+  .card-desc {
+    font-size: 14px;
+    color: var(--grey-dark);
+    line-height: 1.65;
+    margin-bottom: 20px;
+  }
+
+  .card-duties {
+    background: var(--grey-bg);
+    border-radius: 12px;
+    padding: 14px 16px;
+    margin-bottom: 16px;
+  }
+
+  .card-duties-label {
+    font-size: 10px;
+    font-weight: 700;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--grey-mid);
+    margin-bottom: 8px;
+  }
+
+  .card-duties ul {
+    list-style: none;
+    padding: 0;
+  }
+
+  .card-duties li {
+    font-size: 13px;
+    color: var(--grey-dark);
+    padding: 3px 0;
+    padding-left: 16px;
+    position: relative;
+  }
+
+  .card-duties li::before {
+    content: '→';
+    position: absolute;
+    left: 0;
+    color: var(--card-accent, var(--orange));
+    font-size: 11px;
+    top: 4px;
+  }
+
+  .card-vibe {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    background: var(--orange-pale);
+    border-radius: 20px;
+    padding: 5px 12px;
+    font-size: 12px;
+    font-weight: 600;
+    color: var(--orange);
+  }
+
+  .card-vibe-dot {
+    width: 6px;
+    height: 6px;
+    border-radius: 50%;
+    background: var(--card-accent, var(--orange));
+    flex-shrink: 0;
+  }
+
+  /* ── FOOTER ── */
+  .footer {
+    background: var(--dark);
+    color: var(--grey-mid);
+    text-align: center;
+    padding: 40px 32px;
+    font-size: 13px;
+  }
+
+  .footer strong { color: var(--orange); }
+
+  @media (max-width: 600px) {
+    .cover { padding: 56px 24px 48px; }
+    .grid { padding: 0 16px; gap: 16px; }
+    .intro { padding: 0 20px; }
+  }
+</style>
+</head>
+<body>
+
+<!-- COVER -->
+<div class="cover">
+  <div class="cover-inner">
+    <div class="cover-logo">
+      <div class="blick-icon">B</div>
+      <div class="blick-wordmark">BLICK</div>
+    </div>
+    <div class="cover-eyebrow">How we work</div>
+    <h1 class="cover-title">Meet the <span>Team</span><br>Behind the Team</h1>
+    <p class="cover-sub">Blick runs on a quiet crew of AI helpers working around the clock. Here's who they are, what they do, and why they matter.</p>
+    <div class="cover-divider"></div>
+  </div>
+</div>
+
+<!-- INTRO -->
+<div class="intro">
+  <h2>The Cast</h2>
+  <p>You might not see them in meetings, but this crew is always on. They read, remember, watch, connect, and deliver — so the human team can focus on the work that actually needs a human.</p>
+</div>
+
+<!-- CARDS -->
+<div class="grid">
+
+  <!-- 1. NEXUS -->
+  <div class="card" style="--card-accent: #f05323;">
+    <div class="card-header">
+      <div class="avatar avatar-nexus">
+        <svg width="38" height="38" viewBox="0 0 38 38" fill="none">
+          <circle cx="19" cy="19" r="4" fill="#f05323"/>
+          <circle cx="8" cy="10" r="2.5" fill="#f05323" opacity="0.7"/>
+          <circle cx="30" cy="10" r="2.5" fill="#f05323" opacity="0.7"/>
+          <circle cx="8" cy="28" r="2.5" fill="#f05323" opacity="0.7"/>
+          <circle cx="30" cy="28" r="2.5" fill="#f05323" opacity="0.7"/>
+          <circle cx="19" cy="5" r="2" fill="#f05323" opacity="0.5"/>
+          <circle cx="19" cy="33" r="2" fill="#f05323" opacity="0.5"/>
+          <line x1="19" y1="19" x2="8" y2="10" stroke="#f05323" stroke-width="1" opacity="0.5"/>
+          <line x1="19" y1="19" x2="30" y2="10" stroke="#f05323" stroke-width="1" opacity="0.5"/>
+          <line x1="19" y1="19" x2="8" y2="28" stroke="#f05323" stroke-width="1" opacity="0.5"/>
+          <line x1="19" y1="19" x2="30" y2="28" stroke="#f05323" stroke-width="1" opacity="0.5"/>
+          <line x1="19" y1="19" x2="19" y2="5" stroke="#f05323" stroke-width="1" opacity="0.3"/>
+          <line x1="19" y1="19" x2="19" y2="33" stroke="#f05323" stroke-width="1" opacity="0.3"/>
+          <line x1="8" y1="10" x2="30" y2="10" stroke="#f05323" stroke-width="0.5" opacity="0.2"/>
+          <line x1="8" y1="28" x2="30" y2="28" stroke="#f05323" stroke-width="0.5" opacity="0.2"/>
+        </svg>
+      </div>
+      <div class="card-meta">
+        <div class="card-number">Character 01</div>
+        <div class="card-name">Nexus</div>
+        <div class="card-title">The Brain</div>
+      </div>
+    </div>
+    <p class="card-desc">Nexus is Blick's living, breathing second brain. It reads every document, email, product note, and market update the company touches — then finds the connections that matter. Think of it as the team member who has read everything and forgets nothing.</p>
+    <div class="card-duties">
+      <div class="card-duties-label">A typical day</div>
+      <ul>
+        <li>Indexes new documents as they arrive</li>
+        <li>Answers questions using company knowledge</li>
+        <li>Spots patterns across suppliers, competitors & products</li>
+        <li>Feeds insights into the morning brief</li>
+      </ul>
+    </div>
+    <div class="card-vibe"><span class="card-vibe-dot"></span>Sharp, curious, always reading</div>
+  </div>
+
+  <!-- 2. THE BRIEFER -->
+  <div class="card" style="--card-accent: #e8920a;">
+    <div class="card-header">
+      <div class="avatar avatar-briefer">
+        <svg width="38" height="38" viewBox="0 0 38 38" fill="none">
+          <!-- Sun rays -->
+          <line x1="19" y1="4" x2="19" y2="8" stroke="#e8920a" stroke-width="2" stroke-linecap="round"/>
+          <line x1="19" y1="30" x2="19" y2="34" stroke="#e8920a" stroke-width="2" stroke-linecap="round"/>
+          <line x1="4" y1="19" x2="8" y2="19" stroke="#e8920a" stroke-width="2" stroke-linecap="round"/>
+          <line x1="30" y1="19" x2="34" y2="19" stroke="#e8920a" stroke-width="2" stroke-linecap="round"/>
+          <line x1="8.5" y1="8.5" x2="11.3" y2="11.3" stroke="#e8920a" stroke-width="2" stroke-linecap="round"/>
+          <line x1="26.7" y1="26.7" x2="29.5" y2="29.5" stroke="#e8920a" stroke-width="2" stroke-linecap="round"/>
+          <line x1="29.5" y1="8.5" x2="26.7" y2="11.3" stroke="#e8920a" stroke-width="2" stroke-linecap="round"/>
+          <line x1="11.3" y1="26.7" x2="8.5" y2="29.5" stroke="#e8920a" stroke-width="2" stroke-linecap="round"/>
+          <!-- Sun circle -->
+          <circle cx="19" cy="19" r="7" fill="#f5a623" opacity="0.9"/>
+          <circle cx="19" cy="19" r="4.5" fill="#f8d07a"/>
+        </svg>
+      </div>
+      <div class="card-meta">
+        <div class="card-number">Character 02</div>
+        <div class="card-name">The Briefer</div>
+        <div class="card-title">The Morning Briefer</div>
+      </div>
+    </div>
+    <p class="card-desc">Every morning, The Briefer compiles the daily intelligence brief — industry news, competitor moves, product updates, anything relevant to Blick's world — and has it ready before the first coffee is made. Never calls in sick, never exaggerates, always cites sources.</p>
+    <div class="card-duties">
+      <div class="card-duties-label">A typical day</div>
+      <ul>
+        <li>Scans industry sources overnight</li>
+        <li>Writes the daily intelligence brief</li>
+        <li>Highlights what's changed since yesterday</li>
+        <li>Files findings into The Vault automatically</li>
+      </ul>
+    </div>
+    <div class="card-vibe" style="background:#fff8ec; color: #e8920a;"><span class="card-vibe-dot" style="background:#e8920a;"></span>Reliable, punctual, never misses</div>
+  </div>
+
+  <!-- 3. WATCHMAN -->
+  <div class="card" style="--card-accent: #4a90d9;">
+    <div class="card-header">
+      <div class="avatar avatar-watchman">
+        <svg width="38" height="38" viewBox="0 0 38 38" fill="none">
+          <!-- Shield -->
+          <path d="M19 5 L31 10 L31 21 C31 27 25 32 19 34 C13 32 7 27 7 21 L7 10 Z" fill="#1e3a5f" stroke="#4a90d9" stroke-width="1.5"/>
+          <!-- Check / eye inside -->
+          <circle cx="19" cy="19" r="4" fill="none" stroke="#4a90d9" stroke-width="1.5"/>
+          <circle cx="19" cy="19" r="1.5" fill="#4a90d9"/>
+          <!-- Stars -->
+          <circle cx="26" cy="8" r="1" fill="#4a90d9" opacity="0.6"/>
+          <circle cx="12" cy="7" r="0.7" fill="#4a90d9" opacity="0.4"/>
+          <circle cx="29" cy="15" r="0.7" fill="#4a90d9" opacity="0.3"/>
+        </svg>
+      </div>
+      <div class="card-meta">
+        <div class="card-number">Character 03</div>
+        <div class="card-name">The Watchman</div>
+        <div class="card-title">Night Watchman</div>
+      </div>
+    </div>
+    <p class="card-desc">The Watchman never sleeps. While the team is offline, he quietly checks that every system, pipeline, and data feed is healthy. If something's wrong, he fixes it. If he can't fix it, he leaves a note so it's the first thing you see in the morning.</p>
+    <div class="card-duties">
+      <div class="card-duties-label">A typical day</div>
+      <ul>
+        <li>Checks all systems every 30 minutes</li>
+        <li>Restarts stuck processes automatically</li>
+        <li>Flags anything that needs human eyes</li>
+        <li>Logs every incident, every fix</li>
+      </ul>
+    </div>
+    <div class="card-vibe" style="background:#eef4fc; color: #4a90d9;"><span class="card-vibe-dot" style="background:#4a90d9;"></span>Steady, vigilant, calm under pressure</div>
+  </div>
+
+  <!-- 4. THE VAULT -->
+  <div class="card" style="--card-accent: #7c6fcd;">
+    <div class="card-header">
+      <div class="avatar avatar-vault">
+        <svg width="38" height="38" viewBox="0 0 38 38" fill="none">
+          <!-- Book -->
+          <rect x="9" y="7" width="14" height="24" rx="2" fill="#3d3d3d" stroke="#7c6fcd" stroke-width="1.5"/>
+          <rect x="10" y="8" width="12" height="22" rx="1" fill="#2d2d2d"/>
+          <!-- Pages -->
+          <line x1="13" y1="12" x2="20" y2="12" stroke="#7c6fcd" stroke-width="1" opacity="0.6"/>
+          <line x1="13" y1="15" x2="20" y2="15" stroke="#7c6fcd" stroke-width="1" opacity="0.6"/>
+          <line x1="13" y1="18" x2="20" y2="18" stroke="#7c6fcd" stroke-width="1" opacity="0.6"/>
+          <line x1="13" y1="21" x2="18" y2="21" stroke="#7c6fcd" stroke-width="1" opacity="0.4"/>
+          <!-- Spine -->
+          <rect x="7" y="7" width="3" height="24" rx="1" fill="#7c6fcd" opacity="0.8"/>
+          <!-- Second book hint -->
+          <rect x="22" y="10" width="10" height="20" rx="2" fill="#4a4060" stroke="#7c6fcd" stroke-width="1" opacity="0.5"/>
+        </svg>
+      </div>
+      <div class="card-meta">
+        <div class="card-number">Character 04</div>
+        <div class="card-name">The Vault</div>
+        <div class="card-title">The Memory</div>
+      </div>
+    </div>
+    <p class="card-desc">The Vault is where Blick's knowledge lives. Every product spec, supplier note, meeting outcome, and market insight goes in — organised, searchable, and ready to recall. It's the company's institutional memory, always growing, never lost.</p>
+    <div class="card-duties">
+      <div class="card-duties-label">A typical day</div>
+      <ul>
+        <li>Stores notes, specs, and research automatically</li>
+        <li>Answers questions from Nexus on demand</li>
+        <li>Flags knowledge that's getting out of date</li>
+        <li>Keeps everything linked and findable</li>
+      </ul>
+    </div>
+    <div class="card-vibe" style="background:#f3f1fd; color: #7c6fcd;"><span class="card-vibe-dot" style="background:#7c6fcd;"></span>Organised, patient, never forgets</div>
+  </div>
+
+  <!-- 5. SKILLS -->
+  <div class="card" style="--card-accent: #3c8c4c;">
+    <div class="card-header">
+      <div class="avatar avatar-skills">
+        <svg width="38" height="38" viewBox="0 0 38 38" fill="none">
+          <!-- Toolbox body -->
+          <rect x="6" y="16" width="26" height="17" rx="3" fill="#3c8c4c" opacity="0.85"/>
+          <!-- Toolbox handle -->
+          <path d="M13 16 L13 12 C13 10 15 8 19 8 C23 8 25 10 25 12 L25 16" fill="none" stroke="#3c8c4c" stroke-width="2" stroke-linecap="round"/>
+          <!-- Latch -->
+          <rect x="15" y="22" width="8" height="5" rx="2" fill="white" opacity="0.9"/>
+          <!-- Tools peeking -->
+          <rect x="9" y="13" width="2" height="4" rx="1" fill="#3c8c4c" opacity="0.6"/>
+          <rect x="27" y="13" width="2" height="4" rx="1" fill="#3c8c4c" opacity="0.6"/>
+        </svg>
+      </div>
+      <div class="card-meta">
+        <div class="card-number">Character 05</div>
+        <div class="card-name">The Skills</div>
+        <div class="card-title">The Specialists</div>
+      </div>
+    </div>
+    <p class="card-desc">The Skills are a bench of specialist helpers — each one trained for a specific job. Need a report reviewed? There's a skill for that. Need a bug fixed, a document drafted, or a design checked? You call the right specialist, they handle it, they hand it back done.</p>
+    <div class="card-duties">
+      <div class="card-duties-label">A typical day</div>
+      <ul>
+        <li>Run automated reviews and audits</li>
+        <li>Draft documents and emails on request</li>
+        <li>Fix code and test it before handing back</li>
+        <li>Coordinate multi-step tasks end to end</li>
+      </ul>
+    </div>
+    <div class="card-vibe" style="background:#edf7ef; color: #3c8c4c;"><span class="card-vibe-dot" style="background:#3c8c4c;"></span>Expert, efficient, always ready</div>
+  </div>
+
+  <!-- 6. GATEWAY -->
+  <div class="card" style="--card-accent: #5b7fa6;">
+    <div class="card-header">
+      <div class="avatar avatar-gateway">
+        <svg width="38" height="38" viewBox="0 0 38 38" fill="none">
+          <!-- Lock body -->
+          <rect x="10" y="18" width="18" height="14" rx="3" fill="#5b7fa6" opacity="0.9"/>
+          <!-- Lock shackle -->
+          <path d="M14 18 L14 13 C14 9.5 24 9.5 24 13 L24 18" fill="none" stroke="#5b7fa6" stroke-width="2.5" stroke-linecap="round"/>
+          <!-- Keyhole -->
+          <circle cx="19" cy="24" r="2.5" fill="white" opacity="0.9"/>
+          <rect x="18" y="24" width="2" height="4" rx="1" fill="white" opacity="0.9"/>
+          <!-- Glow dots -->
+          <circle cx="29" cy="12" r="1.5" fill="#5b7fa6" opacity="0.4"/>
+          <circle cx="9" cy="14" r="1" fill="#5b7fa6" opacity="0.3"/>
+        </svg>
+      </div>
+      <div class="card-meta">
+        <div class="card-number">Character 06</div>
+        <div class="card-name">The Gateway</div>
+        <div class="card-title">The Gatekeeper</div>
+      </div>
+    </div>
+    <p class="card-desc">The Gateway sits quietly between Blick's private files and the outside world. Whenever the team needs to work with a confidential document, the Gateway reads it locally — nothing sensitive ever leaves the building. It's the team's privacy guarantee, running silently in the background.</p>
+    <div class="card-duties">
+      <div class="card-duties-label">A typical day</div>
+      <ul>
+        <li>Reads Google Drive files on the team's behalf</li>
+        <li>Keeps sensitive docs off external AI servers</li>
+        <li>Checks permissions before sharing anything</li>
+        <li>Works invisibly — you don't need to think about it</li>
+      </ul>
+    </div>
+    <div class="card-vibe" style="background:#eef2f7; color: #5b7fa6;"><span class="card-vibe-dot" style="background:#5b7fa6;"></span>Discreet, principled, quietly essential</div>
+  </div>
+
+  <!-- 7. THE WIRING -->
+  <div class="card" style="--card-accent: #c0392b;">
+    <div class="card-header">
+      <div class="avatar avatar-wiring">
+        <svg width="38" height="38" viewBox="0 0 38 38" fill="none">
+          <!-- Pipe nodes -->
+          <circle cx="7" cy="12" r="3" fill="#c0392b" opacity="0.8"/>
+          <circle cx="19" cy="7" r="3" fill="#c0392b" opacity="0.8"/>
+          <circle cx="31" cy="19" r="3" fill="#c0392b" opacity="0.8"/>
+          <circle cx="19" cy="31" r="3" fill="#c0392b" opacity="0.8"/>
+          <circle cx="7" cy="26" r="3" fill="#c0392b" opacity="0.6"/>
+          <!-- Pipes / connections -->
+          <line x1="7" y1="12" x2="19" y2="7" stroke="#c0392b" stroke-width="2" stroke-linecap="round" opacity="0.7"/>
+          <line x1="19" y1="7" x2="31" y2="19" stroke="#c0392b" stroke-width="2" stroke-linecap="round" opacity="0.7"/>
+          <line x1="31" y1="19" x2="19" y2="31" stroke="#c0392b" stroke-width="2" stroke-linecap="round" opacity="0.7"/>
+          <line x1="19" y1="31" x2="7" y2="26" stroke="#c0392b" stroke-width="2" stroke-linecap="round" opacity="0.7"/>
+          <line x1="7" y1="26" x2="7" y2="12" stroke="#c0392b" stroke-width="2" stroke-linecap="round" opacity="0.5"/>
+          <!-- Flow arrow -->
+          <circle cx="19" cy="19" r="4" fill="#f8bbd0" stroke="#c0392b" stroke-width="1.5"/>
+          <path d="M17 19 L19 17 L21 19 L19 21 Z" fill="#c0392b"/>
+        </svg>
+      </div>
+      <div class="card-meta">
+        <div class="card-number">Character 07</div>
+        <div class="card-name">The Wiring</div>
+        <div class="card-title">The Plumber</div>
+      </div>
+    </div>
+    <p class="card-desc">The Wiring is the invisible plumbing that connects Blick's tools together. When a form is submitted, a notification sent, or data moved from one system to another — that's The Wiring doing its job. It runs hundreds of small tasks automatically so nobody has to do them by hand.</p>
+    <div class="card-duties">
+      <div class="card-duties-label">A typical day</div>
+      <ul>
+        <li>Moves data between systems automatically</li>
+        <li>Triggers notifications and follow-ups</li>
+        <li>Runs scheduled tasks without being asked</li>
+        <li>Connects tools that don't naturally talk to each other</li>
+      </ul>
+    </div>
+    <div class="card-vibe" style="background:#fdf0ef; color: #c0392b;"><span class="card-vibe-dot" style="background:#c0392b;"></span>Hardworking, invisible, indispensable</div>
+  </div>
+
+  <!-- 8. HUB -->
+  <div class="card" style="--card-accent: #0097a7;">
+    <div class="card-header">
+      <div class="avatar avatar-hub">
+        <svg width="38" height="38" viewBox="0 0 38 38" fill="none">
+          <!-- Dashboard grid -->
+          <rect x="6" y="6" width="11" height="11" rx="2.5" fill="#0097a7" opacity="0.9"/>
+          <rect x="21" y="6" width="11" height="7" rx="2.5" fill="#0097a7" opacity="0.7"/>
+          <rect x="21" y="17" width="11" height="15" rx="2.5" fill="#0097a7" opacity="0.85"/>
+          <rect x="6" y="21" width="11" height="11" rx="2.5" fill="#0097a7" opacity="0.6"/>
+          <!-- Small detail lines in top-left card -->
+          <line x1="9" y1="11" x2="14" y2="11" stroke="white" stroke-width="1.2" opacity="0.6" stroke-linecap="round"/>
+          <line x1="9" y1="13" x2="12" y2="13" stroke="white" stroke-width="1.2" opacity="0.4" stroke-linecap="round"/>
+        </svg>
+      </div>
+      <div class="card-meta">
+        <div class="card-number">Character 08</div>
+        <div class="card-name">Hub</div>
+        <div class="card-title">The Dashboard</div>
+      </div>
+    </div>
+    <p class="card-desc">Hub is where the team shows up for work. It's the internal platform that gives everyone a clear view of what's happening — rigs, jobs, inventory, health and safety, communications — all in one place, always up to date. If Nexus is the brain, Hub is the face.</p>
+    <div class="card-duties">
+      <div class="card-duties-label">A typical day</div>
+      <ul>
+        <li>Shows live status across rigs and jobs</li>
+        <li>Tracks inventory, people, and communications</li>
+        <li>Surfaces alerts that need attention</li>
+        <li>Keeps field and office on the same page</li>
+      </ul>
+    </div>
+    <div class="card-vibe" style="background:#e0f7fa; color: #0097a7;"><span class="card-vibe-dot" style="background:#0097a7;"></span>Clear, calm, always up to date</div>
+  </div>
+
+</div>
+
+<!-- FOOTER -->
+<div class="footer">
+  <p><strong>Blick Group</strong> — Built to run lean, smart, and connected.</p>
+  <p style="margin-top:8px; font-size:12px;">This crew works 24/7 so the team doesn't have to do everything manually. Questions? Ask Shaun.</p>
+</div>
+
+</body>
+</html>

@@ -1,0 +1,1152 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Nexus OS — Blick AI Operating System</title>
+<!-- Generated 2026-04-29 by nexus/scripts/generate-nexus-presentation.js -->
+<!-- Source data: nexus/launchd/ · ~/.claude/skills/ · nexus-vault.db -->
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+:root{--bg:#000;--surface:#0a0a0a;--surface2:#111;--surface3:#1a1a1a;--line:#1f1f1f;--line2:#2a2a2a;--text:#e8e8ed;--text2:#98989f;--text3:#545458;--orange:#ff6b35;--cyan:#32d2c0;--blue:#3b82f6;--purple:#a855f7;--green:#30d158;--yellow:#ffd60a;--red:#ff453a;--r:16px;--zone-local:#ff6b35;--zone-compute:#3b82f6;--zone-data:#32d2c0;--zone-ai:#a855f7;--zone-ext:#30d158}
+html{scroll-behavior:smooth}
+body{font-family:'Inter',-apple-system,BlinkMacSystemFont,sans-serif;background:var(--bg);color:var(--text);font-size:15px;line-height:1.6;-webkit-font-smoothing:antialiased;overflow-x:hidden}
+.eyebrow{font-size:11px;font-weight:600;letter-spacing:.14em;text-transform:uppercase;color:var(--text3);margin-bottom:16px}
+h1{font-size:clamp(48px,6vw,80px);font-weight:700;letter-spacing:-.03em;line-height:1.05}
+h2{font-size:clamp(28px,4vw,44px);font-weight:700;letter-spacing:-.025em;line-height:1.1}
+p{color:var(--text2);line-height:1.7}
+.gradient-text{background:linear-gradient(135deg,#fff 0%,#98989f 100%);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text}
+.accent-orange{color:var(--orange)}.accent-cyan{color:var(--cyan)}.accent-blue{color:var(--blue)}.accent-green{color:var(--green)}.accent-purple{color:var(--purple)}.accent-yellow{color:var(--yellow)}
+.container{max-width:1080px;margin:0 auto;padding:0 40px}
+section{padding:120px 0;border-top:1px solid var(--line)}
+section:first-of-type{border-top:none}
+nav{position:fixed;top:0;left:0;right:0;z-index:100;height:52px;display:flex;align-items:center;background:rgba(0,0,0,.85);backdrop-filter:saturate(180%) blur(20px);-webkit-backdrop-filter:saturate(180%) blur(20px);border-bottom:1px solid rgba(255,255,255,.06)}
+.nav-inner{max-width:1280px;margin:0 auto;padding:0 40px;display:flex;align-items:center;width:100%}
+.nav-brand{font-size:15px;font-weight:600;color:var(--text);text-decoration:none;margin-right:auto;display:flex;align-items:center;gap:10px}
+.nav-brand-dot{width:8px;height:8px;border-radius:50%;background:var(--orange)}
+.nav-links{display:flex;gap:0;list-style:none}
+.nav-links a{font-size:13px;font-weight:500;color:var(--text2);text-decoration:none;padding:6px 14px;border-radius:6px;transition:color .15s}
+.nav-links a:hover{color:var(--text)}
+.hero{padding:160px 0 120px;text-align:center;border-top:none;position:relative;overflow:hidden}
+.hero-bg{position:absolute;inset:0;background:radial-gradient(ellipse 80% 60% at 50% 0%,rgba(255,107,53,.08) 0%,transparent 70%),radial-gradient(ellipse 60% 40% at 30% 100%,rgba(50,210,192,.06) 0%,transparent 60%);pointer-events:none}
+.hero-eyebrow{display:inline-flex;align-items:center;gap:8px;background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.08);border-radius:99px;padding:6px 16px;font-size:12px;font-weight:500;color:var(--text2);letter-spacing:.04em;margin-bottom:40px}
+.hero-eyebrow-dot{width:6px;height:6px;border-radius:50%;background:var(--green);box-shadow:0 0 8px var(--green);animation:pulse 2s ease-in-out infinite}
+@keyframes pulse{0%,100%{opacity:1}50%{opacity:.4}}
+.hero h1{margin-bottom:28px}
+.hero-sub{font-size:19px;color:var(--text2);max-width:620px;margin:0 auto 56px;line-height:1.6}
+.hero-stats{display:flex;justify-content:center;gap:0;border:1px solid var(--line2);border-radius:16px;overflow:hidden;max-width:800px;margin:0 auto;background:var(--surface)}
+.hero-stat{flex:1;padding:28px 24px;border-right:1px solid var(--line2);text-align:center}
+.hero-stat:last-child{border-right:none}
+.hero-stat-num{font-size:36px;font-weight:700;letter-spacing:-.03em;color:var(--text);display:block;margin-bottom:4px}
+.hero-stat-label{font-size:12px;color:var(--text3);font-weight:500;letter-spacing:.03em}
+.layer-stack{display:flex;flex-direction:column;gap:2px}
+.layer-row{display:grid;grid-template-columns:180px 1fr;gap:0;border-radius:10px;overflow:hidden;border:1px solid var(--line2);transition:border-color .2s}
+.layer-row:hover{border-color:var(--line)}
+.layer-label{padding:20px 24px;background:var(--surface2);border-right:1px solid var(--line2);display:flex;align-items:center;gap:12px}
+.layer-num{font-size:11px;font-weight:700;color:var(--text3);letter-spacing:.06em}
+.layer-name{font-size:13px;font-weight:600;color:var(--text)}
+.layer-bar{width:3px;border-radius:2px;align-self:stretch;flex-shrink:0}
+.layer-content{padding:20px 28px;background:var(--surface);display:flex;align-items:center;gap:10px;flex-wrap:wrap}
+.pill{font-size:12px;font-weight:500;padding:5px 12px;border-radius:99px;border:1px solid;white-space:nowrap}
+.pill-orange{border-color:rgba(255,107,53,.3);color:var(--orange);background:rgba(255,107,53,.06)}
+.pill-purple{border-color:rgba(168,85,247,.3);color:var(--purple);background:rgba(168,85,247,.06)}
+.pill-blue{border-color:rgba(59,130,246,.3);color:var(--blue);background:rgba(59,130,246,.06)}
+.pill-green{border-color:rgba(48,209,88,.3);color:var(--green);background:rgba(48,209,88,.06)}
+.pill-cyan{border-color:rgba(50,210,192,.3);color:var(--cyan);background:rgba(50,210,192,.06)}
+.pill-dim{border-color:var(--line2);color:var(--text3);background:transparent}
+.section-intro{display:grid;grid-template-columns:1fr 1fr;gap:80px;align-items:start;margin-bottom:64px}
+.section-intro h2{margin-bottom:16px}
+.section-divider{width:48px;height:3px;border-radius:2px;background:var(--orange);margin-bottom:24px}
+.model-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:10px;margin-bottom:24px}
+.model-card{background:var(--surface);border:1px solid var(--line2);border-radius:12px;padding:20px}
+.model-icon{width:32px;height:32px;border-radius:8px;margin-bottom:14px;display:flex;align-items:center;justify-content:center;font-size:16px}
+.model-name{font-size:14px;font-weight:700;color:var(--text);margin-bottom:3px}
+.model-meta{font-size:11px;color:var(--text3);margin-bottom:10px}
+.model-uses{font-size:12px;color:var(--text2);line-height:1.6}
+.callout{background:rgba(50,210,192,.04);border:1px solid rgba(50,210,192,.15);border-radius:10px;padding:16px 20px;font-size:13px;color:var(--text2);line-height:1.7}
+.callout strong{color:var(--cyan)}
+.callout-warn{background:rgba(255,214,10,.04);border-color:rgba(255,214,10,.15)}
+.callout-warn strong{color:var(--yellow)}
+.schedule-group{margin-bottom:40px}
+.schedule-group-label{font-size:11px;font-weight:700;letter-spacing:.12em;text-transform:uppercase;color:var(--text3);padding-bottom:10px;border-bottom:1px solid var(--line);margin-bottom:2px}
+.sched-row{display:grid;grid-template-columns:140px 240px 1fr;gap:0;border-bottom:1px solid var(--line);padding:14px 0;transition:background .1s}
+.sched-row:hover{background:rgba(255,255,255,.015);border-radius:6px}
+.sched-time{font-size:13px;font-weight:600;color:var(--yellow);font-variant-numeric:tabular-nums;padding-right:20px}
+.sched-agent{font-size:13px;font-weight:600;color:var(--cyan);padding-right:24px;font-family:'SF Mono','Fira Code',monospace}
+.sched-desc{font-size:13px;color:var(--text2);line-height:1.5}
+.sched-out{font-size:11px;color:var(--text3);margin-top:2px}
+.skills-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:10px}
+.skill-card{background:var(--surface);border:1px solid var(--line2);border-radius:12px;padding:20px 22px;transition:border-color .2s,background .2s}
+.skill-card:hover{border-color:rgba(255,107,53,.25);background:var(--surface2)}
+.skill-trigger{display:inline-block;font-size:11px;font-weight:700;font-family:'SF Mono',monospace;color:var(--orange);background:rgba(255,107,53,.08);border:1px solid rgba(255,107,53,.2);border-radius:5px;padding:2px 8px;margin-bottom:10px;letter-spacing:.02em}
+.skill-name{font-size:14px;font-weight:600;color:var(--text);margin-bottom:6px}
+.skill-desc{font-size:12px;color:var(--text2);line-height:1.6}
+.skill-category{font-size:10px;font-weight:600;letter-spacing:.1em;text-transform:uppercase;color:var(--text3);padding:28px 0 12px;border-bottom:1px solid var(--line);margin-bottom:10px;grid-column:1/-1}
+.bento{display:grid;grid-template-columns:repeat(12,1fr);grid-auto-rows:minmax(160px,auto);gap:12px}
+.bento-cell{background:var(--surface);border:1px solid var(--line2);border-radius:var(--r);padding:28px;overflow:hidden;position:relative;transition:border-color .2s,background .2s}
+.bento-cell:hover{border-color:var(--line);background:var(--surface2)}
+.c5{grid-column:span 5}.c7{grid-column:span 7}.c4{grid-column:span 4}.c3{grid-column:span 3}.r2{grid-row:span 2}
+.bento-eyebrow{font-size:10px;font-weight:700;letter-spacing:.12em;text-transform:uppercase;color:var(--text3);margin-bottom:10px}
+.bento-title{font-size:17px;font-weight:600;color:var(--text);letter-spacing:-.01em;margin-bottom:8px}
+.bento-body{font-size:13px;color:var(--text2);line-height:1.65}
+.bento-num{font-size:52px;font-weight:800;letter-spacing:-.04em;line-height:1;margin-bottom:6px}
+.bento-accent-bar{position:absolute;top:0;left:28px;width:32px;height:3px;border-radius:0 0 3px 3px}
+.trust-row{display:flex;align-items:center;gap:20px;padding:10px 0;border-bottom:1px solid var(--line)}
+.trust-row:last-child{border-bottom:none}
+.trust-level{width:80px;font-size:13px;font-weight:700;flex-shrink:0}
+.trust-bar-wrap{flex:1;height:4px;background:rgba(255,255,255,.06);border-radius:2px;overflow:hidden}
+.trust-bar-fill{height:100%;border-radius:2px}
+.trust-boost{font-size:12px;font-weight:700;width:60px;text-align:right;flex-shrink:0}
+.infra-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:12px;margin-bottom:12px}
+.infra-card{background:var(--surface);border:1px solid var(--line2);border-radius:12px;padding:22px}
+.infra-icon{width:36px;height:36px;border-radius:9px;display:flex;align-items:center;justify-content:center;margin-bottom:14px;font-size:18px}
+.infra-host{font-size:11px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:var(--text3);margin-bottom:6px}
+.infra-name{font-size:16px;font-weight:700;color:var(--text);margin-bottom:8px}
+.infra-desc{font-size:12px;color:var(--text2);line-height:1.6}
+.heal-row{display:grid;grid-template-columns:80px 1fr;gap:0;margin-bottom:12px}
+.heal-layer-num{font-size:64px;font-weight:900;letter-spacing:-.06em;line-height:1;padding-top:4px}
+.heal-card{background:var(--surface);border:1px solid var(--line2);border-radius:12px;padding:24px 28px}
+.heal-title{font-size:16px;font-weight:700;color:var(--text);margin-bottom:4px}
+.heal-file{font-size:11px;font-family:'SF Mono',monospace;color:var(--text3);margin-bottom:12px}
+.heal-body{font-size:13px;color:var(--text2);line-height:1.7}
+.svc-row{display:grid;grid-template-columns:200px 100px 1fr;gap:0;border-bottom:1px solid var(--line);padding:16px 0;align-items:start}
+.svc-name{font-size:14px;font-weight:700;color:var(--text);font-family:'SF Mono',monospace}
+.svc-platform{font-size:11px;font-weight:600;padding:3px 8px;border-radius:5px;display:inline-block}
+.sp-fly{background:rgba(168,85,247,.15);color:var(--purple)}.sp-gcr{background:rgba(59,130,246,.15);color:var(--blue)}
+.svc-desc{font-size:13px;color:var(--text2);line-height:1.6}
+.storage-grid{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+.db-card{background:var(--surface);border:1px solid var(--line2);border-radius:12px;overflow:hidden}
+.db-header{padding:14px 20px;border-bottom:1px solid var(--line2);display:flex;align-items:center;gap:10px}
+.db-name{font-size:13px;font-weight:700;color:var(--green);font-family:'SF Mono',monospace;flex:1}
+.db-badge{font-size:9px;font-weight:700;padding:2px 6px;border-radius:4px;letter-spacing:.06em;text-transform:uppercase}
+.dbb-table{background:rgba(255,255,255,.04);color:var(--text3)}
+.db-desc{padding:12px 20px;font-size:12px;color:var(--text2);line-height:1.65}
+code{font-family:'SF Mono','Fira Code',monospace;font-size:11px;background:rgba(255,255,255,.05);border:1px solid var(--line2);border-radius:4px;padding:1px 5px;color:var(--text2)}
+.fade-up{opacity:0;transform:translateY(24px);transition:opacity .6s ease,transform .6s ease}
+.fade-up.visible{opacity:1;transform:translateY(0)}
+.generated-badge{display:inline-flex;align-items:center;gap:6px;font-size:10px;color:var(--text3);margin-top:8px;font-family:'SF Mono',monospace}
+.generated-badge::before{content:'';display:block;width:6px;height:6px;border-radius:50%;background:var(--green)}
+/* ── Topology diagram ── */
+.topo-wrap{overflow-x:auto;border:1px solid var(--line2);border-radius:var(--r);background:var(--surface)}
+.topo-canvas{position:relative;width:1380px;height:1020px;margin:0 auto}
+.topo-svg{position:absolute;inset:0;width:100%;height:100%;pointer-events:none;overflow:visible}
+.topo-zone{position:absolute;border:1px solid;border-radius:10px;padding:0}
+.topo-zone-label{font-size:9px;font-weight:700;letter-spacing:.12em;text-transform:uppercase;padding:8px 12px 0;display:flex;align-items:center;gap:6px}
+.topo-zone-dot{width:6px;height:6px;border-radius:50%;flex-shrink:0}
+.tnode{position:absolute;background:var(--surface2);border:1px solid var(--line2);border-radius:10px;padding:12px 14px;font-size:11px}
+.tnode-name{font-size:13px;font-weight:700;color:var(--text);margin-bottom:2px}
+.tnode-type{font-size:10px;color:var(--text3);margin-bottom:8px}
+.tnode-tags{display:flex;flex-wrap:wrap;gap:4px}
+.ttag{font-size:9px;font-weight:500;padding:2px 6px;border:1px solid var(--line2);border-radius:4px;color:var(--text3)}
+.topo-legend{display:flex;flex-wrap:wrap;gap:16px;align-items:center;padding:16px 20px;border-top:1px solid var(--line2);font-size:11px;color:var(--text3)}
+.topo-legend-item{display:flex;align-items:center;gap:6px}
+.topo-legend-line{width:28px;height:2px;border-radius:1px}
+.topo-legend-dot{width:8px;height:8px;border-radius:50%}
+.topo-conn-table{width:100%;border-collapse:collapse;margin-top:32px;font-size:12px}
+.topo-conn-table th{text-align:left;font-size:10px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:var(--text3);padding:8px 12px;border-bottom:1px solid var(--line2)}
+.topo-conn-table td{padding:10px 12px;border-bottom:1px solid var(--line);color:var(--text2);vertical-align:top}
+.topo-conn-table td:first-child{color:var(--text);font-weight:600;font-family:'SF Mono',monospace;font-size:11px}
+.proto{font-size:9px;font-weight:700;padding:2px 6px;border-radius:4px;display:inline-block;white-space:nowrap}
+footer{padding:60px 0;border-top:1px solid var(--line);text-align:center}
+.footer-brand{font-size:22px;font-weight:700;color:var(--text);margin-bottom:8px}
+.footer-brand span{color:var(--orange)}
+.footer-sub{font-size:13px;color:var(--text3)}
+</style>
+</head>
+<body>
+
+<nav>
+  <div class="nav-inner">
+    <a class="nav-brand" href="#">
+      <div class="nav-brand-dot"></div>
+      Blick — Nexus OS
+    </a>
+    <ul class="nav-links">
+      <li><a href="#overview">Overview</a></li>
+      <li><a href="#inference">AI Inference</a></li>
+      <li><a href="#agents">Agents</a></li>
+      <li><a href="#skills">Skills</a></li>
+      <li><a href="#storage">Storage</a></li>
+      <li><a href="#topology">Topology</a></li>
+      <li><a href="#infrastructure">Infrastructure</a></li>
+      <li><a href="#healing">Self-Healing</a></li>
+    </ul>
+  </div>
+</nav>
+
+<section class="hero" style="padding-top:140px;">
+  <div class="hero-bg"></div>
+  <div class="container" style="position:relative;">
+    <div class="hero-eyebrow">
+      <div class="hero-eyebrow-dot"></div>
+      Internal Technical Reference · Blick Group · 2026
+    </div>
+    <h1 class="gradient-text" style="margin-bottom:8px;">Nexus</h1>
+    <h1 style="margin-bottom:28px;">Operating System</h1>
+    <p class="hero-sub">A continuously-running AI that compounds knowledge, monitors operations, surfaces intelligence, and heals itself — without being asked.</p>
+    <div class="hero-stats">
+      <div class="hero-stat">
+        <span class="hero-stat-num accent-cyan">37</span>
+        <span class="hero-stat-label">Scheduled Agents</span>
+      </div>
+      <div class="hero-stat">
+        <span class="hero-stat-num accent-orange">25</span>
+        <span class="hero-stat-label">Invocable Skills</span>
+      </div>
+      <div class="hero-stat">
+        <span class="hero-stat-num accent-green">4</span>
+        <span class="hero-stat-label">Local MCP Servers</span>
+      </div>
+      <div class="hero-stat">
+        <span class="hero-stat-num accent-purple">4,549</span>
+        <span class="hero-stat-label">Named Entities</span>
+      </div>
+      <div class="hero-stat">
+        <span class="hero-stat-num" style="color:var(--text);">4,573</span>
+        <span class="hero-stat-label">Graph Links</span>
+      </div>
+    </div>
+    <div class="generated-badge">Auto-generated 2026-04-29 from live sources</div>
+  </div>
+</section>
+
+<section id="overview">
+  <div class="container fade-up">
+    <div class="eyebrow">System Architecture</div>
+    <h2 style="margin-bottom:16px;">Five layers.<br>One operating system.</h2>
+    <p style="max-width:520px;margin-bottom:56px;">Every component has a layer. Every layer has a purpose. Nothing runs in the cloud that can run locally.</p>
+    <div class="layer-stack">
+      <div class="layer-row"><div class="layer-label"><div class="layer-bar" style="background:var(--orange);"></div><div><div class="layer-num">L1</div><div class="layer-name">Human Interface</div></div></div><div class="layer-content"><span class="pill pill-orange">Obsidian (vault UI)</span><span class="pill pill-orange">Claude Code (dev shell)</span><span class="pill pill-orange">Daily Brief</span><span class="pill pill-orange">Hub-App / Compass</span><span class="pill pill-dim">MacBook → VNC / SMB</span><span class="pill pill-dim">Tailscale mesh</span></div></div>
+      <div class="layer-row"><div class="layer-label"><div class="layer-bar" style="background:var(--purple);"></div><div><div class="layer-num">L2</div><div class="layer-name">AI Inference</div></div></div><div class="layer-content"><span class="pill pill-purple">Gemma 4 E4B — local fast</span><span class="pill pill-purple">Gemma 4 26B — local heavy</span><span class="pill pill-purple">Nomic embed-text</span><span class="pill pill-dim">Claude Sonnet / Opus — cloud</span><span class="pill pill-dim">XAI Grok — web-grounded</span><span class="pill pill-dim">Gemini 2.5 Pro — NotebookLM</span></div></div>
+      <div class="layer-row"><div class="layer-label"><div class="layer-bar" style="background:var(--blue);"></div><div><div class="layer-num">L3</div><div class="layer-name">Intelligence Engine</div></div></div><div class="layer-content"><span class="pill pill-blue">Indexer</span><span class="pill pill-blue">Embedder</span><span class="pill pill-blue">Graph Builder</span><span class="pill pill-blue">Entity Extractor</span><span class="pill pill-blue">Autoresearch</span><span class="pill pill-blue">Brief Pipeline</span><span class="pill pill-blue">Vault Writeback</span><span class="pill pill-blue">Action Register</span><span class="pill pill-blue">Self-Healing (3-layer)</span></div></div>
+      <div class="layer-row"><div class="layer-label"><div class="layer-bar" style="background:var(--green);"></div><div><div class="layer-num">L4</div><div class="layer-name">Storage</div></div></div><div class="layer-content"><span class="pill pill-green">BlickVault (1024 notes)</span><span class="pill pill-green">nexus-vault.db (SQLite)</span><span class="pill pill-green">blick-memory.db</span><span class="pill pill-green">Session logs (JSONL)</span><span class="pill pill-dim">All on /Volumes/NewmanDrive/</span></div></div>
+      <div class="layer-row"><div class="layer-label"><div class="layer-bar" style="background:var(--cyan);"></div><div><div class="layer-num">L5</div><div class="layer-name">External</div></div></div><div class="layer-content"><span class="pill pill-cyan">Google Drive</span><span class="pill pill-cyan">BigQuery</span><span class="pill pill-cyan">Fly.io</span><span class="pill pill-cyan">GitHub</span><span class="pill pill-cyan">n8n (self-hosted)</span><span class="pill pill-cyan">Sentry</span><span class="pill pill-cyan">Brave · Firecrawl · XAI</span></div></div>
+    </div>
+  </div>
+</section>
+
+<section id="inference">
+  <div class="container fade-up">
+    <div class="eyebrow">Layer 2</div>
+    <div class="section-divider"></div>
+    <div class="section-intro">
+      <div><h2>AI Inference.<br>Mostly free.<br>Always private.</h2></div>
+      <div><p style="margin-bottom:16px;">Three models run locally on the Mac Mini. Cloud is used only when local cannot serve the task. Drive file content never touches a cloud LLM — the nexus-drive gateway fails closed if Ollama is unavailable.</p><p>The LLM router (<code>llm-router.js</code>) makes every routing decision. Scan/filter/classify → e4b. Draft/synthesis → 26b. Architecture/strategy → Sonnet/Opus.</p></div>
+    </div>
+    <div class="model-grid">
+      <div class="model-card"><div class="model-icon" style="background:rgba(255,107,53,.1);">🧠</div><div class="model-name">Gemma 4 E4B</div><div class="model-meta">Local · Ollama · ~9.6 GB · Free</div><div class="model-uses">Entity extraction · Slop gate · Autoresearch filter · Originals classification · Writeback triage · Relevance scoring</div></div>
+      <div class="model-card"><div class="model-icon" style="background:rgba(168,85,247,.1);">⚙️</div><div class="model-name">Gemma 4 26B</div><div class="model-meta">Local · Ollama · ~16 GB · Free</div><div class="model-uses">Drive Q&A · Brief drafting · Fix drafting · Codegen · Research synthesis · Advisor pass · Writeback review</div></div>
+      <div class="model-card"><div class="model-icon" style="background:rgba(50,210,192,.1);">📐</div><div class="model-name">Nomic embed-text</div><div class="model-meta">Local · Ollama · ~275 MB · Free</div><div class="model-uses">768-dim semantic embeddings for hybrid search. Runs alongside e4b. Powers <code>documents_vec_768</code> table.</div></div>
+      <div class="model-card" style="border-color:rgba(255,255,255,.06);"><div class="model-icon" style="background:rgba(255,255,255,.04);">☁️</div><div class="model-name">Claude Sonnet / Opus</div><div class="model-meta">Cloud · Anthropic API · Paid</div><div class="model-uses">Brief synthesis · Agent orchestration · Architecture decisions · Code review · Cross-domain reasoning</div></div>
+    </div>
+    <div class="callout"><strong>VRAM guard:</strong> OLLAMA_MAX_LOADED_MODELS=1 (set at login by ollama-env agent). E4b + nomic co-exist at ~10 GB. 26B (~16 GB) requires e4b to unload first.</div>
+  </div>
+</section>
+
+<section id="agents" style="padding-bottom:80px;">
+  <div class="container fade-up">
+    <div class="eyebrow">Layer 3 — Autonomy</div>
+    <div class="section-divider"></div>
+    <h2 style="margin-bottom:16px;">37 agents.<br>Always running.</h2>
+    <p style="max-width:560px;margin-bottom:48px;">Every agent is a <code>launchd</code> plist in <code>~/Library/LaunchAgents/</code>. They reload automatically at login. The source of truth lives in <code>nexus/launchd/</code> — installed via <code>install-launch-agents.sh</code>.</p>
+    
+    <div class="schedule-group">
+      <div class="schedule-group-label">Every Day</div>
+      
+      <div class="sched-row">
+        <div class="sched-time">Daily 04:27</div>
+        <div class="sched-agent">autoresearch-daily</div>
+        <div>
+          <div class="sched-desc">Autonomous web research: Brave Search + Firecrawl + XAI Grok. Gemma e4b filters relevance. Action register dedup. Sonnet advisor QA. Writes research notes to vault Inbox.</div>
+          <div class="sched-out">→ BlickVault/Inbox/autoresearch/ (source_type: raw)</div>
+        </div>
+      </div>
+      <div class="sched-row">
+        <div class="sched-time">Daily 04:27</div>
+        <div class="sched-agent">autoresearch-daily</div>
+        <div>
+          <div class="sched-desc">Autonomous web research: Brave Search + Firecrawl + XAI Grok. Gemma e4b filters relevance. Action register dedup. Sonnet advisor QA. Writes research notes to vault Inbox.</div>
+          <div class="sched-out">→ BlickVault/Inbox/autoresearch/ (source_type: raw)</div>
+        </div>
+      </div>
+      <div class="sched-row">
+        <div class="sched-time">Daily 03:00</div>
+        <div class="sched-agent">dream-cycle</div>
+        <div>
+          <div class="sched-desc">The compounding engine. Sweeps (1) session JSONL transcripts + (2) vault notes modified in last 25h. Merges text, entity-matches, triggers writeback for any entity with new signal.</div>
+          <div class="sched-out">→ Entity vault notes (## Recent Intel) · writeback_log · source ## References (Iron Law)</div>
+        </div>
+      </div>
+      <div class="sched-row">
+        <div class="sched-time">Daily 10:03</div>
+        <div class="sched-agent">drive-sync-shared</div>
+        <div>
+          <div class="sched-desc">Syncs shared team brief outputs from vault to Google Drive. Makes intelligence visible to the team without requiring Obsidian access.</div>
+          <div class="sched-out">→ Google Drive (shared folder)</div>
+        </div>
+      </div>
+      <div class="sched-row">
+        <div class="sched-time">Daily 10:03</div>
+        <div class="sched-agent">drive-sync-shared</div>
+        <div>
+          <div class="sched-desc">Syncs shared team brief outputs from vault to Google Drive. Makes intelligence visible to the team without requiring Obsidian access.</div>
+          <div class="sched-out">→ Google Drive (shared folder)</div>
+        </div>
+      </div>
+      <div class="sched-row">
+        <div class="sched-time">Every 30 min (7am–7pm)</div>
+        <div class="sched-agent">health-collector</div>
+        <div>
+          <div class="sched-desc">Watches 9 sources: GitHub CI, Fly.io apps, healthz endpoints, Cloud Run, n8n workflows, Sentry error rates. Auto-resolves n8n deactivation and missed scheduled runs. 18h cooldown per issue.</div>
+          <div class="sched-out">→ health-collector-state.json · vault health reports</div>
+        </div>
+      </div>
+      <div class="sched-row">
+        <div class="sched-time">Daily 08:15</div>
+        <div class="sched-agent">health-collector-daily</div>
+        <div>
+          <div class="sched-desc">Slow sources (once/day): BigQuery freshness, BigQuery duplication ratios, launchd job logs, n8n workflow deep audit. Triggers candidate-extractor on completion.</div>
+          <div class="sched-out">→ health-collector-state.json · action register (via candidate-extractor)</div>
+        </div>
+      </div>
+      <div class="sched-row">
+        <div class="sched-time">—</div>
+        <div class="sched-agent">ollama-env</div>
+        <div>
+          <div class="sched-desc">Sets OLLAMA_MODELS, OLLAMA_MAX_LOADED_MODELS, OLLAMA_FLASH_ATTENTION in the launchd environment at login. Required before any Ollama inference call.</div>
+          <div class="sched-out">→ Environment vars only</div>
+        </div>
+      </div>
+      <div class="sched-row">
+        <div class="sched-time">Daily 23:30</div>
+        <div class="sched-agent">originals-capture</div>
+        <div>
+          <div class="sched-desc">Scans session transcripts for original thinking, novel ideas, strategic observations. Gemma e4b classifies. Files verbatim excerpts locally before session context is compressed.</div>
+          <div class="sched-out">→ BlickVault/Private/originals/YYYY-MM-DD-*.md</div>
+        </div>
+      </div>
+      <div class="sched-row">
+        <div class="sched-time">Daily 02:15</div>
+        <div class="sched-agent">reverify-nightly</div>
+        <div>
+          <div class="sched-desc">Re-verifies 20 unreviewed entity vault notes per night via web search. Sets verification_status → sourced or contradicted. Works through backlog at ~140 notes/week.</div>
+          <div class="sched-out">→ Vault entity notes (frontmatter updated)</div>
+        </div>
+      </div>
+      <div class="sched-row">
+        <div class="sched-time">Daily 07:30</div>
+        <div class="sched-agent">stale-action-review</div>
+        <div>
+          <div class="sched-desc">Flags actions in the register that are overdue, old untriaged, or need escalation. Prevents the action register from silently accumulating debt.</div>
+          <div class="sched-out">→ action_register table · brief section</div>
+        </div>
+      </div>
+    </div>
+    
+    <div class="schedule-group">
+      <div class="schedule-group-label">Monday</div>
+      
+      <div class="sched-row">
+        <div class="sched-time">Mon 07:00</div>
+        <div class="sched-agent">check-resolvable</div>
+        <div>
+          <div class="sched-desc">Audits skill reachability, project registry freshness, vault profile age, routing eval results. Flags anything that has drifted since last week.</div>
+          <div class="sched-out">→ System/register/ audit note</div>
+        </div>
+      </div>
+      <div class="sched-row">
+        <div class="sched-time">Mon 07:45</div>
+        <div class="sched-agent">claim-decay-check</div>
+        <div>
+          <div class="sched-desc">Finds vault notes older than 90 days where source claims have not been re-verified. Feeds reverify queue. Prevents knowledge going stale silently.</div>
+          <div class="sched-out">→ Reverify queue · System/register/ note</div>
+        </div>
+      </div>
+      <div class="sched-row">
+        <div class="sched-time">Mon 07:17</div>
+        <div class="sched-agent">embedding-audit</div>
+        <div>
+          <div class="sched-desc">Integrity check on vector tables. Finds missing embeddings, dimension mismatches, orphaned vectors. Auto-repairs gaps. Ensures hybrid search works against the full vault.</div>
+          <div class="sched-out">→ documents_vec_768 (auto-repair) · audit note</div>
+        </div>
+      </div>
+      <div class="sched-row">
+        <div class="sched-time">Mon 09:17</div>
+        <div class="sched-agent">gemma-feedback-improve</div>
+        <div>
+          <div class="sched-desc">Reads Gemma output quality patterns from nexus-learnings.jsonl. Identifies low-quality or corrected outputs. Writes improvement notes to Drive. Closes the Gemma self-improvement loop.</div>
+          <div class="sched-out">→ Google Drive (improvement notes)</div>
+        </div>
+      </div>
+      <div class="sched-row">
+        <div class="sched-time">Mon 09:17</div>
+        <div class="sched-agent">gemma-feedback-improve</div>
+        <div>
+          <div class="sched-desc">Reads Gemma output quality patterns from nexus-learnings.jsonl. Identifies low-quality or corrected outputs. Writes improvement notes to Drive. Closes the Gemma self-improvement loop.</div>
+          <div class="sched-out">→ Google Drive (improvement notes)</div>
+        </div>
+      </div>
+      <div class="sched-row">
+        <div class="sched-time">Mon–Fri 07:00</div>
+        <div class="sched-agent">gh-monitor</div>
+        <div>
+          <div class="sched-desc">Monitors 13 Anthropic GitHub repos for new commits, PRs, releases. Gemma e4b evaluates relevance to our stack. High-relevance findings → vault notes.</div>
+          <div class="sched-out">→ BlickVault/Intelligence/technology/github-*.md</div>
+        </div>
+      </div>
+      <div class="sched-row">
+        <div class="sched-time">Mon 07:05</div>
+        <div class="sched-agent">project-snapshot</div>
+        <div>
+          <div class="sched-desc">Refreshes vault project profiles from repo CLAUDE.md, package.json, recent git log. Keeps Intelligence/technology/ accurate without manual curation.</div>
+          <div class="sched-out">→ BlickVault/Intelligence/technology/{project}.md</div>
+        </div>
+      </div>
+    </div>
+    
+    <div class="schedule-group">
+      <div class="schedule-group-label">Friday</div>
+      
+      <div class="sched-row">
+        <div class="sched-time">Fri 07:00</div>
+        <div class="sched-agent">competitor-delta</div>
+        <div>
+          <div class="sched-desc">Summarises all competitor intel changes recorded in vault this week. Compares current entity notes against last-week snapshot. Surfaces what changed, what is new, what went quiet.</div>
+          <div class="sched-out">→ Intelligence/briefings/ weekly competitor summary</div>
+        </div>
+      </div>
+      <div class="sched-row">
+        <div class="sched-time">Fri 16:07</div>
+        <div class="sched-agent">nexus-weekly-doc</div>
+        <div>
+          <div class="sched-desc">Compiles weekly Nexus activity report — autoresearch runs, writebacks, action register transitions, health events. Gemma synthesis into structured weekly document.</div>
+          <div class="sched-out">→ System/briefings/weekly-advances/</div>
+        </div>
+      </div>
+      <div class="sched-row">
+        <div class="sched-time">Fri 16:07</div>
+        <div class="sched-agent">nexus-weekly-doc</div>
+        <div>
+          <div class="sched-desc">Compiles weekly Nexus activity report — autoresearch runs, writebacks, action register transitions, health events. Gemma synthesis into structured weekly document.</div>
+          <div class="sched-out">→ System/briefings/weekly-advances/</div>
+        </div>
+      </div>
+      <div class="sched-row">
+        <div class="sched-time">Fri 19:30</div>
+        <div class="sched-agent">weekly-session-advances</div>
+        <div>
+          <div class="sched-desc">Reads week's session JSONL logs. Gemma synthesises "What We Advanced This Week" — decisions made, features shipped, problems solved. Captures human–AI collaboration outcomes.</div>
+          <div class="sched-out">→ System/briefings/weekly-advances/YYYY-MM-DD-weekly-advances.md</div>
+        </div>
+      </div>
+    </div>
+    
+    <div class="schedule-group">
+      <div class="schedule-group-label">Saturday</div>
+      
+      <div class="sched-row">
+        <div class="sched-time">Sat 07:00</div>
+        <div class="sched-agent">product-alignment</div>
+        <div>
+          <div class="sched-desc">Audits every product vault note for gaps, conflicts between notes, and missing required fields. Gemma e4b evaluation. Produces issue list for resolution.</div>
+          <div class="sched-out">→ System/briefings/register-reviews/ alignment report</div>
+        </div>
+      </div>
+      <div class="sched-row">
+        <div class="sched-time">Sat 07:30</div>
+        <div class="sched-agent">writeback-review</div>
+        <div>
+          <div class="sched-desc">Gemma reviews last 7 days of vault-writeback entries for quality: relevance, accuracy, slop presence, hallucination signals. Produces weekly writeback quality summary.</div>
+          <div class="sched-out">→ writeback_review table · System/register/ quality note</div>
+        </div>
+      </div>
+    </div>
+    
+    <div class="schedule-group">
+      <div class="schedule-group-label">Sunday</div>
+      
+      <div class="sched-row">
+        <div class="sched-time">Sun 07:00</div>
+        <div class="sched-agent">nexus-audit</div>
+        <div>
+          <div class="sched-desc">Full weekly system health audit. Checks brief gaps, embedding coverage %, action register queue depth, launchd job success rates, vault growth metrics.</div>
+          <div class="sched-out">→ System/briefings/register-reviews/ weekly nexus audit</div>
+        </div>
+      </div>
+      <div class="sched-row">
+        <div class="sched-time">Sun 08:30</div>
+        <div class="sched-agent">trust-metrics</div>
+        <div>
+          <div class="sched-desc">Audits the trust/verification pipeline. Counts notes by source_type and verification_status. Tracks reverify progress, contradiction rate, curated vs raw ratio.</div>
+          <div class="sched-out">→ System/register/trust-metrics-YYYY-MM-DD.md</div>
+        </div>
+      </div>
+      <div class="sched-row">
+        <div class="sched-time">Sun 03:17</div>
+        <div class="sched-agent">vault-backup-weekly</div>
+        <div>
+          <div class="sched-desc">Full BlickVault snapshot. Guards against accidental deletion or corruption from autoresearch or writeback failures.</div>
+          <div class="sched-out">→ Compressed archive on NewmanDrive</div>
+        </div>
+      </div>
+      <div class="sched-row">
+        <div class="sched-time">Sun 03:17</div>
+        <div class="sched-agent">vault-backup-weekly</div>
+        <div>
+          <div class="sched-desc">Full BlickVault snapshot. Guards against accidental deletion or corruption from autoresearch or writeback failures.</div>
+          <div class="sched-out">→ Compressed archive on NewmanDrive</div>
+        </div>
+      </div>
+      <div class="sched-row">
+        <div class="sched-time">Sun 08:00</div>
+        <div class="sched-agent">weekly-vault-digest</div>
+        <div>
+          <div class="sched-desc">Full vault evolution summary. Notes created/modified, which entity areas grew, writeback volume by entity type. Team-facing Gemma synthesis.</div>
+          <div class="sched-out">→ System/briefings/shared/ → Drive sync</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section id="skills">
+  <div class="container fade-up">
+    <div class="eyebrow">Invocable Skills</div>
+    <div class="section-divider"></div>
+    <div class="section-intro" style="margin-bottom:48px;">
+      <div><h2>25 skills.<br>Type to invoke.</h2></div>
+      <div><p style="margin-bottom:16px;">Skills are self-contained task specifications in <code>~/.claude/skills/</code>. The global rule: check skills first for every task.</p><p>Agent-team skills coordinate multiple specialist subagents via <code>agent-inbox.js</code> and <code>agent-tasks.js</code>.</p></div>
+    </div>
+    <div class="skills-grid">
+      
+      <div class="skill-category">Agent Teams — Multi-Specialist Orchestration</div>
+      
+      <div class="skill-card">
+        <div class="skill-trigger">/team-build</div>
+        <div class="skill-name">Team Build</div>
+        <div class="skill-desc">Spawn a cross-layer build team for new features spanning frontend, backend, and tests</div>
+      </div>
+      <div class="skill-card">
+        <div class="skill-trigger">/team-build-lite</div>
+        <div class="skill-name">Team Build Lite</div>
+        <div class="skill-desc">Spawn a frontend-focused build team for UI changes that don't require new backend work. Implements, tests, quality-checks, and documents — hands off release-rea</div>
+      </div>
+      <div class="skill-card">
+        <div class="skill-trigger">/team-debug</div>
+        <div class="skill-name">Team Debug</div>
+        <div class="skill-desc">Spawn competing investigators plus a scribe to debug an issue and document findings</div>
+      </div>
+      <div class="skill-card">
+        <div class="skill-trigger">/team-design</div>
+        <div class="skill-name">Team Design</div>
+        <div class="skill-desc">Spawn a design audit team for UX quality, data contract alignment, environment parity, and production readiness</div>
+      </div>
+      <div class="skill-card">
+        <div class="skill-trigger">/team-design-studio</div>
+        <div class="skill-name">Team Design Studio</div>
+        <div class="skill-desc">Spawn a creative design team to propose UX/UI for new features or redesigns (propose mode), or verify an implementation matches its approved spec (review mode).</div>
+      </div>
+      <div class="skill-card">
+        <div class="skill-trigger">/team-fix</div>
+        <div class="skill-name">Team Fix</div>
+        <div class="skill-desc">Spawn a fix team to implement bug fixes, write tests, and update documentation</div>
+      </div>
+      <div class="skill-card">
+        <div class="skill-trigger">/team-release</div>
+        <div class="skill-name">Team Release</div>
+        <div class="skill-desc">Spawn parallel checkers to validate release readiness before promoting dev to production</div>
+      </div>
+      <div class="skill-card">
+        <div class="skill-trigger">/team-review</div>
+        <div class="skill-name">Team Review</div>
+        <div class="skill-desc">Spawn parallel reviewers plus a scribe to audit a PR from security, quality, architecture, and design angles</div>
+      </div>
+      <div class="skill-card">
+        <div class="skill-trigger">/team-uat</div>
+        <div class="skill-name">Team Uat</div>
+        <div class="skill-desc">Agentic UAT runner — drives a real browser via Playwright MCP to verify feature flows, then layers adversarial edge cases, then auto-hands off to team-fix on fa</div>
+      </div>
+      
+      <div class="skill-category">Hub-App Engineering</div>
+      
+      <div class="skill-card">
+        <div class="skill-trigger">/add-secret</div>
+        <div class="skill-name">Add Secret</div>
+        <div class="skill-desc">Safely store a new secret (API token, password, key) in GCP Secret Manager as the canonical store, cache in macOS Keychain, update the vault secrets register, a</div>
+      </div>
+      <div class="skill-card">
+        <div class="skill-trigger">/deployment-revision-verifier</div>
+        <div class="skill-name">Deployment Revision Verifier</div>
+        <div class="skill-desc">Verify live runtime revision matches expected commit/image before signoff</div>
+      </div>
+      <div class="skill-card">
+        <div class="skill-trigger">/end-to-end-path-trace</div>
+        <div class="skill-name">End To End Path Trace</div>
+        <div class="skill-desc">Force full cross-layer path trace and test sequence before any code edits</div>
+      </div>
+      <div class="skill-card">
+        <div class="skill-trigger">/error-contract-sync</div>
+        <div class="skill-name">Error Contract Sync</div>
+        <div class="skill-desc">Align frontend error handling with live backend response contract</div>
+      </div>
+      <div class="skill-card">
+        <div class="skill-trigger">/secrets-audit</div>
+        <div class="skill-name">Secrets Audit</div>
+        <div class="skill-desc">Audit all secrets, API keys, tokens, and credentials across the workspace. Checks expiry, storage consistency, and flags issues. Updates the vault secrets regis</div>
+      </div>
+      <div class="skill-card">
+        <div class="skill-trigger">/ui-regression-smoke</div>
+        <div class="skill-name">Ui Regression Smoke</div>
+        <div class="skill-desc">Run focused UI smoke checks for typeahead, dropdown, and form submit paths</div>
+      </div>
+      
+      <div class="skill-category">Vault &amp; Intelligence</div>
+      
+      <div class="skill-card">
+        <div class="skill-trigger">/enrich-contacts</div>
+        <div class="skill-name">Enrich Contacts</div>
+        <div class="skill-desc">Find missing contact details (emails, phones, LinkedIn) for vault prospects and update their files</div>
+      </div>
+      <div class="skill-card">
+        <div class="skill-trigger">/graphify</div>
+        <div class="skill-name">Graphify</div>
+        <div class="skill-desc">"any input (code, docs, papers, images) - knowledge graph - clustered communities - HTML + JSON + audit report"</div>
+      </div>
+      <div class="skill-card">
+        <div class="skill-trigger">/lessons-capture</div>
+        <div class="skill-name">Lessons Capture</div>
+        <div class="skill-desc">Capture incidents and convert them into enforceable prevention rules</div>
+      </div>
+      <div class="skill-card">
+        <div class="skill-trigger">/memory-review</div>
+        <div class="skill-name">Memory Review</div>
+        <div class="skill-desc">Review session work and capture non-obvious learnings to the hierarchical memory system</div>
+      </div>
+      <div class="skill-card">
+        <div class="skill-trigger">/vault-consistency</div>
+        <div class="skill-name">Vault Consistency</div>
+        <div class="skill-desc">Enforce that every important mention (companies, competitors, suppliers, products, people, projects, industry bodies) is a wikilink, and every wikilink target c</div>
+      </div>
+      
+      <div class="skill-category">Business &amp; Compliance</div>
+      
+      <div class="skill-card">
+        <div class="skill-trigger">/compliance-register</div>
+        <div class="skill-name">Compliance Register</div>
+        <div class="skill-desc">Check compliance document register status, flag overdue reviews, and identify gaps in Blick's HR and H&S documentation</div>
+      </div>
+      <div class="skill-card">
+        <div class="skill-trigger">/draft-outreach</div>
+        <div class="skill-name">Draft Outreach</div>
+        <div class="skill-desc">Draft personalized outreach emails for Blick prospects using vault context, brand voice, and product knowledge</div>
+      </div>
+      <div class="skill-card">
+        <div class="skill-trigger">/draft-policy</div>
+        <div class="skill-name">Draft Policy</div>
+        <div class="skill-desc">Draft HR or H&S policy documents for Blick Group using regulatory frameworks, existing templates, and brand voice</div>
+      </div>
+      <div class="skill-card">
+        <div class="skill-trigger">/hr-review</div>
+        <div class="skill-name">Hr Review</div>
+        <div class="skill-desc">Review HR documents and employment agreements against NZ/AU employment law using vault knowledge and existing Blick Drive documents</div>
+      </div>
+      <div class="skill-card">
+        <div class="skill-trigger">/hs-review</div>
+        <div class="skill-name">Hs Review</div>
+        <div class="skill-desc">Review H&S documents against NZ/AU regulatory requirements using vault knowledge and existing Blick Drive documents</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section id="storage">
+  <div class="container fade-up">
+    <div class="eyebrow">Layer 4</div>
+    <div class="section-divider"></div>
+    <div class="section-intro">
+      <div><h2>One drive.<br>Everything on it.</h2></div>
+      <div><p style="margin-bottom:16px;">The NewmanDrive rule is absolute: all project files, databases, models, venvs, and outputs live on <code>/Volumes/NewmanDrive/</code>. The drive is detachable — the entire system is portable.</p><p>The database is disposable — rebuilt from markdown. The markdown is the source of truth.</p></div>
+    </div>
+    <div class="bento" style="margin-bottom:24px;">
+      <div class="bento-cell c5 r2"><div class="bento-accent-bar" style="background:var(--green);"></div><div class="bento-eyebrow">BlickVault — Source of Truth</div><div class="bento-title">Markdown. Human-readable. Always.</div><div class="bento-body" style="font-family:'SF Mono',monospace;font-size:11px;line-height:2;margin-top:12px;"><span style="color:var(--green);">Inbox/</span> <span style="color:var(--text3);">← autoresearch, raw capture</span><br><span style="color:var(--green);">Contacts/</span> <span style="color:var(--text3);">← companies/ · people/</span><br><span style="color:var(--green);">Products/</span> <span style="color:var(--text3);">← specs, rules, competitive</span><br><span style="color:var(--green);">Intelligence/</span> <span style="color:var(--text3);">← briefs, market intel</span><br><span style="color:var(--green);">Innovation/nexus/</span> <span style="color:var(--text3);">← architecture docs</span><br><span style="color:var(--green);">System/</span> <span style="color:var(--text3);">← sessions, register, tools</span><br><span style="color:var(--green);">Operations/</span> <span style="color:var(--text3);">← compliance, HR, H&S</span><br><span style="color:var(--green);">Private/originals/</span> <span style="color:var(--text3);">← nightly thinking capture</span><br><span style="color:var(--green);">Actions/</span> <span style="color:var(--text3);">← action register notes</span></div></div>
+      <div class="bento-cell c7"><div class="bento-accent-bar" style="background:var(--blue);"></div><div class="bento-eyebrow">nexus-vault.db — SQLite · WAL mode · Disposable</div><div class="bento-title">The index. Rebuilt from markdown anytime.</div><div class="bento-body" style="margin-top:10px;display:flex;flex-wrap:wrap;gap:6px;"><span class="pill pill-green" style="font-size:11px;">documents</span><span class="pill pill-blue" style="font-size:11px;">documents_fts (FTS5/BM25)</span><span class="pill" style="font-size:11px;border-color:rgba(168,85,247,.3);color:var(--purple);background:rgba(168,85,247,.06);">documents_vec_768 (768-dim)</span><span class="pill pill-green" style="font-size:11px;">document_links (graph)</span><span class="pill pill-green" style="font-size:11px;">document_entities</span><span class="pill pill-green" style="font-size:11px;">action_register</span><span class="pill pill-green" style="font-size:11px;">writeback_log</span><span class="pill pill-green" style="font-size:11px;">writeback_review</span></div></div>
+      <div class="bento-cell c4"><div class="bento-eyebrow">Trust Hierarchy</div><div class="bento-title">Source quality shapes search.</div><div style="margin-top:16px;"><div class="trust-row" style="padding:10px 0;"><div class="trust-level" style="color:var(--green);">curated</div><div class="trust-bar-wrap"><div class="trust-bar-fill" style="width:90%;background:var(--green);"></div></div><div class="trust-boost" style="color:var(--green);">1.3×</div></div><div class="trust-row" style="padding:10px 0;"><div class="trust-level" style="color:var(--blue);">compiled</div><div class="trust-bar-wrap"><div class="trust-bar-fill" style="width:65%;background:var(--blue);"></div></div><div class="trust-boost" style="color:var(--blue);">1.0×</div></div><div class="trust-row" style="padding:10px 0;border-bottom:none;"><div class="trust-level" style="color:var(--text3);">raw</div><div class="trust-bar-wrap"><div class="trust-bar-fill" style="width:35%;background:var(--text3);"></div></div><div class="trust-boost" style="color:var(--text3);">0.8×</div></div></div></div>
+      <div class="bento-cell c3"><div class="bento-eyebrow">Entity Scale</div><div class="bento-num accent-cyan">4,549</div><div class="bento-body">named entities · 4,573 resolved graph links</div></div>
+    </div>
+    <div class="storage-grid">
+      <div class="db-card"><div class="db-header"><div class="db-name">blick-memory.db</div><span class="db-badge dbb-table">SQLite</span></div><div class="db-desc">Structured business data: contacts, products, intel, opportunities. Stable business records separate from the document graph.</div></div>
+      <div class="db-card"><div class="db-header"><div class="db-name">nexus-learnings.jsonl</div><span class="db-badge dbb-table">JSONL</span></div><div class="db-desc">Per-skill operational discovery log. Read by gemma-feedback-improve (Mon 09:17) to close the Gemma self-improvement loop.</div></div>
+      <div class="db-card"><div class="db-header"><div class="db-name">health-collector-state.json</div><span class="db-badge dbb-table">JSON</span></div><div class="db-desc">n8n cooldown timers, auto-resolve history, last-run timestamps per check. Prevents alert flooding via 18h cooldown per issue.</div></div>
+      <div class="db-card"><div class="db-header"><div class="db-name">Session logs (~/.claude/projects/)</div><span class="db-badge dbb-table">JSONL</span></div><div class="db-desc">Private. Read by dream-cycle (03:00) and originals-capture (23:30). Never transmitted externally. Originals captured before runtime compression.</div></div>
+    </div>
+  </div>
+</section>
+
+<section id="topology">
+  <div class="container fade-up">
+    <div class="eyebrow">System Topology</div>
+    <div class="section-divider"></div>
+    <h2 style="margin-bottom:16px;">Every node.<br>Every connection.</h2>
+    <p style="max-width:560px;margin-bottom:40px;">Physical and logical map of the Blick AI OS — machines, cloud services, data stores, and every labelled connection. Scroll horizontally on small screens.</p>
+  </div>
+  <div style="padding:0 40px;max-width:1440px;margin:0 auto;" class="fade-up">
+    <div class="topo-wrap">
+      <div class="topo-canvas">
+
+        <!-- SVG edges — drawn first, nodes sit on top -->
+        <svg class="topo-svg" xmlns="http://www.w3.org/2000/svg">
+        <defs>
+          <marker id="a-orange" markerWidth="7" markerHeight="7" refX="5" refY="2.5" orient="auto"><path d="M0,0 L5,2.5 L0,5 Z" fill="#ff6b35"/></marker>
+          <marker id="a-cyan"   markerWidth="7" markerHeight="7" refX="5" refY="2.5" orient="auto"><path d="M0,0 L5,2.5 L0,5 Z" fill="#32d2c0"/></marker>
+          <marker id="a-blue"   markerWidth="7" markerHeight="7" refX="5" refY="2.5" orient="auto"><path d="M0,0 L5,2.5 L0,5 Z" fill="#3b82f6"/></marker>
+          <marker id="a-purple" markerWidth="7" markerHeight="7" refX="5" refY="2.5" orient="auto"><path d="M0,0 L5,2.5 L0,5 Z" fill="#a855f7"/></marker>
+          <marker id="a-green"  markerWidth="7" markerHeight="7" refX="5" refY="2.5" orient="auto"><path d="M0,0 L5,2.5 L0,5 Z" fill="#30d158"/></marker>
+          <marker id="a-yellow" markerWidth="7" markerHeight="7" refX="5" refY="2.5" orient="auto"><path d="M0,0 L5,2.5 L0,5 Z" fill="#ffd60a"/></marker>
+          <marker id="a-grey"   markerWidth="7" markerHeight="7" refX="5" refY="2.5" orient="auto"><path d="M0,0 L5,2.5 L0,5 Z" fill="#545458"/></marker>
+          <marker id="a-grey-r" markerWidth="7" markerHeight="7" refX="0" refY="2.5" orient="auto-start-reverse"><path d="M5,0 L0,2.5 L5,5 Z" fill="#545458"/></marker>
+        </defs>
+
+        <!-- NODE CENTRES (for edge routing):
+             developer:    centre (230, 290)    right edge x=390
+             MacBook:      centre (150, 630)    right edge x=270  top y=590
+             Ollama:       centre (470, 250)    left x=400 right x=540
+             BlickVault:   centre (470, 410)    left x=400
+             MCP:          centre (230, 510)    right x=390  bottom y=560
+             launchd:      centre (470, 510)    left x=400
+             frontend:     centre (670, 130)    left x=600
+             rig-api:      centre (870, 130)    left x=800
+             compass-api:  centre (670, 250)    left x=600  right x=740
+             hs-api:       centre (870, 250)    left x=800
+             n8n:          centre (770, 390)    left x=690  right x=850
+             Cloud Run:    centre (670, 560)    left x=600  right x=740
+             BigQuery:     centre (870, 520)    left x=800
+             Drive:        centre (670, 670)    left x=600  right x=740
+             Gmail/Cal:    centre (870, 670)    left x=800
+             GitHub:       centre (1100, 120)   left x=1020
+             Sentry:       centre (1100, 260)   left x=1020
+             Unleashed:    centre (1100, 400)   left x=1020
+             Anthropic:    centre (1100, 560)   left x=1020
+             XAI:          centre (1280, 560)   left x=1200
+             Brave:        centre (1100, 680)   left x=1020
+             NotebookLM:   centre (1280, 680)   left x=1200
+        -->
+
+        <!-- developer → Fly frontend (flyctl) -->
+        <path d="M390,270 C500,270 560,130 600,130" stroke="#ff6b35" stroke-width="1.5" fill="none" marker-end="url(#a-orange)"/>
+        <rect x="468" y="182" width="44" height="13" rx="3" fill="#0a0a0a"/>
+        <text x="490" y="192" text-anchor="middle" font-family="Inter,sans-serif" font-size="9" font-weight="600" fill="#ff6b35">flyctl</text>
+
+        <!-- developer → compass-api (flyctl) -->
+        <path d="M390,280 C490,280 540,250 600,250" stroke="#ff6b35" stroke-width="1.5" fill="none" opacity="0.55" marker-end="url(#a-orange)"/>
+
+        <!-- developer → Cloud Run (gcloud) -->
+        <path d="M390,300 C480,300 540,560 600,560" stroke="#ff6b35" stroke-width="1.5" fill="none" stroke-dasharray="6 3" marker-end="url(#a-orange)"/>
+        <rect x="458" y="438" width="50" height="13" rx="3" fill="#0a0a0a"/>
+        <text x="483" y="448" text-anchor="middle" font-family="Inter,sans-serif" font-size="9" font-weight="600" fill="#ff6b35">gcloud</text>
+
+        <!-- developer → BigQuery (query) -->
+        <path d="M390,310 C530,310 720,480 800,510" stroke="#32d2c0" stroke-width="1.5" fill="none" marker-end="url(#a-cyan)"/>
+        <rect x="548" y="368" width="52" height="13" rx="3" fill="#0a0a0a"/>
+        <text x="574" y="378" text-anchor="middle" font-family="Inter,sans-serif" font-size="9" font-weight="600" fill="#32d2c0">BQ query</text>
+
+        <!-- developer → Google Drive (nexus-drive MCP) -->
+        <path d="M390,320 C520,320 560,670 600,670" stroke="#32d2c0" stroke-width="1.5" fill="none" stroke-dasharray="5 3" opacity="0.7" marker-end="url(#a-cyan)"/>
+        <rect x="456" y="514" width="64" height="13" rx="3" fill="#0a0a0a"/>
+        <text x="488" y="524" text-anchor="middle" font-family="Inter,sans-serif" font-size="9" font-weight="600" fill="#32d2c0">nexus-drive</text>
+
+        <!-- developer → GitHub (git push) -->
+        <path d="M390,270 C700,200 920,120 1020,120" stroke="#545458" stroke-width="1.5" fill="none" marker-end="url(#a-grey)"/>
+        <rect x="668" y="164" width="48" height="13" rx="3" fill="#0a0a0a"/>
+        <text x="692" y="174" text-anchor="middle" font-family="Inter,sans-serif" font-size="9" font-weight="600" fill="#545458">git push</text>
+
+        <!-- developer → Sentry (MCP HTTP) -->
+        <path d="M390,285 C700,220 900,260 1020,260" stroke="#32d2c0" stroke-width="1.5" fill="none" stroke-dasharray="5 3" opacity="0.7" marker-end="url(#a-cyan)"/>
+        <rect x="692" y="228" width="60" height="13" rx="3" fill="#0a0a0a"/>
+        <text x="722" y="238" text-anchor="middle" font-family="Inter,sans-serif" font-size="9" font-weight="600" fill="#32d2c0">MCP HTTP</text>
+
+        <!-- developer → n8n (REST API) -->
+        <path d="M390,330 C540,330 640,390 690,390" stroke="#ffd60a" stroke-width="1.5" fill="none" stroke-dasharray="5 3" opacity="0.7" marker-end="url(#a-yellow)"/>
+        <rect x="510" y="344" width="50" height="13" rx="3" fill="#0a0a0a"/>
+        <text x="535" y="354" text-anchor="middle" font-family="Inter,sans-serif" font-size="9" font-weight="600" fill="#ffd60a">REST API</text>
+
+        <!-- developer → Unleashed (sync) -->
+        <path d="M390,340 C800,340 960,400 1020,400" stroke="#30d158" stroke-width="1.5" fill="none" stroke-dasharray="5 3" opacity="0.6" marker-end="url(#a-green)"/>
+
+        <!-- developer → Anthropic (API) -->
+        <path d="M390,295 C720,220 960,540 1020,555" stroke="#a855f7" stroke-width="1.5" fill="none" marker-end="url(#a-purple)"/>
+        <rect x="732" y="354" width="62" height="13" rx="3" fill="#0a0a0a"/>
+        <text x="763" y="364" text-anchor="middle" font-family="Inter,sans-serif" font-size="9" font-weight="600" fill="#a855f7">Sonnet/Opus</text>
+
+        <!-- developer → XAI (API) -->
+        <path d="M390,295 C750,200 1060,540 1200,555" stroke="#a855f7" stroke-width="1.5" fill="none" stroke-dasharray="5 3" opacity="0.5" marker-end="url(#a-purple)"/>
+
+        <!-- developer → Brave/Firecrawl (API) -->
+        <path d="M390,305 C750,230 960,670 1020,675" stroke="#30d158" stroke-width="1.5" fill="none" stroke-dasharray="5 3" opacity="0.55" marker-end="url(#a-green)"/>
+
+        <!-- MacBook ↔ developer (Tailscale VPN) -->
+        <path d="M150,590 C150,500 200,380 210,340" stroke="#545458" stroke-width="1.5" fill="none" stroke-dasharray="6 3"
+          marker-end="url(#a-grey)" marker-start="url(#a-grey-r)"/>
+        <rect x="80" y="484" width="64" height="13" rx="3" fill="#0a0a0a"/>
+        <text x="112" y="494" text-anchor="middle" font-family="Inter,sans-serif" font-size="9" font-weight="600" fill="#545458">Tailscale VPN</text>
+
+        <!-- MacBook → BlickVault (SMB) -->
+        <path d="M270,620 C360,580 400,480 400,450" stroke="#32d2c0" stroke-width="1.5" fill="none" stroke-dasharray="5 3" opacity="0.6" marker-end="url(#a-cyan)"/>
+        <rect x="304" y="530" width="34" height="13" rx="3" fill="#0a0a0a"/>
+        <text x="321" y="540" text-anchor="middle" font-family="Inter,sans-serif" font-size="9" font-weight="600" fill="#32d2c0">SMB</text>
+
+        <!-- frontend ↔ compass-api (internal) -->
+        <path d="M670,160 L670,220" stroke="#3b82f6" stroke-width="1.5" fill="none" opacity="0.7" marker-end="url(#a-blue)"/>
+
+        <!-- frontend → rig-api (internal) -->
+        <path d="M740,130 L800,130" stroke="#3b82f6" stroke-width="1.5" fill="none" opacity="0.55" marker-end="url(#a-blue)"/>
+
+        <!-- compass-api → BigQuery (SQL reads) -->
+        <path d="M740,255 C780,255 800,350 800,490" stroke="#32d2c0" stroke-width="1.5" fill="none" opacity="0.6" marker-end="url(#a-cyan)"/>
+        <rect x="748" y="360" width="50" height="13" rx="3" fill="#0a0a0a"/>
+        <text x="773" y="370" text-anchor="middle" font-family="Inter,sans-serif" font-size="9" font-weight="600" fill="#32d2c0">SQL reads</text>
+
+        <!-- n8n → BigQuery (MERGE SQL) -->
+        <path d="M850,400 C870,400 870,480 870,490" stroke="#ffd60a" stroke-width="1.5" fill="none" stroke-dasharray="5 3" opacity="0.6" marker-end="url(#a-yellow)"/>
+        <rect x="852" y="440" width="56" height="13" rx="3" fill="#0a0a0a"/>
+        <text x="880" y="450" text-anchor="middle" font-family="Inter,sans-serif" font-size="9" font-weight="600" fill="#ffd60a">MERGE SQL</text>
+
+        <!-- n8n → Unleashed -->
+        <path d="M850,395 C960,395 1010,400 1020,400" stroke="#30d158" stroke-width="1.5" fill="none" stroke-dasharray="5 3" opacity="0.5" marker-end="url(#a-green)"/>
+
+        <!-- Unleashed → BigQuery (sync) -->
+        <path d="M1020,415 C960,440 920,490 900,505" stroke="#30d158" stroke-width="1.5" fill="none" stroke-dasharray="5 3" opacity="0.5" marker-end="url(#a-green)"/>
+
+        <!-- GitHub → GitHub Pages (auto Actions) -->
+        <path d="M1100,150 L1100,220" stroke="#545458" stroke-width="1.5" fill="none" stroke-dasharray="5 3" opacity="0.4" marker-end="url(#a-grey)"/>
+        <rect x="1060" y="182" width="70" height="13" rx="3" fill="#0a0a0a"/>
+        <text x="1095" y="192" text-anchor="middle" font-family="Inter,sans-serif" font-size="9" font-weight="600" fill="#545458">CI → Pages</text>
+
+        </svg>
+
+        <!-- ── ZONES ── -->
+        <div class="topo-zone" style="left:20px;top:60px;width:560px;height:780px;border-color:rgba(255,107,53,0.18);background:rgba(255,107,53,0.02)">
+          <div class="topo-zone-label" style="color:var(--zone-local)">
+            <div class="topo-zone-dot" style="background:var(--zone-local)"></div>Local / Hardware
+          </div>
+        </div>
+        <div class="topo-zone" style="left:590px;top:60px;width:400px;height:660px;border-color:rgba(59,130,246,0.18);background:rgba(59,130,246,0.02)">
+          <div class="topo-zone-label" style="color:var(--zone-compute)">
+            <div class="topo-zone-dot" style="background:var(--zone-compute)"></div>Cloud Compute
+          </div>
+        </div>
+        <div class="topo-zone" style="left:590px;top:730px;width:400px;height:200px;border-color:rgba(50,210,192,0.18);background:rgba(50,210,192,0.02)">
+          <div class="topo-zone-label" style="color:var(--zone-data)">
+            <div class="topo-zone-dot" style="background:var(--zone-data)"></div>Data &amp; Storage
+          </div>
+        </div>
+        <div class="topo-zone" style="left:1000px;top:60px;width:360px;height:380px;border-color:rgba(48,209,88,0.18);background:rgba(48,209,88,0.02)">
+          <div class="topo-zone-label" style="color:var(--zone-ext)">
+            <div class="topo-zone-dot" style="background:var(--zone-ext)"></div>External Services
+          </div>
+        </div>
+        <div class="topo-zone" style="left:1000px;top:450px;width:360px;height:490px;border-color:rgba(168,85,247,0.18);background:rgba(168,85,247,0.02)">
+          <div class="topo-zone-label" style="color:var(--zone-ai)">
+            <div class="topo-zone-dot" style="background:var(--zone-ai)"></div>AI / LLM
+          </div>
+        </div>
+
+        <!-- ── NODES ── -->
+
+        <!-- Mac Mini developer (primary) -->
+        <div class="tnode" style="left:40px;top:200px;width:270px;border-color:rgba(255,107,53,0.35)">
+          <div class="tnode-name">Mac Mini "developer"</div>
+          <div class="tnode-type">Brain · Always On · M-series</div>
+          <div class="tnode-tags">
+            <span class="ttag" style="color:var(--orange);border-color:rgba(255,107,53,0.25)">Nexus Engine</span>
+            <span class="ttag">4 MCP servers</span>
+            <span class="ttag">37 launchd agents</span>
+            <span class="ttag">3 Ollama models</span>
+            <span class="ttag">BlickVault host</span>
+            <span class="ttag">/Volumes/NewmanDrive/</span>
+          </div>
+        </div>
+
+        <!-- Ollama -->
+        <div class="tnode" style="left:400px;top:200px;width:170px;border-color:rgba(168,85,247,0.25)">
+          <div class="tnode-name">Ollama</div>
+          <div class="tnode-type">Local LLM runtime</div>
+          <div class="tnode-tags">
+            <span class="ttag">gemma-4-e4b</span>
+            <span class="ttag">gemma-4-26b</span>
+            <span class="ttag">nomic-embed</span>
+          </div>
+        </div>
+
+        <!-- BlickVault -->
+        <div class="tnode" style="left:400px;top:360px;width:170px;border-color:rgba(50,210,192,0.25)">
+          <div class="tnode-name">BlickVault</div>
+          <div class="tnode-type">Obsidian Knowledge Base</div>
+          <div class="tnode-tags">
+            <span class="ttag">Markdown notes</span>
+            <span class="ttag">BM25 + vector</span>
+            <span class="ttag">SMB shared</span>
+          </div>
+        </div>
+
+        <!-- MCP Servers -->
+        <div class="tnode" style="left:40px;top:470px;width:230px">
+          <div class="tnode-name">MCP Servers (local)</div>
+          <div class="tnode-type">Model Context Protocol</div>
+          <div class="tnode-tags">
+            <span class="ttag">mcpvault</span>
+            <span class="ttag">nexus</span>
+            <span class="ttag">nexus-drive</span>
+            <span class="ttag">sentry-mcp</span>
+          </div>
+        </div>
+
+        <!-- launchd -->
+        <div class="tnode" style="left:400px;top:470px;width:170px">
+          <div class="tnode-name">launchd</div>
+          <div class="tnode-type">macOS scheduler</div>
+          <div class="tnode-tags">
+            <span class="ttag">37 agents</span>
+            <span class="ttag">brief pipeline</span>
+            <span class="ttag">health checks</span>
+            <span class="ttag">self-healing</span>
+          </div>
+        </div>
+
+        <!-- MacBook -->
+        <div class="tnode" style="left:40px;top:590px;width:220px">
+          <div class="tnode-name">MacBook (mobile)</div>
+          <div class="tnode-type">Developer workstation</div>
+          <div class="tnode-tags">
+            <span class="ttag">Obsidian (SMB)</span>
+            <span class="ttag">Claude Code CLI</span>
+            <span class="ttag">Tailscale client</span>
+          </div>
+        </div>
+
+        <!-- Fly.io sub-header -->
+        <div style="position:absolute;left:600px;top:72px;font-size:9px;font-weight:700;letter-spacing:.14em;text-transform:uppercase;color:#545458">Fly.io</div>
+
+        <!-- Hub Frontend -->
+        <div class="tnode" style="left:600px;top:90px;width:175px">
+          <div class="tnode-name">Hub Frontend</div>
+          <div class="tnode-type">blick-hub-frontend</div>
+          <div class="tnode-tags"><span class="ttag">React / Vite</span><span class="ttag">Fly.io</span></div>
+        </div>
+
+        <!-- Rig API -->
+        <div class="tnode" style="left:800px;top:90px;width:175px">
+          <div class="tnode-name">Rig API</div>
+          <div class="tnode-type">blick-rig-api</div>
+          <div class="tnode-tags"><span class="ttag">Node.js</span><span class="ttag">Fly.io</span></div>
+        </div>
+
+        <!-- Compass API -->
+        <div class="tnode" style="left:600px;top:210px;width:175px">
+          <div class="tnode-name">Compass API</div>
+          <div class="tnode-type">blick-compass-api</div>
+          <div class="tnode-tags"><span class="ttag">prod-only</span><span class="ttag">Fly.io</span></div>
+        </div>
+
+        <!-- H&S API -->
+        <div class="tnode" style="left:800px;top:210px;width:175px">
+          <div class="tnode-name">H&amp;S API</div>
+          <div class="tnode-type">blick-health-safety-api</div>
+          <div class="tnode-tags"><span class="ttag">Node.js</span><span class="ttag">Fly.io</span></div>
+        </div>
+
+        <!-- n8n -->
+        <div class="tnode" style="left:690px;top:350px;width:175px;border-color:rgba(255,214,10,0.25)">
+          <div class="tnode-name">n8n</div>
+          <div class="tnode-type">Workflow automation · Fly.io</div>
+          <div class="tnode-tags"><span class="ttag">self-hosted</span><span class="ttag">BQ pipelines</span><span class="ttag">Unleashed sync</span></div>
+        </div>
+
+        <!-- GCP sub-header -->
+        <div style="position:absolute;left:600px;top:480px;font-size:9px;font-weight:700;letter-spacing:.14em;text-transform:uppercase;color:#545458">Google Cloud</div>
+
+        <!-- Cloud Run -->
+        <div class="tnode" style="left:600px;top:500px;width:175px">
+          <div class="tnode-name">Cloud Run</div>
+          <div class="tnode-type">Google Cloud</div>
+          <div class="tnode-tags"><span class="ttag">copper-api</span><span class="ttag">btc-treasury</span><span class="ttag">gcloud builds</span></div>
+        </div>
+
+        <!-- BigQuery -->
+        <div class="tnode" style="left:800px;top:490px;width:175px;border-color:rgba(50,210,192,0.25)">
+          <div class="tnode-name">BigQuery</div>
+          <div class="tnode-type">unleashed-sales-data</div>
+          <div class="tnode-tags"><span class="ttag">blick_identity</span><span class="ttag">ops data</span><span class="ttag">trading data</span><span class="ttag">10 tables</span></div>
+        </div>
+
+        <!-- Google Drive -->
+        <div class="tnode" style="left:600px;top:620px;width:175px">
+          <div class="tnode-name">Google Drive</div>
+          <div class="tnode-type">Nexus Shared Drive</div>
+          <div class="tnode-tags"><span class="ttag">briefs sync</span><span class="ttag">nexus-drive MCP</span></div>
+        </div>
+
+        <!-- Gmail + Calendar -->
+        <div class="tnode" style="left:800px;top:620px;width:175px">
+          <div class="tnode-name">Gmail · Calendar</div>
+          <div class="tnode-type">Google Workspace</div>
+          <div class="tnode-tags"><span class="ttag">Gmail MCP</span><span class="ttag">google-workspace MCP</span></div>
+        </div>
+
+        <!-- Operations API -->
+        <div class="tnode" style="left:600px;top:755px;width:370px;border-color:rgba(50,210,192,0.2)">
+          <div class="tnode-name">Operations API</div>
+          <div class="tnode-type">blick-operations-api · Fly.io · reads BigQuery</div>
+          <div class="tnode-tags"><span class="ttag">user_profiles</span><span class="ttag">products NZ+AU</span><span class="ttag">warehouse inventory</span></div>
+        </div>
+
+        <!-- GitHub -->
+        <div class="tnode" style="left:1020px;top:80px;width:200px;border-color:rgba(48,209,88,0.2)">
+          <div class="tnode-name">GitHub</div>
+          <div class="tnode-type">blickgroup/hub-app</div>
+          <div class="tnode-tags"><span class="ttag">source control</span><span class="ttag">Actions CI</span><span class="ttag">Pages (design gallery)</span></div>
+        </div>
+
+        <!-- Sentry -->
+        <div class="tnode" style="left:1020px;top:220px;width:200px">
+          <div class="tnode-name">Sentry</div>
+          <div class="tnode-type">Error monitoring</div>
+          <div class="tnode-tags"><span class="ttag">MCP HTTP remote</span><span class="ttag">org-scoped</span><span class="ttag">5k errors/mo</span></div>
+        </div>
+
+        <!-- Unleashed -->
+        <div class="tnode" style="left:1020px;top:360px;width:200px;border-color:rgba(48,209,88,0.2)">
+          <div class="tnode-name">Unleashed ERP</div>
+          <div class="tnode-type">Inventory / orders</div>
+          <div class="tnode-tags"><span class="ttag">n8n sync</span><span class="ttag">BQ write-back</span><span class="ttag">NZ + AU</span></div>
+        </div>
+
+        <!-- Anthropic -->
+        <div class="tnode" style="left:1020px;top:500px;width:200px;border-color:rgba(168,85,247,0.3)">
+          <div class="tnode-name">Anthropic API</div>
+          <div class="tnode-type">Claude models</div>
+          <div class="tnode-tags">
+            <span class="ttag" style="color:var(--purple);border-color:rgba(168,85,247,.25)">claude-sonnet-4-6</span>
+            <span class="ttag">claude-opus-4</span>
+            <span class="ttag">orchestration</span>
+          </div>
+        </div>
+
+        <!-- XAI / Grok -->
+        <div class="tnode" style="left:1200px;top:500px;width:160px;border-color:rgba(168,85,247,0.2)">
+          <div class="tnode-name">xAI / Grok</div>
+          <div class="tnode-type">Web research LLM</div>
+          <div class="tnode-tags"><span class="ttag">autoresearch</span><span class="ttag">live web</span></div>
+        </div>
+
+        <!-- Brave + Firecrawl -->
+        <div class="tnode" style="left:1020px;top:630px;width:200px">
+          <div class="tnode-name">Brave · Firecrawl</div>
+          <div class="tnode-type">Web search &amp; scraping</div>
+          <div class="tnode-tags"><span class="ttag">Brave Search MCP</span><span class="ttag">Tavily MCP</span><span class="ttag">1k/mo</span></div>
+        </div>
+
+        <!-- NotebookLM -->
+        <div class="tnode" style="left:1200px;top:630px;width:160px;border-color:rgba(168,85,247,0.2)">
+          <div class="tnode-name">NotebookLM</div>
+          <div class="tnode-type">Gemini 2.5 Pro</div>
+          <div class="tnode-tags"><span class="ttag">15 notebooks</span><span class="ttag">free tier</span></div>
+        </div>
+
+      </div><!-- /topo-canvas -->
+
+      <!-- Legend -->
+      <div class="topo-legend">
+        <strong style="color:var(--text2);font-size:10px;letter-spacing:.08em;text-transform:uppercase;">Edges</strong>
+        <div class="topo-legend-item"><div class="topo-legend-line" style="background:var(--orange)"></div><span>Deploy / write</span></div>
+        <div class="topo-legend-item"><div class="topo-legend-line" style="background:var(--cyan)"></div><span>Query / read</span></div>
+        <div class="topo-legend-item"><div class="topo-legend-line" style="background:var(--blue)"></div><span>API call (internal)</span></div>
+        <div class="topo-legend-item"><div class="topo-legend-line" style="background:var(--purple)"></div><span>LLM API</span></div>
+        <div class="topo-legend-item"><div class="topo-legend-line" style="background:var(--yellow)"></div><span>Automation</span></div>
+        <div class="topo-legend-item"><div class="topo-legend-line" style="background:var(--green)"></div><span>External data</span></div>
+        <div class="topo-legend-item"><div class="topo-legend-line" style="background:var(--text3)"></div><span>Internal / VPN</span></div>
+        <div class="topo-legend-item" style="margin-left:16px;"><div class="topo-legend-line" style="background:var(--text3);opacity:0.5" title="dashed = secondary"></div><span style="font-style:italic">dashed = secondary / encrypted</span></div>
+      </div>
+
+    </div><!-- /topo-wrap -->
+
+    <!-- Connection reference table -->
+    <div class="container" style="margin-top:48px;" class="fade-up">
+      <div class="eyebrow">Connection Reference</div>
+      <table class="topo-conn-table">
+        <thead><tr><th>From</th><th>To</th><th>Protocol</th><th>Notes</th></tr></thead>
+        <tbody>
+          <tr><td>developer</td><td>Fly.io apps</td><td><span class="proto" style="background:rgba(255,107,53,.1);color:var(--orange)">flyctl</span></td><td>Direct CLI deploy from NewmanDrive checkout. No CI runner required.</td></tr>
+          <tr><td>developer</td><td>Cloud Run</td><td><span class="proto" style="background:rgba(255,107,53,.1);color:var(--orange)">gcloud CLI</span></td><td>copper-api only. <code>gcloud builds submit --config cloudbuild.deploy.yaml</code></td></tr>
+          <tr><td>developer</td><td>BigQuery</td><td><span class="proto" style="background:rgba(50,210,192,.1);color:var(--cyan)">BQ query</span></td><td>ADC auth. Always <code>CURRENT_TIMESTAMP()</code> not <code>NOW()</code>. Use query-engine INSERT to allow immediate MERGE.</td></tr>
+          <tr><td>developer</td><td>Google Drive</td><td><span class="proto" style="background:rgba(50,210,192,.1);color:var(--cyan)">nexus-drive MCP</span></td><td>Local Gemma privacy gateway. Fail-closed if Ollama is down. Never use cloud Drive API for content reads.</td></tr>
+          <tr><td>developer</td><td>GitHub</td><td><span class="proto" style="background:rgba(84,84,88,.2);color:var(--text3)">git / gh CLI</span></td><td>Source control + gh pr create. Never force-push. Never skip hooks.</td></tr>
+          <tr><td>developer</td><td>Sentry</td><td><span class="proto" style="background:rgba(50,210,192,.1);color:var(--cyan)">MCP HTTP</span></td><td>Remote HTTP MCP at mcp.sentry.dev/mcp/blick. OAuth. All projects visible.</td></tr>
+          <tr><td>developer</td><td>n8n</td><td><span class="proto" style="background:rgba(255,214,10,.1);color:var(--yellow)">REST API</span></td><td>Self-hosted on Fly.io. Always backup via n8n-workflow-tool.py before any write.</td></tr>
+          <tr><td>developer</td><td>Anthropic</td><td><span class="proto" style="background:rgba(168,85,247,.1);color:var(--purple)">HTTPS API</span></td><td>Sonnet for execution, Opus for architecture and review.</td></tr>
+          <tr><td>developer</td><td>Brave / Firecrawl</td><td><span class="proto" style="background:rgba(48,209,88,.1);color:var(--green)">HTTPS API</span></td><td>Via web-research.js. Brave (2k/mo free), Firecrawl (500 pages/mo free).</td></tr>
+          <tr><td>MacBook</td><td>developer</td><td><span class="proto" style="background:rgba(84,84,88,.2);color:var(--text3)">Tailscale VPN</span></td><td>Bidirectional. SMB mount: smb://100.95.117.46/BlickVault. VNC for screen sharing.</td></tr>
+          <tr><td>MacBook</td><td>BlickVault</td><td><span class="proto" style="background:rgba(50,210,192,.1);color:var(--cyan)">SMB</span></td><td>Obsidian on MacBook mounts vault from developer over Tailscale.</td></tr>
+          <tr><td>frontend</td><td>compass-api / rig-api</td><td><span class="proto" style="background:rgba(59,130,246,.1);color:var(--blue)">HTTPS REST</span></td><td>Internal Fly.io networking.</td></tr>
+          <tr><td>compass-api</td><td>BigQuery</td><td><span class="proto" style="background:rgba(50,210,192,.1);color:var(--cyan)">GCP client</span></td><td>user_profiles table. Never call GWS Directory API directly — always BigQuery.</td></tr>
+          <tr><td>n8n</td><td>BigQuery</td><td><span class="proto" style="background:rgba(255,214,10,.1);color:var(--yellow)">MERGE SQL</span></td><td>Always MERGE not INSERT — streaming API blocks MERGE for ~30 min.</td></tr>
+          <tr><td>n8n</td><td>Unleashed</td><td><span class="proto" style="background:rgba(48,209,88,.1);color:var(--green)">REST API</span></td><td>Inventory sync NZ + AU. Products and warehouses via Promise.allSettled.</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+</section>
+
+<section id="infrastructure">
+  <div class="container fade-up">
+    <div class="eyebrow">Deployment</div>
+    <div class="section-divider"></div>
+    <h2 style="margin-bottom:48px;">Where things run.</h2>
+    <div class="infra-grid" style="margin-bottom:40px;">
+      <div class="infra-card" style="border-color:rgba(255,107,53,.2);"><div class="infra-icon" style="background:rgba(255,107,53,.1);">🧠</div><div class="infra-host">Always On</div><div class="infra-name">Mac Mini "developer"</div><div class="infra-desc">Primary brain. All Nexus intelligence, scheduling, MCP servers, LLMs. <code>/Volumes/NewmanDrive/</code> — all project data here. 37 launchd agents. 3 Ollama models.</div></div>
+      <div class="infra-card"><div class="infra-icon" style="background:rgba(255,255,255,.04);">💻</div><div class="infra-host">Mobile Client</div><div class="infra-name">MacBook</div><div class="infra-desc">Thin client only. Obsidian → vault via <code>smb://100.95.117.46/BlickVault</code>. VNC → developer. Tailscale mesh. No compute on MacBook.</div></div>
+    </div>
+    <div class="callout callout-warn" style="margin-bottom:20px;"><strong>Production-first.</strong> No permanent dev environment. Branch from main → PR to main → <code>infrastructure/scripts/deploy-production.sh &lt;service&gt;</code>. Never push directly. Never force-push.</div>
+    <div class="svc-row"><div class="svc-name">frontend</div><div><span class="svc-platform sp-fly">Fly.io</span></div><div class="svc-desc">React + Vite SPA. App: <code>blick-hub-frontend</code>. Dark/light themes. Design gallery at blickgroup.github.io/hub-app/.</div></div>
+    <div class="svc-row"><div class="svc-name">compass-api</div><div><span class="svc-platform sp-fly">Fly.io</span></div><div class="svc-desc">Operations backbone. App: <code>blick-compass-api</code>. Prod-only — no dev environment. BigQuery user lookups only via <code>blick_identity.user_profiles</code>.</div></div>
+    <div class="svc-row"><div class="svc-name">rig-api</div><div><span class="svc-platform sp-fly">Fly.io</span></div><div class="svc-desc">Field equipment and rig management. App: <code>blick-rig-api</code>.</div></div>
+    <div class="svc-row"><div class="svc-name">operations-api</div><div><span class="svc-platform sp-fly">Fly.io</span></div><div class="svc-desc">H&S and operations management. App: <code>blick-health-safety-api</code> (note: Fly app name differs from service folder name).</div></div>
+    <div class="svc-row"><div class="svc-name">copper-api</div><div><span class="svc-platform sp-gcr">Cloud Run</span></div><div class="svc-desc">Cloud Build CI: <code>gcloud builds submit --config cloudbuild.deploy.yaml</code>. Different deployment model from all other services.</div></div>
+    <div class="svc-row" style="border-bottom:none;"><div class="svc-name">n8n</div><div><span class="svc-platform sp-fly">Fly.io</span></div><div class="svc-desc">Self-hosted automation. Use REST API directly. Always backup via <code>n8n-workflow-tool.py</code> before any write. Use MERGE not INSERT for BigQuery pipelines.</div></div>
+  </div>
+</section>
+
+<section id="healing">
+  <div class="container fade-up">
+    <div class="eyebrow">Resilience</div>
+    <div class="section-divider"></div>
+    <div class="section-intro">
+      <div><h2>Three layers.<br>Detects. Escalates. Fixes.</h2></div>
+      <div><p style="margin-bottom:16px;">The self-healing stack is a 3-layer pipeline. Layer 1 detects and auto-resolves simple issues. Layer 2 promotes complex issues to the Action Register. Layer 3 drafts code fixes.</p><p>Real wins: 56-day silent failure · 98% duplicate inventory · 17 GB n8n disk-fill · U+FFFD burst · Compass sort bug caught by AI.</p></div>
+    </div>
+    <div class="heal-row" style="margin-bottom:12px;"><div class="heal-layer-num" style="color:rgba(255,69,58,.2);">1</div><div class="heal-card" style="border-color:rgba(255,69,58,.2);"><div class="heal-title" style="color:var(--red);">Night Watchman</div><div class="heal-file">health-collector.js · FAST every 30 min (7am–7pm) + DAILY 08:15</div><div class="heal-body">Watches 9 sources. Auto-resolves n8n workflow deactivation and missed scheduled runs. 18h cooldown per issue prevents alert fatigue. State: <code>nexus/data/health-collector-state.json</code></div></div></div>
+    <div class="heal-row" style="margin-bottom:12px;"><div class="heal-layer-num" style="color:rgba(255,214,10,.2);">2</div><div class="heal-card" style="border-color:rgba(255,214,10,.2);"><div class="heal-title" style="color:var(--yellow);">Candidate Extractor</div><div class="heal-file">candidate-extractor.js · Triggered at end of daily health-collector</div><div class="heal-body">Promotes warning/critical findings to the Action Register as structured action items. Deduplication via entity fingerprints. Output: <code>action_register</code> entries with <code>domain: infrastructure</code>.</div></div></div>
+    <div class="heal-row"><div class="heal-layer-num" style="color:rgba(48,209,88,.2);">3</div><div class="heal-card" style="border-color:rgba(48,209,88,.2);"><div class="heal-title" style="color:var(--green);">Fix Drafter</div><div class="heal-file">fix-drafter.js · Triggered manually on action register items</div><div class="heal-body">Gemma 26b drafts minimal code fixes for Sentry/CI-shaped action register items. Confidence-gated. <strong style="color:var(--text);">Option B (LIVE):</strong> Writes draft fix to working copy for human review. <strong style="color:var(--text);">Option A:</strong> Auto-PR (deferred).</div></div></div>
+  </div>
+</section>
+
+<footer>
+  <div class="container">
+    <div class="footer-brand">Blick <span>Group</span></div>
+    <div class="footer-sub">Nexus OS · Internal Reference · Auto-generated 2026-04-29 · blick.group</div>
+  </div>
+</footer>
+
+<script>
+const observer = new IntersectionObserver(
+  (entries) => entries.forEach(e => {
+    if (e.isIntersecting) { e.target.classList.add('visible'); observer.unobserve(e.target); }
+  }),
+  { threshold: 0.06 }
+);
+document.querySelectorAll('.fade-up').forEach(el => observer.observe(el));
+</script>
+</body>
+</html>
