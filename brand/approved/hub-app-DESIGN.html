@@ -1,0 +1,290 @@
+<!DOCTYPE html>
+<html lang="en"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Hub-App Design System — Blick Brand</title>
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Source+Serif+Pro:ital,wght@0,400;0,600;1,400&family=JetBrains+Mono:wght@400&display=swap" rel="stylesheet">
+<style>
+  :root { --orange:#f05323; --ink:#0a0a0a; --body:#1f1f1f; --muted:#5a5a5a; --page:#fff; --warm:#f5f3ef; --rule:#1f1f1f; --subtle:#e5e5e5; }
+  * { box-sizing:border-box; } html,body { margin:0; padding:0; }
+  body { background:var(--page); color:var(--body); font-family:'Source Serif Pro',Charter,Georgia,serif; font-size:17px; line-height:1.65; }
+  .wrap { max-width:720px; margin:0 auto; padding:64px 24px 96px; }
+  .masthead { display:flex; align-items:baseline; justify-content:space-between; border-bottom:2px solid var(--rule); padding-bottom:12px; margin-bottom:32px; }
+  .masthead .brand { font-family:Inter,sans-serif; font-weight:700; font-size:14px; letter-spacing:.06em; text-transform:uppercase; color:var(--ink); }
+  .masthead .brand span { color:var(--orange); }
+  .masthead .meta { font-family:Inter,sans-serif; font-size:12px; color:var(--muted); text-transform:uppercase; letter-spacing:.04em; }
+  h1,h2,h3,h4,h5,h6 { font-family:Inter,sans-serif; color:var(--ink); line-height:1.25; margin:1.6em 0 .4em; }
+  h1 { font-size:36px; font-weight:700; margin-top:0; letter-spacing:-.01em; }
+  h2 { font-size:26px; font-weight:700; padding-top:16px; border-top:1px solid var(--subtle); }
+  h3 { font-size:19px; font-weight:600; }
+  h4 { font-size:16px; font-weight:600; color:var(--muted); text-transform:uppercase; letter-spacing:.04em; }
+  p { margin:0 0 1em; max-width:68ch; }
+  a { color:var(--orange); text-decoration:none; border-bottom:1px solid rgba(240,83,35,.3); }
+  a:hover { border-bottom-color:var(--orange); }
+  a.wikilink { color:var(--ink); border-bottom-style:dotted; }
+  strong { color:var(--ink); font-weight:600; }
+  blockquote { border-left:3px solid var(--orange); margin:1.2em 0; padding:.4em 0 .4em 16px; color:var(--muted); font-style:italic; }
+  code { font-family:'JetBrains Mono',monospace; font-size:.88em; background:var(--warm); padding:1px 6px; border-radius:3px; color:var(--ink); }
+  pre { background:var(--ink); color:var(--warm); padding:16px 20px; border-radius:4px; overflow-x:auto; margin:1em 0; }
+  pre code { background:transparent; color:inherit; padding:0; font-size:13px; line-height:1.55; }
+  hr { border:0; border-top:1px solid var(--subtle); margin:32px 0; }
+  ul,ol { margin:0 0 1em 1.4em; padding:0; } li { margin-bottom:.3em; }
+  table { width:100%; border-collapse:collapse; margin:1.2em 0; font-family:Inter,sans-serif; font-size:14px; }
+  th { background:var(--ink); color:var(--page); text-align:left; padding:10px 12px; font-weight:600; font-size:12px; text-transform:uppercase; letter-spacing:.04em; }
+  td { padding:10px 12px; border-bottom:1px solid var(--subtle); vertical-align:top; }
+  td code { font-size:12px; }
+</style></head>
+<body><div class="wrap">
+  <div class="masthead"><div class="brand">Blick<span>·</span>Brand</div><div class="meta">hub-app.DESIGN.md</div></div>
+  <h1>Hub-App Design System</h1>
+<blockquote><strong>Audience:</strong> ~11 internal users (Operations, Sales, Compliance, Drivers). Roles: owner-operators in their 40s–60s comfortable with phones and field work, less so with dense SaaS UIs.</blockquote>
+<blockquote></blockquote>
+<blockquote><strong>Surface scope:</strong> the hub-app at <code>hub-app/frontend/</code> — Compass (work), Copper (CRM), Operations (people, fleet, H&S), Rig (jobs), Health.</blockquote>
+<blockquote></blockquote>
+<blockquote><strong>Inherits from:</strong> <a class="wikilink" href="#">Brand</a> (voice, marks, terminology, brand orange <code>#f05323</code>).</blockquote>
+<blockquote></blockquote>
+<blockquote><strong>Excludes:</strong> marketing website (<a class="wikilink" href="#">website.DESIGN</a>), AI-generated content (<a class="wikilink" href="#">content.DESIGN</a>).</blockquote>
+<blockquote></blockquote>
+<blockquote><strong>Token source of truth:</strong> <code>hub-app/frontend/src/styles/themes.css</code>. This document is what that file <em>should</em> be. The <code>/design-token-audit</code> skill diffs the two.</blockquote>
+<hr>
+<h2>1. Visual Theme & Atmosphere</h2>
+<p><strong>Calm, dense, get-out-of-the-way.</strong> This is a tool people use for hours a day. It is not a marketing surface. It is not trying to delight. It is trying to make the next click obvious and the screen quiet enough to think.</p>
+<p>The atmosphere is <strong>operations-room dark by default</strong>, with a high-contrast light mode for field/outdoor screens. Brand orange is reserved for action, never decoration. Information density is high — internal-tool tables and forms, not landing-page generosity.</p>
+<p>If the hub-app feels like a marketing site, we got it wrong. If it feels like a senior advisor's notebook — orderly, dense, marked-up where it matters — we got it right.</p>
+<hr>
+<h2>2. Color Palette & Roles</h2>
+<p>Tokens live in <code>frontend/src/styles/themes.css</code> as CSS custom properties. Reference via Tailwind arbitrary values: <code>bg-[var(--bg-surface)]</code>. Never hardcode hex in a component.</p>
+<h3>Dark theme (default)</h3>
+<table><thead><tr><th>Role</th><th>Token</th><th>Value</th><th>Notes</th></tr></thead><tbody>
+<tr><td>Brand action</td><td><code>--primary</code></td><td><code>#f05323</code></td><td>Buttons, primary CTA, key links. Restraint — one orange anchor per view.</td></tr>
+<tr><td>Brand action hover</td><td><code>--primary-hover</code></td><td><code>#ff6a3d</code></td><td>Hover, focus ring start</td></tr>
+<tr><td>Accent (highlights, badges)</td><td><code>--secondary</code></td><td><code>#22d3ee</code></td><td>Cyan. Use for non-action emphasis (status, metrics). Not an action colour.</td></tr>
+<tr><td>Page background</td><td><code>--bg-page</code></td><td><code>#1a1a1a</code></td><td>The surface behind everything</td></tr>
+<tr><td>Card surface</td><td><code>--bg-surface</code></td><td><code>#2a2a2a</code></td><td>Cards, modals, drawers</td></tr>
+<tr><td>Hover surface</td><td><code>--bg-hover</code></td><td><code>#3a3a3a</code></td><td>Row hover, button-on-card hover</td></tr>
+<tr><td>Body text</td><td><code>--text-primary</code></td><td><code>#bcbec0</code></td><td>Default reading text</td></tr>
+<tr><td>Heading text</td><td><code>--text-heading</code></td><td><code>#ffffff</code></td><td>h1–h4</td></tr>
+<tr><td>Muted text</td><td><code>--text-muted</code></td><td><code>#707070</code></td><td>Timestamps, helper text, disabled</td></tr>
+<tr><td>Default border</td><td><code>--border-default</code></td><td><code>#58595b</code></td><td>Separators, input borders</td></tr>
+<tr><td>Subtle border</td><td><code>--border-subtle</code></td><td><code>#404040</code></td><td>Card edges, table cell rules</td></tr>
+</tbody></table>
+<h3>Light theme</h3>
+<p>Defined in <code>themes.css</code> under <code>[data-theme="light"]</code>. Mirror role, different value. The audit skill checks symmetry.</p>
+<h3>Status colour roles</h3>
+<table><thead><tr><th>Role</th><th>Use for</th><th>Example surfaces</th></tr></thead><tbody>
+<tr><td>Success</td><td>Completed work, healthy metrics</td><td>Compass "Done" lane, healthz green</td></tr>
+<tr><td>Warning</td><td>Needs attention, soon-overdue</td><td>Stale tickets, expiring docs</td></tr>
+<tr><td>Danger</td><td>Blocked, breach, hard error</td><td>Blocked modal, validation, prod alerts</td></tr>
+<tr><td>Info</td><td>Neutral status, metadata</td><td>Audit log entries, default badges</td></tr>
+</tbody></table>
+<p>Do <strong>not</strong> use brand orange for status. Orange is for <em>action this user can take now</em>, not state.</p>
+<h3>Product category colours</h3>
+<p>When rendering a product anywhere in hub-app, use the colour-coded category palette from <a class="wikilink" href="#">Brand</a> §7.2. Category chip = category colour at 16% opacity background, full colour text, full colour 1px border.</p>
+<hr>
+<h2>3. Typography Rules</h2>
+<p>Inter as the screen face — Proxima Nova is a print/marketing font and isn't worth the licensing complexity for an 11-user internal tool. JetBrains Mono for IDs, codes, batch numbers, and any value that gets copied.</p>
+<table><thead><tr><th>Token</th><th>Family</th><th>Weight</th><th>Size / line</th><th>Use</th></tr></thead><tbody>
+<tr><td><code>--font-display</code></td><td>Inter</td><td>600</td><td>28 / 36</td><td>Page H1, dashboard hero</td></tr>
+<tr><td><code>--font-h2</code></td><td>Inter</td><td>600</td><td>22 / 30</td><td>Section H2</td></tr>
+<tr><td><code>--font-h3</code></td><td>Inter</td><td>600</td><td>17 / 24</td><td>Card title, modal title</td></tr>
+<tr><td><code>--font-body</code></td><td>Inter</td><td>400</td><td>14 / 20</td><td>Default body, table cells</td></tr>
+<tr><td><code>--font-body-strong</code></td><td>Inter</td><td>600</td><td>14 / 20</td><td>Emphasis in body</td></tr>
+<tr><td><code>--font-small</code></td><td>Inter</td><td>400</td><td>12 / 16</td><td>Helper, timestamps, badges</td></tr>
+<tr><td><code>--font-mono</code></td><td>JetBrains Mono</td><td>400</td><td>13 / 18</td><td>IDs, codes, batch numbers, JSON</td></tr>
+</tbody></table>
+<p><strong>Never more than three weights per view.</strong> <strong>Never more than two sizes per row.</strong> If you find yourself reaching for a fourth heading level, the page needs splitting, not another size.</p>
+<p>Numerals: tabular by default in tables and metrics (<code>font-variant-numeric: tabular-nums</code>).</p>
+<hr>
+<h2>4. Component Stylings</h2>
+<p>This is the <strong>internal-tool</strong> layer that nobody else's design system covers. Every component below has explicit states and is the contract that hub-app components must implement.</p>
+<h3>4.1 Buttons</h3>
+<ul>
+<li><strong>Primary:</strong> orange gradient (<code>linear-gradient(135deg, #f05323 0%, #ff6a3d 100%)</code>), white text, 8px radius, 12px shadow at 30% opacity. One per view. Always the action the user came here for.</li>
+<li><strong>Secondary:</strong> transparent background, <code>--text-primary</code> text, 1px <code>--border-default</code> border. Used for cancel, back, secondary actions. Can be repeated.</li>
+<li><strong>Ghost:</strong> transparent background, no border, <code>--text-primary</code> text. For toolbar / row-level actions.</li>
+<li><strong>Destructive:</strong> danger background, white text. Confirms wrap with double-confirm modal — no inline destructive on row hover.</li>
+<li><strong>States required:</strong> default, hover, focus (visible 2px ring <code>--primary-hover</code>), active, disabled (<code>--text-muted</code> text, no shadow), loading (spinner replaces label, button stays sized).</li>
+</ul>
+<h3>4.2 Tables (the workhorse — get this right)</h3>
+<ul>
+<li>Tabular numerals. Row height 40px default, 48px when row is the primary interaction surface.</li>
+<li>Sticky header (<code>--bg-surface</code>), 1px <code>--border-subtle</code> between rows.</li>
+<li>Row hover: <code>--bg-hover</code>. Selected row: 2px left border in <code>--primary</code>, background unchanged.</li>
+<li><strong>Sort affordance</strong> in every sortable header (chevron indicator), default sort indicated.</li>
+<li><strong>Empty state:</strong> centred, max-width 320px, single sentence + a primary action. Never just "No data."</li>
+<li><strong>Loading state:</strong> skeleton rows matching final row height — never a spinner over an empty table.</li>
+<li><strong>Permission-denied state:</strong> "You don't have access to this. Ask [owner]." with a link to the owner contact.</li>
+</ul>
+<h3>4.3 Forms</h3>
+<ul>
+<li>One column. Always. No two-column forms in hub-app — they break field flow on the field laptop screens our users actually use.</li>
+<li>Labels above fields, 12px <code>--font-small</code> <code>--text-muted</code>. Required marker is <code>*</code> after the label, no colour change.</li>
+<li>Inline validation on blur, never on keystroke. Error text directly below the field in danger colour.</li>
+<li>Save state visible in the form footer: clean / dirty / saving / saved / error. Never silent.</li>
+<li>Long forms use <strong>Save Draft</strong> as a secondary action — never auto-discard on navigation.</li>
+</ul>
+<h3>4.4 Cards</h3>
+<ul>
+<li><code>--bg-surface</code>, 12px radius, 1px <code>--border-subtle</code>, 16px padding.</li>
+<li>Card title in <code>--font-h3</code>, body in <code>--font-body</code>. Don't nest cards more than one level deep.</li>
+<li>Card actions live in a footer row, never floating in the body.</li>
+</ul>
+<h3>4.5 Modals & Drawers</h3>
+<ul>
+<li>Modal for confirms and short forms (≤ 5 fields). Drawer (right-side, 480px wide) for anything longer.</li>
+<li>Both have a visible cancel and a primary action. Primary action is on the right.</li>
+<li>Close on <code>Esc</code>. Close on backdrop click for modals; <strong>never</strong> for drawers (too easy to lose work).</li>
+<li>Loading state inside a modal disables both buttons and shows label state on the primary.</li>
+</ul>
+<h3>4.6 Navigation</h3>
+<ul>
+<li>Left rail. Collapsible to icon-only. Active item indicated with a 3px left border in <code>--primary</code> and <code>--text-heading</code> text.</li>
+<li>No more than 7 top-level items. If you need more, you need a sub-app, not another nav item.</li>
+<li>Breadcrumbs only when nesting is ≥ 3 levels deep.</li>
+</ul>
+<h3>4.7 Status badges</h3>
+<ul>
+<li>Pill shape, 4px radius, 12px font, 4/8px padding.</li>
+<li>Background = role colour at 16% opacity. Text = role colour at full intensity. Optional 1px border at 32% opacity.</li>
+<li>One status per row. Never stack badges.</li>
+</ul>
+<h3>4.8 Audit / activity log</h3>
+<ul>
+<li>Reverse-chronological. Each entry: timestamp (mono, muted), actor (linked), verb (body), object (linked).</li>
+<li>Group by day with a sticky day header.</li>
+<li>Truncate long values, expand on click — never wrap to 4 lines in the feed.</li>
+</ul>
+<h3>4.9 Document viewer (PDS / SDS / COA)</h3>
+<ul>
+<li>PDF rendered inline in a 2/3 width pane. Right pane shows metadata (version, last reviewed, owner, supersedes link).</li>
+<li>Never just link out to Drive — render in-app so the audit trail captures the view.</li>
+</ul>
+<h3>4.10 Data viz</h3>
+<ul>
+<li>Time-series: line, never area, never stacked area for ops metrics.</li>
+<li>Threshold/alert lines in danger colour, 1px dashed.</li>
+<li>Categorical: use the product category palette from <a class="wikilink" href="#">Brand</a> §7.2 in category order.</li>
+<li>Always label axes. Never use the brand colour for non-action data series.</li>
+</ul>
+<hr>
+<h2>5. Depth & Elevation</h2>
+<p>Elevation indicates <em>interactivity</em>, not aesthetics. Static surfaces stay flat.</p>
+<table><thead><tr><th>Token</th><th>Use</th><th>Shadow</th></tr></thead><tbody>
+<tr><td><code>--elev-flat</code></td><td>Page background, table rows</td><td>none</td></tr>
+<tr><td><code>--elev-card</code></td><td>Cards, list items</td><td><code>0 1px 0 rgba(0,0,0,0.4)</code></td></tr>
+<tr><td><code>--elev-floating</code></td><td>Dropdowns, popovers</td><td><code>0 4px 12px rgba(0,0,0,0.4)</code></td></tr>
+<tr><td><code>--elev-modal</code></td><td>Modals, drawers</td><td><code>0 12px 32px rgba(0,0,0,0.5)</code></td></tr>
+<tr><td><code>--elev-action</code></td><td>Primary buttons</td><td><code>0 4px 12px rgba(240,83,35,0.3)</code></td></tr>
+</tbody></table>
+<p>Never animate elevation on hover for non-interactive surfaces. Elevation change = "this is interactive."</p>
+<hr>
+<h2>6. Layout Principles</h2>
+<h3>Spacing scale (4px base)</h3>
+<p><code>4, 8, 12, 16, 24, 32, 48, 64</code>. No off-grid values. Use Tailwind defaults (<code>gap-2</code>, <code>gap-3</code>, <code>gap-4</code>, <code>gap-6</code>).</p>
+<h3>Grid</h3>
+<ul>
+<li>Main app shell: left rail (<code>240px</code>, <code>64px</code> collapsed) + content (fluid).</li>
+<li>Content max-width: <code>1440px</code>. Tables can exceed this with horizontal scroll — never compress columns past their natural minimum.</li>
+<li>Card grids: <code>repeat(auto-fill, minmax(320px, 1fr))</code>, <code>gap-4</code>.</li>
+</ul>
+<h3>Density</h3>
+<ul>
+<li><strong>High density.</strong> Default row height 40px, default card padding 16px. We are not a marketing site. Whitespace serves grouping, not breathing.</li>
+<li>Section spacing: 24px between sibling sections. 32px before a new H2.</li>
+</ul>
+<h3>Whitespace philosophy</h3>
+<p>Whitespace groups related things and separates unrelated things. It does not "let the design breathe." If a section feels empty, the section is wrong, not the spacing.</p>
+<hr>
+<h2>7. Do's and Don'ts</h2>
+<h3>Do</h3>
+<ul>
+<li>✅ Use <code>--primary</code> for <em>the one action</em> this view exists for.</li>
+<li>✅ Use status roles (success/warning/danger/info) for state, not orange.</li>
+<li>✅ Render every state of a component (default, loading, empty, error, permission-denied).</li>
+<li>✅ Default to dark theme. Light theme is the field/outdoor mode.</li>
+<li>✅ Use product category colours from <a class="wikilink" href="#">Brand</a> §7.2 for product chips and category data viz.</li>
+<li>✅ Save draft on long forms.</li>
+<li>✅ Show save state explicitly.</li>
+<li>✅ Render PDS/SDS in-app (audit-trail capture).</li>
+</ul>
+<h3>Don't</h3>
+<ul>
+<li>❌ Two-column forms.</li>
+<li>❌ Auto-discard on navigation.</li>
+<li>❌ Spinner over an empty table — use skeletons.</li>
+<li>❌ "No data" with no follow-up action.</li>
+<li>❌ Stacked status badges.</li>
+<li>❌ Brand orange as decoration or category colour.</li>
+<li>❌ Hardcoded hex in components — always reference tokens.</li>
+<li>❌ Animated elevation on non-interactive surfaces.</li>
+<li>❌ More than 7 top-level nav items.</li>
+<li>❌ Card nesting deeper than one level.</li>
+<li>❌ Inventing a new colour, spacing value, or font size not in this document or <a class="wikilink" href="#">Brand</a> §7.</li>
+</ul>
+<hr>
+<h2>8. Responsive Behavior</h2>
+<p>Hub-app is <strong>desktop-first</strong> for office users and <strong>tablet-second</strong> for field/site users on iPads in trucks. We do not optimise for phones — phones are for taking calls, not running compliance audits.</p>
+<table><thead><tr><th>Breakpoint</th><th>Width</th><th>Behaviour</th></tr></thead><tbody>
+<tr><td><code>desk-lg</code></td><td>≥ 1440px</td><td>Full layout, tables uncompressed</td></tr>
+<tr><td><code>desk</code></td><td>1024–1439</td><td>Full layout, dense tables</td></tr>
+<tr><td><code>tablet</code></td><td>768–1023</td><td>Left rail collapses to icons, drawers become modals</td></tr>
+<tr><td><code>narrow</code></td><td>< 768</td><td>Read-only mode warning — interactive flows are blocked, view-only redirect</td></tr>
+</tbody></table>
+<p><strong>Touch targets ≥ 44px</strong> on tablet. <strong>Inputs ≥ 40px high</strong> on desktop, <code>48px</code> on tablet.</p>
+<p>No mobile flow design until 3+ users ask for one. Per <a class="wikilink" href="#">feedback_no_accessibility_requirements</a> we have no WCAG/screen-reader requirement, but we still ship <strong>visible focus rings</strong> because keyboard navigation is faster for power users.</p>
+<hr>
+<h2>9. Agent Prompt Guide</h2>
+<p>When generating hub-app UI in Claude/Cursor or via <code>/team-design-studio</code> or <code>/team-build-lite</code>, include this brief in the system prompt:</p>
+<pre><code>
+You are designing for the Blick hub-app — an internal SaaS for ~11 users.
+
+Read these in order:
+1. BlickVault/Brand/brand-guidelines/Brand.md — voice, marks, terminology
+2. BlickVault/Brand/brand-guidelines/hub-app.DESIGN.md — this document
+3. hub-app/frontend/src/styles/themes.css — actual token values
+
+Ironclad rules:
+- Reference tokens, never hex. (`bg-[var(--bg-surface)]` not `bg-[#2a2a2a]`)
+- Default to dark theme.
+- One primary action per view, in --primary orange.
+- Render every state: default, hover, focus, loading, empty, error, permission-denied.
+- One-column forms only.
+- Tables use tabular numerals, skeleton loading, structured empty states.
+- High density — this is an operations tool, not a landing page.
+- Australasian English. No US spellings except in code identifiers.
+- No accessibility ceremony — visible focus rings yes, ARIA-everything no.
+
+If the design feels like a marketing site, you got it wrong.
+If it feels like a senior advisor's notebook, you got it right.
+</code></pre>
+<h3>Quick token reference (paste into prompts)</h3>
+<table><thead><tr><th></th><th>dark</th><th>light</th></tr></thead><tbody>
+<tr><td>Brand action</td><td><code>#f05323</code></td><td><code>#f05323</code></td></tr>
+<tr><td>Brand action hover</td><td><code>#ff6a3d</code></td><td><code>#ff6a3d</code></td></tr>
+<tr><td>Accent</td><td><code>#22d3ee</code></td><td><code>#0ea5b7</code></td></tr>
+<tr><td>Page bg</td><td><code>#1a1a1a</code></td><td><code>#fafafa</code></td></tr>
+<tr><td>Surface bg</td><td><code>#2a2a2a</code></td><td><code>#ffffff</code></td></tr>
+<tr><td>Body text</td><td><code>#bcbec0</code></td><td><code>#1f1f1f</code></td></tr>
+<tr><td>Heading text</td><td><code>#ffffff</code></td><td><code>#000000</code></td></tr>
+<tr><td>Muted text</td><td><code>#707070</code></td><td><code>#6b6b6b</code></td></tr>
+<tr><td>Default border</td><td><code>#58595b</code></td><td><code>#e5e5e5</code></td></tr>
+</tbody></table>
+<hr>
+<h2>Anti-pattern audit (open items, last reviewed 2026-05-01)</h2>
+<p>These are known places hub-app drifts from this spec. Tracked here so the audit skill has something to compare against.</p>
+<ul>
+<li>[ ] Some Compass views use hardcoded hex instead of tokens (sweep needed).</li>
+<li>[ ] Form save state inconsistent across services — Compass shows it, Operations doesn't.</li>
+<li>[ ] Empty states default to "No data found" in 4+ tables — needs structured empty pattern.</li>
+<li>[ ] Two-column forms exist in <a class="wikilink" href="#">Operations</a> new-employee flow — refactor.</li>
+<li>[ ] Brand orange used as decorative accent on at least one dashboard card — should be replaced with <code>--secondary</code>.</li>
+</ul>
+<hr>
+<h2>Related</h2>
+<ul>
+<li><a class="wikilink" href="#">Brand</a> — parent brand source of truth</li>
+<li><a class="wikilink" href="#">website.DESIGN</a> — sister surface</li>
+<li><a class="wikilink" href="#">content.DESIGN</a> — sister surface</li>
+<li><a class="wikilink" href="#">project_hub_app_monorepo</a> — repo structure and deploy model</li>
+<li><a class="wikilink" href="#">feedback_no_accessibility_requirements</a> — why we skip WCAG ceremony</li>
+</ul>
+</div></body></html>

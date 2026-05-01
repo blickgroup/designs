@@ -1,0 +1,273 @@
+<!DOCTYPE html>
+<html lang="en"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Blick.group Website Design System — Blick Brand</title>
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Source+Serif+Pro:ital,wght@0,400;0,600;1,400&family=JetBrains+Mono:wght@400&display=swap" rel="stylesheet">
+<style>
+  :root { --orange:#f05323; --ink:#0a0a0a; --body:#1f1f1f; --muted:#5a5a5a; --page:#fff; --warm:#f5f3ef; --rule:#1f1f1f; --subtle:#e5e5e5; }
+  * { box-sizing:border-box; } html,body { margin:0; padding:0; }
+  body { background:var(--page); color:var(--body); font-family:'Source Serif Pro',Charter,Georgia,serif; font-size:17px; line-height:1.65; }
+  .wrap { max-width:720px; margin:0 auto; padding:64px 24px 96px; }
+  .masthead { display:flex; align-items:baseline; justify-content:space-between; border-bottom:2px solid var(--rule); padding-bottom:12px; margin-bottom:32px; }
+  .masthead .brand { font-family:Inter,sans-serif; font-weight:700; font-size:14px; letter-spacing:.06em; text-transform:uppercase; color:var(--ink); }
+  .masthead .brand span { color:var(--orange); }
+  .masthead .meta { font-family:Inter,sans-serif; font-size:12px; color:var(--muted); text-transform:uppercase; letter-spacing:.04em; }
+  h1,h2,h3,h4,h5,h6 { font-family:Inter,sans-serif; color:var(--ink); line-height:1.25; margin:1.6em 0 .4em; }
+  h1 { font-size:36px; font-weight:700; margin-top:0; letter-spacing:-.01em; }
+  h2 { font-size:26px; font-weight:700; padding-top:16px; border-top:1px solid var(--subtle); }
+  h3 { font-size:19px; font-weight:600; }
+  h4 { font-size:16px; font-weight:600; color:var(--muted); text-transform:uppercase; letter-spacing:.04em; }
+  p { margin:0 0 1em; max-width:68ch; }
+  a { color:var(--orange); text-decoration:none; border-bottom:1px solid rgba(240,83,35,.3); }
+  a:hover { border-bottom-color:var(--orange); }
+  a.wikilink { color:var(--ink); border-bottom-style:dotted; }
+  strong { color:var(--ink); font-weight:600; }
+  blockquote { border-left:3px solid var(--orange); margin:1.2em 0; padding:.4em 0 .4em 16px; color:var(--muted); font-style:italic; }
+  code { font-family:'JetBrains Mono',monospace; font-size:.88em; background:var(--warm); padding:1px 6px; border-radius:3px; color:var(--ink); }
+  pre { background:var(--ink); color:var(--warm); padding:16px 20px; border-radius:4px; overflow-x:auto; margin:1em 0; }
+  pre code { background:transparent; color:inherit; padding:0; font-size:13px; line-height:1.55; }
+  hr { border:0; border-top:1px solid var(--subtle); margin:32px 0; }
+  ul,ol { margin:0 0 1em 1.4em; padding:0; } li { margin-bottom:.3em; }
+  table { width:100%; border-collapse:collapse; margin:1.2em 0; font-family:Inter,sans-serif; font-size:14px; }
+  th { background:var(--ink); color:var(--page); text-align:left; padding:10px 12px; font-weight:600; font-size:12px; text-transform:uppercase; letter-spacing:.04em; }
+  td { padding:10px 12px; border-bottom:1px solid var(--subtle); vertical-align:top; }
+  td code { font-size:12px; }
+</style></head>
+<body><div class="wrap">
+  <div class="masthead"><div class="brand">Blick<span>·</span>Brand</div><div class="meta">website.DESIGN.md</div></div>
+  <h1>Blick.group Website Design System</h1>
+<blockquote><strong>Audience:</strong> drillers, owner-operators, site managers in their 40s–60s across AU and NZ. Practical people who pick up the phone, value experience over qualifications, prefer a printed catalogue to an app.</blockquote>
+<blockquote></blockquote>
+<blockquote><strong>Surface scope:</strong> blick.group public marketing site — homepage, product pages, case studies, contact, careers, eco range.</blockquote>
+<blockquote></blockquote>
+<blockquote><strong>Inherits from:</strong> <a class="wikilink" href="#">Brand</a> (voice, marks, terminology, brand orange <code>#f05323</code>).</blockquote>
+<blockquote></blockquote>
+<blockquote><strong>Excludes:</strong> internal hub-app (<a class="wikilink" href="#">hub-app.DESIGN</a>), AI-generated content (<a class="wikilink" href="#">content.DESIGN</a>).</blockquote>
+<blockquote></blockquote>
+<blockquote><strong>The site is not a SaaS landing page.</strong> It's a digital business card backed by a working knowledge library. It has to look like a credible Australasian drilling-fluids supplier, not a Y Combinator startup.</blockquote>
+<hr>
+<h2>1. Visual Theme & Atmosphere</h2>
+<p><strong>Field-credible, generous, plain-spoken.</strong> Big photography of real rigs and real crews. Generous white space. Confident orange anchors. No gradients-for-the-sake-of-gradients, no glassmorphism, no animated hero blobs.</p>
+<p>The site says: <em>"We've been in the field for years, our products perform, and we'll pick up the phone."</em> It does not say: <em>"We are a venture-backed disruptor reimagining drilling."</em></p>
+<p>If the homepage feels like a SaaS landing page, we got it wrong. If it feels like a great trade publication that happens to belong to a drilling-fluids company, we got it right.</p>
+<hr>
+<h2>2. Color Palette & Roles</h2>
+<table><thead><tr><th>Role</th><th>Hex</th><th>Notes</th></tr></thead><tbody>
+<tr><td><strong>Brand orange</strong></td><td><code>#f05323</code></td><td>Primary CTAs, key links, section anchors. Use restraint — orange is a comma in a sentence, not a highlighter.</td></tr>
+<tr><td>Orange hover</td><td><code>#ff6a3d</code></td><td>Hover/active for interactive orange</td></tr>
+<tr><td>Ink (heading)</td><td><code>#0a0a0a</code></td><td>Headings, primary text on light</td></tr>
+<tr><td>Body</td><td><code>#1f1f1f</code></td><td>Body copy on light</td></tr>
+<tr><td>Muted</td><td><code>#5a5a5a</code></td><td>Captions, metadata, secondary text</td></tr>
+<tr><td>Page bg (light)</td><td><code>#ffffff</code></td><td>Default</td></tr>
+<tr><td>Section bg (warm grey)</td><td><code>#f5f3ef</code></td><td>Alternate sections, editorial pull-outs</td></tr>
+<tr><td>Section bg (dark)</td><td><code>#0a0a0a</code></td><td>Dark sections (case studies, full-bleed photo)</td></tr>
+<tr><td>Border subtle</td><td><code>#e5e5e5</code></td><td>Card edges, table rules</td></tr>
+<tr><td>Border strong</td><td><code>#1f1f1f</code></td><td>Editorial rules, blockquote borders</td></tr>
+</tbody></table>
+<h3>Product category palette</h3>
+<p>When the site shows products (catalogue, range pages, comparison tables), the <a class="wikilink" href="#">Brand</a> §7.2 colour-coded category palette is the only category palette. No inventing.</p>
+<h3>Eco range</h3>
+<p>Eco Dry and any future eco product gets a <strong>secondary green accent</strong>: <code>#3c8c4c</code> (already in the product category palette as Clay Control — repurposed for eco context only on eco-specific surfaces). Never a lighter "natural" green; never a leaf icon.</p>
+<hr>
+<h2>3. Typography Rules</h2>
+<p><strong>Proxima Nova</strong> for everything (we hold the licence and the brand book mandates it). <strong>JetBrains Mono</strong> for spec values and technical data on PDS/SDS pages.</p>
+<table><thead><tr><th>Token</th><th>Family</th><th>Weight</th><th>Size / line</th><th>Use</th></tr></thead><tbody>
+<tr><td><code>--web-display</code></td><td>Proxima Nova</td><td>Bold</td><td>56 / 60</td><td>Hero H1</td></tr>
+<tr><td><code>--web-h1</code></td><td>Proxima Nova</td><td>Bold</td><td>40 / 48</td><td>Page H1</td></tr>
+<tr><td><code>--web-h2</code></td><td>Proxima Nova</td><td>Bold</td><td>28 / 36</td><td>Section H2</td></tr>
+<tr><td><code>--web-h3</code></td><td>Proxima Nova</td><td>Medium</td><td>20 / 28</td><td>Subhead</td></tr>
+<tr><td><code>--web-lead</code></td><td>Proxima Nova</td><td>Medium</td><td>18 / 28</td><td>Intro paragraphs</td></tr>
+<tr><td><code>--web-body</code></td><td>Proxima Nova</td><td>Regular</td><td>16 / 26</td><td>Body</td></tr>
+<tr><td><code>--web-small</code></td><td>Proxima Nova</td><td>Regular</td><td>14 / 22</td><td>Captions</td></tr>
+<tr><td><code>--web-mono</code></td><td>JetBrains Mono</td><td>Regular</td><td>14 / 22</td><td>Spec values</td></tr>
+</tbody></table>
+<p><strong>Web fallback</strong> when Proxima Nova is unavailable: <code>Inter, ui-sans-serif, system-ui, sans-serif</code> (matches <a class="wikilink" href="#">Brand</a> §7.3).</p>
+<p><strong>Measure:</strong> body copy <code>max-width: 68ch</code>. Lead <code>max-width: 64ch</code>. Never edge-to-edge prose.</p>
+<p><strong>Headings sentence case</strong>, not title case. ("Better drilling starts here" not "Better Drilling Starts Here.")</p>
+<hr>
+<h2>4. Component Stylings</h2>
+<h3>4.1 Buttons</h3>
+<ul>
+<li><strong>Primary:</strong> solid orange <code>#f05323</code>, white text, 6px radius, no gradient on web (the gradient is hub-app-only). Hover: <code>#ff6a3d</code>. Focus ring 2px <code>#f05323</code> at 40% offset.</li>
+<li><strong>Secondary:</strong> transparent, ink text, 1px ink border. Hover: ink fill, white text.</li>
+<li><strong>Tertiary / link:</strong> orange text, no chrome, underline on hover.</li>
+<li><strong>Sizes:</strong> default 44px height, large 52px (hero CTAs only).</li>
+</ul>
+<h3>4.2 Hero</h3>
+<ul>
+<li>Full-bleed photo (real rig, real site — never stock).</li>
+<li>Headline left-aligned, max 7 words, Proxima Bold display.</li>
+<li>One sub-headline (≤ 18 words), one primary CTA, optional one secondary CTA.</li>
+<li>Never: rotating headlines, animated text, parallax, video autoplay with sound.</li>
+</ul>
+<h3>4.3 Cards (product, case study, article)</h3>
+<ul>
+<li>1px <code>#e5e5e5</code> border, 4px radius, 24px padding.</li>
+<li>Image at 16:10 ratio at top.</li>
+<li>Title in <code>--web-h3</code>, body in <code>--web-body</code> truncated to 2 lines.</li>
+<li>One link or one button — not both.</li>
+</ul>
+<h3>4.4 Tables (technical data, product specs)</h3>
+<ul>
+<li>Header row in <code>#0a0a0a</code> ink with white text.</li>
+<li>Tabular numerals.</li>
+<li>12px row padding, 1px <code>#e5e5e5</code> between rows.</li>
+<li>Spec values in <code>--web-mono</code>.</li>
+<li>No zebra-striping (it competes with category colour cells).</li>
+</ul>
+<h3>4.5 Forms (contact, sample request)</h3>
+<ul>
+<li>Single column. Same as hub-app — drillers use these on phones at site.</li>
+<li>Labels above fields. Required marker <code>*</code> after label.</li>
+<li>Submit button is the only orange button on the form.</li>
+<li>Success state replaces the form with a plain-text confirmation + a name to call.</li>
+<li>No "marketing consent" pre-ticked checkboxes. Ever.</li>
+</ul>
+<h3>4.6 Pull quotes / customer voice</h3>
+<ul>
+<li>Editorial rule above and below (1px ink), 24px vertical padding.</li>
+<li>Quote in <code>--web-lead</code>, italic.</li>
+<li>Attribution on its own line, <code>--web-small</code>, muted.</li>
+<li>No quote-mark glyphs. The rules carry the weight.</li>
+</ul>
+<h3>4.7 Case studies</h3>
+<ul>
+<li>Three-act structure visible in the layout: <strong>Challenge → What we recommended → Result.</strong></li>
+<li>Customer photo + quote anchors each act.</li>
+<li>Specific numbers prominent ("Stock on site in 48h", "30% less wasted product").</li>
+<li>A "Get the same result" CTA at the bottom links to the relevant product page.</li>
+</ul>
+<h3>4.8 Product pages</h3>
+<ul>
+<li>Hero with product photo + name + one-sentence positioning.</li>
+<li>Spec table (uses §4.4 pattern).</li>
+<li>Plain-English explanation of what the product does and when to use it (per <a class="wikilink" href="#">Brand</a> §3 plain-language rule).</li>
+<li>Downloadable PDS, SDS, COA — labelled with version date.</li>
+<li>"Talk to us about [product]" CTA tied to the regional sales contact.</li>
+</ul>
+<h3>4.9 Footer</h3>
+<ul>
+<li>Three columns: contact (NZ + AU addresses + phones), site map, legal.</li>
+<li>Email signature reference contacts in the footer match <a class="wikilink" href="#">blick-brand-guideline-full</a> §Brand Applications.</li>
+<li>Group-level surfaces show the unbadged Blick mark; entity-specific subdomains can show the entity mark.</li>
+</ul>
+<hr>
+<h2>5. Depth & Elevation</h2>
+<p>Web is <strong>flat</strong>. Cards have a 1px border, not a shadow. The only places shadow appears:</p>
+<ul>
+<li>Sticky header on scroll: <code>0 1px 0 rgba(0,0,0,0.06)</code>.</li>
+<li>Dropdown menus (e.g. region switcher): <code>0 8px 24px rgba(0,0,0,0.12)</code>.</li>
+<li>Lightbox / modal overlay: full-screen <code>rgba(0,0,0,0.7)</code> backdrop.</li>
+</ul>
+<p>No floating cards, no neumorphism, no inner shadows.</p>
+<hr>
+<h2>6. Layout Principles</h2>
+<h3>Spacing scale (4px base)</h3>
+<p>Same as hub-app: <code>4, 8, 12, 16, 24, 32, 48, 64, 96, 128</code>. Web uses the larger end of the scale far more than hub-app.</p>
+<h3>Grid</h3>
+<ul>
+<li>Container max-width: <code>1280px</code>, 24px gutters.</li>
+<li>12-column grid on desktop, 6-column on tablet, single-column on mobile.</li>
+<li>Section vertical rhythm: 96px between sections desktop, 64px tablet, 48px mobile.</li>
+</ul>
+<h3>Generous, not airy</h3>
+<p>Whitespace is generous compared to hub-app, but it is structural — separating sections, framing photography, giving headlines weight. It is not Apple-style "let the page breathe" airiness for its own sake.</p>
+<hr>
+<h2>7. Do's and Don'ts</h2>
+<h3>Do</h3>
+<ul>
+<li>✅ Use real field photography. If we don't have it, ship without a photo before we ship a stock photo.</li>
+<li>✅ Lead with the customer's problem, not Blick's history.</li>
+<li>✅ Specifics: timeframes, regions, product names, real numbers.</li>
+<li>✅ One primary CTA per section.</li>
+<li>✅ Sentence-case headlines.</li>
+<li>✅ Plain-English first; technical detail in expandable spec tables.</li>
+<li>✅ Disclose entity (NZ vs AU) on the regional contact lines.</li>
+<li>✅ Eco language only in eco contexts and only product-specific.</li>
+</ul>
+<h3>Don't</h3>
+<ul>
+<li>❌ Stock photography. Period.</li>
+<li>❌ Rotating heroes / carousels.</li>
+<li>❌ Glassmorphism, gradients-for-decoration, animated background blobs.</li>
+<li>❌ Cookie banner with pre-ticked consent.</li>
+<li>❌ "World-class," "innovative," "disruptive," "leverage," "synergies."</li>
+<li>❌ Tagline as a moving target — <code>Better drilling starts here</code> is the working tagline; do not invent variants.</li>
+<li>❌ Eco/green imagery in non-eco contexts (greenwashing).</li>
+<li>❌ Title-case headlines.</li>
+<li>❌ Lead with NZ heritage on AU-targeted pages.</li>
+<li>❌ Generic "Solutions for the modern driller" hero copy.</li>
+</ul>
+<hr>
+<h2>8. Responsive Behavior</h2>
+<table><thead><tr><th>Breakpoint</th><th>Width</th><th>Behaviour</th></tr></thead><tbody>
+<tr><td><code>web-xl</code></td><td>≥ 1280px</td><td>Full 12-col grid, hero at 56/60 type</td></tr>
+<tr><td><code>web-lg</code></td><td>1024–1279</td><td>12-col, hero drops to 48/56</td></tr>
+<tr><td><code>web-md</code></td><td>768–1023</td><td>6-col, hero 40/48</td></tr>
+<tr><td><code>web-sm</code></td><td>480–767</td><td>Single col, hero 32/40</td></tr>
+<tr><td><code>web-xs</code></td><td>< 480</td><td>Single col, hero 28/36, CTAs full-width</td></tr>
+</tbody></table>
+<p><strong>Tap targets ≥ 44px</strong> on mobile. <strong>Forms switch to native input UIs</strong> below <code>web-md</code> (date picker, select).</p>
+<p>Phone is a real surface here (unlike hub-app) — drillers at trade shows, on site, between jobs. Mobile must work end-to-end: contact, sample request, product spec, regional phone numbers tap-to-call.</p>
+<hr>
+<h2>9. Agent Prompt Guide</h2>
+<p>When generating website content or layout via Claude/Cursor or <code>/team-design-studio</code>:</p>
+<pre><code>
+You are designing for blick.group — Blick Group's public marketing site.
+
+Read in order:
+1. BlickVault/Brand/brand-guidelines/Brand.md — voice, marks, terminology
+2. BlickVault/Brand/brand-guidelines/website.DESIGN.md — this document
+
+Audience: drillers and site managers across AU and NZ, 40s–60s, practical,
+phone-first. Speak like the Expert Mate from Brand §3.
+
+Ironclad rules:
+- Real field photography only. No stock.
+- Sentence-case headlines, max 7 words.
+- One primary CTA per section.
+- Specific numbers, real places, named products.
+- Plain English first; technical detail in expandable specs.
+- Australasian English (colour, organisation, optimise).
+- Banned vocabulary: world-class, innovative, disruptive, leverage,
+  synergies, solutions (as a noun), one-stop-shop, cheapest, NZ-based.
+- AU pages don't lead with NZ heritage. NZ pages can.
+- Eco language only product-specific, never generic.
+- No carousels, no glassmorphism, no animated blobs.
+
+If the page feels like a SaaS landing page, you got it wrong.
+If it feels like a great trade publication, you got it right.
+</code></pre>
+<h3>Quick token reference</h3>
+<table><thead><tr><th></th><th>hex</th></tr></thead><tbody>
+<tr><td>Brand orange</td><td><code>#f05323</code></td></tr>
+<tr><td>Orange hover</td><td><code>#ff6a3d</code></td></tr>
+<tr><td>Ink</td><td><code>#0a0a0a</code></td></tr>
+<tr><td>Body</td><td><code>#1f1f1f</code></td></tr>
+<tr><td>Muted</td><td><code>#5a5a5a</code></td></tr>
+<tr><td>Page bg</td><td><code>#ffffff</code></td></tr>
+<tr><td>Section warm</td><td><code>#f5f3ef</code></td></tr>
+<tr><td>Section dark</td><td><code>#0a0a0a</code></td></tr>
+<tr><td>Border subtle</td><td><code>#e5e5e5</code></td></tr>
+<tr><td>Eco accent</td><td><code>#3c8c4c</code></td></tr>
+</tbody></table>
+<hr>
+<h2>Anti-pattern audit (open items, last reviewed 2026-05-01)</h2>
+<ul>
+<li>[ ] Confirm stock photography is purged from current blick.group.</li>
+<li>[ ] Verify hero copy length on each page ≤ 7 words.</li>
+<li>[ ] Audit AU pages for "NZ-based" framing.</li>
+<li>[ ] Check eco-range page doesn't generalise eco language.</li>
+<li>[ ] Confirm Proxima Nova licensing covers all weights used.</li>
+<li>[ ] Footer regional addresses match current entity stack.</li>
+</ul>
+<hr>
+<h2>Related</h2>
+<ul>
+<li><a class="wikilink" href="#">Brand</a> — parent brand source of truth</li>
+<li><a class="wikilink" href="#">hub-app.DESIGN</a> — sister surface</li>
+<li><a class="wikilink" href="#">content.DESIGN</a> — sister surface</li>
+<li><a class="wikilink" href="#">blick-marketing-strategy-full</a> — strategy & positioning</li>
+<li><a class="wikilink" href="#">growth-strategy-summary</a> — pillar messaging</li>
+</ul>
+</div></body></html>

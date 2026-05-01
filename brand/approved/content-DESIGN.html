@@ -1,0 +1,295 @@
+<!DOCTYPE html>
+<html lang="en"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1">
+<title>AI-Generated Content Design System — Blick Brand</title>
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Source+Serif+Pro:ital,wght@0,400;0,600;1,400&family=JetBrains+Mono:wght@400&display=swap" rel="stylesheet">
+<style>
+  :root { --orange:#f05323; --ink:#0a0a0a; --body:#1f1f1f; --muted:#5a5a5a; --page:#fff; --warm:#f5f3ef; --rule:#1f1f1f; --subtle:#e5e5e5; }
+  * { box-sizing:border-box; } html,body { margin:0; padding:0; }
+  body { background:var(--page); color:var(--body); font-family:'Source Serif Pro',Charter,Georgia,serif; font-size:17px; line-height:1.65; }
+  .wrap { max-width:720px; margin:0 auto; padding:64px 24px 96px; }
+  .masthead { display:flex; align-items:baseline; justify-content:space-between; border-bottom:2px solid var(--rule); padding-bottom:12px; margin-bottom:32px; }
+  .masthead .brand { font-family:Inter,sans-serif; font-weight:700; font-size:14px; letter-spacing:.06em; text-transform:uppercase; color:var(--ink); }
+  .masthead .brand span { color:var(--orange); }
+  .masthead .meta { font-family:Inter,sans-serif; font-size:12px; color:var(--muted); text-transform:uppercase; letter-spacing:.04em; }
+  h1,h2,h3,h4,h5,h6 { font-family:Inter,sans-serif; color:var(--ink); line-height:1.25; margin:1.6em 0 .4em; }
+  h1 { font-size:36px; font-weight:700; margin-top:0; letter-spacing:-.01em; }
+  h2 { font-size:26px; font-weight:700; padding-top:16px; border-top:1px solid var(--subtle); }
+  h3 { font-size:19px; font-weight:600; }
+  h4 { font-size:16px; font-weight:600; color:var(--muted); text-transform:uppercase; letter-spacing:.04em; }
+  p { margin:0 0 1em; max-width:68ch; }
+  a { color:var(--orange); text-decoration:none; border-bottom:1px solid rgba(240,83,35,.3); }
+  a:hover { border-bottom-color:var(--orange); }
+  a.wikilink { color:var(--ink); border-bottom-style:dotted; }
+  strong { color:var(--ink); font-weight:600; }
+  blockquote { border-left:3px solid var(--orange); margin:1.2em 0; padding:.4em 0 .4em 16px; color:var(--muted); font-style:italic; }
+  code { font-family:'JetBrains Mono',monospace; font-size:.88em; background:var(--warm); padding:1px 6px; border-radius:3px; color:var(--ink); }
+  pre { background:var(--ink); color:var(--warm); padding:16px 20px; border-radius:4px; overflow-x:auto; margin:1em 0; }
+  pre code { background:transparent; color:inherit; padding:0; font-size:13px; line-height:1.55; }
+  hr { border:0; border-top:1px solid var(--subtle); margin:32px 0; }
+  ul,ol { margin:0 0 1em 1.4em; padding:0; } li { margin-bottom:.3em; }
+  table { width:100%; border-collapse:collapse; margin:1.2em 0; font-family:Inter,sans-serif; font-size:14px; }
+  th { background:var(--ink); color:var(--page); text-align:left; padding:10px 12px; font-weight:600; font-size:12px; text-transform:uppercase; letter-spacing:.04em; }
+  td { padding:10px 12px; border-bottom:1px solid var(--subtle); vertical-align:top; }
+  td code { font-size:12px; }
+</style></head>
+<body><div class="wrap">
+  <div class="masthead"><div class="brand">Blick<span>·</span>Brand</div><div class="meta">content.DESIGN.md</div></div>
+  <h1>AI-Generated Content Design System</h1>
+<blockquote><strong>Audience:</strong> mixed — internal readers of daily briefs, external readers of LinkedIn posts, prospects reading proposals, the team reading session digests.</blockquote>
+<blockquote></blockquote>
+<blockquote><strong>Surface scope:</strong> anything Nexus or a Claude skill produces — daily briefs (HTML), LinkedIn posts and carousels, outreach emails, Marp slide decks, investor overviews, internal memos, candidate research notes.</blockquote>
+<blockquote></blockquote>
+<blockquote><strong>Inherits from:</strong> <a class="wikilink" href="#">Brand</a> (voice, marks, terminology, brand orange <code>#f05323</code>).</blockquote>
+<blockquote></blockquote>
+<blockquote><strong>Excludes:</strong> marketing website (<a class="wikilink" href="#">website.DESIGN</a>), internal hub-app (<a class="wikilink" href="#">hub-app.DESIGN</a>).</blockquote>
+<blockquote></blockquote>
+<blockquote><strong>Why this exists:</strong> AI is a content factory. Without a design surface of its own, every skill drifts toward generic LLM aesthetics — sans-serif heroes, gradient cards, "🚀" bullet points. This document is what stops that.</blockquote>
+<hr>
+<h2>1. Visual Theme & Atmosphere</h2>
+<p><strong>Editorial, not corporate. Considered, not breathless.</strong></p>
+<p>Imagine the FT's Lex column, Stratechery's daily memo, or a great industry trade journal. Not a Notion template. Not a SaaS pitch deck. Not "AI-flavoured" anything (no glow, no neon gradient, no "intelligence" iconography).</p>
+<p>The voice is the <a class="wikilink" href="#">Brand</a> voice — Expert Mate — written down. The format borrows from print editorial: clear hierarchy, tables when tables help, pull quotes when a customer's words deserve weight, white space when an idea needs to land.</p>
+<p>If a brief looks like ChatGPT output, we got it wrong. If it looks like a half-page from a trade magazine that someone might actually want to read, we got it right.</p>
+<p>The existing <a class="wikilink" href="#">editorial-magazine-design</a> system in the vault is the seed for this surface — extend it, don't replace it.</p>
+<hr>
+<h2>2. Color Palette & Roles</h2>
+<p>Content surfaces live in many container colours (LinkedIn dark mode, Gmail light mode, printed PDF, Marp slide background). The palette here is <strong>content-on-light</strong> by default; dark mode mirrors hold the same role.</p>
+<table><thead><tr><th>Role</th><th>Hex</th><th>Use</th></tr></thead><tbody>
+<tr><td><strong>Brand orange</strong></td><td><code>#f05323</code></td><td>Section anchors, pull-quote rules, one accent per page max</td></tr>
+<tr><td>Orange muted</td><td><code>#c4421b</code></td><td>Print-safe orange (CMYK won't reproduce <code>#f05323</code> cleanly)</td></tr>
+<tr><td>Ink</td><td><code>#0a0a0a</code></td><td>Body text, headings</td></tr>
+<tr><td>Editorial rule</td><td><code>#1f1f1f</code></td><td>1px and 2px structural rules</td></tr>
+<tr><td>Muted</td><td><code>#5a5a5a</code></td><td>Captions, attribution, dates, sources</td></tr>
+<tr><td>Page bg</td><td><code>#ffffff</code></td><td>Default canvas</td></tr>
+<tr><td>Section bg (warm)</td><td><code>#f5f3ef</code></td><td>Pull-out boxes, sidebars</td></tr>
+<tr><td>Highlight (yellow)</td><td><code>#fde68a</code></td><td>Editorial highlight on key claim — sparingly</td></tr>
+</tbody></table>
+<h3>Dark mode mirror (LinkedIn dark, dark slide decks)</h3>
+<table><thead><tr><th>Role</th><th>Hex</th></tr></thead><tbody>
+<tr><td>Brand orange</td><td><code>#f05323</code> (unchanged)</td></tr>
+<tr><td>Ink (text)</td><td><code>#f5f3ef</code></td></tr>
+<tr><td>Muted</td><td><code>#a0a0a0</code></td></tr>
+<tr><td>Page bg</td><td><code>#0a0a0a</code></td></tr>
+<tr><td>Section bg</td><td><code>#1a1a1a</code></td></tr>
+</tbody></table>
+<h3>Product category palette</h3>
+<p>When mentioning a product category, the <a class="wikilink" href="#">Brand</a> §7.2 colour applies (chip, accent line, slide divider). Don't invent.</p>
+<hr>
+<h2>3. Typography Rules</h2>
+<p>Editorial content uses a <strong>serif body + sans heading</strong> pairing. This is the deliberate divergence from hub-app and website (both sans-only).</p>
+<table><thead><tr><th>Token</th><th>Family</th><th>Weight</th><th>Use</th></tr></thead><tbody>
+<tr><td><code>--c-display</code></td><td>Proxima Nova Bold</td><td>700</td><td>Brief title, slide title, post H1</td></tr>
+<tr><td><code>--c-h2</code></td><td>Proxima Nova Bold</td><td>700</td><td>Section H2</td></tr>
+<tr><td><code>--c-h3</code></td><td>Proxima Nova Medium</td><td>500</td><td>Subhead</td></tr>
+<tr><td><code>--c-body</code></td><td>Source Serif Pro / Charter / Georgia</td><td>400</td><td>Body copy, brief paragraphs</td></tr>
+<tr><td><code>--c-lead</code></td><td>Source Serif Pro Italic</td><td>400</td><td>Standfirst, intro paragraph</td></tr>
+<tr><td><code>--c-pull</code></td><td>Proxima Nova Medium</td><td>500</td><td>Pull quotes (sans for contrast against serif body)</td></tr>
+<tr><td><code>--c-caption</code></td><td>Proxima Nova Regular</td><td>400</td><td>Captions, sources, dates</td></tr>
+<tr><td><code>--c-mono</code></td><td>JetBrains Mono</td><td>400</td><td>Numbers, codes, batch IDs in a brief</td></tr>
+</tbody></table>
+<p><strong>Web fallback</strong> when serif unavailable: <code>Charter, Georgia, "Times New Roman", serif</code>.</p>
+<h3>Size scale (rem)</h3>
+<ul>
+<li>Brief title: <code>2.0rem / 2.5rem</code></li>
+<li>H2: <code>1.4rem / 1.8rem</code></li>
+<li>H3: <code>1.1rem / 1.5rem</code></li>
+<li>Body: <code>1.0rem / 1.65rem</code></li>
+<li>Lead: <code>1.15rem / 1.7rem</code></li>
+<li>Caption: <code>0.85rem / 1.3rem</code></li>
+</ul>
+<p><strong>Measure: 60–70 characters per line.</strong> Editorial body never goes wider.</p>
+<hr>
+<h2>4. Component Stylings</h2>
+<h3>4.1 Daily brief (HTML)</h3>
+<p>Produced by <code>nexus/brief-pipeline.js</code>. Uses <a class="wikilink" href="#">editorial-magazine-design</a> as the layout primitive.</p>
+<ul>
+<li><strong>Masthead:</strong> Blick mark (top-left), date (top-right), single ink rule below.</li>
+<li><strong>Standfirst:</strong> one paragraph italic serif, sets the day's read.</li>
+<li><strong>Sections:</strong> H2 sans-bold, body serif, max 600 words per section.</li>
+<li><strong>Sources:</strong> every claim links to a vault note or a verified URL. Unsourced claims are not shipped (see <a class="wikilink" href="#">feedback_blick_identity</a> and global rule on fabrication).</li>
+<li><strong>Pull quotes:</strong> customer or external quote, with full attribution.</li>
+<li><strong>Action register footer:</strong> if the brief surfaces an action, link to the Action Register entry.</li>
+</ul>
+<h3>4.2 LinkedIn post (single)</h3>
+<ul>
+<li>Hook in the first line — specific, not "Here's why X matters."</li>
+<li>One idea per post. If you have two, write two posts.</li>
+<li>Numbered or bulleted lists OK; emoji bullets not OK (per <a class="wikilink" href="#">Brand</a> anti-patterns).</li>
+<li>800 characters target, 1300 hard cap.</li>
+<li>Always close with either a question that invites reply, or a link with one-line context. Never both.</li>
+<li>No "Curious to hear your thoughts in the comments below 👇". Banned.</li>
+</ul>
+<h3>4.3 LinkedIn carousel (bento grid)</h3>
+<p>The bento pattern from <code>bergside/awesome-design-skills</code> is the right format here. Up to 10 cards.</p>
+<ul>
+<li>Card 1: title + standfirst, big.</li>
+<li>Cards 2–9: one idea each, mostly type, photo only when it earns its place.</li>
+<li>Final card: source + a line from Blick voice (an Expert Mate sign-off, not a sales close).</li>
+<li>Background: alternates ink + page bg + warm section bg, never random colour.</li>
+<li>Brand orange used as a <em>single</em> anchor element on each card (rule, dot, number) — never as a card background.</li>
+</ul>
+<h3>4.4 Outreach email (drafted by <code>/draft-outreach</code>)</h3>
+<ul>
+<li>Subject: ≤ 7 words, lower-case, no emoji.</li>
+<li>Greeting: first name only.</li>
+<li>First sentence: reference something specific about <em>their</em> business.</li>
+<li>Body: ≤ 120 words. Three short paragraphs maximum.</li>
+<li>Sign-off: "— [Name], Blick" with regional contact in signature.</li>
+<li>No "Hope this finds you well." No "I wanted to reach out." No "Just circling back."</li>
+</ul>
+<h3>4.5 Slide deck (Marp / <code>slide-generator.js</code>)</h3>
+<ul>
+<li>16:9.</li>
+<li>One idea per slide. Title sans, body serif.</li>
+<li>Maximum two type sizes per slide.</li>
+<li>One photo or one chart per slide, never both.</li>
+<li>Section dividers use brand orange ink rule with section name — not a full orange slide.</li>
+<li>Closing slide is a contact slide with regional details, not a "Thank you" slide.</li>
+</ul>
+<h3>4.6 Investor / group overview</h3>
+<ul>
+<li>Editorial cover (full-bleed photo, masthead, date, "Blick Group Overview" title).</li>
+<li>Section anatomy mirrors brief (§4.1).</li>
+<li>Numbers in <code>--c-mono</code>, sources in caption type.</li>
+<li>Entity disclosure on contact pages — never mix entity marks (per <a class="wikilink" href="#">Brand</a> §2).</li>
+</ul>
+<h3>4.7 Vault note generated by Nexus (autoresearch, writeback)</h3>
+<ul>
+<li>Frontmatter per <a class="wikilink" href="#">BlickVault/CLAUDE.md</a> spec — required.</li>
+<li><code>source_type</code> and <code>verification_status</code> always set.</li>
+<li><code>source_url</code> always set when claim is from external source. Per <a class="wikilink" href="#">feedback_nexus_privacy_fail_closed</a>, never fabricate URLs.</li>
+<li>Wikilinks for every entity mentioned (per <code>/vault-consistency</code> skill).</li>
+</ul>
+<hr>
+<h2>5. Depth & Elevation</h2>
+<p>Print-derived: <strong>flat</strong>. No shadows on cards, no glow on highlighted text, no drop shadows on photography.</p>
+<p>The only "depth" used in this surface:</p>
+<ul>
+<li>Editorial rules (1px ink) to separate sections.</li>
+<li>2px coloured rule (brand orange) for section anchors.</li>
+<li>White space — the most important elevation tool in editorial design.</li>
+</ul>
+<hr>
+<h2>6. Layout Principles</h2>
+<h3>Brief / long-form layout</h3>
+<ul>
+<li>Single column, max-width 720px, generous margins.</li>
+<li>Section spacing: 48px between sections.</li>
+<li>Pull quotes break to wider measure (840px) to signal a shift.</li>
+</ul>
+<h3>Carousel / slide layout</h3>
+<ul>
+<li>Safe area: 80px from edges (LinkedIn crops aggressively).</li>
+<li>Vertical rhythm: 8px base, multiples of 8 only.</li>
+<li>Title baseline 25% from top, body starts 40% from top.</li>
+</ul>
+<h3>Email layout</h3>
+<ul>
+<li>Width: render at 600px, plain text fallback always shipped.</li>
+<li>One clear CTA per email, never two.</li>
+</ul>
+<h3>Generosity</h3>
+<p>Content is the surface where whitespace is <em>most</em> generous. Hub-app density and website confidence go away here. Editorial surfaces breathe. A brief crammed to the page edges reads as low-confidence; a brief with margin reads as authored.</p>
+<hr>
+<h2>7. Do's and Don'ts</h2>
+<h3>Do</h3>
+<ul>
+<li>✅ Lead every brief with a standfirst.</li>
+<li>✅ Source every claim. Link to vault notes by wikilink, external by URL.</li>
+<li>✅ Use serif for body, sans for headings. Always.</li>
+<li>✅ One pull quote per long-form piece, max.</li>
+<li>✅ Numbers and dates in mono.</li>
+<li>✅ Sentence case headlines.</li>
+<li>✅ Pair every technical term with a plain-language explanation.</li>
+<li>✅ Specific over generic — name customers (with permission), regions, products.</li>
+<li>✅ Customer is the hero. Always.</li>
+</ul>
+<h3>Don't</h3>
+<ul>
+<li>❌ Emoji in marketing copy. Internal Slack OK; published content not OK.</li>
+<li>❌ "🚀", "💡", "✨", "🤖" anywhere in published output. Banned.</li>
+<li>❌ "Here's why this matters", "Curious to hear your thoughts", "Just circling back", "Hope this finds you well."</li>
+<li>❌ AI-flavoured imagery (glowing brains, neural-net lattices, "intelligence" hexagons).</li>
+<li>❌ Stock photography (per <a class="wikilink" href="#">website.DESIGN</a> §7).</li>
+<li>❌ Generic "Solutions for the modern X" framing.</li>
+<li>❌ Em-dash overuse (one per paragraph max — readers notice when AI overdoes them).</li>
+<li>❌ Fabricated quotes, numbers, or sources. Hard rule from <a class="wikilink" href="#">Brand</a> §3 + global fabrication rule.</li>
+<li>❌ Title-case headlines.</li>
+<li>❌ "We are excited to announce."</li>
+<li>❌ Greenwashing.</li>
+<li>❌ Two CTAs in one email.</li>
+</ul>
+<h3>Specific banned phrases</h3>
+<p>The voice guide bans these; this surface enforces them: <em>world-class, innovative, disruptive, game-changer, leverage, synergies, optimise (in marketing), solutions (replacing the actual product/service name), cheapest, one-stop-shop, NZ-based.</em></p>
+<hr>
+<h2>8. Responsive Behavior</h2>
+<p>Content surfaces are container-shaped. Each format has its own:</p>
+<table><thead><tr><th>Format</th><th>Container</th><th>Notes</th></tr></thead><tbody>
+<tr><td>Brief HTML</td><td>720px max, single column</td><td>Mobile collapses gracefully — no two-column</td></tr>
+<tr><td>LinkedIn post</td><td>Native, plain text + link</td><td>No formatting beyond line breaks</td></tr>
+<tr><td>Carousel</td><td>1080×1080 fixed</td><td>Safe area 80px</td></tr>
+<tr><td>Slide deck</td><td>16:9 1920×1080</td><td>Render to PDF for distribution</td></tr>
+<tr><td>Outreach email</td><td>600px render, plain text fallback</td><td>Always send multipart</td></tr>
+<tr><td>Vault note</td><td>Markdown — Obsidian renders responsively</td><td>No CSS</td></tr>
+</tbody></table>
+<hr>
+<h2>9. Agent Prompt Guide</h2>
+<p>When generating content via any Claude skill (<code>/draft-outreach</code>, brief-pipeline, slide-generator, autoresearch, writeback), include:</p>
+<pre><code>
+You are producing content for Blick Group on the AI-generated content surface.
+
+Read in order:
+1. BlickVault/Brand/brand-guidelines/Brand.md — voice, marks, terminology
+2. BlickVault/Brand/brand-guidelines/content.DESIGN.md — this document
+3. The format-specific section in §4 above for your output type
+
+Voice: Expert Mate (Brand §3). Plain English, specific, customer-as-hero.
+
+Ironclad rules:
+- Source every claim. No fabrication. Link to vault by wikilink, external by URL.
+- Australasian English.
+- Banned vocabulary list in §7. Especially: world-class, innovative,
+  disruptive, leverage, synergies, solutions (as a noun), one-stop-shop.
+- Banned phrases: "Hope this finds you well", "Just circling back",
+  "Here's why this matters", "Curious to hear your thoughts".
+- No emoji in published content. None.
+- No AI-flavoured imagery prompts.
+- Sentence-case headlines.
+- Serif body + sans heading on visual formats.
+- One CTA per email. One pull quote per long-form. One photo OR one chart per slide.
+- If a fact isn't in a sourced vault note or PDS/SDS, say "needs verification" —
+  never invent.
+- Conflicting sources surface, never silently overwrite.
+
+If the output looks like ChatGPT default voice, you got it wrong.
+If it looks like a piece from a great trade publication, you got it right.
+</code></pre>
+<h3>Quick palette + token reference</h3>
+<table><thead><tr><th></th><th>light</th><th>dark</th></tr></thead><tbody>
+<tr><td>Brand orange</td><td><code>#f05323</code></td><td><code>#f05323</code></td></tr>
+<tr><td>Ink (text)</td><td><code>#0a0a0a</code></td><td><code>#f5f3ef</code></td></tr>
+<tr><td>Muted</td><td><code>#5a5a5a</code></td><td><code>#a0a0a0</code></td></tr>
+<tr><td>Page</td><td><code>#ffffff</code></td><td><code>#0a0a0a</code></td></tr>
+<tr><td>Section warm / surface</td><td><code>#f5f3ef</code></td><td><code>#1a1a1a</code></td></tr>
+<tr><td>Highlight</td><td><code>#fde68a</code></td><td><code>#fde68a</code></td></tr>
+</tbody></table>
+<hr>
+<h2>Anti-pattern audit (open items, last reviewed 2026-05-01)</h2>
+<ul>
+<li>[ ] Sweep historical Nexus briefs for emoji and banned phrases.</li>
+<li>[ ] Check <code>slide-generator.js</code> defaults match this spec.</li>
+<li>[ ] <code>/draft-outreach</code> prompts updated to ban "Hope this finds you well".</li>
+<li>[ ] LinkedIn carousel template (Canva) audited against §4.3.</li>
+<li>[ ] Brief HTML template aligned with <a class="wikilink" href="#">editorial-magazine-design</a> tokens.</li>
+</ul>
+<hr>
+<h2>Related</h2>
+<ul>
+<li><a class="wikilink" href="#">Brand</a> — parent brand source of truth</li>
+<li><a class="wikilink" href="#">website.DESIGN</a> — sister surface</li>
+<li><a class="wikilink" href="#">hub-app.DESIGN</a> — sister surface</li>
+<li><a class="wikilink" href="#">editorial-magazine-design</a> — existing editorial system this extends</li>
+<li><a class="wikilink" href="#">brand-voice-guidelines</a> — full voice reference</li>
+</ul>
+</div></body></html>

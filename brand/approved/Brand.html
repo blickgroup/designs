@@ -1,0 +1,252 @@
+<!DOCTYPE html>
+<html lang="en"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Blick Brand — Source of Truth — Blick Brand</title>
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Source+Serif+Pro:ital,wght@0,400;0,600;1,400&family=JetBrains+Mono:wght@400&display=swap" rel="stylesheet">
+<style>
+  :root { --orange:#f05323; --ink:#0a0a0a; --body:#1f1f1f; --muted:#5a5a5a; --page:#fff; --warm:#f5f3ef; --rule:#1f1f1f; --subtle:#e5e5e5; }
+  * { box-sizing:border-box; } html,body { margin:0; padding:0; }
+  body { background:var(--page); color:var(--body); font-family:'Source Serif Pro',Charter,Georgia,serif; font-size:17px; line-height:1.65; }
+  .wrap { max-width:720px; margin:0 auto; padding:64px 24px 96px; }
+  .masthead { display:flex; align-items:baseline; justify-content:space-between; border-bottom:2px solid var(--rule); padding-bottom:12px; margin-bottom:32px; }
+  .masthead .brand { font-family:Inter,sans-serif; font-weight:700; font-size:14px; letter-spacing:.06em; text-transform:uppercase; color:var(--ink); }
+  .masthead .brand span { color:var(--orange); }
+  .masthead .meta { font-family:Inter,sans-serif; font-size:12px; color:var(--muted); text-transform:uppercase; letter-spacing:.04em; }
+  h1,h2,h3,h4,h5,h6 { font-family:Inter,sans-serif; color:var(--ink); line-height:1.25; margin:1.6em 0 .4em; }
+  h1 { font-size:36px; font-weight:700; margin-top:0; letter-spacing:-.01em; }
+  h2 { font-size:26px; font-weight:700; padding-top:16px; border-top:1px solid var(--subtle); }
+  h3 { font-size:19px; font-weight:600; }
+  h4 { font-size:16px; font-weight:600; color:var(--muted); text-transform:uppercase; letter-spacing:.04em; }
+  p { margin:0 0 1em; max-width:68ch; }
+  a { color:var(--orange); text-decoration:none; border-bottom:1px solid rgba(240,83,35,.3); }
+  a:hover { border-bottom-color:var(--orange); }
+  a.wikilink { color:var(--ink); border-bottom-style:dotted; }
+  strong { color:var(--ink); font-weight:600; }
+  blockquote { border-left:3px solid var(--orange); margin:1.2em 0; padding:.4em 0 .4em 16px; color:var(--muted); font-style:italic; }
+  code { font-family:'JetBrains Mono',monospace; font-size:.88em; background:var(--warm); padding:1px 6px; border-radius:3px; color:var(--ink); }
+  pre { background:var(--ink); color:var(--warm); padding:16px 20px; border-radius:4px; overflow-x:auto; margin:1em 0; }
+  pre code { background:transparent; color:inherit; padding:0; font-size:13px; line-height:1.55; }
+  hr { border:0; border-top:1px solid var(--subtle); margin:32px 0; }
+  ul,ol { margin:0 0 1em 1.4em; padding:0; } li { margin-bottom:.3em; }
+  table { width:100%; border-collapse:collapse; margin:1.2em 0; font-family:Inter,sans-serif; font-size:14px; }
+  th { background:var(--ink); color:var(--page); text-align:left; padding:10px 12px; font-weight:600; font-size:12px; text-transform:uppercase; letter-spacing:.04em; }
+  td { padding:10px 12px; border-bottom:1px solid var(--subtle); vertical-align:top; }
+  td code { font-size:12px; }
+</style></head>
+<body><div class="wrap">
+  <div class="masthead"><div class="brand">Blick<span>·</span>Brand</div><div class="meta">Brand.md</div></div>
+  <h1>Blick Brand — Source of Truth</h1>
+<p>This is the canonical brand reference for Blick Group. Logos, marks, multi-entity rules, voice, terminology, and document templates live here. Surface-specific visual systems (website, hub-app, AI-generated content) live in their sibling <code>*.DESIGN.md</code> files and import from this document.</p>
+<blockquote><strong>Read order for AI agents and humans:</strong> <code>Brand.md</code> (this file — <em>who we are</em>) → <code><surface>.DESIGN.md</code> (<em>how we render on a surface</em>) → consume.</blockquote>
+<blockquote><strong>Conflict rule:</strong> if a surface DESIGN.md disagrees with this file on voice, terminology, marks, or governance, <strong>this file wins</strong>. If it disagrees on visual primitives (color, spacing, layout), the surface file wins for that surface.</blockquote>
+<hr>
+<h2>1. Identity</h2>
+<p><strong>Legal entity stack</strong> (per <a class="wikilink" href="#">blick_entity_structure</a>):</p>
+<table><thead><tr><th>Entity</th><th>Country</th><th>Use the mark when…</th></tr></thead><tbody>
+<tr><td>Blick Ltd</td><td>NZ</td><td>NZ-domiciled work, NZ contracts, .nz comms</td></tr>
+<tr><td>Blick LLP Ltd</td><td>AU</td><td>AU-domiciled work, AU contracts, .au comms</td></tr>
+<tr><td>Blick Pty Ltd</td><td>AU</td><td>AU agent role only — back-office, not customer-facing</td></tr>
+<tr><td>Blick Group</td><td>Holding</td><td>Group-level brand, investor-facing, web homepage</td></tr>
+</tbody></table>
+<p><strong>Naming rules</strong>:</p>
+<ul>
+<li>Always <strong>Blick</strong> or <strong>Blick Group</strong>. Never "Blick Drilling", "Blick Drilling Solutions", or "Blick Fluids" except where Fluids is the formal sub-brand on product labels and PDS/SDS.</li>
+<li>Australasian framing — never "NZ-based", never "expanding into AU". We operate across both.</li>
+<li>AU-facing content does not lead with NZ heritage. NZ-facing content can speak with market-leader authority.</li>
+</ul>
+<hr>
+<h2>2. Marks</h2>
+<h3>Primary logo</h3>
+<p>Full-colour orange + black (Pantone Orange 021 C, <code>#f05323</code>) is default. Monochrome only where background contrast forces it. Icon-only (the circle B) is restricted to watermarks, banners, and space-constrained applications.</p>
+<h3>Standard files (canonical IDs in <a class="wikilink" href="#">blick_brand_assets</a>)</h3>
+<ul>
+<li><strong>Blick (NZ):</strong> <code>orange black@2x.png</code> — Drive <code>1Aq9u6zh4J6-f-1r8mw-o4iOXSBeASaIr</code></li>
+<li><strong>Blick LLP (AU):</strong> <code>orange blacklarge.png</code> — Drive <code>11TztnVTn4pIjB9FdFdyB77JHhKmkmiSa</code></li>
+<li>Nexus copies live in <code>Hub/Nexus/Assets/STANDARD-*</code> and are the ones AI agents should pull when generating documents.</li>
+</ul>
+<h3>Clear space and minimum size</h3>
+<ul>
+<li>Icon-to-lettermark ratio: <strong>100% : 150%</strong>.</li>
+<li>Minimum reproduction: <strong>10mm high</strong> in print, <strong>24px high</strong> on screen.</li>
+<li>Clear space: nothing between the "B" and the icon.</li>
+</ul>
+<h3>Don'ts</h3>
+<ul>
+<li>Don't stretch, rotate, or recolour the logo.</li>
+<li>Don't place the logo on similarly-coloured backgrounds without switching to monochrome.</li>
+<li>Don't use the icon-only mark inline with body text.</li>
+<li>Don't pair the NZ mark with AU contact details, or vice versa.</li>
+</ul>
+<h3>Multi-entity co-branding</h3>
+<ul>
+<li><strong>Group-level surfaces</strong> (blick.group homepage, investor decks, careers) use the unbadged Blick mark.</li>
+<li><strong>Operational surfaces</strong> (proposals, invoices, letterhead, PDS/SDS) use the entity mark matching the issuing entity.</li>
+<li>Never show two entity marks on the same page. If a document spans both, use the Group mark and disclose entity context in the footer.</li>
+</ul>
+<hr>
+<h2>3. Voice</h2>
+<p>Source of truth: <a class="wikilink" href="#">brand-voice-guidelines</a>. Summarised here so agents working on a single surface don't need to read both files.</p>
+<p><strong>The Expert Mate.</strong> Technically brilliant, completely approachable. Picks up the phone, knows your name, solves the problem on the spot. Confident without being flashy, helpful without being pushy.</p>
+<table><thead><tr><th>We are</th><th>We are not</th></tr></thead><tbody>
+<tr><td>Expert problem-solvers</td><td>Know-it-alls</td></tr>
+<tr><td>Dependable</td><td>Slow or bureaucratic</td></tr>
+<tr><td>In the field</td><td>Desk-bound</td></tr>
+<tr><td>Down-to-earth</td><td>Corporate or slick</td></tr>
+<tr><td>Quality-focused</td><td>The cheapest option</td></tr>
+<tr><td>Relationship-driven</td><td>Pushy salespeople</td></tr>
+<tr><td>Proactive</td><td>Passive order-takers</td></tr>
+<tr><td>Honest</td><td>Oversellers</td></tr>
+</tbody></table>
+<p><strong>Rules every surface must obey:</strong></p>
+<ol>
+<li><strong>Plain English over jargon.</strong> If there's a simpler way, use it. Pair every technical term with a plain-language explanation in the same sentence.</li>
+<li><strong>Customer is the hero.</strong> Stories, case studies, and product copy frame the customer's win, not Blick's.</li>
+<li><strong>Specifics beat superlatives.</strong> "We had stock on site in 48 hours" beats "world-class supply." Numbers, places, names.</li>
+<li><strong>Active voice, short sentences.</strong> "We'll have it on your site tomorrow" not "Your order will be dispatched in due course."</li>
+<li><strong>Environmental claims are secondary.</strong> Lead with performance; mention environmental benefit second, and only when product-specific.</li>
+<li><strong>No filler vocabulary.</strong> Banned: <em>leverage, synergies, optimise, disruptive, world-class, game-changer, cheapest, one-stop-shop, solutions</em> (as a noun replacing the actual product/service name).</li>
+</ol>
+<hr>
+<h2>4. Terminology Register</h2>
+<p>The single source of truth for product names, regional spellings, and contested terms. When two sources disagree, this register wins.</p>
+<h3>Spelling</h3>
+<p><strong>Australasian English.</strong> <code>colour</code>, <code>organisation</code>, <code>optimise</code>, <code>centre</code>, <code>analyse</code>. Never US spellings except in code identifiers and external system field names.</p>
+<h3>Must-use</h3>
+<table><thead><tr><th>Term</th><th>Use for</th><th>Don't use</th></tr></thead><tbody>
+<tr><td>Drilling fluids</td><td>Primary product category</td><td>"Mud" in formal content (acceptable in social)</td></tr>
+<tr><td>Partner / partnership</td><td>Customer relationships</td><td>Vendor, supplier (where avoidable)</td></tr>
+<tr><td>Expert advice</td><td>Our technical service</td><td>Consulting, solutions</td></tr>
+<tr><td>On site</td><td>Physical presence</td><td>"On location", "in the field" (interchangeable)</td></tr>
+<tr><td>Crew / team</td><td>Customer's people</td><td>Personnel, workforce</td></tr>
+<tr><td>Australasian</td><td>Our geography</td><td>"ANZ" (acronym only in tables)</td></tr>
+</tbody></table>
+<h3>Eco vs green</h3>
+<ul>
+<li><strong>Eco Dry</strong> is a product name and proper noun. Always capitalised, no hyphen.</li>
+<li><strong>Eco-friendly</strong> describes Eco Dry and the Eco range. Hyphenated.</li>
+<li><strong>Green</strong> is not used as a brand or product modifier. It signals greenwashing and is banned in marketing copy.</li>
+<li>The eco/biodegradable drilling-fluid <em>range</em> is parked (see <a class="wikilink" href="#">project_sco_eco_fluid_parked</a>). Do not generate copy implying we sell eco fluids beyond Eco Dry.</li>
+</ul>
+<h3>Contested / never-use</h3>
+<table><thead><tr><th>Term</th><th>Reason</th></tr></thead><tbody>
+<tr><td>Cheapest in market</td><td>Contradicts positioning</td></tr>
+<tr><td>One-stop-shop</td><td>Competitor CEA's positioning</td></tr>
+<tr><td>World-class</td><td>Unsubstantiated</td></tr>
+<tr><td>Innovative / disruptive</td><td>Customers don't talk like this</td></tr>
+<tr><td>Thixotropic (unaccompanied)</td><td>Jargon — always pair with plain-English explanation</td></tr>
+<tr><td>NZ-based</td><td>Wrong framing — we are Australasian</td></tr>
+</tbody></table>
+<h3>Product naming</h3>
+<p>Product files in <a class="wikilink" href="#">blick-products-core</a> are canonical. When in doubt, link the product as a wikilink (e.g. <code><a class="wikilink" href="#">carry-flow</a></code>) rather than retyping its name.</p>
+<hr>
+<h2>5. Document Templates</h2>
+<table><thead><tr><th>Surface</th><th>Template</th><th>Owner</th><th>Location</th></tr></thead><tbody>
+<tr><td>NZ letterhead</td><td>Blick Letterhead template</td><td>Operations</td><td>Drive <code>1g9Cc9tSSLp3UFiGrsmP3Ko2DYMExADmmTbgWC8ID-6Y</code></td></tr>
+<tr><td>AU letterhead</td><td>Blick LLP Letterhead Template</td><td>Operations</td><td>Drive <code>1XleQagiOFGLHaeEKwtqV4mwaQLVjlwI9ywdr7MgEvNI</code></td></tr>
+<tr><td>PDS / SDS</td><td>Per-product, controlled in <a class="wikilink" href="#">blick-products-core</a></td><td>Products</td><td>Google Drive <code>Marketing/Brand/Products/</code></td></tr>
+<tr><td>Proposal cover</td><td>TBD — to be drafted</td><td>Sales</td><td>—</td></tr>
+<tr><td>Email signature</td><td>Per <a class="wikilink" href="#">blick-brand-guideline-full</a> §Brand Applications</td><td>All</td><td>Inline</td></tr>
+<tr><td>AI brief (HTML)</td><td>Editorial magazine, <a class="wikilink" href="#">editorial-magazine-design</a></td><td>Nexus</td><td><code>nexus/templates/</code></td></tr>
+</tbody></table>
+<p><strong>Rule:</strong> AI-generated documents (briefs, decks, outreach drafts, proposals) <strong>must</strong> start from one of these templates or extend them. New templates need a brand owner before becoming canonical.</p>
+<hr>
+<h2>6. Imagery & Photography</h2>
+<ul>
+<li><strong>Cooler tones</strong> — never warm/sepia/golden-hour filters.</li>
+<li><strong>Real sites, real crews</strong> — stock photography is banned in marketing copy. Field photography from Blick jobs is preferred.</li>
+<li><strong>Vector icons over low-quality product shots.</strong> If a photo isn't sharp, replace with an icon or illustration.</li>
+<li><strong>Workplace-focused</strong> — drilling rigs, mud tanks, products in use. Not hard-hat-pointing-at-laptop stock.</li>
+<li><strong>Product label photography</strong> uses the colour-coded category palette (see §7.2).</li>
+<li>Vehicle signage: 3M 2080 Gloss Black on Tesla Model Y, full Blick logo across front side doors.</li>
+</ul>
+<hr>
+<h2>7. Visual Primitives (cross-surface)</h2>
+<p>Surface DESIGN.md files override these for their own context, but every surface starts from these.</p>
+<h3>7.1 Brand colour</h3>
+<table><thead><tr><th>Role</th><th>Hex</th><th>Pantone</th><th>Notes</th></tr></thead><tbody>
+<tr><td><strong>Brand orange</strong></td><td><code>#f05323</code></td><td>Orange 021 C</td><td>Single primary anchor. Never substitute.</td></tr>
+<tr><td>Dark grey</td><td><code>#58595b</code></td><td>4279 C</td><td>Body text, secondary surfaces</td></tr>
+<tr><td>Light grey</td><td><code>#bcbec0</code></td><td>Cool Gray 5 C</td><td>Borders, muted text</td></tr>
+<tr><td>Black</td><td><code>#000000</code></td><td>—</td><td>Print body, document text</td></tr>
+</tbody></table>
+<h3>7.2 Product category palette (Blick Fluids)</h3>
+<p>Colour-blind-accessible palette used on labels, product UI, and category tags. <strong>Do not invent new category colours</strong> — extend the table here first.</p>
+<table><thead><tr><th>Category</th><th>Hex</th></tr></thead><tbody>
+<tr><td>Stabilisers</td><td><code>#785ef0</code></td></tr>
+<tr><td>Filtration Control</td><td><code>#118fae</code></td></tr>
+<tr><td>Clay Adjustment</td><td><code>#dc267f</code></td></tr>
+<tr><td>Clay Control</td><td><code>#3c8c4c</code></td></tr>
+<tr><td>LCM (Lost Circulation)</td><td><code>#fe6100</code></td></tr>
+<tr><td>Support Chemicals</td><td><code>#d0d0d0</code></td></tr>
+<tr><td>Bentonite</td><td><code>#ffb000</code></td></tr>
+</tbody></table>
+<h3>7.3 Typography</h3>
+<ul>
+<li><strong>Print + digital body:</strong> Proxima Nova (Regular / Medium / Bold).</li>
+<li><strong>Code / monospace:</strong> JetBrains Mono (digital surfaces only).</li>
+<li><strong>Web fallback stack</strong> (when Proxima Nova is unavailable for licensing or weight reasons): <code>Inter, ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto, sans-serif</code>.</li>
+<li><strong>Hierarchy rule:</strong> never more than three weights on one screen or page.</li>
+</ul>
+<hr>
+<h2>8. Governance</h2>
+<p><strong>Owner:</strong> Shaun Newman (Director). Brand changes require sign-off from the owner before merging into this file.</p>
+<p><strong>Change process:</strong></p>
+<ol>
+<li>Propose changes in a vault note in <code>BlickVault/Inbox/raw/</code> with <code>type: brand-change</code>.</li>
+<li>Reference the section being changed and the conflict source.</li>
+<li>Owner approves → edit propagates here → mirror updates push automatically (see §10).</li>
+</ol>
+<p><strong>Source-of-truth precedence</strong> (when documents disagree):</p>
+<ol>
+<li>This <code>Brand.md</code> (governance, voice, terminology, marks)</li>
+<li><code><surface>.DESIGN.md</code> (surface-specific visual primitives)</li>
+<li><code><a class="wikilink" href="#">blick-brand-guideline-full</a></code> (legacy 2025 brand book — historical reference only)</li>
+<li>Anything in Drive (<code>Marketing/Brand/</code>) — superseded by the above</li>
+</ol>
+<p><strong>Never silently overwrite a conflict.</strong> Per global rule: surface the disagreement, name the sources, ask the owner.</p>
+<p><strong>Review cadence:</strong> quarterly review by owner. Last reviewed: 2026-05-01. Next review: 2026-08-01.</p>
+<hr>
+<h2>9. Surfaces (where this brand renders)</h2>
+<table><thead><tr><th>Surface</th><th>DESIGN.md</th><th>Audience</th><th>Owned by</th></tr></thead><tbody>
+<tr><td><strong>Marketing website</strong> (blick.group)</td><td><a class="wikilink" href="#">website.DESIGN</a></td><td>Prospects, candidates, public</td><td>Marketing</td></tr>
+<tr><td><strong>Internal hub-app</strong></td><td><a class="wikilink" href="#">hub-app.DESIGN</a></td><td>~11 internal users</td><td>Engineering / Operations</td></tr>
+<tr><td><strong>AI-generated content</strong> (briefs, LinkedIn, decks, outreach)</td><td><a class="wikilink" href="#">content.DESIGN</a></td><td>External + internal, machine-mediated</td><td>Nexus / Marketing</td></tr>
+<tr><td><strong>Print and physical</strong> (apparel, vehicles, packaging, labels)</td><td>Covered in §6, §7 here + <a class="wikilink" href="#">blick-brand-guideline-full</a></td><td>External</td><td>Operations</td></tr>
+</tbody></table>
+<hr>
+<h2>10. Where this lives and how it's mirrored</h2>
+<p><strong>Source of truth:</strong> this file (<code>BlickVault/Brand/brand-guidelines/Brand.md</code>).</p>
+<p><strong>Mirrors</strong> (auto-generated, do not edit):</p>
+<ul>
+<li><code>hub-app/docs/design/Brand.md</code> — for engineers and Claude/Cursor working in the repo.</li>
+<li>Public design gallery — only the surface DESIGN.md files are published; <code>Brand.md</code> is internal.</li>
+</ul>
+<p><strong>Maintenance skills:</strong></p>
+<ul>
+<li><code>/design-system-curator</code> — refresh mirrors, validate cross-references, surface drift.</li>
+<li><code>/design-token-audit</code> — diff hub-app <code>themes.css</code> and website CSS against the tokens declared in surface DESIGN.md files.</li>
+</ul>
+<hr>
+<h2>11. Anti-patterns (brand-wide)</h2>
+<ul>
+<li>❌ Inventing tokens, colours, or terms not declared here or in a surface DESIGN.md.</li>
+<li>❌ Using legacy "Blick Drilling Solutions" naming anywhere.</li>
+<li>❌ Stock photography in marketing surfaces.</li>
+<li>❌ "Green" as a product modifier.</li>
+<li>❌ Mixing entity marks on a single document.</li>
+<li>❌ Greenwashing (vague sustainability claims without a specific product reference).</li>
+<li>❌ Corporate filler vocabulary (see §3 banned list).</li>
+<li>❌ Silently resolving a brand conflict instead of surfacing it.</li>
+</ul>
+<hr>
+<h2>Related</h2>
+<ul>
+<li><a class="wikilink" href="#">brand-voice-guidelines</a> — full voice and tone reference (longer than §3 above)</li>
+<li><a class="wikilink" href="#">blick-brand-guideline-full</a> — legacy 2025 brand book (visual identity, apparel, packaging detail)</li>
+<li><a class="wikilink" href="#">blick-products-core</a> — product naming canon</li>
+<li><a class="wikilink" href="#">blick_brand_assets</a> (memory) — Drive IDs for logos and templates</li>
+<li><a class="wikilink" href="#">website.DESIGN</a> — marketing website surface</li>
+<li><a class="wikilink" href="#">hub-app.DESIGN</a> — internal app surface</li>
+<li><a class="wikilink" href="#">content.DESIGN</a> — AI-generated content surface</li>
+</ul>
+</div></body></html>

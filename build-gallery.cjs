@@ -56,6 +56,14 @@ const PROJECTS = [
     approvedDir: path.join(ROOT, 'nexus', 'approved'),
     archiveDir: path.join(ROOT, 'nexus', 'archive'),
   },
+  {
+    id: 'brand',
+    label: 'Brand',
+    description: 'Brand source of truth — voice, marks, surface DESIGN.md set',
+    iterationsDir: path.join(ROOT, 'brand', 'iterations'),
+    approvedDir: path.join(ROOT, 'brand', 'approved'),
+    archiveDir: path.join(ROOT, 'brand', 'archive'),
+  },
 ];
 
 function humanName(filename) {
@@ -936,9 +944,130 @@ console.log('Building multi-project design gallery...');
 if (fs.existsSync(OUT)) fs.rmSync(OUT, { recursive: true });
 fs.mkdirSync(DESIGNS_OUT, { recursive: true });
 
+// Brand guidelines sync — render brand/source/*.md into editorial HTML cards.
+// Source of truth lives in BlickVault (vault). This repo holds the mirror at
+// brand/source/, refreshed by the /design-system-curator skill. Editorial
+// rendering follows content.DESIGN.md §3 (serif body + sans heading + brand
+// orange anchor) so the brand surface looks consistent with what the spec
+// itself prescribes for AI-generated content.
+function syncBrandGuidelines() {
+  const sourceDir = path.join(ROOT, 'brand', 'source');
+  const brandOut = path.join(ROOT, 'brand', 'approved');
+  if (!fs.existsSync(sourceDir)) {
+    console.log('  Brand source dir not found at brand/source/ — skipping');
+    return;
+  }
+  fs.mkdirSync(brandOut, { recursive: true });
+  fs.mkdirSync(path.join(ROOT, 'brand', 'iterations'), { recursive: true });
+  fs.mkdirSync(path.join(ROOT, 'brand', 'archive'), { recursive: true });
+
+  const files = fs.readdirSync(sourceDir).filter(f => f.endsWith('.md'));
+  let count = 0;
+  files.forEach(f => {
+    const md = fs.readFileSync(path.join(sourceDir, f), 'utf8');
+    const html = renderBrandDoc(f, md);
+    const outName = f.replace(/\.md$/, '.html').replace(/\./g, '-').replace(/-html$/, '.html');
+    fs.writeFileSync(path.join(brandOut, outName), html);
+    count++;
+  });
+  console.log(`  Rendered ${count} brand guideline(s) to brand/approved/`);
+}
+
+// Minimal, dependency-free markdown -> editorial HTML renderer.
+// Handles frontmatter, headings, paragraphs, lists, tables, inline code,
+// bold, italic, links, blockquotes, hr, code fences, wikilinks.
+function renderBrandDoc(filename, md) {
+  let body = md.replace(/^---\n[\s\S]*?\n---\n?/, '');
+  const titleMatch = body.match(/^#\s+(.+)$/m);
+  const title = titleMatch ? titleMatch[1] : filename.replace(/\.md$/, '');
+  const lines = body.split('\n');
+  const out = [];
+  let inCode = false, inList = null, inTable = false, para = [];
+  function flushPara() { if (para.length) { out.push(`<p>${inline(para.join(' '))}</p>`); para = []; } }
+  function closeList() { if (inList) { out.push(`</${inList}>`); inList = null; } }
+  function closeTable() { if (inTable) { out.push('</tbody></table>'); inTable = false; } }
+  function inline(s) {
+    return s
+      .replace(/`([^`]+)`/g, '<code>$1</code>')
+      .replace(/\*\*([^*]+)\*\*/g, '<strong>$1</strong>')
+      .replace(/(^|[^*])\*([^*]+)\*/g, '$1<em>$2</em>')
+      .replace(/\[\[([^\]|]+)\|([^\]]+)\]\]/g, '<a class="wikilink" href="#">$2</a>')
+      .replace(/\[\[([^\]]+)\]\]/g, '<a class="wikilink" href="#">$1</a>')
+      .replace(/\[([^\]]+)\]\(([^)]+)\)/g, '<a href="$2">$1</a>');
+  }
+  for (let i = 0; i < lines.length; i++) {
+    const line = lines[i];
+    if (line.startsWith('```')) {
+      flushPara(); closeList(); closeTable();
+      if (!inCode) { inCode = true; out.push('<pre><code>'); } else { inCode = false; out.push('</code></pre>'); }
+      continue;
+    }
+    if (inCode) { out.push(line.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;')); continue; }
+    if (/^---+\s*$/.test(line)) { flushPara(); closeList(); closeTable(); out.push('<hr>'); continue; }
+    const h = line.match(/^(#{1,6})\s+(.+)$/);
+    if (h) { flushPara(); closeList(); closeTable(); out.push(`<h${h[1].length}>${inline(h[2])}</h${h[1].length}>`); continue; }
+    if (line.startsWith('>')) { flushPara(); closeList(); closeTable(); out.push(`<blockquote>${inline(line.replace(/^>\s?/, ''))}</blockquote>`); continue; }
+    if (line.includes('|') && line.trim().startsWith('|')) {
+      const isSep = /^\|[\s:|-]+\|$/.test(line.trim());
+      if (isSep) continue;
+      const cells = line.trim().slice(1, -1).split('|').map(c => c.trim());
+      if (!inTable) { flushPara(); closeList(); inTable = true; out.push('<table><thead><tr>' + cells.map(c => `<th>${inline(c)}</th>`).join('') + '</tr></thead><tbody>'); }
+      else { out.push('<tr>' + cells.map(c => `<td>${inline(c)}</td>`).join('') + '</tr>'); }
+      continue;
+    } else if (inTable) { closeTable(); }
+    const ul = line.match(/^[-*]\s+(.+)$/);
+    const ol = line.match(/^\d+\.\s+(.+)$/);
+    if (ul) { flushPara(); if (inList !== 'ul') { closeList(); out.push('<ul>'); inList = 'ul'; } out.push(`<li>${inline(ul[1])}</li>`); continue; }
+    if (ol) { flushPara(); if (inList !== 'ol') { closeList(); out.push('<ol>'); inList = 'ol'; } out.push(`<li>${inline(ol[1])}</li>`); continue; }
+    if (line.trim() === '') { flushPara(); closeList(); continue; }
+    para.push(line);
+  }
+  flushPara(); closeList(); closeTable();
+  return `<!DOCTYPE html>
+<html lang="en"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1">
+<title>${title} — Blick Brand</title>
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Source+Serif+Pro:ital,wght@0,400;0,600;1,400&family=JetBrains+Mono:wght@400&display=swap" rel="stylesheet">
+<style>
+  :root { --orange:#f05323; --ink:#0a0a0a; --body:#1f1f1f; --muted:#5a5a5a; --page:#fff; --warm:#f5f3ef; --rule:#1f1f1f; --subtle:#e5e5e5; }
+  * { box-sizing:border-box; } html,body { margin:0; padding:0; }
+  body { background:var(--page); color:var(--body); font-family:'Source Serif Pro',Charter,Georgia,serif; font-size:17px; line-height:1.65; }
+  .wrap { max-width:720px; margin:0 auto; padding:64px 24px 96px; }
+  .masthead { display:flex; align-items:baseline; justify-content:space-between; border-bottom:2px solid var(--rule); padding-bottom:12px; margin-bottom:32px; }
+  .masthead .brand { font-family:Inter,sans-serif; font-weight:700; font-size:14px; letter-spacing:.06em; text-transform:uppercase; color:var(--ink); }
+  .masthead .brand span { color:var(--orange); }
+  .masthead .meta { font-family:Inter,sans-serif; font-size:12px; color:var(--muted); text-transform:uppercase; letter-spacing:.04em; }
+  h1,h2,h3,h4,h5,h6 { font-family:Inter,sans-serif; color:var(--ink); line-height:1.25; margin:1.6em 0 .4em; }
+  h1 { font-size:36px; font-weight:700; margin-top:0; letter-spacing:-.01em; }
+  h2 { font-size:26px; font-weight:700; padding-top:16px; border-top:1px solid var(--subtle); }
+  h3 { font-size:19px; font-weight:600; }
+  h4 { font-size:16px; font-weight:600; color:var(--muted); text-transform:uppercase; letter-spacing:.04em; }
+  p { margin:0 0 1em; max-width:68ch; }
+  a { color:var(--orange); text-decoration:none; border-bottom:1px solid rgba(240,83,35,.3); }
+  a:hover { border-bottom-color:var(--orange); }
+  a.wikilink { color:var(--ink); border-bottom-style:dotted; }
+  strong { color:var(--ink); font-weight:600; }
+  blockquote { border-left:3px solid var(--orange); margin:1.2em 0; padding:.4em 0 .4em 16px; color:var(--muted); font-style:italic; }
+  code { font-family:'JetBrains Mono',monospace; font-size:.88em; background:var(--warm); padding:1px 6px; border-radius:3px; color:var(--ink); }
+  pre { background:var(--ink); color:var(--warm); padding:16px 20px; border-radius:4px; overflow-x:auto; margin:1em 0; }
+  pre code { background:transparent; color:inherit; padding:0; font-size:13px; line-height:1.55; }
+  hr { border:0; border-top:1px solid var(--subtle); margin:32px 0; }
+  ul,ol { margin:0 0 1em 1.4em; padding:0; } li { margin-bottom:.3em; }
+  table { width:100%; border-collapse:collapse; margin:1.2em 0; font-family:Inter,sans-serif; font-size:14px; }
+  th { background:var(--ink); color:var(--page); text-align:left; padding:10px 12px; font-weight:600; font-size:12px; text-transform:uppercase; letter-spacing:.04em; }
+  td { padding:10px 12px; border-bottom:1px solid var(--subtle); vertical-align:top; }
+  td code { font-size:12px; }
+</style></head>
+<body><div class="wrap">
+  <div class="masthead"><div class="brand">Blick<span>·</span>Brand</div><div class="meta">${filename}</div></div>
+  ${out.join('\n')}
+</div></body></html>`;
+}
+
 // Sync external designs
 syncWebsiteDesigns();
 syncVideoDesigns();
+syncBrandGuidelines();
 
 // Scan all projects
 let allDesigns = [];
