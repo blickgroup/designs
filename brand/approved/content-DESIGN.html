@@ -1,41 +1,520 @@
 <!DOCTYPE html>
-<html lang="en"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1">
-<title>AI-Generated Content Design System — Blick Brand</title>
-<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>AI-Generated Content — Blick Brand</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Source+Serif+Pro:ital,wght@0,400;0,600;1,400&family=JetBrains+Mono:wght@400&display=swap" rel="stylesheet">
 <style>
-  :root { --orange:#f05323; --ink:#0a0a0a; --body:#1f1f1f; --muted:#5a5a5a; --page:#fff; --warm:#f5f3ef; --rule:#1f1f1f; --subtle:#e5e5e5; }
-  * { box-sizing:border-box; } html,body { margin:0; padding:0; }
-  body { background:var(--page); color:var(--body); font-family:'Source Serif Pro',Charter,Georgia,serif; font-size:17px; line-height:1.65; }
-  .wrap { max-width:720px; margin:0 auto; padding:64px 24px 96px; }
-  .masthead { display:flex; align-items:baseline; justify-content:space-between; border-bottom:2px solid var(--rule); padding-bottom:12px; margin-bottom:32px; }
-  .masthead .brand { font-family:Inter,sans-serif; font-weight:700; font-size:14px; letter-spacing:.06em; text-transform:uppercase; color:var(--ink); }
-  .masthead .brand span { color:var(--orange); }
-  .masthead .meta { font-family:Inter,sans-serif; font-size:12px; color:var(--muted); text-transform:uppercase; letter-spacing:.04em; }
-  h1,h2,h3,h4,h5,h6 { font-family:Inter,sans-serif; color:var(--ink); line-height:1.25; margin:1.6em 0 .4em; }
-  h1 { font-size:36px; font-weight:700; margin-top:0; letter-spacing:-.01em; }
-  h2 { font-size:26px; font-weight:700; padding-top:16px; border-top:1px solid var(--subtle); }
-  h3 { font-size:19px; font-weight:600; }
-  h4 { font-size:16px; font-weight:600; color:var(--muted); text-transform:uppercase; letter-spacing:.04em; }
-  p { margin:0 0 1em; max-width:68ch; }
-  a { color:var(--orange); text-decoration:none; border-bottom:1px solid rgba(240,83,35,.3); }
-  a:hover { border-bottom-color:var(--orange); }
-  a.wikilink { color:var(--ink); border-bottom-style:dotted; }
-  strong { color:var(--ink); font-weight:600; }
-  blockquote { border-left:3px solid var(--orange); margin:1.2em 0; padding:.4em 0 .4em 16px; color:var(--muted); font-style:italic; }
-  code { font-family:'JetBrains Mono',monospace; font-size:.88em; background:var(--warm); padding:1px 6px; border-radius:3px; color:var(--ink); }
-  pre { background:var(--ink); color:var(--warm); padding:16px 20px; border-radius:4px; overflow-x:auto; margin:1em 0; }
-  pre code { background:transparent; color:inherit; padding:0; font-size:13px; line-height:1.55; }
-  hr { border:0; border-top:1px solid var(--subtle); margin:32px 0; }
-  ul,ol { margin:0 0 1em 1.4em; padding:0; } li { margin-bottom:.3em; }
-  table { width:100%; border-collapse:collapse; margin:1.2em 0; font-family:Inter,sans-serif; font-size:14px; }
-  th { background:var(--ink); color:var(--page); text-align:left; padding:10px 12px; font-weight:600; font-size:12px; text-transform:uppercase; letter-spacing:.04em; }
-  td { padding:10px 12px; border-bottom:1px solid var(--subtle); vertical-align:top; }
-  td code { font-size:12px; }
-</style></head>
-<body><div class="wrap">
-  <div class="masthead"><div class="brand">Blick<span>·</span>Brand</div><div class="meta">content.DESIGN.md</div></div>
-  <h1>AI-Generated Content Design System</h1>
+  :root {
+    --orange:#f05323; --orange-hover:#ff6a3d;
+    --ink:#0a0a0a; --body:#1f1f1f; --muted:#5a5a5a;
+    --page:#fff; --warm:#f5f3ef; --rule:#1f1f1f; --subtle:#e5e5e5;
+    --success:#12a36d; --warning:#d97706; --danger:#dc2626; --info:#0891b2;
+  }
+  *, *::before, *::after { box-sizing: border-box; }
+  html, body { margin:0; padding:0; }
+  body { background: var(--page); color: var(--body); font-family: 'Source Serif Pro', Charter, Georgia, serif; font-size:17px; line-height:1.65; -webkit-font-smoothing:antialiased; }
+  .mono { font-family: 'JetBrains Mono', ui-monospace, SFMono-Regular, Menlo, monospace; }
+
+  /* Layout */
+  .layout { display:grid; grid-template-columns: minmax(0, 1fr) 420px; gap:48px; max-width:1320px; margin:0 auto; padding:48px 32px 96px; }
+  @media (max-width: 1080px) { .layout { grid-template-columns: 1fr; } .export-panel { position:static; max-height:none; } }
+
+  /* Breadcrumb */
+  .breadcrumb { font-family: Inter, sans-serif; font-size:12px; letter-spacing:.04em; text-transform:uppercase; color: var(--muted); margin-bottom:24px; }
+  .breadcrumb a { color: var(--muted); text-decoration:none; }
+  .breadcrumb a:hover { color: var(--ink); }
+
+  /* Hero */
+  .hero { margin-bottom: 48px; padding-bottom:32px; border-bottom: 2px solid var(--rule); }
+  .hero-wordmark { font-family: 'Proxima Nova', Inter, sans-serif; font-weight:700; font-size:80px; line-height:1; letter-spacing:-.025em; color: var(--ink); margin:0 0 16px; }
+  .hero-tagline { font-family: 'Source Serif Pro', Charter, serif; font-style:italic; font-size:22px; color: var(--orange); margin:0 0 24px; }
+  .hero-essence { font-family: 'Source Serif Pro', Charter, serif; font-size:18px; line-height:1.65; color: var(--body); max-width:60ch; margin:0 0 24px; }
+  .hero-meta { display:flex; gap:16px; flex-wrap:wrap; align-items:center; font-family: Inter, sans-serif; font-size:13px; color: var(--muted); }
+  .hero-meta a { color: var(--ink); text-decoration:none; border-bottom:1px solid var(--subtle); }
+  .hero-meta a:hover { border-bottom-color: var(--orange); color: var(--orange); }
+
+  /* Section heading */
+  .section { margin-top:64px; }
+  .section-head { font-family: Inter, sans-serif; font-size:11px; font-weight:700; letter-spacing:.12em; text-transform:uppercase; color: var(--muted); margin:0 0 24px; padding-bottom:8px; border-bottom:1px solid var(--subtle); }
+
+  /* Swatches */
+  .swatch-group { margin-bottom: 32px; }
+  .swatch-group-name { font-family: Inter, sans-serif; font-size:13px; font-weight:600; color: var(--ink); margin-bottom:12px; }
+  .swatch-list { display:grid; grid-template-columns: 1fr; gap:8px; }
+  .swatch { display:grid; grid-template-columns: 56px 1fr; gap:16px; align-items:center; padding:12px; border:1px solid var(--subtle); border-radius:6px; background: var(--page); cursor:pointer; text-align:left; font:inherit; transition: border-color .15s, box-shadow .15s; }
+  .swatch:hover { border-color: var(--ink); box-shadow: 0 1px 0 rgba(0,0,0,.04); }
+  .swatch-chip { width:56px; height:56px; border-radius:4px; box-shadow: inset 0 0 0 1px rgba(0,0,0,.08); }
+  .swatch-meta { display:flex; flex-direction:column; gap:4px; min-width:0; }
+  .swatch-row1 { display:flex; gap:12px; align-items:baseline; }
+  .swatch-name { font-family: Inter, sans-serif; font-weight:600; color: var(--ink); font-size:14px; }
+  .swatch-hex { font-size:13px; color: var(--muted); }
+  .swatch-role { font-family: 'Source Serif Pro', Charter, serif; font-size:14px; color: var(--body); line-height:1.4; }
+  .swatch.copied { border-color: var(--success); }
+  .swatch.copied .swatch-hex::after { content:" · copied"; color: var(--success); font-family: Inter, sans-serif; }
+
+  /* Type scale */
+  .type-scale { display:flex; flex-direction:column; gap:24px; padding:24px 0; }
+  .type-row { display:grid; grid-template-columns: 200px 1fr; gap:24px; align-items:baseline; padding:16px 0; border-bottom:1px solid var(--subtle); }
+  .type-spec { display:flex; flex-direction:column; gap:4px; }
+  .type-label { font-family: 'JetBrains Mono', monospace; font-size:12px; color: var(--orange); font-weight:600; }
+  .type-meta { font-family: 'JetBrains Mono', monospace; font-size:11px; color: var(--muted); line-height:1.4; }
+  .type-sample { color: var(--ink); }
+
+  /* Fonts */
+  .font-grid { display:grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap:16px; }
+  .font-card { padding:24px; border:1px solid var(--subtle); border-radius:8px; background: var(--page); }
+  .font-card-hero { font-size:36px; line-height:1; color: var(--ink); margin-bottom:16px; }
+  .font-card-meta { display:grid; grid-template-columns: 80px 1fr; gap:6px 12px; margin:0 0 16px; font-size:13px; }
+  .font-card-meta dt { font-family: Inter, sans-serif; color: var(--muted); font-weight:600; }
+  .font-card-meta dd { margin:0; color: var(--ink); }
+  .font-card-why { font-family: 'Source Serif Pro', Charter, serif; font-style:italic; font-size:14px; color: var(--body); margin:0; line-height:1.55; }
+
+  /* Token tables */
+  .token-table { width:100%; border-collapse:collapse; font-family: Inter, sans-serif; font-size:13px; }
+  .token-table th { text-align:left; padding:8px 12px; background: var(--ink); color: var(--page); font-size:11px; text-transform:uppercase; letter-spacing:.06em; }
+  .token-table td { padding:10px 12px; border-bottom:1px solid var(--subtle); vertical-align:top; }
+  .copy-btn { background:none; border:1px solid var(--subtle); border-radius:4px; padding:2px 8px; cursor:pointer; font-size:14px; color: var(--muted); }
+  .copy-btn:hover { border-color: var(--ink); color: var(--ink); }
+  .copy-btn.copied { border-color: var(--success); color: var(--success); }
+
+  /* Do/Don't */
+  .dodont { display:grid; grid-template-columns: 1fr 1fr; gap:24px; }
+  @media (max-width:720px) { .dodont { grid-template-columns:1fr; } }
+  .dodont-col { padding:24px; border-radius:8px; }
+  .dodont-do { background: rgba(18,163,109,.06); border:1px solid rgba(18,163,109,.2); }
+  .dodont-dont { background: rgba(220,38,38,.04); border:1px solid rgba(220,38,38,.2); }
+  .dodont-col h3 { font-family: Inter, sans-serif; font-size:14px; margin:0 0 12px; }
+  .dodont-do h3 { color: var(--success); }
+  .dodont-do h3::before { content:"✓ "; }
+  .dodont-dont h3 { color: var(--danger); }
+  .dodont-dont h3::before { content:"✕ "; }
+  .dodont-col ul { list-style:none; padding:0; margin:0; display:flex; flex-direction:column; gap:8px; }
+  .dodont-col li { font-family: 'Source Serif Pro', Charter, serif; font-size:15px; line-height:1.5; padding-left:20px; position:relative; }
+  .dodont-do li::before { content:"✓"; position:absolute; left:0; color: var(--success); font-family: Inter, sans-serif; font-weight:700; }
+  .dodont-dont li::before { content:"✕"; position:absolute; left:0; color: var(--danger); font-family: Inter, sans-serif; font-weight:700; }
+
+  /* Component preview */
+  .cp-frame { border-radius:12px; padding:32px; margin-top:8px; }
+  .cp-light { background: var(--warm); border:1px solid var(--subtle); }
+  .cp-dark { background:#1a1a1a; color:#bcbec0; border:1px solid #404040; font-family: Inter, sans-serif; font-size:14px; }
+  .cp-editorial { background: var(--page); border:1px solid var(--subtle); }
+  .cp-row { display:flex; gap:12px; align-items:center; flex-wrap:wrap; }
+  .cp-btn { padding:10px 18px; border-radius:8px; font-family: Inter, sans-serif; font-size:14px; font-weight:500; cursor:pointer; border:none; }
+  .cp-btn-primary { background: linear-gradient(135deg, #f05323 0%, #ff6a3d 100%); color:#fff; box-shadow: 0 4px 12px rgba(240,83,35,.3); }
+  .cp-btn-secondary { background:transparent; color:#bcbec0; border:1px solid #58595b; }
+  .cp-btn-web.cp-btn-primary { background:#f05323; box-shadow:none; border-radius:6px; }
+  .cp-btn-web.cp-btn-secondary { background:transparent; color: var(--ink); border:1px solid var(--ink); border-radius:6px; }
+  .cp-badge { display:inline-flex; padding:3px 10px; border-radius:4px; font-family: Inter, sans-serif; font-size:11px; font-weight:600; }
+  .cp-badge-success { background: rgba(18,163,109,.16); color:#12a36d; }
+  .cp-badge-warning { background: rgba(217,119,6,.16); color:#f59e0b; }
+  .cp-badge-danger { background: rgba(220,38,38,.16); color:#ef4444; }
+  .cp-badge-info { background: rgba(34,211,238,.16); color:#22d3ee; }
+  .cp-table { margin-top:24px; border:1px solid #404040; border-radius:8px; overflow:hidden; }
+  .cp-tr { display:grid; grid-template-columns: 140px 1fr 100px 120px; padding:10px 16px; border-bottom:1px solid #404040; }
+  .cp-tr:last-child { border-bottom:none; }
+  .cp-tr-selected { border-left:2px solid var(--orange); padding-left:14px; }
+  .cp-th { background:#2a2a2a; font-size:12px; font-weight:600; color:#fff; text-transform:uppercase; letter-spacing:.04em; }
+  .cp-table .mono { font-family: 'JetBrains Mono', monospace; font-size:13px; color:#bcbec0; }
+
+  .cp-hero-title { font-family: 'Proxima Nova', Inter, sans-serif; font-size:40px; font-weight:700; color: var(--ink); margin:0 0 12px; line-height:1.1; }
+  .cp-hero-lead { font-family: 'Proxima Nova', Inter, sans-serif; font-size:18px; color: var(--body); margin:0 0 24px; max-width:48ch; }
+  .cp-card-row { display:grid; grid-template-columns: 1fr 1fr; gap:16px; margin-top:32px; }
+  @media (max-width:600px) { .cp-card-row { grid-template-columns:1fr; } }
+  .cp-card { background: var(--page); border:1px solid var(--subtle); border-radius:4px; padding:20px; }
+  .cp-card-tag { font-family: Inter, sans-serif; font-size:11px; color: var(--muted); text-transform:uppercase; letter-spacing:.06em; margin-bottom:8px; }
+  .cp-card h3 { font-family: 'Proxima Nova', Inter, sans-serif; font-size:18px; margin:0 0 8px; color: var(--ink); }
+  .cp-card p { font-family: 'Proxima Nova', Inter, sans-serif; font-size:14px; color: var(--body); margin:0; }
+
+  .cp-mast { display:flex; justify-content:space-between; align-items:baseline; padding-bottom:12px; border-bottom:2px solid var(--rule); margin-bottom:24px; }
+  .cp-mast-brand { font-family: Inter, sans-serif; font-weight:700; font-size:13px; letter-spacing:.08em; }
+  .cp-mast-date { font-family: 'JetBrains Mono', monospace; font-size:12px; color: var(--muted); }
+  .cp-edit-title { font-family: 'Proxima Nova', Inter, sans-serif; font-weight:700; font-size:28px; color: var(--ink); margin:0 0 12px; }
+  .cp-edit-lead { font-family: 'Source Serif Pro', Charter, serif; font-style:italic; font-size:18px; color: var(--body); margin:0 0 16px; }
+  .cp-edit-body { font-family: 'Source Serif Pro', Charter, serif; font-size:16px; line-height:1.65; color: var(--body); margin:0 0 16px; }
+  .cp-pull { border-left:3px solid var(--orange); margin:24px 0; padding:8px 0 8px 20px; font-family: 'Proxima Nova', Inter, sans-serif; font-size:20px; font-weight:500; color: var(--ink); }
+
+  .cp-multi-row { display:grid; grid-template-columns: 1fr 1fr 1fr; gap:8px; }
+  @media (max-width:720px) { .cp-multi-row { grid-template-columns:1fr; } }
+  .cp-multi-col { padding:24px; border-radius:8px; min-height:140px; display:flex; flex-direction:column; gap:12px; }
+  .cp-multi-dark { background:#1a1a1a; color:#bcbec0; }
+  .cp-multi-light { background: var(--warm); }
+  .cp-multi-edit { background: var(--page); border:1px solid var(--subtle); }
+  .cp-multi-label { font-family: Inter, sans-serif; font-size:11px; font-weight:700; letter-spacing:.08em; color: var(--muted); }
+
+  /* Markdown body */
+  .md-body { font-family: 'Source Serif Pro', Charter, serif; font-size:17px; line-height:1.65; color: var(--body); }
+  .md-body h1, .md-body h2, .md-body h3, .md-body h4 { font-family: 'Proxima Nova', Inter, sans-serif; color: var(--ink); margin:48px 0 16px; line-height:1.25; }
+  .md-body h1 { font-size:32px; font-weight:700; }
+  .md-body h2 { font-size:24px; font-weight:700; padding-top:32px; border-top:1px solid var(--subtle); }
+  .md-body h3 { font-size:18px; font-weight:600; }
+  .md-body h4 { font-size:14px; font-weight:600; color: var(--muted); text-transform:uppercase; letter-spacing:.04em; }
+  .md-body p { margin:0 0 16px; max-width:64ch; }
+  .md-body a { color: var(--orange); text-decoration:none; border-bottom:1px solid rgba(240,83,35,.3); }
+  .md-body a.wikilink { color: var(--ink); border-bottom-style:dotted; }
+  .md-body strong { color: var(--ink); font-weight:600; }
+  .md-body code { font-family: 'JetBrains Mono', monospace; font-size:.88em; background: var(--warm); padding:1px 6px; border-radius:3px; }
+  .md-body pre { background: var(--ink); color: var(--warm); padding:16px 20px; border-radius:4px; overflow-x:auto; }
+  .md-body pre code { background:transparent; color:inherit; padding:0; font-size:13px; }
+  .md-body blockquote { border-left:3px solid var(--orange); margin:16px 0; padding:4px 0 4px 16px; color: var(--muted); font-style:italic; }
+  .md-body table { width:100%; border-collapse:collapse; margin:16px 0; font-family: Inter, sans-serif; font-size:14px; }
+  .md-body th { background: var(--ink); color: var(--page); text-align:left; padding:8px 12px; font-size:11px; text-transform:uppercase; letter-spacing:.04em; }
+  .md-body td { padding:10px 12px; border-bottom:1px solid var(--subtle); }
+  .md-body ul, .md-body ol { margin:0 0 16px 20px; padding:0; }
+  .md-body li { margin-bottom:4px; }
+
+  /* Export panel */
+  .export-panel { position: sticky; top:24px; max-height: calc(100vh - 48px); display:flex; flex-direction:column; border:1px solid var(--subtle); border-radius:8px; background: var(--page); overflow:hidden; font-family: Inter, sans-serif; }
+  .export-tabs { display:flex; border-bottom:1px solid var(--subtle); background: var(--warm); overflow-x:auto; }
+  .exp-tab { flex:1; padding:10px 12px; border:none; background:none; cursor:pointer; font:inherit; font-size:12px; font-weight:600; color: var(--muted); border-bottom:2px solid transparent; white-space:nowrap; }
+  .exp-tab.active { color: var(--orange); border-bottom-color: var(--orange); }
+  .export-actions { display:flex; gap:8px; padding:8px 12px; border-bottom:1px solid var(--subtle); }
+  .exp-action { flex:1; text-align:center; padding:6px 10px; border:1px solid var(--subtle); border-radius:4px; background: var(--page); cursor:pointer; text-decoration:none; color: var(--ink); font-size:12px; font-weight:600; font:inherit; font-size:12px; font-weight:600; }
+  .exp-action:hover { border-color: var(--orange); color: var(--orange); }
+  .export-bodies { flex:1; overflow:auto; }
+  .exp-body { display:none; margin:0; padding:16px; font-family: 'JetBrains Mono', monospace; font-size:11px; line-height:1.55; color: var(--body); white-space:pre; background: var(--page); }
+  .exp-body.active { display:block; }
+  </style>
+</head>
+<body>
+<div class="layout">
+  <main>
+    <nav class="breadcrumb"><a href="../../index.html">Designs</a> · <a href="../../index.html#brand">Brand</a> · AI-Generated Content</nav>
+
+    <header class="hero">
+      <h1 class="hero-wordmark">Nexus · Content</h1>
+      <div class="hero-tagline">Editorial, not corporate.</div>
+      <p class="hero-essence">Anything Nexus or a Claude skill produces — daily briefs, LinkedIn posts and carousels, Marp slide decks, outreach emails, vault notes — renders here. The atmosphere is editorial, not corporate. Considered, not breathless. The voice is the Expert Mate written down. The format borrows from print: clear hierarchy, tables when tables help, pull quotes when a customer's words deserve weight, white space when an idea needs to land. If a brief looks like ChatGPT default voice, it is wrong. If it looks like a half-page from a trade publication someone might actually want to read, it is right.</p>
+      <div class="hero-meta">
+        <span><strong>Audience:</strong> Mixed. Internal readers of daily briefs. External readers of LinkedIn posts. Prospects reading proposals and outreach. The team reading session digests.</span>
+        <a href="https://blickgroup.github.io/designs/" target="_blank" rel="noopener">↗ blickgroup.github.io/designs/</a>
+      </div>
+    </header>
+
+    <section class="section">
+      <h2 class="section-head">Colour palette &amp; roles</h2>
+      <div class="swatch-group">
+    <div class="swatch-group-name">Brand</div>
+    <div class="swatch-list">
+      
+        <button class="swatch" data-copy="#f05323" title="Click to copy #f05323">
+          <span class="swatch-chip" style="background:#f05323"></span>
+          <span class="swatch-meta">
+            <span class="swatch-row1">
+              <span class="swatch-name">Brand Orange</span>
+              <span class="swatch-hex mono">#f05323</span>
+            </span>
+            <span class="swatch-role">Section anchors, pull-quote rules. One accent per page.</span>
+          </span>
+        </button>
+        <button class="swatch" data-copy="#c4421b" title="Click to copy #c4421b">
+          <span class="swatch-chip" style="background:#c4421b"></span>
+          <span class="swatch-meta">
+            <span class="swatch-row1">
+              <span class="swatch-name">Print Orange</span>
+              <span class="swatch-hex mono">#c4421b</span>
+            </span>
+            <span class="swatch-role">CMYK-safe orange for printed PDFs. CMYK won't reproduce #f05323 cleanly.</span>
+          </span>
+        </button>
+    </div>
+  </div><div class="swatch-group">
+    <div class="swatch-group-name">Editorial Light</div>
+    <div class="swatch-list">
+      
+        <button class="swatch" data-copy="#0a0a0a" title="Click to copy #0a0a0a">
+          <span class="swatch-chip" style="background:#0a0a0a"></span>
+          <span class="swatch-meta">
+            <span class="swatch-row1">
+              <span class="swatch-name">Ink</span>
+              <span class="swatch-hex mono">#0a0a0a</span>
+            </span>
+            <span class="swatch-role">Body text, headings.</span>
+          </span>
+        </button>
+        <button class="swatch" data-copy="#1f1f1f" title="Click to copy #1f1f1f">
+          <span class="swatch-chip" style="background:#1f1f1f"></span>
+          <span class="swatch-meta">
+            <span class="swatch-row1">
+              <span class="swatch-name">Editorial Rule</span>
+              <span class="swatch-hex mono">#1f1f1f</span>
+            </span>
+            <span class="swatch-role">Structural rules — masthead, section dividers.</span>
+          </span>
+        </button>
+        <button class="swatch" data-copy="#5a5a5a" title="Click to copy #5a5a5a">
+          <span class="swatch-chip" style="background:#5a5a5a"></span>
+          <span class="swatch-meta">
+            <span class="swatch-row1">
+              <span class="swatch-name">Muted</span>
+              <span class="swatch-hex mono">#5a5a5a</span>
+            </span>
+            <span class="swatch-role">Captions, attributions, dates.</span>
+          </span>
+        </button>
+        <button class="swatch" data-copy="#ffffff" title="Click to copy #ffffff">
+          <span class="swatch-chip" style="background:#ffffff"></span>
+          <span class="swatch-meta">
+            <span class="swatch-row1">
+              <span class="swatch-name">Page</span>
+              <span class="swatch-hex mono">#ffffff</span>
+            </span>
+            <span class="swatch-role">Default canvas.</span>
+          </span>
+        </button>
+        <button class="swatch" data-copy="#f5f3ef" title="Click to copy #f5f3ef">
+          <span class="swatch-chip" style="background:#f5f3ef"></span>
+          <span class="swatch-meta">
+            <span class="swatch-row1">
+              <span class="swatch-name">Section Warm</span>
+              <span class="swatch-hex mono">#f5f3ef</span>
+            </span>
+            <span class="swatch-role">Pull-out boxes, sidebars.</span>
+          </span>
+        </button>
+        <button class="swatch" data-copy="#fde68a" title="Click to copy #fde68a">
+          <span class="swatch-chip" style="background:#fde68a"></span>
+          <span class="swatch-meta">
+            <span class="swatch-row1">
+              <span class="swatch-name">Highlight</span>
+              <span class="swatch-hex mono">#fde68a</span>
+            </span>
+            <span class="swatch-role">Editorial highlight on a key claim — sparingly.</span>
+          </span>
+        </button>
+    </div>
+  </div><div class="swatch-group">
+    <div class="swatch-group-name">Editorial Dark</div>
+    <div class="swatch-list">
+      
+        <button class="swatch" data-copy="#0a0a0a" title="Click to copy #0a0a0a">
+          <span class="swatch-chip" style="background:#0a0a0a"></span>
+          <span class="swatch-meta">
+            <span class="swatch-row1">
+              <span class="swatch-name">Page (dark)</span>
+              <span class="swatch-hex mono">#0a0a0a</span>
+            </span>
+            <span class="swatch-role">LinkedIn dark background, dark slide decks.</span>
+          </span>
+        </button>
+        <button class="swatch" data-copy="#1a1a1a" title="Click to copy #1a1a1a">
+          <span class="swatch-chip" style="background:#1a1a1a"></span>
+          <span class="swatch-meta">
+            <span class="swatch-row1">
+              <span class="swatch-name">Surface (dark)</span>
+              <span class="swatch-hex mono">#1a1a1a</span>
+            </span>
+            <span class="swatch-role">Cards on dark canvas.</span>
+          </span>
+        </button>
+        <button class="swatch" data-copy="#f5f3ef" title="Click to copy #f5f3ef">
+          <span class="swatch-chip" style="background:#f5f3ef"></span>
+          <span class="swatch-meta">
+            <span class="swatch-row1">
+              <span class="swatch-name">Text (dark)</span>
+              <span class="swatch-hex mono">#f5f3ef</span>
+            </span>
+            <span class="swatch-role">Body on dark.</span>
+          </span>
+        </button>
+    </div>
+  </div>
+    </section>
+
+    <section class="section">
+      <h2 class="section-head">Type scale</h2>
+      <div class="type-scale">
+    <div class="type-row">
+        <div class="type-spec">
+          <span class="type-label mono">c-display</span>
+          <span class="type-meta mono">Proxima Nova · 32px · 700 · 1.18</span>
+        </div>
+        <div class="type-sample" style="font-family:Proxima Nova, Inter,sans-serif; font-size:32px; font-weight:700; line-height:1.18;  ">Daily Overview · 2 May 2026</div>
+      </div><div class="type-row">
+        <div class="type-spec">
+          <span class="type-label mono">c-h2</span>
+          <span class="type-meta mono">Proxima Nova · 22px · 700 · 1.3</span>
+        </div>
+        <div class="type-sample" style="font-family:Proxima Nova, Inter,sans-serif; font-size:22px; font-weight:700; line-height:1.3;  ">What we are watching this week</div>
+      </div><div class="type-row">
+        <div class="type-spec">
+          <span class="type-label mono">c-h3</span>
+          <span class="type-meta mono">Proxima Nova · 17px · 500 · 1.4</span>
+        </div>
+        <div class="type-sample" style="font-family:Proxima Nova, Inter,sans-serif; font-size:17px; font-weight:500; line-height:1.4;  ">AMC supply window slipping in WA</div>
+      </div><div class="type-row">
+        <div class="type-spec">
+          <span class="type-label mono">c-lead</span>
+          <span class="type-meta mono">Source Serif Pro · 19px · 400 · 1.55 · italic</span>
+        </div>
+        <div class="type-sample" style="font-family:Source Serif Pro, Charter,Georgia,serif; font-size:19px; font-weight:400; line-height:1.55; font-style:italic; ">Crews in the Pilbara are asking why Carry-Flow stocks have moved without notice — here is what we know.</div>
+      </div><div class="type-row">
+        <div class="type-spec">
+          <span class="type-label mono">c-body</span>
+          <span class="type-meta mono">Source Serif Pro · 17px · 400 · 1.65</span>
+        </div>
+        <div class="type-sample" style="font-family:Source Serif Pro, Charter,Georgia,serif; font-size:17px; font-weight:400; line-height:1.65;  ">Three weeks ago a Pilbara crew called Margaret because their HDD bore was losing returns. We had Loss-Swell on site within 48 hours and the bore was back in production by Wednesday. Specifics like this are why customers stay.</div>
+      </div><div class="type-row">
+        <div class="type-spec">
+          <span class="type-label mono">c-pull</span>
+          <span class="type-meta mono">Proxima Nova · 22px · 500 · 1.4</span>
+        </div>
+        <div class="type-sample" style="font-family:Proxima Nova, Inter,sans-serif; font-size:22px; font-weight:500; line-height:1.4;  ">We are in the field with you, not just behind a desk.</div>
+      </div><div class="type-row">
+        <div class="type-spec">
+          <span class="type-label mono">c-caption</span>
+          <span class="type-meta mono">Proxima Nova · 13px · 400 · 1.4 · uppercase</span>
+        </div>
+        <div class="type-sample" style="font-family:Proxima Nova, Inter,sans-serif; font-size:13px; font-weight:400; line-height:1.4;  text-transform:uppercase; letter-spacing:.06em;">BLICK GROUP · 2 MAY 2026</div>
+      </div><div class="type-row">
+        <div class="type-spec">
+          <span class="type-label mono">c-mono</span>
+          <span class="type-meta mono">JetBrains Mono · 14px · 400 · 1.45</span>
+        </div>
+        <div class="type-sample" style="font-family:JetBrains Mono, Inter,sans-serif; font-size:14px; font-weight:400; line-height:1.45;  ">Batch 28A-9921 · 17:32 NZST</div>
+      </div>
+  </div>
+    </section>
+
+    <section class="section">
+      <h2 class="section-head">Fonts</h2>
+      <div class="font-grid">
+    
+      <div class="font-card">
+        <div class="font-card-hero" style="font-family:Proxima Nova,Inter,sans-serif">Proxima Nova</div>
+        <dl class="font-card-meta">
+          <dt>Weights</dt><dd class="mono">400 / 500 / 700</dd>
+          <dt>Use</dt><dd>Headings, captions, pull quotes, slide titles.</dd>
+          <dt>Fallback</dt><dd class="mono">Inter, ui-sans-serif, system-ui, sans-serif</dd>
+        </dl>
+        <p class="font-card-why">Sans heading paired against serif body is the editorial signal — it reads as authored, not auto-generated. The contrast is the entire point of this surface.</p>
+      </div>
+      <div class="font-card">
+        <div class="font-card-hero" style="font-family:Source Serif Pro,Charter,Georgia,serif">Source Serif Pro</div>
+        <dl class="font-card-meta">
+          <dt>Weights</dt><dd class="mono">400 / 400 italic / 600</dd>
+          <dt>Use</dt><dd>Body, lead paragraphs, briefs, long-form.</dd>
+          <dt>Fallback</dt><dd class="mono">Charter, Georgia, &quot;Times New Roman&quot;, serif</dd>
+        </dl>
+        <p class="font-card-why">Serif body is what stops Nexus output reading like ChatGPT defaults. It is the most important font choice on this surface.</p>
+      </div>
+      <div class="font-card">
+        <div class="font-card-hero" style="font-family:JetBrains Mono,Inter,sans-serif">JetBrains Mono</div>
+        <dl class="font-card-meta">
+          <dt>Weights</dt><dd class="mono">400</dd>
+          <dt>Use</dt><dd>IDs, batch numbers, dates, technical detail in briefs.</dd>
+          <dt>Fallback</dt><dd class="mono">ui-monospace, SFMono-Regular, Menlo, monospace</dd>
+        </dl>
+        <p class="font-card-why">Numbers and codes need to feel separable from prose — that is what makes a brief readable, not just legible.</p>
+      </div>
+  </div>
+    </section>
+
+    <section class="section">
+      <h2 class="section-head">Spacing</h2>
+      <table class="token-table">
+    <thead><tr><th>Label</th><th>Value</th><th>Use</th><th></th></tr></thead>
+    <tbody>
+      
+        <tr>
+          <td class="mono">x6</td>
+          <td class="mono">24px</td>
+          <td>Editorial paragraph rhythm.</td>
+          <td><button class="copy-btn" data-copy="24px" title="Copy">⧉</button></td>
+        </tr>
+        <tr>
+          <td class="mono">x8</td>
+          <td class="mono">32px</td>
+          <td>Spacing between H3 sections.</td>
+          <td><button class="copy-btn" data-copy="32px" title="Copy">⧉</button></td>
+        </tr>
+        <tr>
+          <td class="mono">x12</td>
+          <td class="mono">48px</td>
+          <td>Spacing between H2 sections.</td>
+          <td><button class="copy-btn" data-copy="48px" title="Copy">⧉</button></td>
+        </tr>
+        <tr>
+          <td class="mono">x16</td>
+          <td class="mono">64px</td>
+          <td>Page top padding for briefs and decks.</td>
+          <td><button class="copy-btn" data-copy="64px" title="Copy">⧉</button></td>
+        </tr>
+    </tbody>
+  </table>
+    </section>
+
+    <section class="section">
+      <h2 class="section-head">Radius</h2>
+      <table class="token-table">
+    <thead><tr><th>Label</th><th>Value</th><th>Use</th><th></th></tr></thead>
+    <tbody>
+      
+        <tr>
+          <td class="mono">none</td>
+          <td class="mono">0</td>
+          <td>Editorial defaults to flat. Print-derived.</td>
+          <td><button class="copy-btn" data-copy="0" title="Copy">⧉</button></td>
+        </tr>
+        <tr>
+          <td class="mono">sm</td>
+          <td class="mono">3px</td>
+          <td>Inline code chip — that is it.</td>
+          <td><button class="copy-btn" data-copy="3px" title="Copy">⧉</button></td>
+        </tr>
+    </tbody>
+  </table>
+    </section>
+
+    <section class="section">
+      <h2 class="section-head">Shadows</h2>
+      <table class="token-table">
+    <thead><tr><th>Label</th><th>Value</th><th>Use</th><th></th></tr></thead>
+    <tbody>
+      
+        <tr>
+          <td class="mono">none</td>
+          <td class="mono">none</td>
+          <td>Editorial is flat. White space is the only depth.</td>
+          <td><button class="copy-btn" data-copy="none" title="Copy">⧉</button></td>
+        </tr>
+    </tbody>
+  </table>
+    </section>
+
+    <section class="section">
+      <h2 class="section-head">Do &amp; Don't</h2>
+      <div class="dodont">
+    <div class="dodont-col dodont-do">
+      <h3>Do</h3>
+      <ul><li>Lead every brief with a standfirst.</li><li>Source every claim — wikilink for vault, URL for external.</li><li>Use serif for body, sans for headings. Always.</li><li>One pull quote per long-form piece, max.</li><li>Numbers and dates in mono.</li><li>Sentence-case headlines.</li></ul>
+    </div>
+    <div class="dodont-col dodont-dont">
+      <h3>Don't</h3>
+      <ul><li>Don't use emoji in published content. None.</li><li>Don't write 'Hope this finds you well', 'Just circling back', 'Curious to hear your thoughts'.</li><li>Don't use AI-flavoured imagery — glowing brains, neural lattices, hexagons.</li><li>Don't fabricate quotes, numbers, or sources. Hard rule.</li><li>Don't use em-dashes more than once per paragraph — readers notice when AI overdoes them.</li><li>Don't ship two CTAs in one email.</li></ul>
+    </div>
+  </div>
+    </section>
+
+    <section class="section">
+      <h2 class="section-head">Live component preview</h2>
+      
+      <div class="cp-frame cp-editorial">
+        <div class="cp-mast"><span class="cp-mast-brand">BLICK · DAILY</span><span class="cp-mast-date">2 MAY 2026</span></div>
+        <h2 class="cp-edit-title">AMC supply window slipping in WA</h2>
+        <p class="cp-edit-lead">Crews in the Pilbara are asking why Carry-Flow stocks have moved without notice — here is what we know.</p>
+        <p class="cp-edit-body">Three weeks ago a Pilbara crew called Margaret because their HDD bore was losing returns. We had Loss-Swell on site within 48 hours and the bore was back in production by Wednesday. Specifics like this are why customers stay.</p>
+        <blockquote class="cp-pull">We are in the field with you, not just behind a desk.</blockquote>
+        <p class="cp-edit-body">Two AMC customers in the Pilbara reported delivery slippage of 10–14 days this month. Sources: <a href="#">[[ausdrill]]</a>, <a href="#">[[carey-mining]]</a>.</p>
+      </div>
+    </section>
+
+    <section class="section">
+      <h2 class="section-head">Full document</h2>
+      <div class="md-body"><h1>AI-Generated Content Design System</h1>
 <blockquote><strong>Audience:</strong> mixed — internal readers of daily briefs, external readers of LinkedIn posts, prospects reading proposals, the team reading session digests.</blockquote>
 <blockquote></blockquote>
 <blockquote><strong>Surface scope:</strong> anything Nexus or a Claude skill produces — daily briefs (HTML), LinkedIn posts and carousels, outreach emails, Marp slide decks, investor overviews, internal memos, candidate research notes.</blockquote>
@@ -251,14 +730,14 @@ Ironclad rules:
 - Australasian English.
 - Banned vocabulary list in §7. Especially: world-class, innovative,
   disruptive, leverage, synergies, solutions (as a noun), one-stop-shop.
-- Banned phrases: "Hope this finds you well", "Just circling back",
-  "Here's why this matters", "Curious to hear your thoughts".
+- Banned phrases: &quot;Hope this finds you well&quot;, &quot;Just circling back&quot;,
+  &quot;Here's why this matters&quot;, &quot;Curious to hear your thoughts&quot;.
 - No emoji in published content. None.
 - No AI-flavoured imagery prompts.
 - Sentence-case headlines.
 - Serif body + sans heading on visual formats.
 - One CTA per email. One pull quote per long-form. One photo OR one chart per slide.
-- If a fact isn't in a sourced vault note or PDS/SDS, say "needs verification" —
+- If a fact isn't in a sourced vault note or PDS/SDS, say &quot;needs verification&quot; —
   never invent.
 - Conflicting sources surface, never silently overwrite.
 
@@ -291,5 +770,456 @@ If it looks like a piece from a great trade publication, you got it right.
 <li><a class="wikilink" href="#">hub-app.DESIGN</a> — sister surface</li>
 <li><a class="wikilink" href="#">editorial-magazine-design</a> — existing editorial system this extends</li>
 <li><a class="wikilink" href="#">brand-voice-guidelines</a> — full voice reference</li>
-</ul>
-</div></body></html>
+</ul></div>
+    </section>
+  </main>
+
+  
+    <aside class="export-panel">
+      <div class="export-tabs">
+        <button class="exp-tab active" data-target="exp-md">DESIGN.md</button>
+        <button class="exp-tab" data-target="exp-tw">Tailwind</button>
+        <button class="exp-tab" data-target="exp-css">CSS Vars</button>
+        <button class="exp-tab" data-target="exp-json">Tokens JSON</button>
+      </div>
+      <div class="export-actions">
+        <button class="exp-action" id="exp-copy">Copy</button>
+        <a class="exp-action" id="exp-download" download="content.DESIGN.md">.md</a>
+      </div>
+      <div class="export-bodies">
+        <pre class="exp-body active" id="exp-md"><code>---
+title: AI-Generated Content Design System
+date: 2026-05-01
+type: system
+tags: [design-system, content, nexus, marketing, briefs, linkedin]
+status: active
+source: manual
+schema: awesome-design-md-v1
+surface: content
+parent: Brand
+---
+
+# AI-Generated Content Design System
+
+&gt; **Audience:** mixed — internal readers of daily briefs, external readers of LinkedIn posts, prospects reading proposals, the team reading session digests.
+&gt;
+&gt; **Surface scope:** anything Nexus or a Claude skill produces — daily briefs (HTML), LinkedIn posts and carousels, outreach emails, Marp slide decks, investor overviews, internal memos, candidate research notes.
+&gt;
+&gt; **Inherits from:** [[Brand]] (voice, marks, terminology, brand orange `#f05323`).
+&gt;
+&gt; **Excludes:** marketing website ([[website.DESIGN]]), internal hub-app ([[hub-app.DESIGN]]).
+&gt;
+&gt; **Why this exists:** AI is a content factory. Without a design surface of its own, every skill drifts toward generic LLM aesthetics — sans-serif heroes, gradient cards, &quot;🚀&quot; bullet points. This document is what stops that.
+
+---
+
+## 1. Visual Theme &amp; Atmosphere
+
+**Editorial, not corporate. Considered, not breathless.**
+
+Imagine the FT's Lex column, Stratechery's daily memo, or a great industry trade journal. Not a Notion template. Not a SaaS pitch deck. Not &quot;AI-flavoured&quot; anything (no glow, no neon gradient, no &quot;intelligence&quot; iconography).
+
+The voice is the [[Brand]] voice — Expert Mate — written down. The format borrows from print editorial: clear hierarchy, tables when tables help, pull quotes when a customer's words deserve weight, white space when an idea needs to land.
+
+If a brief looks like ChatGPT output, we got it wrong. If it looks like a half-page from a trade magazine that someone might actually want to read, we got it right.
+
+The existing [[editorial-magazine-design]] system in the vault is the seed for this surface — extend it, don't replace it.
+
+---
+
+## 2. Color Palette &amp; Roles
+
+Content surfaces live in many container colours (LinkedIn dark mode, Gmail light mode, printed PDF, Marp slide background). The palette here is **content-on-light** by default; dark mode mirrors hold the same role.
+
+| Role | Hex | Use |
+|---|---|---|
+| **Brand orange** | `#f05323` | Section anchors, pull-quote rules, one accent per page max |
+| Orange muted | `#c4421b` | Print-safe orange (CMYK won't reproduce `#f05323` cleanly) |
+| Ink | `#0a0a0a` | Body text, headings |
+| Editorial rule | `#1f1f1f` | 1px and 2px structural rules |
+| Muted | `#5a5a5a` | Captions, attribution, dates, sources |
+| Page bg | `#ffffff` | Default canvas |
+| Section bg (warm) | `#f5f3ef` | Pull-out boxes, sidebars |
+| Highlight (yellow) | `#fde68a` | Editorial highlight on key claim — sparingly |
+
+### Dark mode mirror (LinkedIn dark, dark slide decks)
+
+| Role | Hex |
+|---|---|
+| Brand orange | `#f05323` (unchanged) |
+| Ink (text) | `#f5f3ef` |
+| Muted | `#a0a0a0` |
+| Page bg | `#0a0a0a` |
+| Section bg | `#1a1a1a` |
+
+### Product category palette
+When mentioning a product category, the [[Brand]] §7.2 colour applies (chip, accent line, slide divider). Don't invent.
+
+---
+
+## 3. Typography Rules
+
+Editorial content uses a **serif body + sans heading** pairing. This is the deliberate divergence from hub-app and website (both sans-only).
+
+| Token | Family | Weight | Use |
+|---|---|---|---|
+| `--c-display` | Proxima Nova Bold | 700 | Brief title, slide title, post H1 |
+| `--c-h2` | Proxima Nova Bold | 700 | Section H2 |
+| `--c-h3` | Proxima Nova Medium | 500 | Subhead |
+| `--c-body` | Source Serif Pro / Charter / Georgia | 400 | Body copy, brief paragraphs |
+| `--c-lead` | Source Serif Pro Italic | 400 | Standfirst, intro paragraph |
+| `--c-pull` | Proxima Nova Medium | 500 | Pull quotes (sans for contrast against serif body) |
+| `--c-caption` | Proxima Nova Regular | 400 | Captions, sources, dates |
+| `--c-mono` | JetBrains Mono | 400 | Numbers, codes, batch IDs in a brief |
+
+**Web fallback** when serif unavailable: `Charter, Georgia, &quot;Times New Roman&quot;, serif`.
+
+### Size scale (rem)
+- Brief title: `2.0rem / 2.5rem`
+- H2: `1.4rem / 1.8rem`
+- H3: `1.1rem / 1.5rem`
+- Body: `1.0rem / 1.65rem`
+- Lead: `1.15rem / 1.7rem`
+- Caption: `0.85rem / 1.3rem`
+
+**Measure: 60–70 characters per line.** Editorial body never goes wider.
+
+---
+
+## 4. Component Stylings
+
+### 4.1 Daily brief (HTML)
+Produced by `nexus/brief-pipeline.js`. Uses [[editorial-magazine-design]] as the layout primitive.
+
+- **Masthead:** Blick mark (top-left), date (top-right), single ink rule below.
+- **Standfirst:** one paragraph italic serif, sets the day's read.
+- **Sections:** H2 sans-bold, body serif, max 600 words per section.
+- **Sources:** every claim links to a vault note or a verified URL. Unsourced claims are not shipped (see [[feedback_blick_identity]] and global rule on fabrication).
+- **Pull quotes:** customer or external quote, with full attribution.
+- **Action register footer:** if the brief surfaces an action, link to the Action Register entry.
+
+### 4.2 LinkedIn post (single)
+- Hook in the first line — specific, not &quot;Here's why X matters.&quot;
+- One idea per post. If you have two, write two posts.
+- Numbered or bulleted lists OK; emoji bullets not OK (per [[Brand]] anti-patterns).
+- 800 characters target, 1300 hard cap.
+- Always close with either a question that invites reply, or a link with one-line context. Never both.
+- No &quot;Curious to hear your thoughts in the comments below 👇&quot;. Banned.
+
+### 4.3 LinkedIn carousel (bento grid)
+The bento pattern from `bergside/awesome-design-skills` is the right format here. Up to 10 cards.
+
+- Card 1: title + standfirst, big.
+- Cards 2–9: one idea each, mostly type, photo only when it earns its place.
+- Final card: source + a line from Blick voice (an Expert Mate sign-off, not a sales close).
+- Background: alternates ink + page bg + warm section bg, never random colour.
+- Brand orange used as a *single* anchor element on each card (rule, dot, number) — never as a card background.
+
+### 4.4 Outreach email (drafted by `/draft-outreach`)
+- Subject: ≤ 7 words, lower-case, no emoji.
+- Greeting: first name only.
+- First sentence: reference something specific about *their* business.
+- Body: ≤ 120 words. Three short paragraphs maximum.
+- Sign-off: &quot;— [Name], Blick&quot; with regional contact in signature.
+- No &quot;Hope this finds you well.&quot; No &quot;I wanted to reach out.&quot; No &quot;Just circling back.&quot;
+
+### 4.5 Slide deck (Marp / `slide-generator.js`)
+- 16:9.
+- One idea per slide. Title sans, body serif.
+- Maximum two type sizes per slide.
+- One photo or one chart per slide, never both.
+- Section dividers use brand orange ink rule with section name — not a full orange slide.
+- Closing slide is a contact slide with regional details, not a &quot;Thank you&quot; slide.
+
+### 4.6 Investor / group overview
+- Editorial cover (full-bleed photo, masthead, date, &quot;Blick Group Overview&quot; title).
+- Section anatomy mirrors brief (§4.1).
+- Numbers in `--c-mono`, sources in caption type.
+- Entity disclosure on contact pages — never mix entity marks (per [[Brand]] §2).
+
+### 4.7 Vault note generated by Nexus (autoresearch, writeback)
+- Frontmatter per [[BlickVault/CLAUDE.md]] spec — required.
+- `source_type` and `verification_status` always set.
+- `source_url` always set when claim is from external source. Per [[feedback_nexus_privacy_fail_closed]], never fabricate URLs.
+- Wikilinks for every entity mentioned (per `/vault-consistency` skill).
+
+---
+
+## 5. Depth &amp; Elevation
+
+Print-derived: **flat**. No shadows on cards, no glow on highlighted text, no drop shadows on photography.
+
+The only &quot;depth&quot; used in this surface:
+- Editorial rules (1px ink) to separate sections.
+- 2px coloured rule (brand orange) for section anchors.
+- White space — the most important elevation tool in editorial design.
+
+---
+
+## 6. Layout Principles
+
+### Brief / long-form layout
+- Single column, max-width 720px, generous margins.
+- Section spacing: 48px between sections.
+- Pull quotes break to wider measure (840px) to signal a shift.
+
+### Carousel / slide layout
+- Safe area: 80px from edges (LinkedIn crops aggressively).
+- Vertical rhythm: 8px base, multiples of 8 only.
+- Title baseline 25% from top, body starts 40% from top.
+
+### Email layout
+- Width: render at 600px, plain text fallback always shipped.
+- One clear CTA per email, never two.
+
+### Generosity
+Content is the surface where whitespace is *most* generous. Hub-app density and website confidence go away here. Editorial surfaces breathe. A brief crammed to the page edges reads as low-confidence; a brief with margin reads as authored.
+
+---
+
+## 7. Do's and Don'ts
+
+### Do
+- ✅ Lead every brief with a standfirst.
+- ✅ Source every claim. Link to vault notes by wikilink, external by URL.
+- ✅ Use serif for body, sans for headings. Always.
+- ✅ One pull quote per long-form piece, max.
+- ✅ Numbers and dates in mono.
+- ✅ Sentence case headlines.
+- ✅ Pair every technical term with a plain-language explanation.
+- ✅ Specific over generic — name customers (with permission), regions, products.
+- ✅ Customer is the hero. Always.
+
+### Don't
+- ❌ Emoji in marketing copy. Internal Slack OK; published content not OK.
+- ❌ &quot;🚀&quot;, &quot;💡&quot;, &quot;✨&quot;, &quot;🤖&quot; anywhere in published output. Banned.
+- ❌ &quot;Here's why this matters&quot;, &quot;Curious to hear your thoughts&quot;, &quot;Just circling back&quot;, &quot;Hope this finds you well.&quot;
+- ❌ AI-flavoured imagery (glowing brains, neural-net lattices, &quot;intelligence&quot; hexagons).
+- ❌ Stock photography (per [[website.DESIGN]] §7).
+- ❌ Generic &quot;Solutions for the modern X&quot; framing.
+- ❌ Em-dash overuse (one per paragraph max — readers notice when AI overdoes them).
+- ❌ Fabricated quotes, numbers, or sources. Hard rule from [[Brand]] §3 + global fabrication rule.
+- ❌ Title-case headlines.
+- ❌ &quot;We are excited to announce.&quot;
+- ❌ Greenwashing.
+- ❌ Two CTAs in one email.
+
+### Specific banned phrases
+The voice guide bans these; this surface enforces them:
+*world-class, innovative, disruptive, game-changer, leverage, synergies, optimise (in marketing), solutions (replacing the actual product/service name), cheapest, one-stop-shop, NZ-based.*
+
+---
+
+## 8. Responsive Behavior
+
+Content surfaces are container-shaped. Each format has its own:
+
+| Format | Container | Notes |
+|---|---|---|
+| Brief HTML | 720px max, single column | Mobile collapses gracefully — no two-column |
+| LinkedIn post | Native, plain text + link | No formatting beyond line breaks |
+| Carousel | 1080×1080 fixed | Safe area 80px |
+| Slide deck | 16:9 1920×1080 | Render to PDF for distribution |
+| Outreach email | 600px render, plain text fallback | Always send multipart |
+| Vault note | Markdown — Obsidian renders responsively | No CSS |
+
+---
+
+## 9. Agent Prompt Guide
+
+When generating content via any Claude skill (`/draft-outreach`, brief-pipeline, slide-generator, autoresearch, writeback), include:
+
+```
+You are producing content for Blick Group on the AI-generated content surface.
+
+Read in order:
+1. BlickVault/Brand/brand-guidelines/Brand.md — voice, marks, terminology
+2. BlickVault/Brand/brand-guidelines/content.DESIGN.md — this document
+3. The format-specific section in §4 above for your output type
+
+Voice: Expert Mate (Brand §3). Plain English, specific, customer-as-hero.
+
+Ironclad rules:
+- Source every claim. No fabrication. Link to vault by wikilink, external by URL.
+- Australasian English.
+- Banned vocabulary list in §7. Especially: world-class, innovative,
+  disruptive, leverage, synergies, solutions (as a noun), one-stop-shop.
+- Banned phrases: &quot;Hope this finds you well&quot;, &quot;Just circling back&quot;,
+  &quot;Here's why this matters&quot;, &quot;Curious to hear your thoughts&quot;.
+- No emoji in published content. None.
+- No AI-flavoured imagery prompts.
+- Sentence-case headlines.
+- Serif body + sans heading on visual formats.
+- One CTA per email. One pull quote per long-form. One photo OR one chart per slide.
+- If a fact isn't in a sourced vault note or PDS/SDS, say &quot;needs verification&quot; —
+  never invent.
+- Conflicting sources surface, never silently overwrite.
+
+If the output looks like ChatGPT default voice, you got it wrong.
+If it looks like a piece from a great trade publication, you got it right.
+```
+
+### Quick palette + token reference
+
+| | light | dark |
+|---|---|---|
+| Brand orange | `#f05323` | `#f05323` |
+| Ink (text) | `#0a0a0a` | `#f5f3ef` |
+| Muted | `#5a5a5a` | `#a0a0a0` |
+| Page | `#ffffff` | `#0a0a0a` |
+| Section warm / surface | `#f5f3ef` | `#1a1a1a` |
+| Highlight | `#fde68a` | `#fde68a` |
+
+---
+
+## Anti-pattern audit (open items, last reviewed 2026-05-01)
+
+- [ ] Sweep historical Nexus briefs for emoji and banned phrases.
+- [ ] Check `slide-generator.js` defaults match this spec.
+- [ ] `/draft-outreach` prompts updated to ban &quot;Hope this finds you well&quot;.
+- [ ] LinkedIn carousel template (Canva) audited against §4.3.
+- [ ] Brief HTML template aligned with [[editorial-magazine-design]] tokens.
+
+---
+
+## Related
+- [[Brand]] — parent brand source of truth
+- [[website.DESIGN]] — sister surface
+- [[hub-app.DESIGN]] — sister surface
+- [[editorial-magazine-design]] — existing editorial system this extends
+- [[brand-voice-guidelines]] — full voice reference
+</code></pre>
+        <pre class="exp-body" id="exp-tw"><code>// tailwind.config.js — Blick content surface
+module.exports = {
+  theme: {
+    extend: {
+      colors: {
+        &quot;brand-orange&quot;: &quot;#f05323&quot;,
+        &quot;print-orange&quot;: &quot;#c4421b&quot;,
+        &quot;ink&quot;: &quot;#0a0a0a&quot;,
+        &quot;editorial-rule&quot;: &quot;#1f1f1f&quot;,
+        &quot;muted&quot;: &quot;#5a5a5a&quot;,
+        &quot;page&quot;: &quot;#ffffff&quot;,
+        &quot;section-warm&quot;: &quot;#f5f3ef&quot;,
+        &quot;highlight&quot;: &quot;#fde68a&quot;,
+        &quot;page-dark&quot;: &quot;#0a0a0a&quot;,
+        &quot;surface-dark&quot;: &quot;#1a1a1a&quot;,
+        &quot;text-dark&quot;: &quot;#f5f3ef&quot;
+      },
+      spacing: {
+        'x6': '24px',
+        'x8': '32px',
+        'x12': '48px',
+        'x16': '64px',
+      },
+      borderRadius: {
+        'none': '0',
+        'sm': '3px',
+      },
+      boxShadow: {
+        'none': 'none',
+      }
+    }
+  }
+};</code></pre>
+        <pre class="exp-body" id="exp-css"><code>:root {
+  /* Brand */
+  --brand-orange: #f05323;
+  --print-orange: #c4421b;
+  /* Editorial Light */
+  --ink: #0a0a0a;
+  --editorial-rule: #1f1f1f;
+  --muted: #5a5a5a;
+  --page: #ffffff;
+  --section-warm: #f5f3ef;
+  --highlight: #fde68a;
+  /* Editorial Dark */
+  --page-dark: #0a0a0a;
+  --surface-dark: #1a1a1a;
+  --text-dark: #f5f3ef;
+  --space-x6: 24px;
+  --space-x8: 32px;
+  --space-x12: 48px;
+  --space-x16: 64px;
+  --radius-none: 0;
+  --radius-sm: 3px;
+  --shadow-none: none;
+}</code></pre>
+        <pre class="exp-body" id="exp-json"><code>{
+  &quot;colors&quot;: {
+    &quot;Brand&quot;: {
+      &quot;Brand Orange&quot;: &quot;#f05323&quot;,
+      &quot;Print Orange&quot;: &quot;#c4421b&quot;
+    },
+    &quot;Editorial Light&quot;: {
+      &quot;Ink&quot;: &quot;#0a0a0a&quot;,
+      &quot;Editorial Rule&quot;: &quot;#1f1f1f&quot;,
+      &quot;Muted&quot;: &quot;#5a5a5a&quot;,
+      &quot;Page&quot;: &quot;#ffffff&quot;,
+      &quot;Section Warm&quot;: &quot;#f5f3ef&quot;,
+      &quot;Highlight&quot;: &quot;#fde68a&quot;
+    },
+    &quot;Editorial Dark&quot;: {
+      &quot;Page (dark)&quot;: &quot;#0a0a0a&quot;,
+      &quot;Surface (dark)&quot;: &quot;#1a1a1a&quot;,
+      &quot;Text (dark)&quot;: &quot;#f5f3ef&quot;
+    }
+  },
+  &quot;spacing&quot;: {
+    &quot;x6&quot;: &quot;24px&quot;,
+    &quot;x8&quot;: &quot;32px&quot;,
+    &quot;x12&quot;: &quot;48px&quot;,
+    &quot;x16&quot;: &quot;64px&quot;
+  },
+  &quot;radii&quot;: {
+    &quot;none&quot;: &quot;0&quot;,
+    &quot;sm&quot;: &quot;3px&quot;
+  },
+  &quot;shadows&quot;: {
+    &quot;none&quot;: &quot;none&quot;
+  }
+}</code></pre>
+      </div>
+    </aside>
+</div>
+
+<script>
+    // Click-to-copy on swatches and copy-btns
+    document.querySelectorAll('[data-copy]').forEach(el => {
+      el.addEventListener('click', () => {
+        const v = el.getAttribute('data-copy');
+        navigator.clipboard.writeText(v).then(() => {
+          el.classList.add('copied');
+          setTimeout(() => el.classList.remove('copied'), 1200);
+        });
+      });
+    });
+
+    // Export-panel tabs
+    const expTabs = document.querySelectorAll('.exp-tab');
+    const expBodies = document.querySelectorAll('.exp-body');
+    expTabs.forEach(t => t.addEventListener('click', () => {
+      expTabs.forEach(x => x.classList.remove('active'));
+      expBodies.forEach(x => x.classList.remove('active'));
+      t.classList.add('active');
+      document.getElementById(t.dataset.target).classList.add('active');
+    }));
+
+    // Copy current export body
+    document.getElementById('exp-copy').addEventListener('click', (e) => {
+      const active = document.querySelector('.exp-body.active code');
+      if (active) {
+        navigator.clipboard.writeText(active.textContent);
+        e.target.textContent = 'Copied';
+        setTimeout(() => e.target.textContent = 'Copy', 1200);
+      }
+    });
+
+    // Build .md download from the DESIGN.md panel content
+    const dlBtn = document.getElementById('exp-download');
+    const mdContent = document.querySelector('#exp-md code').textContent;
+    const blob = new Blob([mdContent], { type: 'text/markdown' });
+    dlBtn.href = URL.createObjectURL(blob);
+  </script>
+</body>
+</html>

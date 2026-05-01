@@ -1,0 +1,81 @@
+{
+  "id": "hub-app",
+  "title": "Hub-App — Internal Operations",
+  "wordmark": "Hub-App",
+  "tagline": "A senior advisor's notebook.",
+  "essence": "Hub-app is the operations tool that ~11 internal users live in for hours a day. Calm, dense, get-out-of-the-way. Operations-room dark by default with a high-contrast light mode for field laptops. Brand orange is reserved for action — never decoration. Information density is high. If it feels like a marketing site, it is wrong. If it feels like a senior advisor's notebook — orderly, dense, marked-up where it matters — it is right.",
+  "audience": "~11 internal users across Operations, Sales, Compliance, and Drivers. Roles where the app is open all day and one extra click adds up.",
+  "sourceUrl": "https://hub.blick.group",
+  "colors": {
+    "Brand": [
+      { "name": "Primary", "hex": "#f05323", "role": "The one action this view exists for. Buttons, key links, selected-row indicator." },
+      { "name": "Primary Hover", "hex": "#ff6a3d", "role": "Hover and focus ring start." },
+      { "name": "Accent (Cyan)", "hex": "#22d3ee", "role": "Non-action emphasis — status, metric highlights. Never an action colour." }
+    ],
+    "Surfaces (Dark default)": [
+      { "name": "Page", "hex": "#1a1a1a", "role": "App shell behind everything." },
+      { "name": "Surface", "hex": "#2a2a2a", "role": "Cards, modals, drawers, sticky table headers." },
+      { "name": "Surface Hover", "hex": "#3a3a3a", "role": "Row hover, button-on-card hover." }
+    ],
+    "Text": [
+      { "name": "Heading", "hex": "#ffffff", "role": "h1–h4 in dark theme." },
+      { "name": "Body", "hex": "#bcbec0", "role": "Default reading text." },
+      { "name": "Muted", "hex": "#707070", "role": "Timestamps, helpers, disabled state." }
+    ],
+    "Borders": [
+      { "name": "Default", "hex": "#58595b", "role": "Separators, input borders." },
+      { "name": "Subtle", "hex": "#404040", "role": "Card edges, table cell rules." }
+    ]
+  },
+  "typeScale": [
+    { "label": "display", "spec": "Inter · 28px · 600 · 1.28", "sample": "Compass — Today" },
+    { "label": "h2", "spec": "Inter · 22px · 600 · 1.36", "sample": "Stale tickets needing attention" },
+    { "label": "h3", "spec": "Inter · 17px · 600 · 1.41", "sample": "Carry-Flow — batch 28A-9921" },
+    { "label": "body", "spec": "Inter · 14px · 400 · 1.42", "sample": "Stock arrives at site Tuesday 06:00. Driver is John. Margaret has acknowledged." },
+    { "label": "body-strong", "spec": "Inter · 14px · 600 · 1.42", "sample": "Stock arrives at site Tuesday 06:00." },
+    { "label": "small", "spec": "Inter · 12px · 400 · 1.33", "sample": "Updated 14:32 by margaret · 2 hours ago" },
+    { "label": "mono", "spec": "JetBrains Mono · 13px · 400 · 1.38", "sample": "PDS-CARRY-FLOW-2025-04 · 28A-9921" }
+  ],
+  "fonts": [
+    { "family": "Inter", "weights": "400 / 500 / 600", "use": "All UI type. Workhorse sans for screens.", "fallback": "ui-sans-serif, system-ui, -apple-system, sans-serif", "why": "Inter is the field workhorse — Proxima Nova is a print/marketing font and isn't worth the licensing complexity for an 11-user internal tool. Renders crisply at 12–14px which is most of what hub-app shows." },
+    { "family": "JetBrains Mono", "weights": "400", "use": "IDs, batch numbers, codes, JSON, anything copyable.", "fallback": "ui-monospace, SFMono-Regular, Menlo, monospace", "why": "Tabular numerals stop column drift in dense tables. Distinguishable 0/O and 1/l/I — drillers paste batch IDs all day." }
+  ],
+  "spacing": [
+    { "label": "x1", "value": "4px", "use": "Tight inline gap." },
+    { "label": "x2", "value": "8px", "use": "Stack within a control." },
+    { "label": "x3", "value": "12px", "use": "Form field padding." },
+    { "label": "x4", "value": "16px", "use": "Card interior. Default density target." },
+    { "label": "x6", "value": "24px", "use": "Section spacing inside a view." },
+    { "label": "x8", "value": "32px", "use": "Spacing before a new H2." }
+  ],
+  "radii": [
+    { "label": "sm", "value": "4px", "use": "Status pills, chips." },
+    { "label": "md", "value": "8px", "use": "Buttons, inputs." },
+    { "label": "lg", "value": "12px", "use": "Cards, modals, drawers." }
+  ],
+  "shadows": [
+    { "label": "elev-card", "value": "0 1px 0 rgba(0,0,0,.4)", "use": "Card on dark page background." },
+    { "label": "elev-floating", "value": "0 4px 12px rgba(0,0,0,.4)", "use": "Dropdowns, popovers." },
+    { "label": "elev-modal", "value": "0 12px 32px rgba(0,0,0,.5)", "use": "Modals and drawers." },
+    { "label": "elev-action", "value": "0 4px 12px rgba(240,83,35,.3)", "use": "Primary orange button only." }
+  ],
+  "doDont": {
+    "do": [
+      "Use --primary for the one action a view exists for.",
+      "Render every state — default, hover, focus, loading, empty, error, permission-denied.",
+      "Use status roles (success/warning/danger/info) for state — never orange.",
+      "Default to dark theme. Light is the field/outdoor mode.",
+      "Use tabular numerals in tables and metric strips.",
+      "Render PDS/SDS in-app to capture the audit trail."
+    ],
+    "dont": [
+      "Don't ship two-column forms.",
+      "Don't auto-discard work on navigation.",
+      "Don't show a spinner over an empty table — use skeletons.",
+      "Don't render 'No data' with no follow-up action.",
+      "Don't stack status badges.",
+      "Don't hardcode hex — always reference --token."
+    ]
+  },
+  "components": "hub-app"
+}

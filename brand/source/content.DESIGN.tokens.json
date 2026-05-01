@@ -1,0 +1,75 @@
+{
+  "id": "content",
+  "title": "AI-Generated Content",
+  "wordmark": "Nexus · Content",
+  "tagline": "Editorial, not corporate.",
+  "essence": "Anything Nexus or a Claude skill produces — daily briefs, LinkedIn posts and carousels, Marp slide decks, outreach emails, vault notes — renders here. The atmosphere is editorial, not corporate. Considered, not breathless. The voice is the Expert Mate written down. The format borrows from print: clear hierarchy, tables when tables help, pull quotes when a customer's words deserve weight, white space when an idea needs to land. If a brief looks like ChatGPT default voice, it is wrong. If it looks like a half-page from a trade publication someone might actually want to read, it is right.",
+  "audience": "Mixed. Internal readers of daily briefs. External readers of LinkedIn posts. Prospects reading proposals and outreach. The team reading session digests.",
+  "sourceUrl": "https://blickgroup.github.io/designs/",
+  "colors": {
+    "Brand": [
+      { "name": "Brand Orange", "hex": "#f05323", "role": "Section anchors, pull-quote rules. One accent per page." },
+      { "name": "Print Orange", "hex": "#c4421b", "role": "CMYK-safe orange for printed PDFs. CMYK won't reproduce #f05323 cleanly." }
+    ],
+    "Editorial Light": [
+      { "name": "Ink", "hex": "#0a0a0a", "role": "Body text, headings." },
+      { "name": "Editorial Rule", "hex": "#1f1f1f", "role": "Structural rules — masthead, section dividers." },
+      { "name": "Muted", "hex": "#5a5a5a", "role": "Captions, attributions, dates." },
+      { "name": "Page", "hex": "#ffffff", "role": "Default canvas." },
+      { "name": "Section Warm", "hex": "#f5f3ef", "role": "Pull-out boxes, sidebars." },
+      { "name": "Highlight", "hex": "#fde68a", "role": "Editorial highlight on a key claim — sparingly." }
+    ],
+    "Editorial Dark": [
+      { "name": "Page (dark)", "hex": "#0a0a0a", "role": "LinkedIn dark background, dark slide decks." },
+      { "name": "Surface (dark)", "hex": "#1a1a1a", "role": "Cards on dark canvas." },
+      { "name": "Text (dark)", "hex": "#f5f3ef", "role": "Body on dark." }
+    ]
+  },
+  "typeScale": [
+    { "label": "c-display", "spec": "Proxima Nova · 32px · 700 · 1.18", "sample": "Daily Overview · 2 May 2026" },
+    { "label": "c-h2", "spec": "Proxima Nova · 22px · 700 · 1.3", "sample": "What we are watching this week" },
+    { "label": "c-h3", "spec": "Proxima Nova · 17px · 500 · 1.4", "sample": "AMC supply window slipping in WA" },
+    { "label": "c-lead", "spec": "Source Serif Pro · 19px · 400 · 1.55 · italic", "sample": "Crews in the Pilbara are asking why Carry-Flow stocks have moved without notice — here is what we know." },
+    { "label": "c-body", "spec": "Source Serif Pro · 17px · 400 · 1.65", "sample": "Three weeks ago a Pilbara crew called Margaret because their HDD bore was losing returns. We had Loss-Swell on site within 48 hours and the bore was back in production by Wednesday. Specifics like this are why customers stay." },
+    { "label": "c-pull", "spec": "Proxima Nova · 22px · 500 · 1.4", "sample": "We are in the field with you, not just behind a desk." },
+    { "label": "c-caption", "spec": "Proxima Nova · 13px · 400 · 1.4 · uppercase", "sample": "BLICK GROUP · 2 MAY 2026" },
+    { "label": "c-mono", "spec": "JetBrains Mono · 14px · 400 · 1.45", "sample": "Batch 28A-9921 · 17:32 NZST" }
+  ],
+  "fonts": [
+    { "family": "Proxima Nova", "weights": "400 / 500 / 700", "use": "Headings, captions, pull quotes, slide titles.", "fallback": "Inter, ui-sans-serif, system-ui, sans-serif", "why": "Sans heading paired against serif body is the editorial signal — it reads as authored, not auto-generated. The contrast is the entire point of this surface." },
+    { "family": "Source Serif Pro", "weights": "400 / 400 italic / 600", "use": "Body, lead paragraphs, briefs, long-form.", "fallback": "Charter, Georgia, \"Times New Roman\", serif", "why": "Serif body is what stops Nexus output reading like ChatGPT defaults. It is the most important font choice on this surface." },
+    { "family": "JetBrains Mono", "weights": "400", "use": "IDs, batch numbers, dates, technical detail in briefs.", "fallback": "ui-monospace, SFMono-Regular, Menlo, monospace", "why": "Numbers and codes need to feel separable from prose — that is what makes a brief readable, not just legible." }
+  ],
+  "spacing": [
+    { "label": "x6", "value": "24px", "use": "Editorial paragraph rhythm." },
+    { "label": "x8", "value": "32px", "use": "Spacing between H3 sections." },
+    { "label": "x12", "value": "48px", "use": "Spacing between H2 sections." },
+    { "label": "x16", "value": "64px", "use": "Page top padding for briefs and decks." }
+  ],
+  "radii": [
+    { "label": "none", "value": "0", "use": "Editorial defaults to flat. Print-derived." },
+    { "label": "sm", "value": "3px", "use": "Inline code chip — that is it." }
+  ],
+  "shadows": [
+    { "label": "none", "value": "none", "use": "Editorial is flat. White space is the only depth." }
+  ],
+  "doDont": {
+    "do": [
+      "Lead every brief with a standfirst.",
+      "Source every claim — wikilink for vault, URL for external.",
+      "Use serif for body, sans for headings. Always.",
+      "One pull quote per long-form piece, max.",
+      "Numbers and dates in mono.",
+      "Sentence-case headlines."
+    ],
+    "dont": [
+      "Don't use emoji in published content. None.",
+      "Don't write 'Hope this finds you well', 'Just circling back', 'Curious to hear your thoughts'.",
+      "Don't use AI-flavoured imagery — glowing brains, neural lattices, hexagons.",
+      "Don't fabricate quotes, numbers, or sources. Hard rule.",
+      "Don't use em-dashes more than once per paragraph — readers notice when AI overdoes them.",
+      "Don't ship two CTAs in one email."
+    ]
+  },
+  "components": "content"
+}

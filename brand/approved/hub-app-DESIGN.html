@@ -1,41 +1,553 @@
 <!DOCTYPE html>
-<html lang="en"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Hub-App Design System — Blick Brand</title>
-<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Hub-App — Internal Operations — Blick Brand</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Source+Serif+Pro:ital,wght@0,400;0,600;1,400&family=JetBrains+Mono:wght@400&display=swap" rel="stylesheet">
 <style>
-  :root { --orange:#f05323; --ink:#0a0a0a; --body:#1f1f1f; --muted:#5a5a5a; --page:#fff; --warm:#f5f3ef; --rule:#1f1f1f; --subtle:#e5e5e5; }
-  * { box-sizing:border-box; } html,body { margin:0; padding:0; }
-  body { background:var(--page); color:var(--body); font-family:'Source Serif Pro',Charter,Georgia,serif; font-size:17px; line-height:1.65; }
-  .wrap { max-width:720px; margin:0 auto; padding:64px 24px 96px; }
-  .masthead { display:flex; align-items:baseline; justify-content:space-between; border-bottom:2px solid var(--rule); padding-bottom:12px; margin-bottom:32px; }
-  .masthead .brand { font-family:Inter,sans-serif; font-weight:700; font-size:14px; letter-spacing:.06em; text-transform:uppercase; color:var(--ink); }
-  .masthead .brand span { color:var(--orange); }
-  .masthead .meta { font-family:Inter,sans-serif; font-size:12px; color:var(--muted); text-transform:uppercase; letter-spacing:.04em; }
-  h1,h2,h3,h4,h5,h6 { font-family:Inter,sans-serif; color:var(--ink); line-height:1.25; margin:1.6em 0 .4em; }
-  h1 { font-size:36px; font-weight:700; margin-top:0; letter-spacing:-.01em; }
-  h2 { font-size:26px; font-weight:700; padding-top:16px; border-top:1px solid var(--subtle); }
-  h3 { font-size:19px; font-weight:600; }
-  h4 { font-size:16px; font-weight:600; color:var(--muted); text-transform:uppercase; letter-spacing:.04em; }
-  p { margin:0 0 1em; max-width:68ch; }
-  a { color:var(--orange); text-decoration:none; border-bottom:1px solid rgba(240,83,35,.3); }
-  a:hover { border-bottom-color:var(--orange); }
-  a.wikilink { color:var(--ink); border-bottom-style:dotted; }
-  strong { color:var(--ink); font-weight:600; }
-  blockquote { border-left:3px solid var(--orange); margin:1.2em 0; padding:.4em 0 .4em 16px; color:var(--muted); font-style:italic; }
-  code { font-family:'JetBrains Mono',monospace; font-size:.88em; background:var(--warm); padding:1px 6px; border-radius:3px; color:var(--ink); }
-  pre { background:var(--ink); color:var(--warm); padding:16px 20px; border-radius:4px; overflow-x:auto; margin:1em 0; }
-  pre code { background:transparent; color:inherit; padding:0; font-size:13px; line-height:1.55; }
-  hr { border:0; border-top:1px solid var(--subtle); margin:32px 0; }
-  ul,ol { margin:0 0 1em 1.4em; padding:0; } li { margin-bottom:.3em; }
-  table { width:100%; border-collapse:collapse; margin:1.2em 0; font-family:Inter,sans-serif; font-size:14px; }
-  th { background:var(--ink); color:var(--page); text-align:left; padding:10px 12px; font-weight:600; font-size:12px; text-transform:uppercase; letter-spacing:.04em; }
-  td { padding:10px 12px; border-bottom:1px solid var(--subtle); vertical-align:top; }
-  td code { font-size:12px; }
-</style></head>
-<body><div class="wrap">
-  <div class="masthead"><div class="brand">Blick<span>·</span>Brand</div><div class="meta">hub-app.DESIGN.md</div></div>
-  <h1>Hub-App Design System</h1>
+  :root {
+    --orange:#f05323; --orange-hover:#ff6a3d;
+    --ink:#0a0a0a; --body:#1f1f1f; --muted:#5a5a5a;
+    --page:#fff; --warm:#f5f3ef; --rule:#1f1f1f; --subtle:#e5e5e5;
+    --success:#12a36d; --warning:#d97706; --danger:#dc2626; --info:#0891b2;
+  }
+  *, *::before, *::after { box-sizing: border-box; }
+  html, body { margin:0; padding:0; }
+  body { background: var(--page); color: var(--body); font-family: 'Source Serif Pro', Charter, Georgia, serif; font-size:17px; line-height:1.65; -webkit-font-smoothing:antialiased; }
+  .mono { font-family: 'JetBrains Mono', ui-monospace, SFMono-Regular, Menlo, monospace; }
+
+  /* Layout */
+  .layout { display:grid; grid-template-columns: minmax(0, 1fr) 420px; gap:48px; max-width:1320px; margin:0 auto; padding:48px 32px 96px; }
+  @media (max-width: 1080px) { .layout { grid-template-columns: 1fr; } .export-panel { position:static; max-height:none; } }
+
+  /* Breadcrumb */
+  .breadcrumb { font-family: Inter, sans-serif; font-size:12px; letter-spacing:.04em; text-transform:uppercase; color: var(--muted); margin-bottom:24px; }
+  .breadcrumb a { color: var(--muted); text-decoration:none; }
+  .breadcrumb a:hover { color: var(--ink); }
+
+  /* Hero */
+  .hero { margin-bottom: 48px; padding-bottom:32px; border-bottom: 2px solid var(--rule); }
+  .hero-wordmark { font-family: 'Proxima Nova', Inter, sans-serif; font-weight:700; font-size:80px; line-height:1; letter-spacing:-.025em; color: var(--ink); margin:0 0 16px; }
+  .hero-tagline { font-family: 'Source Serif Pro', Charter, serif; font-style:italic; font-size:22px; color: var(--orange); margin:0 0 24px; }
+  .hero-essence { font-family: 'Source Serif Pro', Charter, serif; font-size:18px; line-height:1.65; color: var(--body); max-width:60ch; margin:0 0 24px; }
+  .hero-meta { display:flex; gap:16px; flex-wrap:wrap; align-items:center; font-family: Inter, sans-serif; font-size:13px; color: var(--muted); }
+  .hero-meta a { color: var(--ink); text-decoration:none; border-bottom:1px solid var(--subtle); }
+  .hero-meta a:hover { border-bottom-color: var(--orange); color: var(--orange); }
+
+  /* Section heading */
+  .section { margin-top:64px; }
+  .section-head { font-family: Inter, sans-serif; font-size:11px; font-weight:700; letter-spacing:.12em; text-transform:uppercase; color: var(--muted); margin:0 0 24px; padding-bottom:8px; border-bottom:1px solid var(--subtle); }
+
+  /* Swatches */
+  .swatch-group { margin-bottom: 32px; }
+  .swatch-group-name { font-family: Inter, sans-serif; font-size:13px; font-weight:600; color: var(--ink); margin-bottom:12px; }
+  .swatch-list { display:grid; grid-template-columns: 1fr; gap:8px; }
+  .swatch { display:grid; grid-template-columns: 56px 1fr; gap:16px; align-items:center; padding:12px; border:1px solid var(--subtle); border-radius:6px; background: var(--page); cursor:pointer; text-align:left; font:inherit; transition: border-color .15s, box-shadow .15s; }
+  .swatch:hover { border-color: var(--ink); box-shadow: 0 1px 0 rgba(0,0,0,.04); }
+  .swatch-chip { width:56px; height:56px; border-radius:4px; box-shadow: inset 0 0 0 1px rgba(0,0,0,.08); }
+  .swatch-meta { display:flex; flex-direction:column; gap:4px; min-width:0; }
+  .swatch-row1 { display:flex; gap:12px; align-items:baseline; }
+  .swatch-name { font-family: Inter, sans-serif; font-weight:600; color: var(--ink); font-size:14px; }
+  .swatch-hex { font-size:13px; color: var(--muted); }
+  .swatch-role { font-family: 'Source Serif Pro', Charter, serif; font-size:14px; color: var(--body); line-height:1.4; }
+  .swatch.copied { border-color: var(--success); }
+  .swatch.copied .swatch-hex::after { content:" · copied"; color: var(--success); font-family: Inter, sans-serif; }
+
+  /* Type scale */
+  .type-scale { display:flex; flex-direction:column; gap:24px; padding:24px 0; }
+  .type-row { display:grid; grid-template-columns: 200px 1fr; gap:24px; align-items:baseline; padding:16px 0; border-bottom:1px solid var(--subtle); }
+  .type-spec { display:flex; flex-direction:column; gap:4px; }
+  .type-label { font-family: 'JetBrains Mono', monospace; font-size:12px; color: var(--orange); font-weight:600; }
+  .type-meta { font-family: 'JetBrains Mono', monospace; font-size:11px; color: var(--muted); line-height:1.4; }
+  .type-sample { color: var(--ink); }
+
+  /* Fonts */
+  .font-grid { display:grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap:16px; }
+  .font-card { padding:24px; border:1px solid var(--subtle); border-radius:8px; background: var(--page); }
+  .font-card-hero { font-size:36px; line-height:1; color: var(--ink); margin-bottom:16px; }
+  .font-card-meta { display:grid; grid-template-columns: 80px 1fr; gap:6px 12px; margin:0 0 16px; font-size:13px; }
+  .font-card-meta dt { font-family: Inter, sans-serif; color: var(--muted); font-weight:600; }
+  .font-card-meta dd { margin:0; color: var(--ink); }
+  .font-card-why { font-family: 'Source Serif Pro', Charter, serif; font-style:italic; font-size:14px; color: var(--body); margin:0; line-height:1.55; }
+
+  /* Token tables */
+  .token-table { width:100%; border-collapse:collapse; font-family: Inter, sans-serif; font-size:13px; }
+  .token-table th { text-align:left; padding:8px 12px; background: var(--ink); color: var(--page); font-size:11px; text-transform:uppercase; letter-spacing:.06em; }
+  .token-table td { padding:10px 12px; border-bottom:1px solid var(--subtle); vertical-align:top; }
+  .copy-btn { background:none; border:1px solid var(--subtle); border-radius:4px; padding:2px 8px; cursor:pointer; font-size:14px; color: var(--muted); }
+  .copy-btn:hover { border-color: var(--ink); color: var(--ink); }
+  .copy-btn.copied { border-color: var(--success); color: var(--success); }
+
+  /* Do/Don't */
+  .dodont { display:grid; grid-template-columns: 1fr 1fr; gap:24px; }
+  @media (max-width:720px) { .dodont { grid-template-columns:1fr; } }
+  .dodont-col { padding:24px; border-radius:8px; }
+  .dodont-do { background: rgba(18,163,109,.06); border:1px solid rgba(18,163,109,.2); }
+  .dodont-dont { background: rgba(220,38,38,.04); border:1px solid rgba(220,38,38,.2); }
+  .dodont-col h3 { font-family: Inter, sans-serif; font-size:14px; margin:0 0 12px; }
+  .dodont-do h3 { color: var(--success); }
+  .dodont-do h3::before { content:"✓ "; }
+  .dodont-dont h3 { color: var(--danger); }
+  .dodont-dont h3::before { content:"✕ "; }
+  .dodont-col ul { list-style:none; padding:0; margin:0; display:flex; flex-direction:column; gap:8px; }
+  .dodont-col li { font-family: 'Source Serif Pro', Charter, serif; font-size:15px; line-height:1.5; padding-left:20px; position:relative; }
+  .dodont-do li::before { content:"✓"; position:absolute; left:0; color: var(--success); font-family: Inter, sans-serif; font-weight:700; }
+  .dodont-dont li::before { content:"✕"; position:absolute; left:0; color: var(--danger); font-family: Inter, sans-serif; font-weight:700; }
+
+  /* Component preview */
+  .cp-frame { border-radius:12px; padding:32px; margin-top:8px; }
+  .cp-light { background: var(--warm); border:1px solid var(--subtle); }
+  .cp-dark { background:#1a1a1a; color:#bcbec0; border:1px solid #404040; font-family: Inter, sans-serif; font-size:14px; }
+  .cp-editorial { background: var(--page); border:1px solid var(--subtle); }
+  .cp-row { display:flex; gap:12px; align-items:center; flex-wrap:wrap; }
+  .cp-btn { padding:10px 18px; border-radius:8px; font-family: Inter, sans-serif; font-size:14px; font-weight:500; cursor:pointer; border:none; }
+  .cp-btn-primary { background: linear-gradient(135deg, #f05323 0%, #ff6a3d 100%); color:#fff; box-shadow: 0 4px 12px rgba(240,83,35,.3); }
+  .cp-btn-secondary { background:transparent; color:#bcbec0; border:1px solid #58595b; }
+  .cp-btn-web.cp-btn-primary { background:#f05323; box-shadow:none; border-radius:6px; }
+  .cp-btn-web.cp-btn-secondary { background:transparent; color: var(--ink); border:1px solid var(--ink); border-radius:6px; }
+  .cp-badge { display:inline-flex; padding:3px 10px; border-radius:4px; font-family: Inter, sans-serif; font-size:11px; font-weight:600; }
+  .cp-badge-success { background: rgba(18,163,109,.16); color:#12a36d; }
+  .cp-badge-warning { background: rgba(217,119,6,.16); color:#f59e0b; }
+  .cp-badge-danger { background: rgba(220,38,38,.16); color:#ef4444; }
+  .cp-badge-info { background: rgba(34,211,238,.16); color:#22d3ee; }
+  .cp-table { margin-top:24px; border:1px solid #404040; border-radius:8px; overflow:hidden; }
+  .cp-tr { display:grid; grid-template-columns: 140px 1fr 100px 120px; padding:10px 16px; border-bottom:1px solid #404040; }
+  .cp-tr:last-child { border-bottom:none; }
+  .cp-tr-selected { border-left:2px solid var(--orange); padding-left:14px; }
+  .cp-th { background:#2a2a2a; font-size:12px; font-weight:600; color:#fff; text-transform:uppercase; letter-spacing:.04em; }
+  .cp-table .mono { font-family: 'JetBrains Mono', monospace; font-size:13px; color:#bcbec0; }
+
+  .cp-hero-title { font-family: 'Proxima Nova', Inter, sans-serif; font-size:40px; font-weight:700; color: var(--ink); margin:0 0 12px; line-height:1.1; }
+  .cp-hero-lead { font-family: 'Proxima Nova', Inter, sans-serif; font-size:18px; color: var(--body); margin:0 0 24px; max-width:48ch; }
+  .cp-card-row { display:grid; grid-template-columns: 1fr 1fr; gap:16px; margin-top:32px; }
+  @media (max-width:600px) { .cp-card-row { grid-template-columns:1fr; } }
+  .cp-card { background: var(--page); border:1px solid var(--subtle); border-radius:4px; padding:20px; }
+  .cp-card-tag { font-family: Inter, sans-serif; font-size:11px; color: var(--muted); text-transform:uppercase; letter-spacing:.06em; margin-bottom:8px; }
+  .cp-card h3 { font-family: 'Proxima Nova', Inter, sans-serif; font-size:18px; margin:0 0 8px; color: var(--ink); }
+  .cp-card p { font-family: 'Proxima Nova', Inter, sans-serif; font-size:14px; color: var(--body); margin:0; }
+
+  .cp-mast { display:flex; justify-content:space-between; align-items:baseline; padding-bottom:12px; border-bottom:2px solid var(--rule); margin-bottom:24px; }
+  .cp-mast-brand { font-family: Inter, sans-serif; font-weight:700; font-size:13px; letter-spacing:.08em; }
+  .cp-mast-date { font-family: 'JetBrains Mono', monospace; font-size:12px; color: var(--muted); }
+  .cp-edit-title { font-family: 'Proxima Nova', Inter, sans-serif; font-weight:700; font-size:28px; color: var(--ink); margin:0 0 12px; }
+  .cp-edit-lead { font-family: 'Source Serif Pro', Charter, serif; font-style:italic; font-size:18px; color: var(--body); margin:0 0 16px; }
+  .cp-edit-body { font-family: 'Source Serif Pro', Charter, serif; font-size:16px; line-height:1.65; color: var(--body); margin:0 0 16px; }
+  .cp-pull { border-left:3px solid var(--orange); margin:24px 0; padding:8px 0 8px 20px; font-family: 'Proxima Nova', Inter, sans-serif; font-size:20px; font-weight:500; color: var(--ink); }
+
+  .cp-multi-row { display:grid; grid-template-columns: 1fr 1fr 1fr; gap:8px; }
+  @media (max-width:720px) { .cp-multi-row { grid-template-columns:1fr; } }
+  .cp-multi-col { padding:24px; border-radius:8px; min-height:140px; display:flex; flex-direction:column; gap:12px; }
+  .cp-multi-dark { background:#1a1a1a; color:#bcbec0; }
+  .cp-multi-light { background: var(--warm); }
+  .cp-multi-edit { background: var(--page); border:1px solid var(--subtle); }
+  .cp-multi-label { font-family: Inter, sans-serif; font-size:11px; font-weight:700; letter-spacing:.08em; color: var(--muted); }
+
+  /* Markdown body */
+  .md-body { font-family: 'Source Serif Pro', Charter, serif; font-size:17px; line-height:1.65; color: var(--body); }
+  .md-body h1, .md-body h2, .md-body h3, .md-body h4 { font-family: 'Proxima Nova', Inter, sans-serif; color: var(--ink); margin:48px 0 16px; line-height:1.25; }
+  .md-body h1 { font-size:32px; font-weight:700; }
+  .md-body h2 { font-size:24px; font-weight:700; padding-top:32px; border-top:1px solid var(--subtle); }
+  .md-body h3 { font-size:18px; font-weight:600; }
+  .md-body h4 { font-size:14px; font-weight:600; color: var(--muted); text-transform:uppercase; letter-spacing:.04em; }
+  .md-body p { margin:0 0 16px; max-width:64ch; }
+  .md-body a { color: var(--orange); text-decoration:none; border-bottom:1px solid rgba(240,83,35,.3); }
+  .md-body a.wikilink { color: var(--ink); border-bottom-style:dotted; }
+  .md-body strong { color: var(--ink); font-weight:600; }
+  .md-body code { font-family: 'JetBrains Mono', monospace; font-size:.88em; background: var(--warm); padding:1px 6px; border-radius:3px; }
+  .md-body pre { background: var(--ink); color: var(--warm); padding:16px 20px; border-radius:4px; overflow-x:auto; }
+  .md-body pre code { background:transparent; color:inherit; padding:0; font-size:13px; }
+  .md-body blockquote { border-left:3px solid var(--orange); margin:16px 0; padding:4px 0 4px 16px; color: var(--muted); font-style:italic; }
+  .md-body table { width:100%; border-collapse:collapse; margin:16px 0; font-family: Inter, sans-serif; font-size:14px; }
+  .md-body th { background: var(--ink); color: var(--page); text-align:left; padding:8px 12px; font-size:11px; text-transform:uppercase; letter-spacing:.04em; }
+  .md-body td { padding:10px 12px; border-bottom:1px solid var(--subtle); }
+  .md-body ul, .md-body ol { margin:0 0 16px 20px; padding:0; }
+  .md-body li { margin-bottom:4px; }
+
+  /* Export panel */
+  .export-panel { position: sticky; top:24px; max-height: calc(100vh - 48px); display:flex; flex-direction:column; border:1px solid var(--subtle); border-radius:8px; background: var(--page); overflow:hidden; font-family: Inter, sans-serif; }
+  .export-tabs { display:flex; border-bottom:1px solid var(--subtle); background: var(--warm); overflow-x:auto; }
+  .exp-tab { flex:1; padding:10px 12px; border:none; background:none; cursor:pointer; font:inherit; font-size:12px; font-weight:600; color: var(--muted); border-bottom:2px solid transparent; white-space:nowrap; }
+  .exp-tab.active { color: var(--orange); border-bottom-color: var(--orange); }
+  .export-actions { display:flex; gap:8px; padding:8px 12px; border-bottom:1px solid var(--subtle); }
+  .exp-action { flex:1; text-align:center; padding:6px 10px; border:1px solid var(--subtle); border-radius:4px; background: var(--page); cursor:pointer; text-decoration:none; color: var(--ink); font-size:12px; font-weight:600; font:inherit; font-size:12px; font-weight:600; }
+  .exp-action:hover { border-color: var(--orange); color: var(--orange); }
+  .export-bodies { flex:1; overflow:auto; }
+  .exp-body { display:none; margin:0; padding:16px; font-family: 'JetBrains Mono', monospace; font-size:11px; line-height:1.55; color: var(--body); white-space:pre; background: var(--page); }
+  .exp-body.active { display:block; }
+  </style>
+</head>
+<body>
+<div class="layout">
+  <main>
+    <nav class="breadcrumb"><a href="../../index.html">Designs</a> · <a href="../../index.html#brand">Brand</a> · Hub-App — Internal Operations</nav>
+
+    <header class="hero">
+      <h1 class="hero-wordmark">Hub-App</h1>
+      <div class="hero-tagline">A senior advisor's notebook.</div>
+      <p class="hero-essence">Hub-app is the operations tool that ~11 internal users live in for hours a day. Calm, dense, get-out-of-the-way. Operations-room dark by default with a high-contrast light mode for field laptops. Brand orange is reserved for action — never decoration. Information density is high. If it feels like a marketing site, it is wrong. If it feels like a senior advisor's notebook — orderly, dense, marked-up where it matters — it is right.</p>
+      <div class="hero-meta">
+        <span><strong>Audience:</strong> ~11 internal users across Operations, Sales, Compliance, and Drivers. Roles where the app is open all day and one extra click adds up.</span>
+        <a href="https://hub.blick.group" target="_blank" rel="noopener">↗ hub.blick.group</a>
+      </div>
+    </header>
+
+    <section class="section">
+      <h2 class="section-head">Colour palette &amp; roles</h2>
+      <div class="swatch-group">
+    <div class="swatch-group-name">Brand</div>
+    <div class="swatch-list">
+      
+        <button class="swatch" data-copy="#f05323" title="Click to copy #f05323">
+          <span class="swatch-chip" style="background:#f05323"></span>
+          <span class="swatch-meta">
+            <span class="swatch-row1">
+              <span class="swatch-name">Primary</span>
+              <span class="swatch-hex mono">#f05323</span>
+            </span>
+            <span class="swatch-role">The one action this view exists for. Buttons, key links, selected-row indicator.</span>
+          </span>
+        </button>
+        <button class="swatch" data-copy="#ff6a3d" title="Click to copy #ff6a3d">
+          <span class="swatch-chip" style="background:#ff6a3d"></span>
+          <span class="swatch-meta">
+            <span class="swatch-row1">
+              <span class="swatch-name">Primary Hover</span>
+              <span class="swatch-hex mono">#ff6a3d</span>
+            </span>
+            <span class="swatch-role">Hover and focus ring start.</span>
+          </span>
+        </button>
+        <button class="swatch" data-copy="#22d3ee" title="Click to copy #22d3ee">
+          <span class="swatch-chip" style="background:#22d3ee"></span>
+          <span class="swatch-meta">
+            <span class="swatch-row1">
+              <span class="swatch-name">Accent (Cyan)</span>
+              <span class="swatch-hex mono">#22d3ee</span>
+            </span>
+            <span class="swatch-role">Non-action emphasis — status, metric highlights. Never an action colour.</span>
+          </span>
+        </button>
+    </div>
+  </div><div class="swatch-group">
+    <div class="swatch-group-name">Surfaces (Dark default)</div>
+    <div class="swatch-list">
+      
+        <button class="swatch" data-copy="#1a1a1a" title="Click to copy #1a1a1a">
+          <span class="swatch-chip" style="background:#1a1a1a"></span>
+          <span class="swatch-meta">
+            <span class="swatch-row1">
+              <span class="swatch-name">Page</span>
+              <span class="swatch-hex mono">#1a1a1a</span>
+            </span>
+            <span class="swatch-role">App shell behind everything.</span>
+          </span>
+        </button>
+        <button class="swatch" data-copy="#2a2a2a" title="Click to copy #2a2a2a">
+          <span class="swatch-chip" style="background:#2a2a2a"></span>
+          <span class="swatch-meta">
+            <span class="swatch-row1">
+              <span class="swatch-name">Surface</span>
+              <span class="swatch-hex mono">#2a2a2a</span>
+            </span>
+            <span class="swatch-role">Cards, modals, drawers, sticky table headers.</span>
+          </span>
+        </button>
+        <button class="swatch" data-copy="#3a3a3a" title="Click to copy #3a3a3a">
+          <span class="swatch-chip" style="background:#3a3a3a"></span>
+          <span class="swatch-meta">
+            <span class="swatch-row1">
+              <span class="swatch-name">Surface Hover</span>
+              <span class="swatch-hex mono">#3a3a3a</span>
+            </span>
+            <span class="swatch-role">Row hover, button-on-card hover.</span>
+          </span>
+        </button>
+    </div>
+  </div><div class="swatch-group">
+    <div class="swatch-group-name">Text</div>
+    <div class="swatch-list">
+      
+        <button class="swatch" data-copy="#ffffff" title="Click to copy #ffffff">
+          <span class="swatch-chip" style="background:#ffffff"></span>
+          <span class="swatch-meta">
+            <span class="swatch-row1">
+              <span class="swatch-name">Heading</span>
+              <span class="swatch-hex mono">#ffffff</span>
+            </span>
+            <span class="swatch-role">h1–h4 in dark theme.</span>
+          </span>
+        </button>
+        <button class="swatch" data-copy="#bcbec0" title="Click to copy #bcbec0">
+          <span class="swatch-chip" style="background:#bcbec0"></span>
+          <span class="swatch-meta">
+            <span class="swatch-row1">
+              <span class="swatch-name">Body</span>
+              <span class="swatch-hex mono">#bcbec0</span>
+            </span>
+            <span class="swatch-role">Default reading text.</span>
+          </span>
+        </button>
+        <button class="swatch" data-copy="#707070" title="Click to copy #707070">
+          <span class="swatch-chip" style="background:#707070"></span>
+          <span class="swatch-meta">
+            <span class="swatch-row1">
+              <span class="swatch-name">Muted</span>
+              <span class="swatch-hex mono">#707070</span>
+            </span>
+            <span class="swatch-role">Timestamps, helpers, disabled state.</span>
+          </span>
+        </button>
+    </div>
+  </div><div class="swatch-group">
+    <div class="swatch-group-name">Borders</div>
+    <div class="swatch-list">
+      
+        <button class="swatch" data-copy="#58595b" title="Click to copy #58595b">
+          <span class="swatch-chip" style="background:#58595b"></span>
+          <span class="swatch-meta">
+            <span class="swatch-row1">
+              <span class="swatch-name">Default</span>
+              <span class="swatch-hex mono">#58595b</span>
+            </span>
+            <span class="swatch-role">Separators, input borders.</span>
+          </span>
+        </button>
+        <button class="swatch" data-copy="#404040" title="Click to copy #404040">
+          <span class="swatch-chip" style="background:#404040"></span>
+          <span class="swatch-meta">
+            <span class="swatch-row1">
+              <span class="swatch-name">Subtle</span>
+              <span class="swatch-hex mono">#404040</span>
+            </span>
+            <span class="swatch-role">Card edges, table cell rules.</span>
+          </span>
+        </button>
+    </div>
+  </div>
+    </section>
+
+    <section class="section">
+      <h2 class="section-head">Type scale</h2>
+      <div class="type-scale">
+    <div class="type-row">
+        <div class="type-spec">
+          <span class="type-label mono">display</span>
+          <span class="type-meta mono">Inter · 28px · 600 · 1.28</span>
+        </div>
+        <div class="type-sample" style="font-family:Inter, Inter,sans-serif; font-size:28px; font-weight:600; line-height:1.28;  ">Compass — Today</div>
+      </div><div class="type-row">
+        <div class="type-spec">
+          <span class="type-label mono">h2</span>
+          <span class="type-meta mono">Inter · 22px · 600 · 1.36</span>
+        </div>
+        <div class="type-sample" style="font-family:Inter, Inter,sans-serif; font-size:22px; font-weight:600; line-height:1.36;  ">Stale tickets needing attention</div>
+      </div><div class="type-row">
+        <div class="type-spec">
+          <span class="type-label mono">h3</span>
+          <span class="type-meta mono">Inter · 17px · 600 · 1.41</span>
+        </div>
+        <div class="type-sample" style="font-family:Inter, Inter,sans-serif; font-size:17px; font-weight:600; line-height:1.41;  ">Carry-Flow — batch 28A-9921</div>
+      </div><div class="type-row">
+        <div class="type-spec">
+          <span class="type-label mono">body</span>
+          <span class="type-meta mono">Inter · 14px · 400 · 1.42</span>
+        </div>
+        <div class="type-sample" style="font-family:Inter, Inter,sans-serif; font-size:14px; font-weight:400; line-height:1.42;  ">Stock arrives at site Tuesday 06:00. Driver is John. Margaret has acknowledged.</div>
+      </div><div class="type-row">
+        <div class="type-spec">
+          <span class="type-label mono">body-strong</span>
+          <span class="type-meta mono">Inter · 14px · 600 · 1.42</span>
+        </div>
+        <div class="type-sample" style="font-family:Inter, Inter,sans-serif; font-size:14px; font-weight:600; line-height:1.42;  ">Stock arrives at site Tuesday 06:00.</div>
+      </div><div class="type-row">
+        <div class="type-spec">
+          <span class="type-label mono">small</span>
+          <span class="type-meta mono">Inter · 12px · 400 · 1.33</span>
+        </div>
+        <div class="type-sample" style="font-family:Inter, Inter,sans-serif; font-size:12px; font-weight:400; line-height:1.33;  ">Updated 14:32 by margaret · 2 hours ago</div>
+      </div><div class="type-row">
+        <div class="type-spec">
+          <span class="type-label mono">mono</span>
+          <span class="type-meta mono">JetBrains Mono · 13px · 400 · 1.38</span>
+        </div>
+        <div class="type-sample" style="font-family:JetBrains Mono, Inter,sans-serif; font-size:13px; font-weight:400; line-height:1.38;  ">PDS-CARRY-FLOW-2025-04 · 28A-9921</div>
+      </div>
+  </div>
+    </section>
+
+    <section class="section">
+      <h2 class="section-head">Fonts</h2>
+      <div class="font-grid">
+    
+      <div class="font-card">
+        <div class="font-card-hero" style="font-family:Inter,Inter,sans-serif">Inter</div>
+        <dl class="font-card-meta">
+          <dt>Weights</dt><dd class="mono">400 / 500 / 600</dd>
+          <dt>Use</dt><dd>All UI type. Workhorse sans for screens.</dd>
+          <dt>Fallback</dt><dd class="mono">ui-sans-serif, system-ui, -apple-system, sans-serif</dd>
+        </dl>
+        <p class="font-card-why">Inter is the field workhorse — Proxima Nova is a print/marketing font and isn't worth the licensing complexity for an 11-user internal tool. Renders crisply at 12–14px which is most of what hub-app shows.</p>
+      </div>
+      <div class="font-card">
+        <div class="font-card-hero" style="font-family:JetBrains Mono,Inter,sans-serif">JetBrains Mono</div>
+        <dl class="font-card-meta">
+          <dt>Weights</dt><dd class="mono">400</dd>
+          <dt>Use</dt><dd>IDs, batch numbers, codes, JSON, anything copyable.</dd>
+          <dt>Fallback</dt><dd class="mono">ui-monospace, SFMono-Regular, Menlo, monospace</dd>
+        </dl>
+        <p class="font-card-why">Tabular numerals stop column drift in dense tables. Distinguishable 0/O and 1/l/I — drillers paste batch IDs all day.</p>
+      </div>
+  </div>
+    </section>
+
+    <section class="section">
+      <h2 class="section-head">Spacing</h2>
+      <table class="token-table">
+    <thead><tr><th>Label</th><th>Value</th><th>Use</th><th></th></tr></thead>
+    <tbody>
+      
+        <tr>
+          <td class="mono">x1</td>
+          <td class="mono">4px</td>
+          <td>Tight inline gap.</td>
+          <td><button class="copy-btn" data-copy="4px" title="Copy">⧉</button></td>
+        </tr>
+        <tr>
+          <td class="mono">x2</td>
+          <td class="mono">8px</td>
+          <td>Stack within a control.</td>
+          <td><button class="copy-btn" data-copy="8px" title="Copy">⧉</button></td>
+        </tr>
+        <tr>
+          <td class="mono">x3</td>
+          <td class="mono">12px</td>
+          <td>Form field padding.</td>
+          <td><button class="copy-btn" data-copy="12px" title="Copy">⧉</button></td>
+        </tr>
+        <tr>
+          <td class="mono">x4</td>
+          <td class="mono">16px</td>
+          <td>Card interior. Default density target.</td>
+          <td><button class="copy-btn" data-copy="16px" title="Copy">⧉</button></td>
+        </tr>
+        <tr>
+          <td class="mono">x6</td>
+          <td class="mono">24px</td>
+          <td>Section spacing inside a view.</td>
+          <td><button class="copy-btn" data-copy="24px" title="Copy">⧉</button></td>
+        </tr>
+        <tr>
+          <td class="mono">x8</td>
+          <td class="mono">32px</td>
+          <td>Spacing before a new H2.</td>
+          <td><button class="copy-btn" data-copy="32px" title="Copy">⧉</button></td>
+        </tr>
+    </tbody>
+  </table>
+    </section>
+
+    <section class="section">
+      <h2 class="section-head">Radius</h2>
+      <table class="token-table">
+    <thead><tr><th>Label</th><th>Value</th><th>Use</th><th></th></tr></thead>
+    <tbody>
+      
+        <tr>
+          <td class="mono">sm</td>
+          <td class="mono">4px</td>
+          <td>Status pills, chips.</td>
+          <td><button class="copy-btn" data-copy="4px" title="Copy">⧉</button></td>
+        </tr>
+        <tr>
+          <td class="mono">md</td>
+          <td class="mono">8px</td>
+          <td>Buttons, inputs.</td>
+          <td><button class="copy-btn" data-copy="8px" title="Copy">⧉</button></td>
+        </tr>
+        <tr>
+          <td class="mono">lg</td>
+          <td class="mono">12px</td>
+          <td>Cards, modals, drawers.</td>
+          <td><button class="copy-btn" data-copy="12px" title="Copy">⧉</button></td>
+        </tr>
+    </tbody>
+  </table>
+    </section>
+
+    <section class="section">
+      <h2 class="section-head">Shadows</h2>
+      <table class="token-table">
+    <thead><tr><th>Label</th><th>Value</th><th>Use</th><th></th></tr></thead>
+    <tbody>
+      
+        <tr>
+          <td class="mono">elev-card</td>
+          <td class="mono">0 1px 0 rgba(0,0,0,.4)</td>
+          <td>Card on dark page background.</td>
+          <td><button class="copy-btn" data-copy="0 1px 0 rgba(0,0,0,.4)" title="Copy">⧉</button></td>
+        </tr>
+        <tr>
+          <td class="mono">elev-floating</td>
+          <td class="mono">0 4px 12px rgba(0,0,0,.4)</td>
+          <td>Dropdowns, popovers.</td>
+          <td><button class="copy-btn" data-copy="0 4px 12px rgba(0,0,0,.4)" title="Copy">⧉</button></td>
+        </tr>
+        <tr>
+          <td class="mono">elev-modal</td>
+          <td class="mono">0 12px 32px rgba(0,0,0,.5)</td>
+          <td>Modals and drawers.</td>
+          <td><button class="copy-btn" data-copy="0 12px 32px rgba(0,0,0,.5)" title="Copy">⧉</button></td>
+        </tr>
+        <tr>
+          <td class="mono">elev-action</td>
+          <td class="mono">0 4px 12px rgba(240,83,35,.3)</td>
+          <td>Primary orange button only.</td>
+          <td><button class="copy-btn" data-copy="0 4px 12px rgba(240,83,35,.3)" title="Copy">⧉</button></td>
+        </tr>
+    </tbody>
+  </table>
+    </section>
+
+    <section class="section">
+      <h2 class="section-head">Do &amp; Don't</h2>
+      <div class="dodont">
+    <div class="dodont-col dodont-do">
+      <h3>Do</h3>
+      <ul><li>Use --primary for the one action a view exists for.</li><li>Render every state — default, hover, focus, loading, empty, error, permission-denied.</li><li>Use status roles (success/warning/danger/info) for state — never orange.</li><li>Default to dark theme. Light is the field/outdoor mode.</li><li>Use tabular numerals in tables and metric strips.</li><li>Render PDS/SDS in-app to capture the audit trail.</li></ul>
+    </div>
+    <div class="dodont-col dodont-dont">
+      <h3>Don't</h3>
+      <ul><li>Don't ship two-column forms.</li><li>Don't auto-discard work on navigation.</li><li>Don't show a spinner over an empty table — use skeletons.</li><li>Don't render 'No data' with no follow-up action.</li><li>Don't stack status badges.</li><li>Don't hardcode hex — always reference --token.</li></ul>
+    </div>
+  </div>
+    </section>
+
+    <section class="section">
+      <h2 class="section-head">Live component preview</h2>
+      
+      <div class="cp-frame cp-dark">
+        <div class="cp-row">
+          <button class="cp-btn cp-btn-primary">Approve batch</button>
+          <button class="cp-btn cp-btn-secondary">Cancel</button>
+          <span class="cp-badge cp-badge-success">Active</span>
+          <span class="cp-badge cp-badge-warning">Stale</span>
+          <span class="cp-badge cp-badge-danger">Blocked</span>
+        </div>
+        <div class="cp-table">
+          <div class="cp-tr cp-th"><div>Batch</div><div>Product</div><div>Status</div><div>Owner</div></div>
+          <div class="cp-tr"><div class="mono">28A-9921</div><div>Carry-Flow</div><div><span class="cp-badge cp-badge-success">Active</span></div><div>Margaret</div></div>
+          <div class="cp-tr cp-tr-selected"><div class="mono">28A-9920</div><div>Filter-High</div><div><span class="cp-badge cp-badge-warning">Stale</span></div><div>John</div></div>
+          <div class="cp-tr"><div class="mono">28A-9919</div><div>One-Stop</div><div><span class="cp-badge cp-badge-info">Pending</span></div><div>Margaret</div></div>
+        </div>
+      </div>
+    </section>
+
+    <section class="section">
+      <h2 class="section-head">Full document</h2>
+      <div class="md-body"><h1>Hub-App Design System</h1>
 <blockquote><strong>Audience:</strong> ~11 internal users (Operations, Sales, Compliance, Drivers). Roles: owner-operators in their 40s–60s comfortable with phones and field work, less so with dense SaaS UIs.</blockquote>
 <blockquote></blockquote>
 <blockquote><strong>Surface scope:</strong> the hub-app at <code>hub-app/frontend/</code> — Compass (work), Copper (CRM), Operations (people, fleet, H&S), Rig (jobs), Health.</blockquote>
@@ -286,5 +798,478 @@ If it feels like a senior advisor's notebook, you got it right.
 <li><a class="wikilink" href="#">content.DESIGN</a> — sister surface</li>
 <li><a class="wikilink" href="#">project_hub_app_monorepo</a> — repo structure and deploy model</li>
 <li><a class="wikilink" href="#">feedback_no_accessibility_requirements</a> — why we skip WCAG ceremony</li>
-</ul>
-</div></body></html>
+</ul></div>
+    </section>
+  </main>
+
+  
+    <aside class="export-panel">
+      <div class="export-tabs">
+        <button class="exp-tab active" data-target="exp-md">DESIGN.md</button>
+        <button class="exp-tab" data-target="exp-tw">Tailwind</button>
+        <button class="exp-tab" data-target="exp-css">CSS Vars</button>
+        <button class="exp-tab" data-target="exp-json">Tokens JSON</button>
+      </div>
+      <div class="export-actions">
+        <button class="exp-action" id="exp-copy">Copy</button>
+        <a class="exp-action" id="exp-download" download="hub-app.DESIGN.md">.md</a>
+      </div>
+      <div class="export-bodies">
+        <pre class="exp-body active" id="exp-md"><code>---
+title: Hub-App Design System
+date: 2026-05-01
+type: system
+tags: [design-system, hub-app, internal-tool]
+status: active
+source: manual
+schema: awesome-design-md-v1
+surface: hub-app
+parent: Brand
+---
+
+# Hub-App Design System
+
+&gt; **Audience:** ~11 internal users (Operations, Sales, Compliance, Drivers). Roles: owner-operators in their 40s–60s comfortable with phones and field work, less so with dense SaaS UIs.
+&gt;
+&gt; **Surface scope:** the hub-app at `hub-app/frontend/` — Compass (work), Copper (CRM), Operations (people, fleet, H&amp;S), Rig (jobs), Health.
+&gt;
+&gt; **Inherits from:** [[Brand]] (voice, marks, terminology, brand orange `#f05323`).
+&gt;
+&gt; **Excludes:** marketing website ([[website.DESIGN]]), AI-generated content ([[content.DESIGN]]).
+&gt;
+&gt; **Token source of truth:** `hub-app/frontend/src/styles/themes.css`. This document is what that file *should* be. The `/design-token-audit` skill diffs the two.
+
+---
+
+## 1. Visual Theme &amp; Atmosphere
+
+**Calm, dense, get-out-of-the-way.** This is a tool people use for hours a day. It is not a marketing surface. It is not trying to delight. It is trying to make the next click obvious and the screen quiet enough to think.
+
+The atmosphere is **operations-room dark by default**, with a high-contrast light mode for field/outdoor screens. Brand orange is reserved for action, never decoration. Information density is high — internal-tool tables and forms, not landing-page generosity.
+
+If the hub-app feels like a marketing site, we got it wrong. If it feels like a senior advisor's notebook — orderly, dense, marked-up where it matters — we got it right.
+
+---
+
+## 2. Color Palette &amp; Roles
+
+Tokens live in `frontend/src/styles/themes.css` as CSS custom properties. Reference via Tailwind arbitrary values: `bg-[var(--bg-surface)]`. Never hardcode hex in a component.
+
+### Dark theme (default)
+
+| Role | Token | Value | Notes |
+|---|---|---|---|
+| Brand action | `--primary` | `#f05323` | Buttons, primary CTA, key links. Restraint — one orange anchor per view. |
+| Brand action hover | `--primary-hover` | `#ff6a3d` | Hover, focus ring start |
+| Accent (highlights, badges) | `--secondary` | `#22d3ee` | Cyan. Use for non-action emphasis (status, metrics). Not an action colour. |
+| Page background | `--bg-page` | `#1a1a1a` | The surface behind everything |
+| Card surface | `--bg-surface` | `#2a2a2a` | Cards, modals, drawers |
+| Hover surface | `--bg-hover` | `#3a3a3a` | Row hover, button-on-card hover |
+| Body text | `--text-primary` | `#bcbec0` | Default reading text |
+| Heading text | `--text-heading` | `#ffffff` | h1–h4 |
+| Muted text | `--text-muted` | `#707070` | Timestamps, helper text, disabled |
+| Default border | `--border-default` | `#58595b` | Separators, input borders |
+| Subtle border | `--border-subtle` | `#404040` | Card edges, table cell rules |
+
+### Light theme
+
+Defined in `themes.css` under `[data-theme=&quot;light&quot;]`. Mirror role, different value. The audit skill checks symmetry.
+
+### Status colour roles
+
+| Role | Use for | Example surfaces |
+|---|---|---|
+| Success | Completed work, healthy metrics | Compass &quot;Done&quot; lane, healthz green |
+| Warning | Needs attention, soon-overdue | Stale tickets, expiring docs |
+| Danger | Blocked, breach, hard error | Blocked modal, validation, prod alerts |
+| Info | Neutral status, metadata | Audit log entries, default badges |
+
+Do **not** use brand orange for status. Orange is for *action this user can take now*, not state.
+
+### Product category colours
+
+When rendering a product anywhere in hub-app, use the colour-coded category palette from [[Brand]] §7.2. Category chip = category colour at 16% opacity background, full colour text, full colour 1px border.
+
+---
+
+## 3. Typography Rules
+
+Inter as the screen face — Proxima Nova is a print/marketing font and isn't worth the licensing complexity for an 11-user internal tool. JetBrains Mono for IDs, codes, batch numbers, and any value that gets copied.
+
+| Token | Family | Weight | Size / line | Use |
+|---|---|---|---|---|
+| `--font-display` | Inter | 600 | 28 / 36 | Page H1, dashboard hero |
+| `--font-h2` | Inter | 600 | 22 / 30 | Section H2 |
+| `--font-h3` | Inter | 600 | 17 / 24 | Card title, modal title |
+| `--font-body` | Inter | 400 | 14 / 20 | Default body, table cells |
+| `--font-body-strong` | Inter | 600 | 14 / 20 | Emphasis in body |
+| `--font-small` | Inter | 400 | 12 / 16 | Helper, timestamps, badges |
+| `--font-mono` | JetBrains Mono | 400 | 13 / 18 | IDs, codes, batch numbers, JSON |
+
+**Never more than three weights per view.** **Never more than two sizes per row.** If you find yourself reaching for a fourth heading level, the page needs splitting, not another size.
+
+Numerals: tabular by default in tables and metrics (`font-variant-numeric: tabular-nums`).
+
+---
+
+## 4. Component Stylings
+
+This is the **internal-tool** layer that nobody else's design system covers. Every component below has explicit states and is the contract that hub-app components must implement.
+
+### 4.1 Buttons
+- **Primary:** orange gradient (`linear-gradient(135deg, #f05323 0%, #ff6a3d 100%)`), white text, 8px radius, 12px shadow at 30% opacity. One per view. Always the action the user came here for.
+- **Secondary:** transparent background, `--text-primary` text, 1px `--border-default` border. Used for cancel, back, secondary actions. Can be repeated.
+- **Ghost:** transparent background, no border, `--text-primary` text. For toolbar / row-level actions.
+- **Destructive:** danger background, white text. Confirms wrap with double-confirm modal — no inline destructive on row hover.
+- **States required:** default, hover, focus (visible 2px ring `--primary-hover`), active, disabled (`--text-muted` text, no shadow), loading (spinner replaces label, button stays sized).
+
+### 4.2 Tables (the workhorse — get this right)
+- Tabular numerals. Row height 40px default, 48px when row is the primary interaction surface.
+- Sticky header (`--bg-surface`), 1px `--border-subtle` between rows.
+- Row hover: `--bg-hover`. Selected row: 2px left border in `--primary`, background unchanged.
+- **Sort affordance** in every sortable header (chevron indicator), default sort indicated.
+- **Empty state:** centred, max-width 320px, single sentence + a primary action. Never just &quot;No data.&quot;
+- **Loading state:** skeleton rows matching final row height — never a spinner over an empty table.
+- **Permission-denied state:** &quot;You don't have access to this. Ask [owner].&quot; with a link to the owner contact.
+
+### 4.3 Forms
+- One column. Always. No two-column forms in hub-app — they break field flow on the field laptop screens our users actually use.
+- Labels above fields, 12px `--font-small` `--text-muted`. Required marker is `*` after the label, no colour change.
+- Inline validation on blur, never on keystroke. Error text directly below the field in danger colour.
+- Save state visible in the form footer: clean / dirty / saving / saved / error. Never silent.
+- Long forms use **Save Draft** as a secondary action — never auto-discard on navigation.
+
+### 4.4 Cards
+- `--bg-surface`, 12px radius, 1px `--border-subtle`, 16px padding.
+- Card title in `--font-h3`, body in `--font-body`. Don't nest cards more than one level deep.
+- Card actions live in a footer row, never floating in the body.
+
+### 4.5 Modals &amp; Drawers
+- Modal for confirms and short forms (≤ 5 fields). Drawer (right-side, 480px wide) for anything longer.
+- Both have a visible cancel and a primary action. Primary action is on the right.
+- Close on `Esc`. Close on backdrop click for modals; **never** for drawers (too easy to lose work).
+- Loading state inside a modal disables both buttons and shows label state on the primary.
+
+### 4.6 Navigation
+- Left rail. Collapsible to icon-only. Active item indicated with a 3px left border in `--primary` and `--text-heading` text.
+- No more than 7 top-level items. If you need more, you need a sub-app, not another nav item.
+- Breadcrumbs only when nesting is ≥ 3 levels deep.
+
+### 4.7 Status badges
+- Pill shape, 4px radius, 12px font, 4/8px padding.
+- Background = role colour at 16% opacity. Text = role colour at full intensity. Optional 1px border at 32% opacity.
+- One status per row. Never stack badges.
+
+### 4.8 Audit / activity log
+- Reverse-chronological. Each entry: timestamp (mono, muted), actor (linked), verb (body), object (linked).
+- Group by day with a sticky day header.
+- Truncate long values, expand on click — never wrap to 4 lines in the feed.
+
+### 4.9 Document viewer (PDS / SDS / COA)
+- PDF rendered inline in a 2/3 width pane. Right pane shows metadata (version, last reviewed, owner, supersedes link).
+- Never just link out to Drive — render in-app so the audit trail captures the view.
+
+### 4.10 Data viz
+- Time-series: line, never area, never stacked area for ops metrics.
+- Threshold/alert lines in danger colour, 1px dashed.
+- Categorical: use the product category palette from [[Brand]] §7.2 in category order.
+- Always label axes. Never use the brand colour for non-action data series.
+
+---
+
+## 5. Depth &amp; Elevation
+
+Elevation indicates *interactivity*, not aesthetics. Static surfaces stay flat.
+
+| Token | Use | Shadow |
+|---|---|---|
+| `--elev-flat` | Page background, table rows | none |
+| `--elev-card` | Cards, list items | `0 1px 0 rgba(0,0,0,0.4)` |
+| `--elev-floating` | Dropdowns, popovers | `0 4px 12px rgba(0,0,0,0.4)` |
+| `--elev-modal` | Modals, drawers | `0 12px 32px rgba(0,0,0,0.5)` |
+| `--elev-action` | Primary buttons | `0 4px 12px rgba(240,83,35,0.3)` |
+
+Never animate elevation on hover for non-interactive surfaces. Elevation change = &quot;this is interactive.&quot;
+
+---
+
+## 6. Layout Principles
+
+### Spacing scale (4px base)
+`4, 8, 12, 16, 24, 32, 48, 64`. No off-grid values. Use Tailwind defaults (`gap-2`, `gap-3`, `gap-4`, `gap-6`).
+
+### Grid
+- Main app shell: left rail (`240px`, `64px` collapsed) + content (fluid).
+- Content max-width: `1440px`. Tables can exceed this with horizontal scroll — never compress columns past their natural minimum.
+- Card grids: `repeat(auto-fill, minmax(320px, 1fr))`, `gap-4`.
+
+### Density
+- **High density.** Default row height 40px, default card padding 16px. We are not a marketing site. Whitespace serves grouping, not breathing.
+- Section spacing: 24px between sibling sections. 32px before a new H2.
+
+### Whitespace philosophy
+Whitespace groups related things and separates unrelated things. It does not &quot;let the design breathe.&quot; If a section feels empty, the section is wrong, not the spacing.
+
+---
+
+## 7. Do's and Don'ts
+
+### Do
+- ✅ Use `--primary` for *the one action* this view exists for.
+- ✅ Use status roles (success/warning/danger/info) for state, not orange.
+- ✅ Render every state of a component (default, loading, empty, error, permission-denied).
+- ✅ Default to dark theme. Light theme is the field/outdoor mode.
+- ✅ Use product category colours from [[Brand]] §7.2 for product chips and category data viz.
+- ✅ Save draft on long forms.
+- ✅ Show save state explicitly.
+- ✅ Render PDS/SDS in-app (audit-trail capture).
+
+### Don't
+- ❌ Two-column forms.
+- ❌ Auto-discard on navigation.
+- ❌ Spinner over an empty table — use skeletons.
+- ❌ &quot;No data&quot; with no follow-up action.
+- ❌ Stacked status badges.
+- ❌ Brand orange as decoration or category colour.
+- ❌ Hardcoded hex in components — always reference tokens.
+- ❌ Animated elevation on non-interactive surfaces.
+- ❌ More than 7 top-level nav items.
+- ❌ Card nesting deeper than one level.
+- ❌ Inventing a new colour, spacing value, or font size not in this document or [[Brand]] §7.
+
+---
+
+## 8. Responsive Behavior
+
+Hub-app is **desktop-first** for office users and **tablet-second** for field/site users on iPads in trucks. We do not optimise for phones — phones are for taking calls, not running compliance audits.
+
+| Breakpoint | Width | Behaviour |
+|---|---|---|
+| `desk-lg` | ≥ 1440px | Full layout, tables uncompressed |
+| `desk` | 1024–1439 | Full layout, dense tables |
+| `tablet` | 768–1023 | Left rail collapses to icons, drawers become modals |
+| `narrow` | &lt; 768 | Read-only mode warning — interactive flows are blocked, view-only redirect |
+
+**Touch targets ≥ 44px** on tablet. **Inputs ≥ 40px high** on desktop, `48px` on tablet.
+
+No mobile flow design until 3+ users ask for one. Per [[feedback_no_accessibility_requirements]] we have no WCAG/screen-reader requirement, but we still ship **visible focus rings** because keyboard navigation is faster for power users.
+
+---
+
+## 9. Agent Prompt Guide
+
+When generating hub-app UI in Claude/Cursor or via `/team-design-studio` or `/team-build-lite`, include this brief in the system prompt:
+
+```
+You are designing for the Blick hub-app — an internal SaaS for ~11 users.
+
+Read these in order:
+1. BlickVault/Brand/brand-guidelines/Brand.md — voice, marks, terminology
+2. BlickVault/Brand/brand-guidelines/hub-app.DESIGN.md — this document
+3. hub-app/frontend/src/styles/themes.css — actual token values
+
+Ironclad rules:
+- Reference tokens, never hex. (`bg-[var(--bg-surface)]` not `bg-[#2a2a2a]`)
+- Default to dark theme.
+- One primary action per view, in --primary orange.
+- Render every state: default, hover, focus, loading, empty, error, permission-denied.
+- One-column forms only.
+- Tables use tabular numerals, skeleton loading, structured empty states.
+- High density — this is an operations tool, not a landing page.
+- Australasian English. No US spellings except in code identifiers.
+- No accessibility ceremony — visible focus rings yes, ARIA-everything no.
+
+If the design feels like a marketing site, you got it wrong.
+If it feels like a senior advisor's notebook, you got it right.
+```
+
+### Quick token reference (paste into prompts)
+
+| | dark | light |
+|---|---|---|
+| Brand action | `#f05323` | `#f05323` |
+| Brand action hover | `#ff6a3d` | `#ff6a3d` |
+| Accent | `#22d3ee` | `#0ea5b7` |
+| Page bg | `#1a1a1a` | `#fafafa` |
+| Surface bg | `#2a2a2a` | `#ffffff` |
+| Body text | `#bcbec0` | `#1f1f1f` |
+| Heading text | `#ffffff` | `#000000` |
+| Muted text | `#707070` | `#6b6b6b` |
+| Default border | `#58595b` | `#e5e5e5` |
+
+---
+
+## Anti-pattern audit (open items, last reviewed 2026-05-01)
+
+These are known places hub-app drifts from this spec. Tracked here so the audit skill has something to compare against.
+
+- [ ] Some Compass views use hardcoded hex instead of tokens (sweep needed).
+- [ ] Form save state inconsistent across services — Compass shows it, Operations doesn't.
+- [ ] Empty states default to &quot;No data found&quot; in 4+ tables — needs structured empty pattern.
+- [ ] Two-column forms exist in [[Operations]] new-employee flow — refactor.
+- [ ] Brand orange used as decorative accent on at least one dashboard card — should be replaced with `--secondary`.
+
+---
+
+## Related
+- [[Brand]] — parent brand source of truth
+- [[website.DESIGN]] — sister surface
+- [[content.DESIGN]] — sister surface
+- [[project_hub_app_monorepo]] — repo structure and deploy model
+- [[feedback_no_accessibility_requirements]] — why we skip WCAG ceremony
+</code></pre>
+        <pre class="exp-body" id="exp-tw"><code>// tailwind.config.js — Blick hub-app surface
+module.exports = {
+  theme: {
+    extend: {
+      colors: {
+        &quot;primary&quot;: &quot;#f05323&quot;,
+        &quot;primary-hover&quot;: &quot;#ff6a3d&quot;,
+        &quot;accent-cyan&quot;: &quot;#22d3ee&quot;,
+        &quot;page&quot;: &quot;#1a1a1a&quot;,
+        &quot;surface&quot;: &quot;#2a2a2a&quot;,
+        &quot;surface-hover&quot;: &quot;#3a3a3a&quot;,
+        &quot;heading&quot;: &quot;#ffffff&quot;,
+        &quot;body&quot;: &quot;#bcbec0&quot;,
+        &quot;muted&quot;: &quot;#707070&quot;,
+        &quot;default&quot;: &quot;#58595b&quot;,
+        &quot;subtle&quot;: &quot;#404040&quot;
+      },
+      spacing: {
+        'x1': '4px',
+        'x2': '8px',
+        'x3': '12px',
+        'x4': '16px',
+        'x6': '24px',
+        'x8': '32px',
+      },
+      borderRadius: {
+        'sm': '4px',
+        'md': '8px',
+        'lg': '12px',
+      },
+      boxShadow: {
+        'elev-card': '0 1px 0 rgba(0,0,0,.4)',
+        'elev-floating': '0 4px 12px rgba(0,0,0,.4)',
+        'elev-modal': '0 12px 32px rgba(0,0,0,.5)',
+        'elev-action': '0 4px 12px rgba(240,83,35,.3)',
+      }
+    }
+  }
+};</code></pre>
+        <pre class="exp-body" id="exp-css"><code>:root {
+  /* Brand */
+  --primary: #f05323;
+  --primary-hover: #ff6a3d;
+  --accent-cyan: #22d3ee;
+  /* Surfaces (Dark default) */
+  --page: #1a1a1a;
+  --surface: #2a2a2a;
+  --surface-hover: #3a3a3a;
+  /* Text */
+  --heading: #ffffff;
+  --body: #bcbec0;
+  --muted: #707070;
+  /* Borders */
+  --default: #58595b;
+  --subtle: #404040;
+  --space-x1: 4px;
+  --space-x2: 8px;
+  --space-x3: 12px;
+  --space-x4: 16px;
+  --space-x6: 24px;
+  --space-x8: 32px;
+  --radius-sm: 4px;
+  --radius-md: 8px;
+  --radius-lg: 12px;
+  --shadow-elev-card: 0 1px 0 rgba(0,0,0,.4);
+  --shadow-elev-floating: 0 4px 12px rgba(0,0,0,.4);
+  --shadow-elev-modal: 0 12px 32px rgba(0,0,0,.5);
+  --shadow-elev-action: 0 4px 12px rgba(240,83,35,.3);
+}</code></pre>
+        <pre class="exp-body" id="exp-json"><code>{
+  &quot;colors&quot;: {
+    &quot;Brand&quot;: {
+      &quot;Primary&quot;: &quot;#f05323&quot;,
+      &quot;Primary Hover&quot;: &quot;#ff6a3d&quot;,
+      &quot;Accent (Cyan)&quot;: &quot;#22d3ee&quot;
+    },
+    &quot;Surfaces (Dark default)&quot;: {
+      &quot;Page&quot;: &quot;#1a1a1a&quot;,
+      &quot;Surface&quot;: &quot;#2a2a2a&quot;,
+      &quot;Surface Hover&quot;: &quot;#3a3a3a&quot;
+    },
+    &quot;Text&quot;: {
+      &quot;Heading&quot;: &quot;#ffffff&quot;,
+      &quot;Body&quot;: &quot;#bcbec0&quot;,
+      &quot;Muted&quot;: &quot;#707070&quot;
+    },
+    &quot;Borders&quot;: {
+      &quot;Default&quot;: &quot;#58595b&quot;,
+      &quot;Subtle&quot;: &quot;#404040&quot;
+    }
+  },
+  &quot;spacing&quot;: {
+    &quot;x1&quot;: &quot;4px&quot;,
+    &quot;x2&quot;: &quot;8px&quot;,
+    &quot;x3&quot;: &quot;12px&quot;,
+    &quot;x4&quot;: &quot;16px&quot;,
+    &quot;x6&quot;: &quot;24px&quot;,
+    &quot;x8&quot;: &quot;32px&quot;
+  },
+  &quot;radii&quot;: {
+    &quot;sm&quot;: &quot;4px&quot;,
+    &quot;md&quot;: &quot;8px&quot;,
+    &quot;lg&quot;: &quot;12px&quot;
+  },
+  &quot;shadows&quot;: {
+    &quot;elev-card&quot;: &quot;0 1px 0 rgba(0,0,0,.4)&quot;,
+    &quot;elev-floating&quot;: &quot;0 4px 12px rgba(0,0,0,.4)&quot;,
+    &quot;elev-modal&quot;: &quot;0 12px 32px rgba(0,0,0,.5)&quot;,
+    &quot;elev-action&quot;: &quot;0 4px 12px rgba(240,83,35,.3)&quot;
+  }
+}</code></pre>
+      </div>
+    </aside>
+</div>
+
+<script>
+    // Click-to-copy on swatches and copy-btns
+    document.querySelectorAll('[data-copy]').forEach(el => {
+      el.addEventListener('click', () => {
+        const v = el.getAttribute('data-copy');
+        navigator.clipboard.writeText(v).then(() => {
+          el.classList.add('copied');
+          setTimeout(() => el.classList.remove('copied'), 1200);
+        });
+      });
+    });
+
+    // Export-panel tabs
+    const expTabs = document.querySelectorAll('.exp-tab');
+    const expBodies = document.querySelectorAll('.exp-body');
+    expTabs.forEach(t => t.addEventListener('click', () => {
+      expTabs.forEach(x => x.classList.remove('active'));
+      expBodies.forEach(x => x.classList.remove('active'));
+      t.classList.add('active');
+      document.getElementById(t.dataset.target).classList.add('active');
+    }));
+
+    // Copy current export body
+    document.getElementById('exp-copy').addEventListener('click', (e) => {
+      const active = document.querySelector('.exp-body.active code');
+      if (active) {
+        navigator.clipboard.writeText(active.textContent);
+        e.target.textContent = 'Copied';
+        setTimeout(() => e.target.textContent = 'Copy', 1200);
+      }
+    });
+
+    // Build .md download from the DESIGN.md panel content
+    const dlBtn = document.getElementById('exp-download');
+    const mdContent = document.querySelector('#exp-md code').textContent;
+    const blob = new Blob([mdContent], { type: 'text/markdown' });
+    dlBtn.href = URL.createObjectURL(blob);
+  </script>
+</body>
+</html>

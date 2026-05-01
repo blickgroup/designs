@@ -1,0 +1,99 @@
+{
+  "id": "brand",
+  "title": "Blick — Brand Source of Truth",
+  "wordmark": "Blick",
+  "tagline": "Better drilling starts here.",
+  "essence": "Blick speaks like an Expert Mate — the senior advisor who picks up the phone, knows your name, and can solve your drilling problem on the spot. Confident without being flashy, helpful without being pushy. The brand is Australasian, field-credible, and quietly proud of the industry it serves. Orange is the action colour — never decoration. Plain English is the rule, not a courtesy. This document is what every other Blick surface reads first.",
+  "audience": "Drillers, owner-operators, and site managers in their 40s–60s across Australia and New Zealand. Practical people who pick up the phone and value experience over qualifications.",
+  "sourceUrl": "https://blick.group",
+  "voice": {
+    "archetype": "The Expert Mate",
+    "rules": [
+      "Plain English over jargon. Pair every technical term with a plain-language explanation.",
+      "Customer is the hero. Stories frame the customer's win, not Blick's.",
+      "Specifics beat superlatives. Numbers, places, names.",
+      "Active voice, short sentences.",
+      "Australasian English. Never US spellings outside code.",
+      "Environmental claims are secondary — performance leads."
+    ]
+  },
+  "colors": {
+    "Brand": [
+      { "name": "Brand Orange", "hex": "#f05323", "role": "Primary action and brand anchor. Pantone Orange 021 C. Used for buttons, key links, section anchors. One per view — orange is a comma in a sentence, not a highlighter." },
+      { "name": "Orange Hover", "hex": "#ff6a3d", "role": "Hover and active state for orange interactives." }
+    ],
+    "Neutrals": [
+      { "name": "Ink", "hex": "#0a0a0a", "role": "Headings and primary text on light surfaces. Warmer than pure black." },
+      { "name": "Body", "hex": "#1f1f1f", "role": "Default reading text." },
+      { "name": "Muted", "hex": "#5a5a5a", "role": "Captions, attributions, dates, secondary metadata." },
+      { "name": "Dark Grey", "hex": "#58595b", "role": "Pantone 4279 C. Body text for print and document templates." },
+      { "name": "Light Grey", "hex": "#bcbec0", "role": "Pantone Cool Gray 5 C. Borders, muted text." },
+      { "name": "Page", "hex": "#ffffff", "role": "Default page background." },
+      { "name": "Section Warm", "hex": "#f5f3ef", "role": "Editorial pull-outs, alternate sections, sidebar surfaces." }
+    ],
+    "Product Categories": [
+      { "name": "Stabilisers", "hex": "#785ef0", "role": "Carry-Flow, Carry-Max, Carry-Foam." },
+      { "name": "Filtration Control", "hex": "#118fae", "role": "Filter-High, Filter-Low." },
+      { "name": "Clay Adjustment", "hex": "#dc267f", "role": "Swell Stop, Clay Control, Clay-Dissolve." },
+      { "name": "Clay Control", "hex": "#3c8c4c", "role": "Used for eco-product accenting on eco surfaces only." },
+      { "name": "LCM", "hex": "#fe6100", "role": "Lost circulation: One-Stop, Loss-Swell." },
+      { "name": "Support Chemicals", "hex": "#d0d0d0", "role": "Biocide, Defoam, Soda Ash." },
+      { "name": "Bentonite", "hex": "#ffb000", "role": "Bentonite Plug, Construct Gel, MetaFLO." }
+    ]
+  },
+  "typeScale": [
+    { "label": "display", "spec": "Proxima Nova · 56px · 700 · 1.07", "sample": "Better drilling starts here." },
+    { "label": "h1", "spec": "Proxima Nova · 40px · 700 · 1.2", "sample": "An Australasian drilling-fluids company." },
+    { "label": "h2", "spec": "Proxima Nova · 28px · 700 · 1.28", "sample": "Quality fluids, expert advice." },
+    { "label": "h3", "spec": "Proxima Nova · 20px · 500 · 1.4", "sample": "Carry-Flow holds up in tough conditions." },
+    { "label": "lead", "spec": "Source Serif Pro · 20px · 400 · 1.55 · italic", "sample": "We are the partner who knows your name, not just your account number." },
+    { "label": "body", "spec": "Source Serif Pro · 17px · 400 · 1.65", "sample": "Tested. Trusted. Tough enough for any job. We supply quality drilling fluids paired with expert technical advice that helps you get a better result on every job." },
+    { "label": "caption", "spec": "Proxima Nova · 12px · 400 · 1.4 · uppercase", "sample": "BLICK GROUP · 2026" }
+  ],
+  "fonts": [
+    { "family": "Proxima Nova", "weights": "400 / 500 / 700", "use": "All headings, UI labels, captions, marketing display.", "fallback": "Inter, ui-sans-serif, system-ui, sans-serif", "why": "The specified brand sans since 2025. Workmanlike and readable at small sizes — does not draw attention to itself, which is the point." },
+    { "family": "Source Serif Pro", "weights": "400 / 400 italic / 600", "use": "Editorial body, briefs, long-form content, AI-generated reports.", "fallback": "Charter, Georgia, \"Times New Roman\", serif", "why": "The serif anchors AI-generated content as editorial, not corporate. It signals 'authored', which is what stops Nexus output reading like ChatGPT defaults." },
+    { "family": "JetBrains Mono", "weights": "400", "use": "IDs, codes, batch numbers, technical specs, code snippets.", "fallback": "ui-monospace, SFMono-Regular, Menlo, Consolas, monospace", "why": "Tabular and unambiguous for batch numbers and identifiers — these copy-paste a lot in operations work." }
+  ],
+  "spacing": [
+    { "label": "x1", "value": "4px", "use": "Inline gap between glyph and label." },
+    { "label": "x2", "value": "8px", "use": "Tight stack within a control." },
+    { "label": "x3", "value": "12px", "use": "Default control padding." },
+    { "label": "x4", "value": "16px", "use": "Card interior, section row gap." },
+    { "label": "x6", "value": "24px", "use": "Section internal padding, card grid gap." },
+    { "label": "x8", "value": "32px", "use": "Section spacing, paragraph break in long-form." },
+    { "label": "x12", "value": "48px", "use": "Major section spacing on web." },
+    { "label": "x16", "value": "64px", "use": "Hero padding top, page margins." },
+    { "label": "x24", "value": "96px", "use": "Section break on marketing website." }
+  ],
+  "radii": [
+    { "label": "sm", "value": "4px", "use": "Pills, chips, tight controls." },
+    { "label": "md", "value": "8px", "use": "Buttons, inputs in hub-app." },
+    { "label": "lg", "value": "12px", "use": "Cards, modals, drawers." }
+  ],
+  "shadows": [
+    { "label": "card", "value": "0 1px 0 rgba(0,0,0,.06)", "use": "Card edge on light surface — restraint." },
+    { "label": "floating", "value": "0 4px 12px rgba(0,0,0,.12)", "use": "Dropdowns, popovers." },
+    { "label": "modal", "value": "0 12px 32px rgba(0,0,0,.5)", "use": "Modals and drawers in hub-app dark." },
+    { "label": "action", "value": "0 4px 12px rgba(240,83,35,.3)", "use": "Primary orange button — the only orange shadow in use." }
+  ],
+  "doDont": {
+    "do": [
+      "Use Brand Orange (#f05323) for the one action a view exists for.",
+      "Pair every technical term with a plain-English explanation.",
+      "Frame the customer as the hero of every story.",
+      "Use real field photography from Blick jobs — never stock.",
+      "Use sentence-case headlines.",
+      "Surface conflicts between sources — never silently resolve."
+    ],
+    "dont": [
+      "Don't invent tokens, colours, or terms. Extend this document first.",
+      "Don't use 'world-class', 'innovative', 'disruptive', 'leverage', 'synergies', or 'solutions' as a noun.",
+      "Don't say 'Blick Drilling Solutions' or 'NZ-based' anywhere.",
+      "Don't use stock photography on any surface.",
+      "Don't use emoji in published content (briefs, LinkedIn, decks, outreach).",
+      "Don't use 'green' as a product modifier — only Eco Dry, only product-specific."
+    ]
+  },
+  "components": "brand"
+}

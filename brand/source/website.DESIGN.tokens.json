@@ -1,0 +1,75 @@
+{
+  "id": "website",
+  "title": "blick.group — Marketing Website",
+  "wordmark": "blick.group",
+  "tagline": "Better drilling starts here.",
+  "essence": "The blick.group website is a digital business card backed by a working knowledge library. Big photography of real rigs and real crews. Generous whitespace. Confident orange anchors. Field-credible, not breathless. It says: we have been in the field for years, our products perform, and we will pick up the phone. It does not say: we are a venture-backed disruptor reimagining drilling.",
+  "audience": "Drillers, owner-operators, site managers in their 40s–60s across AU and NZ. Practical, phone-first, often viewing on mobile from a job site.",
+  "sourceUrl": "https://blick.group",
+  "colors": {
+    "Brand": [
+      { "name": "Brand Orange", "hex": "#f05323", "role": "Primary CTAs, key links, section anchors. One anchor per section." },
+      { "name": "Orange Hover", "hex": "#ff6a3d", "role": "Hover and active state." }
+    ],
+    "Neutrals": [
+      { "name": "Ink", "hex": "#0a0a0a", "role": "Headings and primary text on light." },
+      { "name": "Body", "hex": "#1f1f1f", "role": "Default body copy on light." },
+      { "name": "Muted", "hex": "#5a5a5a", "role": "Captions, metadata, secondary text." },
+      { "name": "Page", "hex": "#ffffff", "role": "Default page background." },
+      { "name": "Section Warm", "hex": "#f5f3ef", "role": "Alternate sections, editorial pull-outs." },
+      { "name": "Section Dark", "hex": "#0a0a0a", "role": "Dark sections — case studies, full-bleed photo." },
+      { "name": "Border Subtle", "hex": "#e5e5e5", "role": "Card edges, table rules." }
+    ],
+    "Eco": [
+      { "name": "Eco Accent", "hex": "#3c8c4c", "role": "Eco range surfaces only. Never on non-eco pages." }
+    ]
+  },
+  "typeScale": [
+    { "label": "web-display", "spec": "Proxima Nova · 56px · 700 · 1.07", "sample": "Better drilling starts here." },
+    { "label": "web-h1", "spec": "Proxima Nova · 40px · 700 · 1.2", "sample": "Quality fluids paired with expert advice." },
+    { "label": "web-h2", "spec": "Proxima Nova · 28px · 700 · 1.28", "sample": "Why teams across AU and NZ choose Blick." },
+    { "label": "web-h3", "spec": "Proxima Nova · 20px · 500 · 1.4", "sample": "Carry-Flow on a tough HDD job in WA." },
+    { "label": "web-lead", "spec": "Proxima Nova · 18px · 500 · 1.55", "sample": "We help drilling crews across Australia and New Zealand get a better result on every job." },
+    { "label": "web-body", "spec": "Proxima Nova · 16px · 400 · 1.62", "sample": "When you need product, advice, or support, we show up. Every time. Stock on site in 48 hours, and a name to call when something needs solving on the spot." },
+    { "label": "web-mono", "spec": "JetBrains Mono · 14px · 400 · 1.5", "sample": "PDS-CARRY-FLOW-2025-04 · Batch 28A-9921" }
+  ],
+  "fonts": [
+    { "family": "Proxima Nova", "weights": "400 / 500 / 700", "use": "All web type — headings, body, captions.", "fallback": "Inter, ui-sans-serif, system-ui, sans-serif", "why": "We hold the licence and the brand book mandates it. Sans-only on web keeps the field-credible voice — no editorial flourish." },
+    { "family": "JetBrains Mono", "weights": "400", "use": "Spec values, batch numbers, PDS/SDS technical data.", "fallback": "ui-monospace, SFMono-Regular, Menlo, monospace", "why": "Tabular numerals so spec tables and batch IDs align cleanly." }
+  ],
+  "spacing": [
+    { "label": "x4", "value": "16px", "use": "Default body rhythm, card interior." },
+    { "label": "x6", "value": "24px", "use": "Container gutter." },
+    { "label": "x12", "value": "48px", "use": "Mobile section spacing." },
+    { "label": "x16", "value": "64px", "use": "Tablet section spacing." },
+    { "label": "x24", "value": "96px", "use": "Desktop section spacing — generous and structural." },
+    { "label": "x32", "value": "128px", "use": "Hero vertical padding on the homepage." }
+  ],
+  "radii": [
+    { "label": "sm", "value": "4px", "use": "Cards, inputs, tables." },
+    { "label": "md", "value": "6px", "use": "Buttons. Smaller than hub-app — web reads as flatter." }
+  ],
+  "shadows": [
+    { "label": "header", "value": "0 1px 0 rgba(0,0,0,.06)", "use": "Sticky header on scroll. Only chrome on the page." },
+    { "label": "dropdown", "value": "0 8px 24px rgba(0,0,0,.12)", "use": "Region switcher, language selector." }
+  ],
+  "doDont": {
+    "do": [
+      "Lead with real field photography from Blick jobs.",
+      "Use sentence-case headlines, max 7 words.",
+      "One primary CTA per section.",
+      "Specifics: timeframes, regions, named products, real numbers.",
+      "Plain English first, technical detail in expandable spec tables.",
+      "Disclose entity (NZ vs AU) on regional contact lines."
+    ],
+    "dont": [
+      "Don't use stock photography. Period.",
+      "Don't use rotating heroes or carousels.",
+      "Don't use glassmorphism, gradients-for-decoration, or animated background blobs.",
+      "Don't pre-tick consent checkboxes.",
+      "Don't use 'world-class', 'innovative', 'disruptive', 'leverage'.",
+      "Don't lead AU pages with NZ heritage."
+    ]
+  },
+  "components": "website"
+}

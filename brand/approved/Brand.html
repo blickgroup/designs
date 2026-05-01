@@ -1,41 +1,627 @@
 <!DOCTYPE html>
-<html lang="en"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Blick Brand — Source of Truth — Blick Brand</title>
-<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Blick — Brand Source of Truth — Blick Brand</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Source+Serif+Pro:ital,wght@0,400;0,600;1,400&family=JetBrains+Mono:wght@400&display=swap" rel="stylesheet">
 <style>
-  :root { --orange:#f05323; --ink:#0a0a0a; --body:#1f1f1f; --muted:#5a5a5a; --page:#fff; --warm:#f5f3ef; --rule:#1f1f1f; --subtle:#e5e5e5; }
-  * { box-sizing:border-box; } html,body { margin:0; padding:0; }
-  body { background:var(--page); color:var(--body); font-family:'Source Serif Pro',Charter,Georgia,serif; font-size:17px; line-height:1.65; }
-  .wrap { max-width:720px; margin:0 auto; padding:64px 24px 96px; }
-  .masthead { display:flex; align-items:baseline; justify-content:space-between; border-bottom:2px solid var(--rule); padding-bottom:12px; margin-bottom:32px; }
-  .masthead .brand { font-family:Inter,sans-serif; font-weight:700; font-size:14px; letter-spacing:.06em; text-transform:uppercase; color:var(--ink); }
-  .masthead .brand span { color:var(--orange); }
-  .masthead .meta { font-family:Inter,sans-serif; font-size:12px; color:var(--muted); text-transform:uppercase; letter-spacing:.04em; }
-  h1,h2,h3,h4,h5,h6 { font-family:Inter,sans-serif; color:var(--ink); line-height:1.25; margin:1.6em 0 .4em; }
-  h1 { font-size:36px; font-weight:700; margin-top:0; letter-spacing:-.01em; }
-  h2 { font-size:26px; font-weight:700; padding-top:16px; border-top:1px solid var(--subtle); }
-  h3 { font-size:19px; font-weight:600; }
-  h4 { font-size:16px; font-weight:600; color:var(--muted); text-transform:uppercase; letter-spacing:.04em; }
-  p { margin:0 0 1em; max-width:68ch; }
-  a { color:var(--orange); text-decoration:none; border-bottom:1px solid rgba(240,83,35,.3); }
-  a:hover { border-bottom-color:var(--orange); }
-  a.wikilink { color:var(--ink); border-bottom-style:dotted; }
-  strong { color:var(--ink); font-weight:600; }
-  blockquote { border-left:3px solid var(--orange); margin:1.2em 0; padding:.4em 0 .4em 16px; color:var(--muted); font-style:italic; }
-  code { font-family:'JetBrains Mono',monospace; font-size:.88em; background:var(--warm); padding:1px 6px; border-radius:3px; color:var(--ink); }
-  pre { background:var(--ink); color:var(--warm); padding:16px 20px; border-radius:4px; overflow-x:auto; margin:1em 0; }
-  pre code { background:transparent; color:inherit; padding:0; font-size:13px; line-height:1.55; }
-  hr { border:0; border-top:1px solid var(--subtle); margin:32px 0; }
-  ul,ol { margin:0 0 1em 1.4em; padding:0; } li { margin-bottom:.3em; }
-  table { width:100%; border-collapse:collapse; margin:1.2em 0; font-family:Inter,sans-serif; font-size:14px; }
-  th { background:var(--ink); color:var(--page); text-align:left; padding:10px 12px; font-weight:600; font-size:12px; text-transform:uppercase; letter-spacing:.04em; }
-  td { padding:10px 12px; border-bottom:1px solid var(--subtle); vertical-align:top; }
-  td code { font-size:12px; }
-</style></head>
-<body><div class="wrap">
-  <div class="masthead"><div class="brand">Blick<span>·</span>Brand</div><div class="meta">Brand.md</div></div>
-  <h1>Blick Brand — Source of Truth</h1>
+  :root {
+    --orange:#f05323; --orange-hover:#ff6a3d;
+    --ink:#0a0a0a; --body:#1f1f1f; --muted:#5a5a5a;
+    --page:#fff; --warm:#f5f3ef; --rule:#1f1f1f; --subtle:#e5e5e5;
+    --success:#12a36d; --warning:#d97706; --danger:#dc2626; --info:#0891b2;
+  }
+  *, *::before, *::after { box-sizing: border-box; }
+  html, body { margin:0; padding:0; }
+  body { background: var(--page); color: var(--body); font-family: 'Source Serif Pro', Charter, Georgia, serif; font-size:17px; line-height:1.65; -webkit-font-smoothing:antialiased; }
+  .mono { font-family: 'JetBrains Mono', ui-monospace, SFMono-Regular, Menlo, monospace; }
+
+  /* Layout */
+  .layout { display:grid; grid-template-columns: minmax(0, 1fr) 420px; gap:48px; max-width:1320px; margin:0 auto; padding:48px 32px 96px; }
+  @media (max-width: 1080px) { .layout { grid-template-columns: 1fr; } .export-panel { position:static; max-height:none; } }
+
+  /* Breadcrumb */
+  .breadcrumb { font-family: Inter, sans-serif; font-size:12px; letter-spacing:.04em; text-transform:uppercase; color: var(--muted); margin-bottom:24px; }
+  .breadcrumb a { color: var(--muted); text-decoration:none; }
+  .breadcrumb a:hover { color: var(--ink); }
+
+  /* Hero */
+  .hero { margin-bottom: 48px; padding-bottom:32px; border-bottom: 2px solid var(--rule); }
+  .hero-wordmark { font-family: 'Proxima Nova', Inter, sans-serif; font-weight:700; font-size:80px; line-height:1; letter-spacing:-.025em; color: var(--ink); margin:0 0 16px; }
+  .hero-tagline { font-family: 'Source Serif Pro', Charter, serif; font-style:italic; font-size:22px; color: var(--orange); margin:0 0 24px; }
+  .hero-essence { font-family: 'Source Serif Pro', Charter, serif; font-size:18px; line-height:1.65; color: var(--body); max-width:60ch; margin:0 0 24px; }
+  .hero-meta { display:flex; gap:16px; flex-wrap:wrap; align-items:center; font-family: Inter, sans-serif; font-size:13px; color: var(--muted); }
+  .hero-meta a { color: var(--ink); text-decoration:none; border-bottom:1px solid var(--subtle); }
+  .hero-meta a:hover { border-bottom-color: var(--orange); color: var(--orange); }
+
+  /* Section heading */
+  .section { margin-top:64px; }
+  .section-head { font-family: Inter, sans-serif; font-size:11px; font-weight:700; letter-spacing:.12em; text-transform:uppercase; color: var(--muted); margin:0 0 24px; padding-bottom:8px; border-bottom:1px solid var(--subtle); }
+
+  /* Swatches */
+  .swatch-group { margin-bottom: 32px; }
+  .swatch-group-name { font-family: Inter, sans-serif; font-size:13px; font-weight:600; color: var(--ink); margin-bottom:12px; }
+  .swatch-list { display:grid; grid-template-columns: 1fr; gap:8px; }
+  .swatch { display:grid; grid-template-columns: 56px 1fr; gap:16px; align-items:center; padding:12px; border:1px solid var(--subtle); border-radius:6px; background: var(--page); cursor:pointer; text-align:left; font:inherit; transition: border-color .15s, box-shadow .15s; }
+  .swatch:hover { border-color: var(--ink); box-shadow: 0 1px 0 rgba(0,0,0,.04); }
+  .swatch-chip { width:56px; height:56px; border-radius:4px; box-shadow: inset 0 0 0 1px rgba(0,0,0,.08); }
+  .swatch-meta { display:flex; flex-direction:column; gap:4px; min-width:0; }
+  .swatch-row1 { display:flex; gap:12px; align-items:baseline; }
+  .swatch-name { font-family: Inter, sans-serif; font-weight:600; color: var(--ink); font-size:14px; }
+  .swatch-hex { font-size:13px; color: var(--muted); }
+  .swatch-role { font-family: 'Source Serif Pro', Charter, serif; font-size:14px; color: var(--body); line-height:1.4; }
+  .swatch.copied { border-color: var(--success); }
+  .swatch.copied .swatch-hex::after { content:" · copied"; color: var(--success); font-family: Inter, sans-serif; }
+
+  /* Type scale */
+  .type-scale { display:flex; flex-direction:column; gap:24px; padding:24px 0; }
+  .type-row { display:grid; grid-template-columns: 200px 1fr; gap:24px; align-items:baseline; padding:16px 0; border-bottom:1px solid var(--subtle); }
+  .type-spec { display:flex; flex-direction:column; gap:4px; }
+  .type-label { font-family: 'JetBrains Mono', monospace; font-size:12px; color: var(--orange); font-weight:600; }
+  .type-meta { font-family: 'JetBrains Mono', monospace; font-size:11px; color: var(--muted); line-height:1.4; }
+  .type-sample { color: var(--ink); }
+
+  /* Fonts */
+  .font-grid { display:grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap:16px; }
+  .font-card { padding:24px; border:1px solid var(--subtle); border-radius:8px; background: var(--page); }
+  .font-card-hero { font-size:36px; line-height:1; color: var(--ink); margin-bottom:16px; }
+  .font-card-meta { display:grid; grid-template-columns: 80px 1fr; gap:6px 12px; margin:0 0 16px; font-size:13px; }
+  .font-card-meta dt { font-family: Inter, sans-serif; color: var(--muted); font-weight:600; }
+  .font-card-meta dd { margin:0; color: var(--ink); }
+  .font-card-why { font-family: 'Source Serif Pro', Charter, serif; font-style:italic; font-size:14px; color: var(--body); margin:0; line-height:1.55; }
+
+  /* Token tables */
+  .token-table { width:100%; border-collapse:collapse; font-family: Inter, sans-serif; font-size:13px; }
+  .token-table th { text-align:left; padding:8px 12px; background: var(--ink); color: var(--page); font-size:11px; text-transform:uppercase; letter-spacing:.06em; }
+  .token-table td { padding:10px 12px; border-bottom:1px solid var(--subtle); vertical-align:top; }
+  .copy-btn { background:none; border:1px solid var(--subtle); border-radius:4px; padding:2px 8px; cursor:pointer; font-size:14px; color: var(--muted); }
+  .copy-btn:hover { border-color: var(--ink); color: var(--ink); }
+  .copy-btn.copied { border-color: var(--success); color: var(--success); }
+
+  /* Do/Don't */
+  .dodont { display:grid; grid-template-columns: 1fr 1fr; gap:24px; }
+  @media (max-width:720px) { .dodont { grid-template-columns:1fr; } }
+  .dodont-col { padding:24px; border-radius:8px; }
+  .dodont-do { background: rgba(18,163,109,.06); border:1px solid rgba(18,163,109,.2); }
+  .dodont-dont { background: rgba(220,38,38,.04); border:1px solid rgba(220,38,38,.2); }
+  .dodont-col h3 { font-family: Inter, sans-serif; font-size:14px; margin:0 0 12px; }
+  .dodont-do h3 { color: var(--success); }
+  .dodont-do h3::before { content:"✓ "; }
+  .dodont-dont h3 { color: var(--danger); }
+  .dodont-dont h3::before { content:"✕ "; }
+  .dodont-col ul { list-style:none; padding:0; margin:0; display:flex; flex-direction:column; gap:8px; }
+  .dodont-col li { font-family: 'Source Serif Pro', Charter, serif; font-size:15px; line-height:1.5; padding-left:20px; position:relative; }
+  .dodont-do li::before { content:"✓"; position:absolute; left:0; color: var(--success); font-family: Inter, sans-serif; font-weight:700; }
+  .dodont-dont li::before { content:"✕"; position:absolute; left:0; color: var(--danger); font-family: Inter, sans-serif; font-weight:700; }
+
+  /* Component preview */
+  .cp-frame { border-radius:12px; padding:32px; margin-top:8px; }
+  .cp-light { background: var(--warm); border:1px solid var(--subtle); }
+  .cp-dark { background:#1a1a1a; color:#bcbec0; border:1px solid #404040; font-family: Inter, sans-serif; font-size:14px; }
+  .cp-editorial { background: var(--page); border:1px solid var(--subtle); }
+  .cp-row { display:flex; gap:12px; align-items:center; flex-wrap:wrap; }
+  .cp-btn { padding:10px 18px; border-radius:8px; font-family: Inter, sans-serif; font-size:14px; font-weight:500; cursor:pointer; border:none; }
+  .cp-btn-primary { background: linear-gradient(135deg, #f05323 0%, #ff6a3d 100%); color:#fff; box-shadow: 0 4px 12px rgba(240,83,35,.3); }
+  .cp-btn-secondary { background:transparent; color:#bcbec0; border:1px solid #58595b; }
+  .cp-btn-web.cp-btn-primary { background:#f05323; box-shadow:none; border-radius:6px; }
+  .cp-btn-web.cp-btn-secondary { background:transparent; color: var(--ink); border:1px solid var(--ink); border-radius:6px; }
+  .cp-badge { display:inline-flex; padding:3px 10px; border-radius:4px; font-family: Inter, sans-serif; font-size:11px; font-weight:600; }
+  .cp-badge-success { background: rgba(18,163,109,.16); color:#12a36d; }
+  .cp-badge-warning { background: rgba(217,119,6,.16); color:#f59e0b; }
+  .cp-badge-danger { background: rgba(220,38,38,.16); color:#ef4444; }
+  .cp-badge-info { background: rgba(34,211,238,.16); color:#22d3ee; }
+  .cp-table { margin-top:24px; border:1px solid #404040; border-radius:8px; overflow:hidden; }
+  .cp-tr { display:grid; grid-template-columns: 140px 1fr 100px 120px; padding:10px 16px; border-bottom:1px solid #404040; }
+  .cp-tr:last-child { border-bottom:none; }
+  .cp-tr-selected { border-left:2px solid var(--orange); padding-left:14px; }
+  .cp-th { background:#2a2a2a; font-size:12px; font-weight:600; color:#fff; text-transform:uppercase; letter-spacing:.04em; }
+  .cp-table .mono { font-family: 'JetBrains Mono', monospace; font-size:13px; color:#bcbec0; }
+
+  .cp-hero-title { font-family: 'Proxima Nova', Inter, sans-serif; font-size:40px; font-weight:700; color: var(--ink); margin:0 0 12px; line-height:1.1; }
+  .cp-hero-lead { font-family: 'Proxima Nova', Inter, sans-serif; font-size:18px; color: var(--body); margin:0 0 24px; max-width:48ch; }
+  .cp-card-row { display:grid; grid-template-columns: 1fr 1fr; gap:16px; margin-top:32px; }
+  @media (max-width:600px) { .cp-card-row { grid-template-columns:1fr; } }
+  .cp-card { background: var(--page); border:1px solid var(--subtle); border-radius:4px; padding:20px; }
+  .cp-card-tag { font-family: Inter, sans-serif; font-size:11px; color: var(--muted); text-transform:uppercase; letter-spacing:.06em; margin-bottom:8px; }
+  .cp-card h3 { font-family: 'Proxima Nova', Inter, sans-serif; font-size:18px; margin:0 0 8px; color: var(--ink); }
+  .cp-card p { font-family: 'Proxima Nova', Inter, sans-serif; font-size:14px; color: var(--body); margin:0; }
+
+  .cp-mast { display:flex; justify-content:space-between; align-items:baseline; padding-bottom:12px; border-bottom:2px solid var(--rule); margin-bottom:24px; }
+  .cp-mast-brand { font-family: Inter, sans-serif; font-weight:700; font-size:13px; letter-spacing:.08em; }
+  .cp-mast-date { font-family: 'JetBrains Mono', monospace; font-size:12px; color: var(--muted); }
+  .cp-edit-title { font-family: 'Proxima Nova', Inter, sans-serif; font-weight:700; font-size:28px; color: var(--ink); margin:0 0 12px; }
+  .cp-edit-lead { font-family: 'Source Serif Pro', Charter, serif; font-style:italic; font-size:18px; color: var(--body); margin:0 0 16px; }
+  .cp-edit-body { font-family: 'Source Serif Pro', Charter, serif; font-size:16px; line-height:1.65; color: var(--body); margin:0 0 16px; }
+  .cp-pull { border-left:3px solid var(--orange); margin:24px 0; padding:8px 0 8px 20px; font-family: 'Proxima Nova', Inter, sans-serif; font-size:20px; font-weight:500; color: var(--ink); }
+
+  .cp-multi-row { display:grid; grid-template-columns: 1fr 1fr 1fr; gap:8px; }
+  @media (max-width:720px) { .cp-multi-row { grid-template-columns:1fr; } }
+  .cp-multi-col { padding:24px; border-radius:8px; min-height:140px; display:flex; flex-direction:column; gap:12px; }
+  .cp-multi-dark { background:#1a1a1a; color:#bcbec0; }
+  .cp-multi-light { background: var(--warm); }
+  .cp-multi-edit { background: var(--page); border:1px solid var(--subtle); }
+  .cp-multi-label { font-family: Inter, sans-serif; font-size:11px; font-weight:700; letter-spacing:.08em; color: var(--muted); }
+
+  /* Markdown body */
+  .md-body { font-family: 'Source Serif Pro', Charter, serif; font-size:17px; line-height:1.65; color: var(--body); }
+  .md-body h1, .md-body h2, .md-body h3, .md-body h4 { font-family: 'Proxima Nova', Inter, sans-serif; color: var(--ink); margin:48px 0 16px; line-height:1.25; }
+  .md-body h1 { font-size:32px; font-weight:700; }
+  .md-body h2 { font-size:24px; font-weight:700; padding-top:32px; border-top:1px solid var(--subtle); }
+  .md-body h3 { font-size:18px; font-weight:600; }
+  .md-body h4 { font-size:14px; font-weight:600; color: var(--muted); text-transform:uppercase; letter-spacing:.04em; }
+  .md-body p { margin:0 0 16px; max-width:64ch; }
+  .md-body a { color: var(--orange); text-decoration:none; border-bottom:1px solid rgba(240,83,35,.3); }
+  .md-body a.wikilink { color: var(--ink); border-bottom-style:dotted; }
+  .md-body strong { color: var(--ink); font-weight:600; }
+  .md-body code { font-family: 'JetBrains Mono', monospace; font-size:.88em; background: var(--warm); padding:1px 6px; border-radius:3px; }
+  .md-body pre { background: var(--ink); color: var(--warm); padding:16px 20px; border-radius:4px; overflow-x:auto; }
+  .md-body pre code { background:transparent; color:inherit; padding:0; font-size:13px; }
+  .md-body blockquote { border-left:3px solid var(--orange); margin:16px 0; padding:4px 0 4px 16px; color: var(--muted); font-style:italic; }
+  .md-body table { width:100%; border-collapse:collapse; margin:16px 0; font-family: Inter, sans-serif; font-size:14px; }
+  .md-body th { background: var(--ink); color: var(--page); text-align:left; padding:8px 12px; font-size:11px; text-transform:uppercase; letter-spacing:.04em; }
+  .md-body td { padding:10px 12px; border-bottom:1px solid var(--subtle); }
+  .md-body ul, .md-body ol { margin:0 0 16px 20px; padding:0; }
+  .md-body li { margin-bottom:4px; }
+
+  /* Export panel */
+  .export-panel { position: sticky; top:24px; max-height: calc(100vh - 48px); display:flex; flex-direction:column; border:1px solid var(--subtle); border-radius:8px; background: var(--page); overflow:hidden; font-family: Inter, sans-serif; }
+  .export-tabs { display:flex; border-bottom:1px solid var(--subtle); background: var(--warm); overflow-x:auto; }
+  .exp-tab { flex:1; padding:10px 12px; border:none; background:none; cursor:pointer; font:inherit; font-size:12px; font-weight:600; color: var(--muted); border-bottom:2px solid transparent; white-space:nowrap; }
+  .exp-tab.active { color: var(--orange); border-bottom-color: var(--orange); }
+  .export-actions { display:flex; gap:8px; padding:8px 12px; border-bottom:1px solid var(--subtle); }
+  .exp-action { flex:1; text-align:center; padding:6px 10px; border:1px solid var(--subtle); border-radius:4px; background: var(--page); cursor:pointer; text-decoration:none; color: var(--ink); font-size:12px; font-weight:600; font:inherit; font-size:12px; font-weight:600; }
+  .exp-action:hover { border-color: var(--orange); color: var(--orange); }
+  .export-bodies { flex:1; overflow:auto; }
+  .exp-body { display:none; margin:0; padding:16px; font-family: 'JetBrains Mono', monospace; font-size:11px; line-height:1.55; color: var(--body); white-space:pre; background: var(--page); }
+  .exp-body.active { display:block; }
+  </style>
+</head>
+<body>
+<div class="layout">
+  <main>
+    <nav class="breadcrumb"><a href="../../index.html">Designs</a> · <a href="../../index.html#brand">Brand</a> · Blick — Brand Source of Truth</nav>
+
+    <header class="hero">
+      <h1 class="hero-wordmark">Blick</h1>
+      <div class="hero-tagline">Better drilling starts here.</div>
+      <p class="hero-essence">Blick speaks like an Expert Mate — the senior advisor who picks up the phone, knows your name, and can solve your drilling problem on the spot. Confident without being flashy, helpful without being pushy. The brand is Australasian, field-credible, and quietly proud of the industry it serves. Orange is the action colour — never decoration. Plain English is the rule, not a courtesy. This document is what every other Blick surface reads first.</p>
+      <div class="hero-meta">
+        <span><strong>Audience:</strong> Drillers, owner-operators, and site managers in their 40s–60s across Australia and New Zealand. Practical people who pick up the phone and value experience over qualifications.</span>
+        <a href="https://blick.group" target="_blank" rel="noopener">↗ blick.group</a>
+      </div>
+    </header>
+
+    <section class="section">
+      <h2 class="section-head">Colour palette &amp; roles</h2>
+      <div class="swatch-group">
+    <div class="swatch-group-name">Brand</div>
+    <div class="swatch-list">
+      
+        <button class="swatch" data-copy="#f05323" title="Click to copy #f05323">
+          <span class="swatch-chip" style="background:#f05323"></span>
+          <span class="swatch-meta">
+            <span class="swatch-row1">
+              <span class="swatch-name">Brand Orange</span>
+              <span class="swatch-hex mono">#f05323</span>
+            </span>
+            <span class="swatch-role">Primary action and brand anchor. Pantone Orange 021 C. Used for buttons, key links, section anchors. One per view — orange is a comma in a sentence, not a highlighter.</span>
+          </span>
+        </button>
+        <button class="swatch" data-copy="#ff6a3d" title="Click to copy #ff6a3d">
+          <span class="swatch-chip" style="background:#ff6a3d"></span>
+          <span class="swatch-meta">
+            <span class="swatch-row1">
+              <span class="swatch-name">Orange Hover</span>
+              <span class="swatch-hex mono">#ff6a3d</span>
+            </span>
+            <span class="swatch-role">Hover and active state for orange interactives.</span>
+          </span>
+        </button>
+    </div>
+  </div><div class="swatch-group">
+    <div class="swatch-group-name">Neutrals</div>
+    <div class="swatch-list">
+      
+        <button class="swatch" data-copy="#0a0a0a" title="Click to copy #0a0a0a">
+          <span class="swatch-chip" style="background:#0a0a0a"></span>
+          <span class="swatch-meta">
+            <span class="swatch-row1">
+              <span class="swatch-name">Ink</span>
+              <span class="swatch-hex mono">#0a0a0a</span>
+            </span>
+            <span class="swatch-role">Headings and primary text on light surfaces. Warmer than pure black.</span>
+          </span>
+        </button>
+        <button class="swatch" data-copy="#1f1f1f" title="Click to copy #1f1f1f">
+          <span class="swatch-chip" style="background:#1f1f1f"></span>
+          <span class="swatch-meta">
+            <span class="swatch-row1">
+              <span class="swatch-name">Body</span>
+              <span class="swatch-hex mono">#1f1f1f</span>
+            </span>
+            <span class="swatch-role">Default reading text.</span>
+          </span>
+        </button>
+        <button class="swatch" data-copy="#5a5a5a" title="Click to copy #5a5a5a">
+          <span class="swatch-chip" style="background:#5a5a5a"></span>
+          <span class="swatch-meta">
+            <span class="swatch-row1">
+              <span class="swatch-name">Muted</span>
+              <span class="swatch-hex mono">#5a5a5a</span>
+            </span>
+            <span class="swatch-role">Captions, attributions, dates, secondary metadata.</span>
+          </span>
+        </button>
+        <button class="swatch" data-copy="#58595b" title="Click to copy #58595b">
+          <span class="swatch-chip" style="background:#58595b"></span>
+          <span class="swatch-meta">
+            <span class="swatch-row1">
+              <span class="swatch-name">Dark Grey</span>
+              <span class="swatch-hex mono">#58595b</span>
+            </span>
+            <span class="swatch-role">Pantone 4279 C. Body text for print and document templates.</span>
+          </span>
+        </button>
+        <button class="swatch" data-copy="#bcbec0" title="Click to copy #bcbec0">
+          <span class="swatch-chip" style="background:#bcbec0"></span>
+          <span class="swatch-meta">
+            <span class="swatch-row1">
+              <span class="swatch-name">Light Grey</span>
+              <span class="swatch-hex mono">#bcbec0</span>
+            </span>
+            <span class="swatch-role">Pantone Cool Gray 5 C. Borders, muted text.</span>
+          </span>
+        </button>
+        <button class="swatch" data-copy="#ffffff" title="Click to copy #ffffff">
+          <span class="swatch-chip" style="background:#ffffff"></span>
+          <span class="swatch-meta">
+            <span class="swatch-row1">
+              <span class="swatch-name">Page</span>
+              <span class="swatch-hex mono">#ffffff</span>
+            </span>
+            <span class="swatch-role">Default page background.</span>
+          </span>
+        </button>
+        <button class="swatch" data-copy="#f5f3ef" title="Click to copy #f5f3ef">
+          <span class="swatch-chip" style="background:#f5f3ef"></span>
+          <span class="swatch-meta">
+            <span class="swatch-row1">
+              <span class="swatch-name">Section Warm</span>
+              <span class="swatch-hex mono">#f5f3ef</span>
+            </span>
+            <span class="swatch-role">Editorial pull-outs, alternate sections, sidebar surfaces.</span>
+          </span>
+        </button>
+    </div>
+  </div><div class="swatch-group">
+    <div class="swatch-group-name">Product Categories</div>
+    <div class="swatch-list">
+      
+        <button class="swatch" data-copy="#785ef0" title="Click to copy #785ef0">
+          <span class="swatch-chip" style="background:#785ef0"></span>
+          <span class="swatch-meta">
+            <span class="swatch-row1">
+              <span class="swatch-name">Stabilisers</span>
+              <span class="swatch-hex mono">#785ef0</span>
+            </span>
+            <span class="swatch-role">Carry-Flow, Carry-Max, Carry-Foam.</span>
+          </span>
+        </button>
+        <button class="swatch" data-copy="#118fae" title="Click to copy #118fae">
+          <span class="swatch-chip" style="background:#118fae"></span>
+          <span class="swatch-meta">
+            <span class="swatch-row1">
+              <span class="swatch-name">Filtration Control</span>
+              <span class="swatch-hex mono">#118fae</span>
+            </span>
+            <span class="swatch-role">Filter-High, Filter-Low.</span>
+          </span>
+        </button>
+        <button class="swatch" data-copy="#dc267f" title="Click to copy #dc267f">
+          <span class="swatch-chip" style="background:#dc267f"></span>
+          <span class="swatch-meta">
+            <span class="swatch-row1">
+              <span class="swatch-name">Clay Adjustment</span>
+              <span class="swatch-hex mono">#dc267f</span>
+            </span>
+            <span class="swatch-role">Swell Stop, Clay Control, Clay-Dissolve.</span>
+          </span>
+        </button>
+        <button class="swatch" data-copy="#3c8c4c" title="Click to copy #3c8c4c">
+          <span class="swatch-chip" style="background:#3c8c4c"></span>
+          <span class="swatch-meta">
+            <span class="swatch-row1">
+              <span class="swatch-name">Clay Control</span>
+              <span class="swatch-hex mono">#3c8c4c</span>
+            </span>
+            <span class="swatch-role">Used for eco-product accenting on eco surfaces only.</span>
+          </span>
+        </button>
+        <button class="swatch" data-copy="#fe6100" title="Click to copy #fe6100">
+          <span class="swatch-chip" style="background:#fe6100"></span>
+          <span class="swatch-meta">
+            <span class="swatch-row1">
+              <span class="swatch-name">LCM</span>
+              <span class="swatch-hex mono">#fe6100</span>
+            </span>
+            <span class="swatch-role">Lost circulation: One-Stop, Loss-Swell.</span>
+          </span>
+        </button>
+        <button class="swatch" data-copy="#d0d0d0" title="Click to copy #d0d0d0">
+          <span class="swatch-chip" style="background:#d0d0d0"></span>
+          <span class="swatch-meta">
+            <span class="swatch-row1">
+              <span class="swatch-name">Support Chemicals</span>
+              <span class="swatch-hex mono">#d0d0d0</span>
+            </span>
+            <span class="swatch-role">Biocide, Defoam, Soda Ash.</span>
+          </span>
+        </button>
+        <button class="swatch" data-copy="#ffb000" title="Click to copy #ffb000">
+          <span class="swatch-chip" style="background:#ffb000"></span>
+          <span class="swatch-meta">
+            <span class="swatch-row1">
+              <span class="swatch-name">Bentonite</span>
+              <span class="swatch-hex mono">#ffb000</span>
+            </span>
+            <span class="swatch-role">Bentonite Plug, Construct Gel, MetaFLO.</span>
+          </span>
+        </button>
+    </div>
+  </div>
+    </section>
+
+    <section class="section">
+      <h2 class="section-head">Type scale</h2>
+      <div class="type-scale">
+    <div class="type-row">
+        <div class="type-spec">
+          <span class="type-label mono">display</span>
+          <span class="type-meta mono">Proxima Nova · 56px · 700 · 1.07</span>
+        </div>
+        <div class="type-sample" style="font-family:Proxima Nova, Inter,sans-serif; font-size:56px; font-weight:700; line-height:1.07;  ">Better drilling starts here.</div>
+      </div><div class="type-row">
+        <div class="type-spec">
+          <span class="type-label mono">h1</span>
+          <span class="type-meta mono">Proxima Nova · 40px · 700 · 1.2</span>
+        </div>
+        <div class="type-sample" style="font-family:Proxima Nova, Inter,sans-serif; font-size:40px; font-weight:700; line-height:1.2;  ">An Australasian drilling-fluids company.</div>
+      </div><div class="type-row">
+        <div class="type-spec">
+          <span class="type-label mono">h2</span>
+          <span class="type-meta mono">Proxima Nova · 28px · 700 · 1.28</span>
+        </div>
+        <div class="type-sample" style="font-family:Proxima Nova, Inter,sans-serif; font-size:28px; font-weight:700; line-height:1.28;  ">Quality fluids, expert advice.</div>
+      </div><div class="type-row">
+        <div class="type-spec">
+          <span class="type-label mono">h3</span>
+          <span class="type-meta mono">Proxima Nova · 20px · 500 · 1.4</span>
+        </div>
+        <div class="type-sample" style="font-family:Proxima Nova, Inter,sans-serif; font-size:20px; font-weight:500; line-height:1.4;  ">Carry-Flow holds up in tough conditions.</div>
+      </div><div class="type-row">
+        <div class="type-spec">
+          <span class="type-label mono">lead</span>
+          <span class="type-meta mono">Source Serif Pro · 20px · 400 · 1.55 · italic</span>
+        </div>
+        <div class="type-sample" style="font-family:Source Serif Pro, Charter,Georgia,serif; font-size:20px; font-weight:400; line-height:1.55; font-style:italic; ">We are the partner who knows your name, not just your account number.</div>
+      </div><div class="type-row">
+        <div class="type-spec">
+          <span class="type-label mono">body</span>
+          <span class="type-meta mono">Source Serif Pro · 17px · 400 · 1.65</span>
+        </div>
+        <div class="type-sample" style="font-family:Source Serif Pro, Charter,Georgia,serif; font-size:17px; font-weight:400; line-height:1.65;  ">Tested. Trusted. Tough enough for any job. We supply quality drilling fluids paired with expert technical advice that helps you get a better result on every job.</div>
+      </div><div class="type-row">
+        <div class="type-spec">
+          <span class="type-label mono">caption</span>
+          <span class="type-meta mono">Proxima Nova · 12px · 400 · 1.4 · uppercase</span>
+        </div>
+        <div class="type-sample" style="font-family:Proxima Nova, Inter,sans-serif; font-size:12px; font-weight:400; line-height:1.4;  text-transform:uppercase; letter-spacing:.06em;">BLICK GROUP · 2026</div>
+      </div>
+  </div>
+    </section>
+
+    <section class="section">
+      <h2 class="section-head">Fonts</h2>
+      <div class="font-grid">
+    
+      <div class="font-card">
+        <div class="font-card-hero" style="font-family:Proxima Nova,Inter,sans-serif">Proxima Nova</div>
+        <dl class="font-card-meta">
+          <dt>Weights</dt><dd class="mono">400 / 500 / 700</dd>
+          <dt>Use</dt><dd>All headings, UI labels, captions, marketing display.</dd>
+          <dt>Fallback</dt><dd class="mono">Inter, ui-sans-serif, system-ui, sans-serif</dd>
+        </dl>
+        <p class="font-card-why">The specified brand sans since 2025. Workmanlike and readable at small sizes — does not draw attention to itself, which is the point.</p>
+      </div>
+      <div class="font-card">
+        <div class="font-card-hero" style="font-family:Source Serif Pro,Charter,Georgia,serif">Source Serif Pro</div>
+        <dl class="font-card-meta">
+          <dt>Weights</dt><dd class="mono">400 / 400 italic / 600</dd>
+          <dt>Use</dt><dd>Editorial body, briefs, long-form content, AI-generated reports.</dd>
+          <dt>Fallback</dt><dd class="mono">Charter, Georgia, &quot;Times New Roman&quot;, serif</dd>
+        </dl>
+        <p class="font-card-why">The serif anchors AI-generated content as editorial, not corporate. It signals 'authored', which is what stops Nexus output reading like ChatGPT defaults.</p>
+      </div>
+      <div class="font-card">
+        <div class="font-card-hero" style="font-family:JetBrains Mono,Inter,sans-serif">JetBrains Mono</div>
+        <dl class="font-card-meta">
+          <dt>Weights</dt><dd class="mono">400</dd>
+          <dt>Use</dt><dd>IDs, codes, batch numbers, technical specs, code snippets.</dd>
+          <dt>Fallback</dt><dd class="mono">ui-monospace, SFMono-Regular, Menlo, Consolas, monospace</dd>
+        </dl>
+        <p class="font-card-why">Tabular and unambiguous for batch numbers and identifiers — these copy-paste a lot in operations work.</p>
+      </div>
+  </div>
+    </section>
+
+    <section class="section">
+      <h2 class="section-head">Spacing</h2>
+      <table class="token-table">
+    <thead><tr><th>Label</th><th>Value</th><th>Use</th><th></th></tr></thead>
+    <tbody>
+      
+        <tr>
+          <td class="mono">x1</td>
+          <td class="mono">4px</td>
+          <td>Inline gap between glyph and label.</td>
+          <td><button class="copy-btn" data-copy="4px" title="Copy">⧉</button></td>
+        </tr>
+        <tr>
+          <td class="mono">x2</td>
+          <td class="mono">8px</td>
+          <td>Tight stack within a control.</td>
+          <td><button class="copy-btn" data-copy="8px" title="Copy">⧉</button></td>
+        </tr>
+        <tr>
+          <td class="mono">x3</td>
+          <td class="mono">12px</td>
+          <td>Default control padding.</td>
+          <td><button class="copy-btn" data-copy="12px" title="Copy">⧉</button></td>
+        </tr>
+        <tr>
+          <td class="mono">x4</td>
+          <td class="mono">16px</td>
+          <td>Card interior, section row gap.</td>
+          <td><button class="copy-btn" data-copy="16px" title="Copy">⧉</button></td>
+        </tr>
+        <tr>
+          <td class="mono">x6</td>
+          <td class="mono">24px</td>
+          <td>Section internal padding, card grid gap.</td>
+          <td><button class="copy-btn" data-copy="24px" title="Copy">⧉</button></td>
+        </tr>
+        <tr>
+          <td class="mono">x8</td>
+          <td class="mono">32px</td>
+          <td>Section spacing, paragraph break in long-form.</td>
+          <td><button class="copy-btn" data-copy="32px" title="Copy">⧉</button></td>
+        </tr>
+        <tr>
+          <td class="mono">x12</td>
+          <td class="mono">48px</td>
+          <td>Major section spacing on web.</td>
+          <td><button class="copy-btn" data-copy="48px" title="Copy">⧉</button></td>
+        </tr>
+        <tr>
+          <td class="mono">x16</td>
+          <td class="mono">64px</td>
+          <td>Hero padding top, page margins.</td>
+          <td><button class="copy-btn" data-copy="64px" title="Copy">⧉</button></td>
+        </tr>
+        <tr>
+          <td class="mono">x24</td>
+          <td class="mono">96px</td>
+          <td>Section break on marketing website.</td>
+          <td><button class="copy-btn" data-copy="96px" title="Copy">⧉</button></td>
+        </tr>
+    </tbody>
+  </table>
+    </section>
+
+    <section class="section">
+      <h2 class="section-head">Radius</h2>
+      <table class="token-table">
+    <thead><tr><th>Label</th><th>Value</th><th>Use</th><th></th></tr></thead>
+    <tbody>
+      
+        <tr>
+          <td class="mono">sm</td>
+          <td class="mono">4px</td>
+          <td>Pills, chips, tight controls.</td>
+          <td><button class="copy-btn" data-copy="4px" title="Copy">⧉</button></td>
+        </tr>
+        <tr>
+          <td class="mono">md</td>
+          <td class="mono">8px</td>
+          <td>Buttons, inputs in hub-app.</td>
+          <td><button class="copy-btn" data-copy="8px" title="Copy">⧉</button></td>
+        </tr>
+        <tr>
+          <td class="mono">lg</td>
+          <td class="mono">12px</td>
+          <td>Cards, modals, drawers.</td>
+          <td><button class="copy-btn" data-copy="12px" title="Copy">⧉</button></td>
+        </tr>
+    </tbody>
+  </table>
+    </section>
+
+    <section class="section">
+      <h2 class="section-head">Shadows</h2>
+      <table class="token-table">
+    <thead><tr><th>Label</th><th>Value</th><th>Use</th><th></th></tr></thead>
+    <tbody>
+      
+        <tr>
+          <td class="mono">card</td>
+          <td class="mono">0 1px 0 rgba(0,0,0,.06)</td>
+          <td>Card edge on light surface — restraint.</td>
+          <td><button class="copy-btn" data-copy="0 1px 0 rgba(0,0,0,.06)" title="Copy">⧉</button></td>
+        </tr>
+        <tr>
+          <td class="mono">floating</td>
+          <td class="mono">0 4px 12px rgba(0,0,0,.12)</td>
+          <td>Dropdowns, popovers.</td>
+          <td><button class="copy-btn" data-copy="0 4px 12px rgba(0,0,0,.12)" title="Copy">⧉</button></td>
+        </tr>
+        <tr>
+          <td class="mono">modal</td>
+          <td class="mono">0 12px 32px rgba(0,0,0,.5)</td>
+          <td>Modals and drawers in hub-app dark.</td>
+          <td><button class="copy-btn" data-copy="0 12px 32px rgba(0,0,0,.5)" title="Copy">⧉</button></td>
+        </tr>
+        <tr>
+          <td class="mono">action</td>
+          <td class="mono">0 4px 12px rgba(240,83,35,.3)</td>
+          <td>Primary orange button — the only orange shadow in use.</td>
+          <td><button class="copy-btn" data-copy="0 4px 12px rgba(240,83,35,.3)" title="Copy">⧉</button></td>
+        </tr>
+    </tbody>
+  </table>
+    </section>
+
+    <section class="section">
+      <h2 class="section-head">Do &amp; Don't</h2>
+      <div class="dodont">
+    <div class="dodont-col dodont-do">
+      <h3>Do</h3>
+      <ul><li>Use Brand Orange (#f05323) for the one action a view exists for.</li><li>Pair every technical term with a plain-English explanation.</li><li>Frame the customer as the hero of every story.</li><li>Use real field photography from Blick jobs — never stock.</li><li>Use sentence-case headlines.</li><li>Surface conflicts between sources — never silently resolve.</li></ul>
+    </div>
+    <div class="dodont-col dodont-dont">
+      <h3>Don't</h3>
+      <ul><li>Don't invent tokens, colours, or terms. Extend this document first.</li><li>Don't use 'world-class', 'innovative', 'disruptive', 'leverage', 'synergies', or 'solutions' as a noun.</li><li>Don't say 'Blick Drilling Solutions' or 'NZ-based' anywhere.</li><li>Don't use stock photography on any surface.</li><li>Don't use emoji in published content (briefs, LinkedIn, decks, outreach).</li><li>Don't use 'green' as a product modifier — only Eco Dry, only product-specific.</li></ul>
+    </div>
+  </div>
+    </section>
+
+    <section class="section">
+      <h2 class="section-head">Live component preview</h2>
+      
+      <div class="cp-frame cp-light cp-multi">
+        <div class="cp-multi-row">
+          <div class="cp-multi-col cp-multi-dark">
+            <div class="cp-multi-label">HUB-APP</div>
+            <button class="cp-btn cp-btn-primary">Approve batch</button>
+            <span class="cp-badge cp-badge-success" style="margin-left:8px">Active</span>
+          </div>
+          <div class="cp-multi-col cp-multi-light">
+            <div class="cp-multi-label">WEBSITE</div>
+            <button class="cp-btn cp-btn-primary cp-btn-web">Talk to us</button>
+          </div>
+          <div class="cp-multi-col cp-multi-edit">
+            <div class="cp-multi-label">CONTENT</div>
+            <p class="cp-edit-lead" style="margin:0">We are in the field with you, not just behind a desk.</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="section">
+      <h2 class="section-head">Full document</h2>
+      <div class="md-body"><h1>Blick Brand — Source of Truth</h1>
 <p>This is the canonical brand reference for Blick Group. Logos, marks, multi-entity rules, voice, terminology, and document templates live here. Surface-specific visual systems (website, hub-app, AI-generated content) live in their sibling <code>*.DESIGN.md</code> files and import from this document.</p>
 <blockquote><strong>Read order for AI agents and humans:</strong> <code>Brand.md</code> (this file — <em>who we are</em>) → <code><surface>.DESIGN.md</code> (<em>how we render on a surface</em>) → consume.</blockquote>
 <blockquote><strong>Conflict rule:</strong> if a surface DESIGN.md disagrees with this file on voice, terminology, marks, or governance, <strong>this file wins</strong>. If it disagrees on visual primitives (color, spacing, layout), the surface file wins for that surface.</blockquote>
@@ -248,5 +834,454 @@
 <li><a class="wikilink" href="#">website.DESIGN</a> — marketing website surface</li>
 <li><a class="wikilink" href="#">hub-app.DESIGN</a> — internal app surface</li>
 <li><a class="wikilink" href="#">content.DESIGN</a> — AI-generated content surface</li>
-</ul>
-</div></body></html>
+</ul></div>
+    </section>
+  </main>
+
+  
+    <aside class="export-panel">
+      <div class="export-tabs">
+        <button class="exp-tab active" data-target="exp-md">DESIGN.md</button>
+        <button class="exp-tab" data-target="exp-tw">Tailwind</button>
+        <button class="exp-tab" data-target="exp-css">CSS Vars</button>
+        <button class="exp-tab" data-target="exp-json">Tokens JSON</button>
+      </div>
+      <div class="export-actions">
+        <button class="exp-action" id="exp-copy">Copy</button>
+        <a class="exp-action" id="exp-download" download="Brand.md">.md</a>
+      </div>
+      <div class="export-bodies">
+        <pre class="exp-body active" id="exp-md"><code>---
+title: Blick Brand — Source of Truth
+date: 2026-05-01
+type: system
+tags: [brand, guidelines, governance, voice, identity]
+status: active
+source: manual
+schema: blick-brand-v1
+---
+
+# Blick Brand — Source of Truth
+
+This is the canonical brand reference for Blick Group. Logos, marks, multi-entity rules, voice, terminology, and document templates live here. Surface-specific visual systems (website, hub-app, AI-generated content) live in their sibling `*.DESIGN.md` files and import from this document.
+
+&gt; **Read order for AI agents and humans:** `Brand.md` (this file — *who we are*) → `&lt;surface&gt;.DESIGN.md` (*how we render on a surface*) → consume.
+
+&gt; **Conflict rule:** if a surface DESIGN.md disagrees with this file on voice, terminology, marks, or governance, **this file wins**. If it disagrees on visual primitives (color, spacing, layout), the surface file wins for that surface.
+
+---
+
+## 1. Identity
+
+**Legal entity stack** (per [[blick_entity_structure]]):
+
+| Entity | Country | Use the mark when… |
+|---|---|---|
+| Blick Ltd | NZ | NZ-domiciled work, NZ contracts, .nz comms |
+| Blick LLP Ltd | AU | AU-domiciled work, AU contracts, .au comms |
+| Blick Pty Ltd | AU | AU agent role only — back-office, not customer-facing |
+| Blick Group | Holding | Group-level brand, investor-facing, web homepage |
+
+**Naming rules**:
+- Always **Blick** or **Blick Group**. Never &quot;Blick Drilling&quot;, &quot;Blick Drilling Solutions&quot;, or &quot;Blick Fluids&quot; except where Fluids is the formal sub-brand on product labels and PDS/SDS.
+- Australasian framing — never &quot;NZ-based&quot;, never &quot;expanding into AU&quot;. We operate across both.
+- AU-facing content does not lead with NZ heritage. NZ-facing content can speak with market-leader authority.
+
+---
+
+## 2. Marks
+
+### Primary logo
+Full-colour orange + black (Pantone Orange 021 C, `#f05323`) is default. Monochrome only where background contrast forces it. Icon-only (the circle B) is restricted to watermarks, banners, and space-constrained applications.
+
+### Standard files (canonical IDs in [[blick_brand_assets]])
+- **Blick (NZ):** `orange black@2x.png` — Drive `1Aq9u6zh4J6-f-1r8mw-o4iOXSBeASaIr`
+- **Blick LLP (AU):** `orange blacklarge.png` — Drive `11TztnVTn4pIjB9FdFdyB77JHhKmkmiSa`
+- Nexus copies live in `Hub/Nexus/Assets/STANDARD-*` and are the ones AI agents should pull when generating documents.
+
+### Clear space and minimum size
+- Icon-to-lettermark ratio: **100% : 150%**.
+- Minimum reproduction: **10mm high** in print, **24px high** on screen.
+- Clear space: nothing between the &quot;B&quot; and the icon.
+
+### Don'ts
+- Don't stretch, rotate, or recolour the logo.
+- Don't place the logo on similarly-coloured backgrounds without switching to monochrome.
+- Don't use the icon-only mark inline with body text.
+- Don't pair the NZ mark with AU contact details, or vice versa.
+
+### Multi-entity co-branding
+- **Group-level surfaces** (blick.group homepage, investor decks, careers) use the unbadged Blick mark.
+- **Operational surfaces** (proposals, invoices, letterhead, PDS/SDS) use the entity mark matching the issuing entity.
+- Never show two entity marks on the same page. If a document spans both, use the Group mark and disclose entity context in the footer.
+
+---
+
+## 3. Voice
+
+Source of truth: [[brand-voice-guidelines]]. Summarised here so agents working on a single surface don't need to read both files.
+
+**The Expert Mate.** Technically brilliant, completely approachable. Picks up the phone, knows your name, solves the problem on the spot. Confident without being flashy, helpful without being pushy.
+
+| We are | We are not |
+|---|---|
+| Expert problem-solvers | Know-it-alls |
+| Dependable | Slow or bureaucratic |
+| In the field | Desk-bound |
+| Down-to-earth | Corporate or slick |
+| Quality-focused | The cheapest option |
+| Relationship-driven | Pushy salespeople |
+| Proactive | Passive order-takers |
+| Honest | Oversellers |
+
+**Rules every surface must obey:**
+1. **Plain English over jargon.** If there's a simpler way, use it. Pair every technical term with a plain-language explanation in the same sentence.
+2. **Customer is the hero.** Stories, case studies, and product copy frame the customer's win, not Blick's.
+3. **Specifics beat superlatives.** &quot;We had stock on site in 48 hours&quot; beats &quot;world-class supply.&quot; Numbers, places, names.
+4. **Active voice, short sentences.** &quot;We'll have it on your site tomorrow&quot; not &quot;Your order will be dispatched in due course.&quot;
+5. **Environmental claims are secondary.** Lead with performance; mention environmental benefit second, and only when product-specific.
+6. **No filler vocabulary.** Banned: *leverage, synergies, optimise, disruptive, world-class, game-changer, cheapest, one-stop-shop, solutions* (as a noun replacing the actual product/service name).
+
+---
+
+## 4. Terminology Register
+
+The single source of truth for product names, regional spellings, and contested terms. When two sources disagree, this register wins.
+
+### Spelling
+**Australasian English.** `colour`, `organisation`, `optimise`, `centre`, `analyse`. Never US spellings except in code identifiers and external system field names.
+
+### Must-use
+| Term | Use for | Don't use |
+|---|---|---|
+| Drilling fluids | Primary product category | &quot;Mud&quot; in formal content (acceptable in social) |
+| Partner / partnership | Customer relationships | Vendor, supplier (where avoidable) |
+| Expert advice | Our technical service | Consulting, solutions |
+| On site | Physical presence | &quot;On location&quot;, &quot;in the field&quot; (interchangeable) |
+| Crew / team | Customer's people | Personnel, workforce |
+| Australasian | Our geography | &quot;ANZ&quot; (acronym only in tables) |
+
+### Eco vs green
+- **Eco Dry** is a product name and proper noun. Always capitalised, no hyphen.
+- **Eco-friendly** describes Eco Dry and the Eco range. Hyphenated.
+- **Green** is not used as a brand or product modifier. It signals greenwashing and is banned in marketing copy.
+- The eco/biodegradable drilling-fluid *range* is parked (see [[project_sco_eco_fluid_parked]]). Do not generate copy implying we sell eco fluids beyond Eco Dry.
+
+### Contested / never-use
+| Term | Reason |
+|---|---|
+| Cheapest in market | Contradicts positioning |
+| One-stop-shop | Competitor CEA's positioning |
+| World-class | Unsubstantiated |
+| Innovative / disruptive | Customers don't talk like this |
+| Thixotropic (unaccompanied) | Jargon — always pair with plain-English explanation |
+| NZ-based | Wrong framing — we are Australasian |
+
+### Product naming
+Product files in [[blick-products-core]] are canonical. When in doubt, link the product as a wikilink (e.g. `[[carry-flow]]`) rather than retyping its name.
+
+---
+
+## 5. Document Templates
+
+| Surface | Template | Owner | Location |
+|---|---|---|---|
+| NZ letterhead | Blick Letterhead template | Operations | Drive `1g9Cc9tSSLp3UFiGrsmP3Ko2DYMExADmmTbgWC8ID-6Y` |
+| AU letterhead | Blick LLP Letterhead Template | Operations | Drive `1XleQagiOFGLHaeEKwtqV4mwaQLVjlwI9ywdr7MgEvNI` |
+| PDS / SDS | Per-product, controlled in [[blick-products-core]] | Products | Google Drive `Marketing/Brand/Products/` |
+| Proposal cover | TBD — to be drafted | Sales | — |
+| Email signature | Per [[blick-brand-guideline-full]] §Brand Applications | All | Inline |
+| AI brief (HTML) | Editorial magazine, [[editorial-magazine-design]] | Nexus | `nexus/templates/` |
+
+**Rule:** AI-generated documents (briefs, decks, outreach drafts, proposals) **must** start from one of these templates or extend them. New templates need a brand owner before becoming canonical.
+
+---
+
+## 6. Imagery &amp; Photography
+
+- **Cooler tones** — never warm/sepia/golden-hour filters.
+- **Real sites, real crews** — stock photography is banned in marketing copy. Field photography from Blick jobs is preferred.
+- **Vector icons over low-quality product shots.** If a photo isn't sharp, replace with an icon or illustration.
+- **Workplace-focused** — drilling rigs, mud tanks, products in use. Not hard-hat-pointing-at-laptop stock.
+- **Product label photography** uses the colour-coded category palette (see §7.2).
+- Vehicle signage: 3M 2080 Gloss Black on Tesla Model Y, full Blick logo across front side doors.
+
+---
+
+## 7. Visual Primitives (cross-surface)
+
+Surface DESIGN.md files override these for their own context, but every surface starts from these.
+
+### 7.1 Brand colour
+| Role | Hex | Pantone | Notes |
+|---|---|---|---|
+| **Brand orange** | `#f05323` | Orange 021 C | Single primary anchor. Never substitute. |
+| Dark grey | `#58595b` | 4279 C | Body text, secondary surfaces |
+| Light grey | `#bcbec0` | Cool Gray 5 C | Borders, muted text |
+| Black | `#000000` | — | Print body, document text |
+
+### 7.2 Product category palette (Blick Fluids)
+Colour-blind-accessible palette used on labels, product UI, and category tags. **Do not invent new category colours** — extend the table here first.
+
+| Category | Hex |
+|---|---|
+| Stabilisers | `#785ef0` |
+| Filtration Control | `#118fae` |
+| Clay Adjustment | `#dc267f` |
+| Clay Control | `#3c8c4c` |
+| LCM (Lost Circulation) | `#fe6100` |
+| Support Chemicals | `#d0d0d0` |
+| Bentonite | `#ffb000` |
+
+### 7.3 Typography
+- **Print + digital body:** Proxima Nova (Regular / Medium / Bold).
+- **Code / monospace:** JetBrains Mono (digital surfaces only).
+- **Web fallback stack** (when Proxima Nova is unavailable for licensing or weight reasons): `Inter, ui-sans-serif, system-ui, -apple-system, &quot;Segoe UI&quot;, Roboto, sans-serif`.
+- **Hierarchy rule:** never more than three weights on one screen or page.
+
+---
+
+## 8. Governance
+
+**Owner:** Shaun Newman (Director). Brand changes require sign-off from the owner before merging into this file.
+
+**Change process:**
+1. Propose changes in a vault note in `BlickVault/Inbox/raw/` with `type: brand-change`.
+2. Reference the section being changed and the conflict source.
+3. Owner approves → edit propagates here → mirror updates push automatically (see §10).
+
+**Source-of-truth precedence** (when documents disagree):
+1. This `Brand.md` (governance, voice, terminology, marks)
+2. `&lt;surface&gt;.DESIGN.md` (surface-specific visual primitives)
+3. `[[blick-brand-guideline-full]]` (legacy 2025 brand book — historical reference only)
+4. Anything in Drive (`Marketing/Brand/`) — superseded by the above
+
+**Never silently overwrite a conflict.** Per global rule: surface the disagreement, name the sources, ask the owner.
+
+**Review cadence:** quarterly review by owner. Last reviewed: 2026-05-01. Next review: 2026-08-01.
+
+---
+
+## 9. Surfaces (where this brand renders)
+
+| Surface | DESIGN.md | Audience | Owned by |
+|---|---|---|---|
+| **Marketing website** (blick.group) | [[website.DESIGN]] | Prospects, candidates, public | Marketing |
+| **Internal hub-app** | [[hub-app.DESIGN]] | ~11 internal users | Engineering / Operations |
+| **AI-generated content** (briefs, LinkedIn, decks, outreach) | [[content.DESIGN]] | External + internal, machine-mediated | Nexus / Marketing |
+| **Print and physical** (apparel, vehicles, packaging, labels) | Covered in §6, §7 here + [[blick-brand-guideline-full]] | External | Operations |
+
+---
+
+## 10. Where this lives and how it's mirrored
+
+**Source of truth:** this file (`BlickVault/Brand/brand-guidelines/Brand.md`).
+
+**Mirrors** (auto-generated, do not edit):
+- `hub-app/docs/design/Brand.md` — for engineers and Claude/Cursor working in the repo.
+- Public design gallery — only the surface DESIGN.md files are published; `Brand.md` is internal.
+
+**Maintenance skills:**
+- `/design-system-curator` — refresh mirrors, validate cross-references, surface drift.
+- `/design-token-audit` — diff hub-app `themes.css` and website CSS against the tokens declared in surface DESIGN.md files.
+
+---
+
+## 11. Anti-patterns (brand-wide)
+
+- ❌ Inventing tokens, colours, or terms not declared here or in a surface DESIGN.md.
+- ❌ Using legacy &quot;Blick Drilling Solutions&quot; naming anywhere.
+- ❌ Stock photography in marketing surfaces.
+- ❌ &quot;Green&quot; as a product modifier.
+- ❌ Mixing entity marks on a single document.
+- ❌ Greenwashing (vague sustainability claims without a specific product reference).
+- ❌ Corporate filler vocabulary (see §3 banned list).
+- ❌ Silently resolving a brand conflict instead of surfacing it.
+
+---
+
+## Related
+- [[brand-voice-guidelines]] — full voice and tone reference (longer than §3 above)
+- [[blick-brand-guideline-full]] — legacy 2025 brand book (visual identity, apparel, packaging detail)
+- [[blick-products-core]] — product naming canon
+- [[blick_brand_assets]] (memory) — Drive IDs for logos and templates
+- [[website.DESIGN]] — marketing website surface
+- [[hub-app.DESIGN]] — internal app surface
+- [[content.DESIGN]] — AI-generated content surface
+</code></pre>
+        <pre class="exp-body" id="exp-tw"><code>// tailwind.config.js — Blick brand surface
+module.exports = {
+  theme: {
+    extend: {
+      colors: {
+        &quot;brand-orange&quot;: &quot;#f05323&quot;,
+        &quot;orange-hover&quot;: &quot;#ff6a3d&quot;,
+        &quot;ink&quot;: &quot;#0a0a0a&quot;,
+        &quot;body&quot;: &quot;#1f1f1f&quot;,
+        &quot;muted&quot;: &quot;#5a5a5a&quot;,
+        &quot;dark-grey&quot;: &quot;#58595b&quot;,
+        &quot;light-grey&quot;: &quot;#bcbec0&quot;,
+        &quot;page&quot;: &quot;#ffffff&quot;,
+        &quot;section-warm&quot;: &quot;#f5f3ef&quot;,
+        &quot;stabilisers&quot;: &quot;#785ef0&quot;,
+        &quot;filtration-control&quot;: &quot;#118fae&quot;,
+        &quot;clay-adjustment&quot;: &quot;#dc267f&quot;,
+        &quot;clay-control&quot;: &quot;#3c8c4c&quot;,
+        &quot;lcm&quot;: &quot;#fe6100&quot;,
+        &quot;support-chemicals&quot;: &quot;#d0d0d0&quot;,
+        &quot;bentonite&quot;: &quot;#ffb000&quot;
+      },
+      spacing: {
+        'x1': '4px',
+        'x2': '8px',
+        'x3': '12px',
+        'x4': '16px',
+        'x6': '24px',
+        'x8': '32px',
+        'x12': '48px',
+        'x16': '64px',
+        'x24': '96px',
+      },
+      borderRadius: {
+        'sm': '4px',
+        'md': '8px',
+        'lg': '12px',
+      },
+      boxShadow: {
+        'card': '0 1px 0 rgba(0,0,0,.06)',
+        'floating': '0 4px 12px rgba(0,0,0,.12)',
+        'modal': '0 12px 32px rgba(0,0,0,.5)',
+        'action': '0 4px 12px rgba(240,83,35,.3)',
+      }
+    }
+  }
+};</code></pre>
+        <pre class="exp-body" id="exp-css"><code>:root {
+  /* Brand */
+  --brand-orange: #f05323;
+  --orange-hover: #ff6a3d;
+  /* Neutrals */
+  --ink: #0a0a0a;
+  --body: #1f1f1f;
+  --muted: #5a5a5a;
+  --dark-grey: #58595b;
+  --light-grey: #bcbec0;
+  --page: #ffffff;
+  --section-warm: #f5f3ef;
+  /* Product Categories */
+  --stabilisers: #785ef0;
+  --filtration-control: #118fae;
+  --clay-adjustment: #dc267f;
+  --clay-control: #3c8c4c;
+  --lcm: #fe6100;
+  --support-chemicals: #d0d0d0;
+  --bentonite: #ffb000;
+  --space-x1: 4px;
+  --space-x2: 8px;
+  --space-x3: 12px;
+  --space-x4: 16px;
+  --space-x6: 24px;
+  --space-x8: 32px;
+  --space-x12: 48px;
+  --space-x16: 64px;
+  --space-x24: 96px;
+  --radius-sm: 4px;
+  --radius-md: 8px;
+  --radius-lg: 12px;
+  --shadow-card: 0 1px 0 rgba(0,0,0,.06);
+  --shadow-floating: 0 4px 12px rgba(0,0,0,.12);
+  --shadow-modal: 0 12px 32px rgba(0,0,0,.5);
+  --shadow-action: 0 4px 12px rgba(240,83,35,.3);
+}</code></pre>
+        <pre class="exp-body" id="exp-json"><code>{
+  &quot;colors&quot;: {
+    &quot;Brand&quot;: {
+      &quot;Brand Orange&quot;: &quot;#f05323&quot;,
+      &quot;Orange Hover&quot;: &quot;#ff6a3d&quot;
+    },
+    &quot;Neutrals&quot;: {
+      &quot;Ink&quot;: &quot;#0a0a0a&quot;,
+      &quot;Body&quot;: &quot;#1f1f1f&quot;,
+      &quot;Muted&quot;: &quot;#5a5a5a&quot;,
+      &quot;Dark Grey&quot;: &quot;#58595b&quot;,
+      &quot;Light Grey&quot;: &quot;#bcbec0&quot;,
+      &quot;Page&quot;: &quot;#ffffff&quot;,
+      &quot;Section Warm&quot;: &quot;#f5f3ef&quot;
+    },
+    &quot;Product Categories&quot;: {
+      &quot;Stabilisers&quot;: &quot;#785ef0&quot;,
+      &quot;Filtration Control&quot;: &quot;#118fae&quot;,
+      &quot;Clay Adjustment&quot;: &quot;#dc267f&quot;,
+      &quot;Clay Control&quot;: &quot;#3c8c4c&quot;,
+      &quot;LCM&quot;: &quot;#fe6100&quot;,
+      &quot;Support Chemicals&quot;: &quot;#d0d0d0&quot;,
+      &quot;Bentonite&quot;: &quot;#ffb000&quot;
+    }
+  },
+  &quot;spacing&quot;: {
+    &quot;x1&quot;: &quot;4px&quot;,
+    &quot;x2&quot;: &quot;8px&quot;,
+    &quot;x3&quot;: &quot;12px&quot;,
+    &quot;x4&quot;: &quot;16px&quot;,
+    &quot;x6&quot;: &quot;24px&quot;,
+    &quot;x8&quot;: &quot;32px&quot;,
+    &quot;x12&quot;: &quot;48px&quot;,
+    &quot;x16&quot;: &quot;64px&quot;,
+    &quot;x24&quot;: &quot;96px&quot;
+  },
+  &quot;radii&quot;: {
+    &quot;sm&quot;: &quot;4px&quot;,
+    &quot;md&quot;: &quot;8px&quot;,
+    &quot;lg&quot;: &quot;12px&quot;
+  },
+  &quot;shadows&quot;: {
+    &quot;card&quot;: &quot;0 1px 0 rgba(0,0,0,.06)&quot;,
+    &quot;floating&quot;: &quot;0 4px 12px rgba(0,0,0,.12)&quot;,
+    &quot;modal&quot;: &quot;0 12px 32px rgba(0,0,0,.5)&quot;,
+    &quot;action&quot;: &quot;0 4px 12px rgba(240,83,35,.3)&quot;
+  }
+}</code></pre>
+      </div>
+    </aside>
+</div>
+
+<script>
+    // Click-to-copy on swatches and copy-btns
+    document.querySelectorAll('[data-copy]').forEach(el => {
+      el.addEventListener('click', () => {
+        const v = el.getAttribute('data-copy');
+        navigator.clipboard.writeText(v).then(() => {
+          el.classList.add('copied');
+          setTimeout(() => el.classList.remove('copied'), 1200);
+        });
+      });
+    });
+
+    // Export-panel tabs
+    const expTabs = document.querySelectorAll('.exp-tab');
+    const expBodies = document.querySelectorAll('.exp-body');
+    expTabs.forEach(t => t.addEventListener('click', () => {
+      expTabs.forEach(x => x.classList.remove('active'));
+      expBodies.forEach(x => x.classList.remove('active'));
+      t.classList.add('active');
+      document.getElementById(t.dataset.target).classList.add('active');
+    }));
+
+    // Copy current export body
+    document.getElementById('exp-copy').addEventListener('click', (e) => {
+      const active = document.querySelector('.exp-body.active code');
+      if (active) {
+        navigator.clipboard.writeText(active.textContent);
+        e.target.textContent = 'Copied';
+        setTimeout(() => e.target.textContent = 'Copy', 1200);
+      }
+    });
+
+    // Build .md download from the DESIGN.md panel content
+    const dlBtn = document.getElementById('exp-download');
+    const mdContent = document.querySelector('#exp-md code').textContent;
+    const blob = new Blob([mdContent], { type: 'text/markdown' });
+    dlBtn.href = URL.createObjectURL(blob);
+  </script>
+</body>
+</html>
