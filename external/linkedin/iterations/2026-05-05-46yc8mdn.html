@@ -1,0 +1,182 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>LinkedIn Preview — **Monday (Industry Insight)** — Water infrastructure spending in WA/AU. Angle: m</title>
+<style>
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body { background: #f3f2ef; font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif; padding: 20px; }
+  .container { max-width: 680px; margin: 0 auto; }
+
+  /* Header */
+  .page-header { background: #fff; border-radius: 8px; padding: 16px 20px; margin-bottom: 16px; border-left: 4px solid #ea580c; }
+  .page-header h1 { font-size: 16px; font-weight: 700; color: #000000e6; }
+  .page-header .meta { font-size: 12px; color: #00000099; margin-top: 4px; }
+  .status-badge { display: inline-block; padding: 2px 8px; border-radius: 12px; font-size: 11px; font-weight: 600; text-transform: uppercase; background: #94a3b8; color: #fff; margin-left: 8px; }
+
+  /* Tabs */
+  .tabs { display: flex; gap: 8px; margin-bottom: 12px; }
+  .tab-btn { padding: 8px 16px; border: none; border-radius: 20px; cursor: pointer; font-size: 13px; font-weight: 500; background: #e2e8f0; color: #00000099; transition: all 0.15s; }
+  .tab-btn.active { background: #0a66c2; color: #fff; }
+
+  /* Tab panels */
+  .tab-panel { display: none; }
+  .tab-panel.active { display: block; }
+
+  /* LinkedIn card */
+  .li-card { background: #ffffff; border-radius: 8px; border: 1px solid #e2e8f0; overflow: hidden; margin-bottom: 12px; }
+  .li-header { display: flex; align-items: center; gap: 10px; padding: 12px 16px 8px; }
+  .li-avatar { width: 40px; height: 40px; border-radius: 50%; background: #ea580c; color: #fff; font-size: 13px; font-weight: 700; display: flex; align-items: center; justify-content: center; flex-shrink: 0; }
+  .li-meta { flex: 1; }
+  .li-name { font-size: 14px; font-weight: 600; color: #000000e6; }
+  .li-sub { font-size: 12px; color: #00000099; }
+  .li-follow { font-size: 14px; font-weight: 600; color: #0a66c2; cursor: pointer; }
+  .li-body { padding: 8px 16px 12px; font-size: 14px; line-height: 1.55; color: #000000e6; }
+  .li-hook { font-weight: 600; margin-bottom: 10px; }
+  .li-text { margin-bottom: 10px; }
+  .li-cta { color: #00000099; margin-bottom: 8px; font-style: italic; }
+  .li-hashtags { color: #0a66c2; font-size: 13px; }
+  .li-footer { display: flex; gap: 20px; padding: 8px 16px; border-top: 1px solid #f1f5f9; font-size: 13px; color: #00000099; }
+  .li-footer span { cursor: pointer; }
+
+  /* Char bar */
+  .char-bar { height: 4px; background: #e2e8f0; border-radius: 2px; margin-bottom: 4px; }
+  .char-fill { height: 100%; border-radius: 2px; transition: width 0.3s; }
+  .char-label { font-size: 12px; margin-bottom: 12px; }
+
+  /* Notes */
+  .notes-box { background: #fefce8; border: 1px solid #fde68a; border-radius: 6px; padding: 12px; margin-bottom: 12px; font-size: 13px; }
+  .notes-label { font-weight: 600; margin-bottom: 4px; color: #92400e; }
+  .notes-text { color: #78350f; line-height: 1.5; }
+
+  /* Warnings */
+  .warnings-box { background: #fff7ed; border: 1px solid #fed7aa; border-radius: 6px; padding: 12px; margin-bottom: 16px; font-size: 13px; }
+  .warnings-box.ok { background: #f0fdf4; border-color: #bbf7d0; }
+  .warnings-label { font-weight: 600; margin-bottom: 4px; color: #b45309; }
+  .warnings-box.ok .warnings-label { color: #15803d; }
+  .warnings-box ul { padding-left: 16px; color: #7c2d12; }
+  .warnings-box ul li { margin-top: 2px; }
+
+  /* Buttons */
+  .action-row { display: flex; gap: 10px; margin-top: 8px; }
+  .btn-approve { flex: 1; padding: 12px; border: none; border-radius: 6px; font-size: 14px; font-weight: 600; cursor: pointer; background: #15803d; color: #fff; transition: opacity 0.15s; }
+  .btn-approve:hover { opacity: 0.9; }
+  .btn-reject { flex: 1; padding: 12px; border: none; border-radius: 6px; font-size: 14px; font-weight: 600; cursor: pointer; background: #dc2626; color: #fff; transition: opacity 0.15s; }
+  .btn-reject:hover { opacity: 0.9; }
+
+  /* Result message */
+  .result-msg { display: none; padding: 12px; border-radius: 6px; text-align: center; font-weight: 600; font-size: 14px; margin-top: 12px; }
+  .result-msg.ok { background: #f0fdf4; color: #15803d; border: 1px solid #bbf7d0; }
+  .result-msg.err { background: #fef2f2; color: #dc2626; border: 1px solid #fecaca; }
+</style>
+</head>
+<body>
+<div class="container">
+
+  <div class="page-header">
+    <h1>**Monday (Industry Insight)** — Water infrastructure spending in WA/AU. Angle: m <span class="status-badge">draft</span></h1>
+    <div class="meta">
+      Blick Group (company page) · text · Created 2026-05-05 · 1 post drafted
+    </div>
+  </div>
+
+  
+    <div class="warnings-box ok">
+      <div class="warnings-label">✓ Brand voice checks passed</div>
+    </div>
+
+  <div class="tabs">
+    <button class="tab-btn active" onclick="showTab(0)" id="tab-0">
+      Post
+    </button></div>
+
+  
+    <div class="tab-panel active" id="panel-0">
+      <!-- LinkedIn post card -->
+      <div class="li-card">
+        <div class="li-header">
+          <div class="li-avatar">BG</div>
+          <div class="li-meta">
+            <div class="li-name">Blick Group</div>
+            <div class="li-sub">Drilling Fluids · Australia &amp; New Zealand · Just now</div>
+          </div>
+          <div class="li-follow">+ Follow</div>
+        </div>
+        <div class="li-body">
+          
+          <div class="li-text">## Phase 1: Plan<br><br>**Monday (Industry Insight)** — Water infrastructure spending in WA/AU. Angle: more bores being drilled = more demand for reliable fluid supply. Reference the Blick fluid range generally.<br>- Target: 120-160 words<br>- Hook: Start with a ground-level observation drillers will recognise<br>- CTA: Ask what crews are seeing in their region<br><br>**Wednesday (Educational)** — Why water quality matters before you even open a bag of bentonite. Soda Ash + water conditioning is the step most crews </div>
+          
+          
+        </div>
+        <div class="li-footer">
+          <span>👍 Like</span><span>💬 Comment</span><span>🔁 Repost</span><span>📤 Send</span>
+        </div>
+      </div>
+
+      <!-- Char count bar -->
+      <div class="char-bar">
+        <div class="char-fill" style="width:16.666666666666664%; background:#0a66c2"></div>
+      </div>
+      <div class="char-label" style="color:#00000099">
+        500 / 3,000 characters
+      </div>
+
+      
+
+      <!-- Approve/reject for this specific post -->
+      <div class="action-row">
+        <button class="btn-approve" onclick="approvePost(1, '2026-05-05-46yc8mdn', '/Volumes/NewmanDrive/development/BlickVault/Channels/content/2026-05-05-linkedin-monday-industry-insight-water-infrastructure-spend.md')">
+          ✓ Approve Post 1
+        </button>
+        <button class="btn-reject" onclick="rejectPost(1, '2026-05-05-46yc8mdn', '/Volumes/NewmanDrive/development/BlickVault/Channels/content/2026-05-05-linkedin-monday-industry-insight-water-infrastructure-spend.md')">
+          ✕ Reject Post 1
+        </button>
+      </div>
+    </div>
+
+  <div class="result-msg" id="result-msg"></div>
+
+</div>
+
+<script>
+function showTab(i) {
+  document.querySelectorAll('.tab-btn').forEach((b,j) => b.classList.toggle('active', i===j));
+  document.querySelectorAll('.tab-panel').forEach((p,j) => p.classList.toggle('active', i===j));
+}
+
+async function approvePost(postNum, slug, draftPath) {
+  await sendAction('approve', postNum, slug, draftPath);
+}
+
+async function rejectPost(postNum, slug, draftPath) {
+  await sendAction('reject', postNum, slug, draftPath);
+}
+
+async function sendAction(action, postNum, slug, draftPath) {
+  const msg = document.getElementById('result-msg');
+  msg.className = 'result-msg';
+  msg.style.display = 'none';
+  try {
+    const res = await fetch('https://blick-n8n.fly.dev/webhook/linkedin-' + action, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ slug, postNum, draftPath, action })
+    });
+    if (res.ok) {
+      msg.textContent = action === 'approve'
+        ? '✓ Post ' + postNum + ' approved — n8n will publish on schedule'
+        : '✕ Post ' + postNum + ' rejected — runner will avoid this angle';
+      msg.className = 'result-msg ok';
+    } else {
+      throw new Error('HTTP ' + res.status);
+    }
+  } catch(e) {
+    msg.textContent = 'Could not reach n8n (' + e.message + '). Edit status manually in Obsidian.';
+    msg.className = 'result-msg err';
+  }
+  msg.style.display = 'block';
+}
+</script>
+</body>
+</html>

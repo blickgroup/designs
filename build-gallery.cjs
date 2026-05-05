@@ -64,6 +64,14 @@ const PROJECTS = [
     approvedDir: path.join(ROOT, 'brand', 'approved'),
     archiveDir: path.join(ROOT, 'brand', 'archive'),
   },
+  {
+    id: 'linkedin',
+    label: 'LinkedIn',
+    description: 'Drafted LinkedIn posts pending review',
+    iterationsDir: path.join(ROOT, 'external', 'linkedin', 'iterations'),
+    approvedDir: path.join(ROOT, 'external', 'linkedin', 'approved'),
+    archiveDir: path.join(ROOT, 'external', 'linkedin', 'archive'),
+  },
 ];
 
 function humanName(filename) {
