@@ -1,0 +1,197 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Template 3 — Carousel (mockup)</title>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;700;800&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body { background: #f3f2ef; font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif; padding: 32px; color: #0a0a0a; }
+  .page { max-width: 1500px; margin: 0 auto; }
+  .page-header { margin-bottom: 24px; }
+  .page-header h1 { font-size: 18px; font-weight: 700; }
+  .page-header p { font-size: 13px; color: #5a5a5a; margin-top: 4px; }
+  .badge { display: inline-block; padding: 3px 10px; border-radius: 4px; font-size: 11px; font-weight: 600; text-transform: uppercase; background: #fde68a; color: #92400e; margin-left: 8px; vertical-align: middle; letter-spacing: 0.04em; }
+
+  .slides-row { display: flex; gap: 20px; overflow-x: auto; padding: 8px 4px 24px; scroll-snap-type: x mandatory; }
+
+  .slide-frame { flex: 0 0 auto; scroll-snap-align: start; }
+  .slide-label { font-size: 11px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.08em; color: #5a5a5a; margin-bottom: 8px; }
+
+  /* 1080×1080 carousel slide — preview at 360 */
+  .slide {
+    width: 360px; height: 360px;
+    padding: 36px 32px 28px;
+    display: flex; flex-direction: column;
+    box-shadow: 0 4px 16px rgba(0,0,0,0.12);
+    position: relative;
+  }
+
+  /* Slide 1 — title (ink) */
+  .slide--title { background: #0a0a0a; color: #ffffff; }
+  /* Slide 2 — idea (warm) */
+  .slide--warm { background: #f5f3ef; color: #0a0a0a; }
+  /* Slide 3 — idea (white) */
+  .slide--white { background: #ffffff; color: #0a0a0a; }
+  /* Slide 4 — closer (ink, action) */
+  .slide--closer { background: #0a0a0a; color: #ffffff; }
+
+  .kicker {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 11px; font-weight: 500;
+    letter-spacing: 0.12em; text-transform: uppercase;
+    color: #f05323;
+  }
+
+  .slide-headline {
+    font-size: 30px;
+    font-weight: 800;
+    line-height: 1.05;
+    letter-spacing: -0.02em;
+    margin-top: 18px;
+  }
+  .slide-body {
+    font-size: 15px;
+    line-height: 1.45;
+    margin-top: 14px;
+  }
+  .slide--white .slide-body, .slide--warm .slide-body { color: #0a0a0a; }
+
+  .orange-rule { width: 40px; height: 2px; background: #f05323; margin-top: 18px; }
+
+  .slide-bottom {
+    margin-top: auto;
+    display: flex; align-items: center; justify-content: space-between;
+    padding-top: 16px;
+  }
+  .slide-num {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 11px; letter-spacing: 0.06em;
+    opacity: 0.55;
+  }
+  .swipe-cue {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 11px; letter-spacing: 0.06em;
+    color: #f05323;
+  }
+  .footer-mark {
+    font-size: 14px; font-weight: 800; letter-spacing: -0.01em;
+  }
+  .footer-mark .dot { color: #f05323; }
+  .footer-url { font-family: 'JetBrains Mono', monospace; font-size: 10px; opacity: 0.55; }
+
+  .notes {
+    margin-top: 20px;
+    background: #ffffff; border-radius: 8px;
+    padding: 24px 28px;
+    border-left: 3px solid #f05323;
+    font-size: 14px; line-height: 1.55;
+  }
+  .notes h3 { font-size: 13px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.08em; color: #5a5a5a; margin-bottom: 12px; }
+  .notes h4 { font-size: 13px; font-weight: 700; color: #0a0a0a; margin: 16px 0 6px; }
+  .notes ul { margin-left: 20px; margin-top: 6px; }
+  .notes li { margin-bottom: 4px; }
+  .notes code { font-family: 'JetBrains Mono', monospace; font-size: 12px; background: #f5f3ef; padding: 1px 6px; border-radius: 3px; }
+  .var { color: #f05323; font-family: 'JetBrains Mono', monospace; font-size: 0.9em; }
+</style>
+</head>
+<body>
+  <div class="page">
+    <div class="page-header">
+      <h1>Template 3 — Carousel (4 slides max) <span class="badge">Mockup · Sample copy</span></h1>
+      <p>1080×1080 square × 4 slides · Default OFF — only for special features (project recap, multi-step guide) · For sign-off only — copy is placeholder</p>
+    </div>
+
+    <div class="slides-row">
+
+      <!-- SLIDE 1 — Title -->
+      <div class="slide-frame">
+        <div class="slide-label">Slide 1 — Title</div>
+        <div class="slide slide--title">
+          <div class="kicker">{SERIES_KICKER}</div>
+          <h2 class="slide-headline">{SERIES_TITLE} A title that sets up the story.</h2>
+          <div class="orange-rule"></div>
+          <div class="slide-bottom">
+            <div class="footer-mark" style="color:#fff;">Blick<span class="dot">.</span></div>
+            <div class="swipe-cue">Swipe →</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- SLIDE 2 — Idea on warm -->
+      <div class="slide-frame">
+        <div class="slide-label">Slide 2 — Idea</div>
+        <div class="slide slide--warm">
+          <div class="kicker">01</div>
+          <h2 class="slide-headline">{POINT_HEADLINE_1} First idea, sentence case, single thought.</h2>
+          <p class="slide-body">{POINT_BODY_1} A short supporting paragraph, two or three lines, plain English.</p>
+          <div class="orange-rule"></div>
+          <div class="slide-bottom">
+            <div class="slide-num">2 / 4</div>
+            <div class="swipe-cue">Swipe →</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- SLIDE 3 — Idea on white -->
+      <div class="slide-frame">
+        <div class="slide-label">Slide 3 — Idea</div>
+        <div class="slide slide--white">
+          <div class="kicker">02</div>
+          <h2 class="slide-headline">{POINT_HEADLINE_2} Second idea, builds on slide 2.</h2>
+          <p class="slide-body">{POINT_BODY_2} Same length and rhythm as slide 2 so the carousel reads consistent.</p>
+          <div class="orange-rule"></div>
+          <div class="slide-bottom">
+            <div class="slide-num">3 / 4</div>
+            <div class="swipe-cue">Swipe →</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- SLIDE 4 — Closer -->
+      <div class="slide-frame">
+        <div class="slide-label">Slide 4 — Closer</div>
+        <div class="slide slide--closer">
+          <div class="kicker">{CLOSER_KICKER}</div>
+          <h2 class="slide-headline">{CLOSER_HEADLINE} The takeaway, or the call to action.</h2>
+          <div class="orange-rule"></div>
+          <div class="slide-bottom" style="flex-direction:column; align-items:flex-start; gap:8px;">
+            <div class="footer-mark" style="color:#fff;">Blick<span class="dot">.</span></div>
+            <div class="footer-url">www.blick.group</div>
+          </div>
+        </div>
+      </div>
+
+    </div>
+
+    <div class="notes">
+      <h3>Template 3 — Carousel (special features only)</h3>
+      <p><strong>This template is OFF by default.</strong> Used only when a single post is too small for the story (e.g. a multi-step troubleshooting guide, a recap of a project, a deeper teaching piece). Most weeks: skip the carousel entirely.</p>
+
+      <h4>Structure</h4>
+      <ul>
+        <li>Slide 1 (ink) — title, sets the topic</li>
+        <li>Slide 2 (warm) — first idea</li>
+        <li>Slide 3 (white) — second idea</li>
+        <li>Slide 4 (ink) — closer, takeaway or CTA</li>
+      </ul>
+
+      <h4>Hard rules</h4>
+      <ul>
+        <li><strong>4 slides max.</strong> If you need 5, the story is two posts.</li>
+        <li>One topic per carousel. Never mix unrelated subjects (the CCL carousel mistake).</li>
+        <li>Canvas alternates ink → warm → white → ink. Visual rhythm pulls the reader through.</li>
+        <li>Brand orange is the kicker, the rule, and the swipe cue. No fourth use.</li>
+      </ul>
+
+      <h4>Replaceable fields</h4>
+      <ul>
+        <li><span class="var">{SERIES_KICKER}</span> · <span class="var">{SERIES_TITLE}</span></li>
+        <li><span class="var">{POINT_HEADLINE_1..2}</span> · <span class="var">{POINT_BODY_1..2}</span></li>
+        <li><span class="var">{CLOSER_KICKER}</span> · <span class="var">{CLOSER_HEADLINE}</span></li>
+      </ul>
+    </div>
+  </div>
+</body>
+</html>

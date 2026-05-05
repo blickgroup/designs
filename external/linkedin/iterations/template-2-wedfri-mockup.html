@@ -1,0 +1,205 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Template 2 — Wed/Fri Paired Product (mockup)</title>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet">
+<style>
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body { background: #f3f2ef; font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif; padding: 32px; color: #0a0a0a; }
+  .page { max-width: 1380px; margin: 0 auto; }
+  .page-header { margin-bottom: 24px; }
+  .page-header h1 { font-size: 18px; font-weight: 700; color: #0a0a0a; }
+  .page-header p { font-size: 13px; color: #5a5a5a; margin-top: 4px; }
+  .badge { display: inline-block; padding: 3px 10px; border-radius: 4px; font-size: 11px; font-weight: 600; text-transform: uppercase; background: #fde68a; color: #92400e; margin-left: 8px; vertical-align: middle; letter-spacing: 0.04em; }
+
+  .pair-row { display: flex; gap: 32px; align-items: flex-start; margin-bottom: 24px; }
+
+  /* 1080×1350 portrait card — preview at 432×540 (40%) */
+  .card {
+    width: 432px; height: 540px;
+    background: #ffffff;
+    color: #0a0a0a;
+    padding: 40px 36px 32px;
+    display: flex; flex-direction: column;
+    box-shadow: 0 4px 16px rgba(0,0,0,0.12);
+    position: relative;
+  }
+
+  .kicker {
+    display: inline-block;
+    align-self: flex-start;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 11px;
+    font-weight: 500;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    padding: 5px 10px 4px;
+    color: #ffffff;
+  }
+  .kicker--ink { background: #0a0a0a; }
+  .kicker--orange { background: #f05323; }
+
+  .product-name {
+    font-size: 14px;
+    font-weight: 700;
+    color: #5a5a5a;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    margin-top: 28px;
+    margin-bottom: 8px;
+  }
+
+  .hook {
+    font-size: 36px;
+    font-weight: 800;
+    line-height: 1.05;
+    letter-spacing: -0.02em;
+    color: #0a0a0a;
+  }
+
+  .orange-rule { width: 48px; height: 3px; background: #f05323; margin: 18px 0 18px; }
+
+  .key-fact {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 13px;
+    font-weight: 500;
+    color: #0a0a0a;
+    background: #f5f3ef;
+    padding: 10px 14px;
+    border-left: 2px solid #f05323;
+    border-radius: 0 4px 4px 0;
+  }
+  .key-fact .label { color: #5a5a5a; font-size: 11px; text-transform: uppercase; letter-spacing: 0.06em; display: block; margin-bottom: 2px; }
+
+  .spacer { flex: 1; }
+
+  .chips { display: flex; flex-wrap: wrap; gap: 5px; margin-bottom: 16px; }
+  .chip {
+    font-size: 9.5px;
+    font-weight: 500;
+    letter-spacing: 0.04em;
+    padding: 3px 8px;
+    border: 1px solid #d8d4cc;
+    color: #5a5a5a;
+    border-radius: 999px;
+    background: #ffffff;
+  }
+
+  .footer {
+    display: flex; align-items: center; justify-content: space-between;
+    border-top: 1px solid #e6e4df;
+    padding-top: 14px;
+  }
+  .footer-mark {
+    font-size: 14px; font-weight: 800; letter-spacing: -0.01em;
+    color: #0a0a0a;
+  }
+  .footer-mark .dot { color: #f05323; }
+  .footer-url { font-family: 'JetBrains Mono', monospace; font-size: 10px; color: #5a5a5a; }
+
+  /* Friday variant accent */
+  .card--fri .footer-mark { color: #0a0a0a; }
+
+  /* Notes panel */
+  .notes-row { display: flex; gap: 32px; align-items: flex-start; }
+  .notes {
+    flex: 1; background: #ffffff; border-radius: 8px;
+    padding: 24px 28px;
+    border-left: 3px solid #f05323;
+    font-size: 14px; line-height: 1.55;
+  }
+  .notes h3 { font-size: 13px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.08em; color: #5a5a5a; margin-bottom: 12px; }
+  .notes h4 { font-size: 13px; font-weight: 700; color: #0a0a0a; margin: 16px 0 6px; }
+  .notes ul { margin-left: 20px; margin-top: 6px; }
+  .notes li { margin-bottom: 4px; }
+  .notes code { font-family: 'JetBrains Mono', monospace; font-size: 12px; background: #f5f3ef; padding: 1px 6px; border-radius: 3px; color: #0a0a0a; }
+  .notes p { margin-bottom: 8px; }
+  .var { color: #f05323; font-family: 'JetBrains Mono', monospace; font-size: 0.9em; }
+
+  .label-strip { font-size: 11px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.08em; color: #5a5a5a; margin-bottom: 8px; }
+</style>
+</head>
+<body>
+  <div class="page">
+    <div class="page-header">
+      <h1>Template 2 — Wednesday + Friday Paired Product <span class="badge">Mockup · Sample copy</span></h1>
+      <p>1080×1350 portrait (4:5, LinkedIn-native) · One master, two variants · For sign-off only — copy is placeholder</p>
+    </div>
+
+    <div class="pair-row">
+      <!-- Wednesday variant -->
+      <div>
+        <div class="label-strip">Wednesday — Educational</div>
+        <div class="card">
+          <div class="kicker kicker--ink">Mechanism</div>
+          <div class="product-name">{PRODUCT_NAME}</div>
+          <h2 class="hook">{HEADLINE} A short hook line, two lines max.</h2>
+          <div class="orange-rule"></div>
+          <div class="key-fact"><span class="label">Standard dose</span>{KEY_FACT}</div>
+          <div class="spacer"></div>
+          <div class="chips">
+            <span class="chip">HDD</span><span class="chip">Waterwell</span><span class="chip">Coring</span><span class="chip">Diamond Coring</span>
+          </div>
+          <div class="footer">
+            <div class="footer-mark">Blick<span class="dot">.</span></div>
+            <div class="footer-url">www.blick.group</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Friday variant -->
+      <div>
+        <div class="label-strip">Friday — Spotlight</div>
+        <div class="card card--fri">
+          <div class="kicker kicker--orange">Spotlight</div>
+          <div class="product-name">{PRODUCT_NAME}</div>
+          <h2 class="hook">{HEADLINE} Different hook, same product, sentence case.</h2>
+          <div class="orange-rule"></div>
+          <div class="key-fact"><span class="label">Standard dose</span>{KEY_FACT}</div>
+          <div class="spacer"></div>
+          <div class="chips">
+            <span class="chip">HDD</span><span class="chip">Waterwell</span><span class="chip">Coring</span><span class="chip">Diamond Coring</span>
+          </div>
+          <div class="footer">
+            <div class="footer-mark">Blick<span class="dot">.</span></div>
+            <div class="footer-url">www.blick.group</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Notes -->
+      <div class="notes">
+        <h3>Template 2 — Wed/Fri Paired Product</h3>
+
+        <h4>The two variants</h4>
+        <p>Same master, identical layout. Only difference: <strong>kicker chip flips colour</strong> — ink-black on Wednesday (Mechanism), brand orange on Friday (Spotlight). Signals the pair to followers without changing layout. No second orange element competes.</p>
+
+        <h4>Replaceable fields</h4>
+        <ul>
+          <li><span class="var">{KICKER}</span> — "Mechanism" (Wed) / "Spotlight" (Fri)</li>
+          <li><span class="var">{PRODUCT_NAME}</span> — uppercase, e.g. "TORQUE DOWN"</li>
+          <li><span class="var">{HEADLINE}</span> — the hook line, sentence case</li>
+          <li><span class="var">{KEY_FACT}</span> — one supporting fact, e.g. "2 L/m³"</li>
+          <li><span class="var">{TAGS[]}</span> — disciplines (max 4)</li>
+        </ul>
+
+        <h4>Hard rules</h4>
+        <ul>
+          <li>Kicker chip is the ONLY orange element competing with the rule. No third.</li>
+          <li>No product photo in this template — type-driven. Photos can be added later as a variant if asset library exists.</li>
+          <li>No em dashes in any copy</li>
+          <li>Sentence case throughout</li>
+        </ul>
+
+        <h4>Why portrait (1080×1350)</h4>
+        <ul>
+          <li>4:5 = LinkedIn's recommended portrait aspect, no crop in feed</li>
+          <li>Portrait gives more vertical room for the hook to breathe — fixes the listy/cramped feel of the existing Carry Flow card</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</body>
+</html>
