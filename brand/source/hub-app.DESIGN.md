@@ -56,7 +56,22 @@ Tokens live in `frontend/src/styles/themes.css` as CSS custom properties. Refere
 
 ### Light theme
 
-Defined in `themes.css` under `[data-theme="light"]`. Mirror role, different value. The audit skill checks symmetry.
+Same role structure as dark, Blick true neutrals (no Tailwind defaults — see [[Brand]] §11). Approved 2026-05-08 via Option B + L3 muted decision (see [[2026-05-08-design-token-conflicts]]).
+
+| Role | Token | Value | Notes |
+|---|---|---|---|
+| Brand action | `--primary` | `#f05323` | Same as dark |
+| Brand action hover | `--primary-hover` | `#d63911` | Slightly darker for light-on-light contrast |
+| Page background | `--bg-page` | `#fafafa` | Warm off-white, no blue cast |
+| Card surface | `--bg-surface` | `#ffffff` | Pure white for content cards |
+| Hover surface | `--bg-hover` | `#f0f0f0` | Row hover, button-on-card hover |
+| Body text | `--text-primary` | `#1f1f1f` | Default reading text |
+| Heading text | `--text-heading` | `#000000` | h1–h4 |
+| Muted text | `--text-muted` | `#8a8a8a` | Timestamps, helpers, status text. **L3** — picked over `#6b6b6b` to read distinctly secondary from body |
+| Secondary text | `--text-secondary` | `#6b6b6b` | Form labels, captions |
+| Default border | `--border-default` | `#e5e5e5` | Separators, input borders |
+| Strong border | `--border-strong` | `#cccccc` | Editorial rules, blockquote borders |
+| Subtle border | `--border-subtle` | `#f0f0f0` | Card edges, table cell rules |
 
 ### Status colour roles
 
@@ -155,7 +170,7 @@ This is the **internal-tool** layer that nobody else's design system covers. Eve
 ### 4.10 Data viz
 - Time-series: line, never area, never stacked area for ops metrics.
 - Threshold/alert lines in danger colour, 1px dashed.
-- Categorical: use the product category palette from [[Brand]] §7.2 in category order.
+- Categorical: use the product category palette from [[Brand]] §7.2 in category order. The `--chart-1` through `--chart-7` tokens map to the Brand palette (Stabilisers, Filtration Control, Clay Adjustment, Clay Control, LCM, Support Chemicals, Bentonite). `--chart-8` is a neutral fallback (`#58595b`) since no 8th product category exists. Approved 2026-05-08 (see [[2026-05-08-design-token-conflicts]]).
 - Always label axes. Never use the brand colour for non-action data series.
 
 ---
@@ -271,18 +286,18 @@ If it feels like a senior advisor's notebook, you got it right.
 | | dark | light |
 |---|---|---|
 | Brand action | `#f05323` | `#f05323` |
-| Brand action hover | `#ff6a3d` | `#ff6a3d` |
-| Accent | `#22d3ee` | `#0ea5b7` |
+| Brand action hover | `#ff6a3d` | `#d63911` |
+| Accent | `#22d3ee` | `#6b7280` |
 | Page bg | `#1a1a1a` | `#fafafa` |
 | Surface bg | `#2a2a2a` | `#ffffff` |
 | Body text | `#bcbec0` | `#1f1f1f` |
 | Heading text | `#ffffff` | `#000000` |
-| Muted text | `#707070` | `#6b6b6b` |
+| Muted text | `#707070` | `#8a8a8a` |
 | Default border | `#58595b` | `#e5e5e5` |
 
 ---
 
-## Anti-pattern audit (open items, last reviewed 2026-05-01)
+## Anti-pattern audit (open items, last reviewed 2026-05-08)
 
 These are known places hub-app drifts from this spec. Tracked here so the audit skill has something to compare against.
 
@@ -291,6 +306,10 @@ These are known places hub-app drifts from this spec. Tracked here so the audit 
 - [ ] Empty states default to "No data found" in 4+ tables — needs structured empty pattern.
 - [ ] Two-column forms exist in [[Operations]] new-employee flow — refactor.
 - [ ] Brand orange used as decorative accent on at least one dashboard card — should be replaced with `--secondary`.
+- [x] Light theme using Tailwind neutrals instead of Blick true neutrals — RESOLVED 2026-05-08 (PR #41, Option B + L3 muted).
+- [x] Chart palette using generic Tailwind colours instead of Brand §7.2 — RESOLVED 2026-05-08 (PR #42, Option B).
+- [x] Brand-orange substitute `#e8471a` in light primary button gradient — RESOLVED 2026-05-08 (PR #39).
+- [x] Typography + elevation tokens declared in spec but missing from `themes.css` — RESOLVED 2026-05-08 (PR #39).
 
 ---
 

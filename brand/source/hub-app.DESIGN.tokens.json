@@ -17,14 +17,40 @@
       { "name": "Surface", "hex": "#2a2a2a", "role": "Cards, modals, drawers, sticky table headers." },
       { "name": "Surface Hover", "hex": "#3a3a3a", "role": "Row hover, button-on-card hover." }
     ],
-    "Text": [
+    "Surfaces (Light, field/outdoor)": [
+      { "name": "Page", "hex": "#fafafa", "role": "App shell behind everything. Warm off-white, no blue cast." },
+      { "name": "Surface", "hex": "#ffffff", "role": "Cards, modals, drawers." },
+      { "name": "Surface Hover", "hex": "#f0f0f0", "role": "Row hover, button-on-card hover." }
+    ],
+    "Text (Dark)": [
       { "name": "Heading", "hex": "#ffffff", "role": "h1–h4 in dark theme." },
       { "name": "Body", "hex": "#bcbec0", "role": "Default reading text." },
       { "name": "Muted", "hex": "#707070", "role": "Timestamps, helpers, disabled state." }
     ],
-    "Borders": [
+    "Text (Light)": [
+      { "name": "Heading", "hex": "#000000", "role": "h1–h4 in light theme." },
+      { "name": "Body", "hex": "#1f1f1f", "role": "Default reading text." },
+      { "name": "Secondary", "hex": "#6b6b6b", "role": "Form labels, captions." },
+      { "name": "Muted (L3)", "hex": "#8a8a8a", "role": "Timestamps, helpers, status text. Picked over #6b6b6b 2026-05-08 to read distinctly secondary from body." }
+    ],
+    "Borders (Dark)": [
       { "name": "Default", "hex": "#58595b", "role": "Separators, input borders." },
       { "name": "Subtle", "hex": "#404040", "role": "Card edges, table cell rules." }
+    ],
+    "Borders (Light)": [
+      { "name": "Default", "hex": "#e5e5e5", "role": "Separators, input borders." },
+      { "name": "Strong", "hex": "#cccccc", "role": "Editorial rules." },
+      { "name": "Subtle", "hex": "#f0f0f0", "role": "Card edges, table cell rules." }
+    ],
+    "Chart palette (Brand §7.2 product categories)": [
+      { "name": "chart-1 · Stabilisers", "hex": "#785ef0", "role": "Categorical viz — Stabilisers." },
+      { "name": "chart-2 · Filtration Control", "hex": "#118fae", "role": "Categorical viz — Filtration Control." },
+      { "name": "chart-3 · Clay Adjustment", "hex": "#dc267f", "role": "Categorical viz — Clay Adjustment." },
+      { "name": "chart-4 · Clay Control", "hex": "#3c8c4c", "role": "Categorical viz — Clay Control." },
+      { "name": "chart-5 · LCM", "hex": "#fe6100", "role": "Categorical viz — LCM (Lost Circulation)." },
+      { "name": "chart-6 · Support Chemicals", "hex": "#d0d0d0", "role": "Categorical viz — Support Chemicals." },
+      { "name": "chart-7 · Bentonite", "hex": "#ffb000", "role": "Categorical viz — Bentonite." },
+      { "name": "chart-8 · Neutral fallback", "hex": "#58595b", "role": "Used when categories exceed 7 — there is no 8th product category, so this is a safety fallback." }
     ]
   },
   "typeScale": [
