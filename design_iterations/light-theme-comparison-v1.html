@@ -3,150 +3,234 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
-<title>Hub-App Light Theme — Option A vs Option B</title>
+<title>Hub-App Light Theme — A/B + Muted Levels</title>
 <style>
   body { margin:0; font:14px/1.5 -apple-system,'Inter',sans-serif; background:#0a0a0a; color:#e5e5e5; }
   .header { padding:24px 32px; border-bottom:1px solid #333; }
   .header h1 { margin:0 0 4px; font:600 22px/1.2 'Inter'; }
-  .header p { margin:0; color:#a0a0a0; font-size:13px; max-width:800px; }
+  .header p { margin:0; color:#a0a0a0; font-size:13px; max-width:900px; }
   .header .meta { margin-top:12px; font-size:12px; color:#707070; }
-  .header .meta a { color:#ff6a3d; text-decoration:none; }
-  .grid { display:grid; grid-template-columns:1fr 1fr; gap:1px; background:#333; }
-  .col { background:#fff; padding:0; min-height:600px; position:relative; }
-  .col-header { padding:16px 24px; border-bottom:1px solid currentColor; font:600 13px/1 'Inter'; text-transform:uppercase; letter-spacing:0.08em; }
-  .col-body { padding:32px 24px; }
+  .section-title { padding:20px 32px 8px; font:600 14px/1 'Inter'; text-transform:uppercase; letter-spacing:0.08em; color:#ff6a3d; }
+  .section-title .sub { color:#a0a0a0; text-transform:none; letter-spacing:0; font-weight:400; margin-left:12px; font-size:13px; }
 
+  .grid-2 { display:grid; grid-template-columns:1fr 1fr; gap:1px; background:#333; }
+  .grid-4 { display:grid; grid-template-columns:repeat(4, 1fr); gap:1px; background:#333; }
+  .col { padding:0; min-height:520px; position:relative; }
+  .col-header { padding:14px 20px; border-bottom:1px solid currentColor; font:600 12px/1.2 'Inter'; text-transform:uppercase; letter-spacing:0.08em; }
+  .col-header .hex { display:block; color:inherit; opacity:.65; font-weight:400; margin-top:3px; font-family:monospace; text-transform:none; letter-spacing:0; }
+  .col-body { padding:24px 20px; }
+
+  /* Option A — Tailwind neutrals */
   .opt-a { background:#f8fafc; color:#111827; }
   .opt-a .col-header { color:#111827; border-color:#e5e7eb; background:#f9fafb; }
-  .opt-a .surface { background:#f9fafb; border:1px solid #e5e7eb; border-radius:8px; padding:20px; margin-bottom:16px; }
-  .opt-a .muted { color:#9ca3af; }
-  .opt-a .heading { color:#000; font:600 17px/1.3 'Inter'; margin:0 0 8px; }
-  .opt-a button.secondary { background:transparent; color:#111827; border:1px solid #d1d5db; padding:8px 16px; border-radius:6px; font:600 13px 'Inter'; cursor:pointer; }
+  .opt-a .surface { background:#f9fafb; border:1px solid #e5e7eb; border-radius:8px; padding:16px; margin-bottom:14px; }
+  .opt-a .heading { color:#000; font:600 15px/1.3 'Inter'; margin:0 0 6px; }
+  .opt-a button.secondary { background:transparent; color:#111827; border:1px solid #d1d5db; padding:7px 14px; border-radius:6px; font:600 12px 'Inter'; cursor:pointer; }
+  .opt-a table thead { background:#f3f4f6; color:#374151; }
+  .opt-a table td { border-color:#e5e7eb; }
 
+  /* Option B — Blick neutrals (default surface) */
   .opt-b { background:#fafafa; color:#1f1f1f; }
   .opt-b .col-header { color:#1f1f1f; border-color:#e5e5e5; background:#ffffff; }
-  .opt-b .surface { background:#ffffff; border:1px solid #e5e5e5; border-radius:8px; padding:20px; margin-bottom:16px; }
-  .opt-b .muted { color:#6b6b6b; }
-  .opt-b .heading { color:#000; font:600 17px/1.3 'Inter'; margin:0 0 8px; }
-  .opt-b button.secondary { background:transparent; color:#1f1f1f; border:1px solid #e5e5e5; padding:8px 16px; border-radius:6px; font:600 13px 'Inter'; cursor:pointer; }
+  .opt-b .surface { background:#ffffff; border:1px solid #e5e5e5; border-radius:8px; padding:16px; margin-bottom:14px; }
+  .opt-b .heading { color:#000; font:600 15px/1.3 'Inter'; margin:0 0 6px; }
+  .opt-b button.secondary { background:transparent; color:#1f1f1f; border:1px solid #e5e5e5; padding:7px 14px; border-radius:6px; font:600 12px 'Inter'; cursor:pointer; }
+  .opt-b table thead { background:#fafafa; color:#1f1f1f; }
+  .opt-b table td { border-color:#e5e5e5; }
 
-  button.primary { background:linear-gradient(135deg,#f05323 0%,#ff6a3d 100%); color:#fff; border:none; padding:8px 16px; border-radius:6px; font:600 13px 'Inter'; cursor:pointer; box-shadow:0 4px 12px rgba(240,83,35,.3); margin-right:8px; }
+  button.primary { background:linear-gradient(135deg,#f05323 0%,#ff6a3d 100%); color:#fff; border:none; padding:7px 14px; border-radius:6px; font:600 12px 'Inter'; cursor:pointer; box-shadow:0 4px 12px rgba(240,83,35,.3); margin-right:6px; }
 
-  table { width:100%; border-collapse:collapse; font-size:13px; }
-  table th { text-align:left; padding:10px 12px; font:600 12px/1 'Inter'; text-transform:uppercase; letter-spacing:0.06em; }
-  table td { padding:10px 12px; border-top:1px solid; }
-  table.opt-a-table td { border-color:#e5e7eb; }
-  table.opt-b-table td { border-color:#e5e5e5; }
+  table { width:100%; border-collapse:collapse; font-size:12px; }
+  table th { text-align:left; padding:8px 10px; font:600 10px/1 'Inter'; text-transform:uppercase; letter-spacing:0.06em; }
+  table td { padding:8px 10px; border-top:1px solid; }
 
-  .swatch-row { display:flex; gap:8px; margin:16px 0; flex-wrap:wrap; }
-  .sw { width:64px; height:64px; border-radius:6px; display:flex; align-items:flex-end; padding:6px; font:600 9px/1 monospace; }
+  .swatch-row { display:flex; gap:6px; margin:0 0 14px; flex-wrap:wrap; }
+  .sw { width:54px; height:54px; border-radius:6px; display:flex; align-items:flex-end; padding:5px; font:600 9px/1 monospace; }
   .sw.dark { color:#fff; }
   .sw.light { color:#000; }
 
-  .footer-note { padding:20px 32px; border-top:1px solid #333; font-size:13px; color:#a0a0a0; max-width:none; }
+  .label { font:600 11px/1.4 'Inter'; margin-bottom:3px; display:block; }
+  .footer-note { padding:20px 32px; border-top:1px solid #333; font-size:13px; color:#a0a0a0; }
   .footer-note strong { color:#e5e5e5; }
   .footer-note em { color:#ff6a3d; font-style:normal; }
+  .pick-banner { background:rgba(240,83,35,.08); border:1px solid rgba(240,83,35,.3); padding:12px 32px; color:#ff6a3d; font-size:13px; }
 </style>
 </head>
 <body>
 <div class="header">
-  <h1>Hub-App Light Theme — Option A vs Option B</h1>
-  <p>Conflict from <code>/design-token-audit</code>: live <code>themes.css</code> uses Tailwind neutrals; <code>hub-app.DESIGN.md</code> §9 quick-ref specifies Blick true neutrals. Same components, same brand orange — only the canvas changes. Awaiting owner sign-off per Brand.md §8.</p>
+  <h1>Hub-App Light Theme — Decision Aid</h1>
+  <p>Two questions in one page. <strong>Section 1:</strong> which neutral palette? Option A (current live, Tailwind) vs Option B (Blick spec). <strong>Section 2:</strong> within Option B, what muted-text level reads as "secondary info" without looking disabled? Awaiting owner sign-off per Brand.md §8.</p>
   <div class="meta">
-    Source conflict note: <code>BlickVault/Inbox/raw/2026-05-08-design-token-conflicts.md</code> · Audit run 2026-05-08
+    Source: <code>BlickVault/Inbox/raw/2026-05-08-design-token-conflicts.md</code> · Audit run 2026-05-08
   </div>
 </div>
 
-<div class="grid">
+<!-- ───── SECTION 1: A vs B ───── -->
+<div class="section-title">1 · Palette: A vs B<span class="sub">Same components, same brand orange, only canvas changes</span></div>
+<div class="grid-2">
 
   <div class="col opt-a">
-    <div class="col-header">Option A · Code wins (current live) <span style="font-weight:400;text-transform:none;letter-spacing:0;color:#6b7280">Tailwind neutrals</span></div>
+    <div class="col-header">Option A · Tailwind (current live)<span class="hex">#f8fafc · #f9fafb · #111827 · #9ca3af · #e5e7eb</span></div>
     <div class="col-body">
-
       <div class="swatch-row">
-        <div class="sw light" style="background:#f8fafc;border:1px solid #e5e7eb">#f8fafc<br>page</div>
-        <div class="sw light" style="background:#f9fafb;border:1px solid #e5e7eb">#f9fafb<br>surface</div>
-        <div class="sw dark" style="background:#111827">#111827<br>text</div>
-        <div class="sw dark" style="background:#9ca3af">#9ca3af<br>muted</div>
-        <div class="sw light" style="background:#e5e7eb">#e5e7eb<br>border</div>
+        <div class="sw light" style="background:#f8fafc;border:1px solid #e5e7eb">#f8fafc</div>
+        <div class="sw light" style="background:#f9fafb;border:1px solid #e5e7eb">#f9fafb</div>
+        <div class="sw dark" style="background:#111827">#111827</div>
+        <div class="sw dark" style="background:#9ca3af">#9ca3af</div>
+        <div class="sw light" style="background:#e5e7eb">#e5e7eb</div>
       </div>
-
       <div class="surface">
         <h3 class="heading">Active job — TR-2284</h3>
-        <p style="margin:0 0 12px">Pilbara · Newman field · started 0640. <span class="muted">Updated 8 mins ago.</span></p>
+        <p style="margin:0 0 10px;font-size:13px">Pilbara · Newman field · started 0640. <span style="color:#9ca3af">Updated 8 mins ago.</span></p>
         <button class="primary">Mark complete</button>
         <button class="secondary">Reassign</button>
       </div>
-
       <div class="surface" style="padding:0">
-        <table class="opt-a-table">
-          <thead style="background:#f3f4f6;color:#374151">
-            <tr><th>Job</th><th>Crew</th><th>Status</th></tr>
-          </thead>
+        <table>
+          <thead><tr><th>Job</th><th>Crew</th><th>Status</th></tr></thead>
           <tbody>
-            <tr><td>TR-2284</td><td>K. Marsh</td><td><span class="muted">In progress</span></td></tr>
-            <tr><td>TR-2283</td><td>S. Patel</td><td><span class="muted">Awaiting sign-off</span></td></tr>
+            <tr><td>TR-2284</td><td>K. Marsh</td><td><span style="color:#9ca3af">In progress</span></td></tr>
+            <tr><td>TR-2283</td><td>S. Patel</td><td><span style="color:#9ca3af">Awaiting sign-off</span></td></tr>
             <tr><td>TR-2282</td><td>D. Liu</td><td>Done</td></tr>
           </tbody>
         </table>
       </div>
-
-      <div class="surface">
-        <h3 class="heading">Form: New employee</h3>
-        <label style="display:block;font:600 12px/1.4 'Inter';color:#6b7280;margin-bottom:4px">Full name *</label>
-        <input style="width:100%;padding:8px 12px;border:1px solid #d1d5db;border-radius:6px;background:#fff;color:#111827;font:400 14px 'Inter';box-sizing:border-box" value="Kura Marsh">
-      </div>
-
     </div>
   </div>
 
   <div class="col opt-b">
-    <div class="col-header">Option B · Spec wins <span style="font-weight:400;text-transform:none;letter-spacing:0;color:#6b6b6b">Blick neutrals</span></div>
+    <div class="col-header">Option B · Blick neutrals (spec)<span class="hex">#fafafa · #ffffff · #1f1f1f · #6b6b6b · #e5e5e5</span></div>
     <div class="col-body">
-
       <div class="swatch-row">
-        <div class="sw light" style="background:#fafafa;border:1px solid #e5e5e5">#fafafa<br>page</div>
-        <div class="sw light" style="background:#ffffff;border:1px solid #e5e5e5">#ffffff<br>surface</div>
-        <div class="sw dark" style="background:#1f1f1f">#1f1f1f<br>text</div>
-        <div class="sw dark" style="background:#6b6b6b">#6b6b6b<br>muted</div>
-        <div class="sw light" style="background:#e5e5e5">#e5e5e5<br>border</div>
+        <div class="sw light" style="background:#fafafa;border:1px solid #e5e5e5">#fafafa</div>
+        <div class="sw light" style="background:#ffffff;border:1px solid #e5e5e5">#ffffff</div>
+        <div class="sw dark" style="background:#1f1f1f">#1f1f1f</div>
+        <div class="sw dark" style="background:#6b6b6b">#6b6b6b</div>
+        <div class="sw light" style="background:#e5e5e5">#e5e5e5</div>
       </div>
-
       <div class="surface">
         <h3 class="heading">Active job — TR-2284</h3>
-        <p style="margin:0 0 12px">Pilbara · Newman field · started 0640. <span class="muted">Updated 8 mins ago.</span></p>
+        <p style="margin:0 0 10px;font-size:13px">Pilbara · Newman field · started 0640. <span style="color:#6b6b6b">Updated 8 mins ago.</span></p>
         <button class="primary">Mark complete</button>
         <button class="secondary">Reassign</button>
       </div>
-
       <div class="surface" style="padding:0">
-        <table class="opt-b-table">
-          <thead style="background:#fafafa;color:#1f1f1f">
-            <tr><th>Job</th><th>Crew</th><th>Status</th></tr>
-          </thead>
+        <table>
+          <thead><tr><th>Job</th><th>Crew</th><th>Status</th></tr></thead>
           <tbody>
-            <tr><td>TR-2284</td><td>K. Marsh</td><td><span class="muted">In progress</span></td></tr>
-            <tr><td>TR-2283</td><td>S. Patel</td><td><span class="muted">Awaiting sign-off</span></td></tr>
+            <tr><td>TR-2284</td><td>K. Marsh</td><td><span style="color:#6b6b6b">In progress</span></td></tr>
+            <tr><td>TR-2283</td><td>S. Patel</td><td><span style="color:#6b6b6b">Awaiting sign-off</span></td></tr>
             <tr><td>TR-2282</td><td>D. Liu</td><td>Done</td></tr>
           </tbody>
         </table>
       </div>
+    </div>
+  </div>
 
+</div>
+
+<div class="pick-banner">
+  Shaun's note 2026-05-08: Option B preferred, but the muted text (#6b6b6b) doesn't read distinctly enough from body. → see Section 2 below.
+</div>
+
+<!-- ───── SECTION 2: Muted levels within Option B ───── -->
+<div class="section-title">2 · Within Option B: which muted-text level?<span class="sub">Body stays #1f1f1f. Only the secondary text changes. Watch the timestamp + table status cells.</span></div>
+<div class="grid-4">
+
+  <div class="col opt-b">
+    <div class="col-header">L1 · current spec<span class="hex">#6b6b6b</span></div>
+    <div class="col-body">
       <div class="surface">
-        <h3 class="heading">Form: New employee</h3>
-        <label style="display:block;font:600 12px/1.4 'Inter';color:#6b6b6b;margin-bottom:4px">Full name *</label>
-        <input style="width:100%;padding:8px 12px;border:1px solid #e5e5e5;border-radius:6px;background:#fff;color:#1f1f1f;font:400 14px 'Inter';box-sizing:border-box" value="Kura Marsh">
+        <h3 class="heading">Active job — TR-2284</h3>
+        <p style="margin:0 0 10px;font-size:13px">Pilbara · Newman field. <span style="color:#6b6b6b">Updated 8 mins ago.</span></p>
+        <button class="primary">Mark complete</button>
       </div>
+      <div class="surface" style="padding:0">
+        <table>
+          <thead><tr><th>Job</th><th>Status</th></tr></thead>
+          <tbody>
+            <tr><td>TR-2284</td><td><span style="color:#6b6b6b">In progress</span></td></tr>
+            <tr><td>TR-2283</td><td><span style="color:#6b6b6b">Awaiting sign-off</span></td></tr>
+            <tr><td>TR-2282</td><td>Done</td></tr>
+          </tbody>
+        </table>
+      </div>
+      <span class="label" style="color:#6b6b6b">Full name *</span>
+    </div>
+  </div>
 
+  <div class="col opt-b">
+    <div class="col-header">L2 · slightly lighter<span class="hex">#7a7a7a</span></div>
+    <div class="col-body">
+      <div class="surface">
+        <h3 class="heading">Active job — TR-2284</h3>
+        <p style="margin:0 0 10px;font-size:13px">Pilbara · Newman field. <span style="color:#7a7a7a">Updated 8 mins ago.</span></p>
+        <button class="primary">Mark complete</button>
+      </div>
+      <div class="surface" style="padding:0">
+        <table>
+          <thead><tr><th>Job</th><th>Status</th></tr></thead>
+          <tbody>
+            <tr><td>TR-2284</td><td><span style="color:#7a7a7a">In progress</span></td></tr>
+            <tr><td>TR-2283</td><td><span style="color:#7a7a7a">Awaiting sign-off</span></td></tr>
+            <tr><td>TR-2282</td><td>Done</td></tr>
+          </tbody>
+        </table>
+      </div>
+      <span class="label" style="color:#7a7a7a">Full name *</span>
+    </div>
+  </div>
+
+  <div class="col opt-b">
+    <div class="col-header">L3 · clearly muted ★<span class="hex">#8a8a8a · my pick</span></div>
+    <div class="col-body">
+      <div class="surface">
+        <h3 class="heading">Active job — TR-2284</h3>
+        <p style="margin:0 0 10px;font-size:13px">Pilbara · Newman field. <span style="color:#8a8a8a">Updated 8 mins ago.</span></p>
+        <button class="primary">Mark complete</button>
+      </div>
+      <div class="surface" style="padding:0">
+        <table>
+          <thead><tr><th>Job</th><th>Status</th></tr></thead>
+          <tbody>
+            <tr><td>TR-2284</td><td><span style="color:#8a8a8a">In progress</span></td></tr>
+            <tr><td>TR-2283</td><td><span style="color:#8a8a8a">Awaiting sign-off</span></td></tr>
+            <tr><td>TR-2282</td><td>Done</td></tr>
+          </tbody>
+        </table>
+      </div>
+      <span class="label" style="color:#8a8a8a">Full name *</span>
+    </div>
+  </div>
+
+  <div class="col opt-b">
+    <div class="col-header">L4 · strongly muted<span class="hex">#9a9a9a</span></div>
+    <div class="col-body">
+      <div class="surface">
+        <h3 class="heading">Active job — TR-2284</h3>
+        <p style="margin:0 0 10px;font-size:13px">Pilbara · Newman field. <span style="color:#9a9a9a">Updated 8 mins ago.</span></p>
+        <button class="primary">Mark complete</button>
+      </div>
+      <div class="surface" style="padding:0">
+        <table>
+          <thead><tr><th>Job</th><th>Status</th></tr></thead>
+          <tbody>
+            <tr><td>TR-2284</td><td><span style="color:#9a9a9a">In progress</span></td></tr>
+            <tr><td>TR-2283</td><td><span style="color:#9a9a9a">Awaiting sign-off</span></td></tr>
+            <tr><td>TR-2282</td><td>Done</td></tr>
+          </tbody>
+        </table>
+      </div>
+      <span class="label" style="color:#9a9a9a">Full name *</span>
     </div>
   </div>
 
 </div>
 
 <div class="footer-note">
-  <strong>How they differ in feel:</strong> Option A reads <em>cooler / slightly bluish</em> (Tailwind slate undertone). Option B reads <em>warmer / paper-like</em> (true neutrals, no blue cast). Functionally identical. Both pass legibility. Brand orange is the same in both — only the canvas around it changes.
+  <strong>What you're looking for:</strong> the timestamp ("Updated 8 mins ago") and the table status cells should read as <em>quieter</em> than the body but still <em>readable at a glance</em>. L1 is the current spec — too close to body. L4 starts to look disabled. <em>My pick: L3 (#8a8a8a)</em> — clearly secondary, not disabled, still readable on both <code>#fff</code> and <code>#fafafa</code>.
   <br><br>
-  <strong>Trade-off:</strong> Option A keeps the live experience your users have today (zero migration risk). Option B aligns hub-app with the rest of the brand surfaces (briefs, website, slides) which all use warm true-neutrals — better cross-surface coherence if Shaun reviews several Blick artefacts in a sitting.
+  <strong>Note:</strong> whatever you pick here updates <code>--text-muted</code> in <code>themes.css</code> light theme + the spec quick-ref in <code>hub-app.DESIGN.md</code> §9. The dark theme already uses <code>#707070</code> (which works against the dark canvas) — no change there.
 </div>
 
 </body>
