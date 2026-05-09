@@ -3,8 +3,10 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Nexus OS — Blick AI Operating System</title>
-<!-- Generated 2026-04-29 by nexus/scripts/generate-nexus-presentation.js -->
+<title>Nexus OS v1.3 — Blick AI Operating System</title>
+<!-- v1.3 · 2026-05-09 — adds Governance (drift-watch + drift-gate), Production-Truth (runtime-sha + workspace-git-hygiene), Live-Notes loop, Modes (research-synthesizer shadow), Vault-Linker, LinkedIn preview pipeline -->
+<!-- v1.2 · 2026-05-01 — adds Universal Learning Loop gate + Lineage Spine -->
+<!-- v1.0 base: 2026-04-29 nexus/scripts/generate-nexus-presentation.js -->
 <!-- Source data: nexus/launchd/ · ~/.claude/skills/ · nexus-vault.db -->
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -173,6 +175,10 @@ footer{padding:60px 0;border-top:1px solid var(--line);text-align:center}
       <li><a href="#topology">Topology</a></li>
       <li><a href="#infrastructure">Infrastructure</a></li>
       <li><a href="#healing">Self-Healing</a></li>
+      <li><a href="#learning">Learning Loop</a></li>
+      <li><a href="#lineage">Lineage</a></li>
+      <li><a href="#governance">Governance</a></li>
+      <li><a href="#production-truth">Production Truth</a></li>
     </ul>
   </div>
 </nav>
@@ -182,14 +188,14 @@ footer{padding:60px 0;border-top:1px solid var(--line);text-align:center}
   <div class="container" style="position:relative;">
     <div class="hero-eyebrow">
       <div class="hero-eyebrow-dot"></div>
-      Internal Technical Reference · Blick Group · 2026
+      Internal Technical Reference · Blick Group · v1.3 · 2026-05-09
     </div>
     <h1 class="gradient-text" style="margin-bottom:8px;">Nexus</h1>
-    <h1 style="margin-bottom:28px;">Operating System</h1>
+    <h1 style="margin-bottom:28px;">Operating System <span style="font-size:.4em;font-weight:600;color:var(--orange);letter-spacing:.04em;vertical-align:middle;">v1.3</span></h1>
     <p class="hero-sub">A continuously-running AI that compounds knowledge, monitors operations, surfaces intelligence, and heals itself — without being asked.</p>
     <div class="hero-stats">
       <div class="hero-stat">
-        <span class="hero-stat-num accent-cyan">37</span>
+        <span class="hero-stat-num accent-cyan">41</span>
         <span class="hero-stat-label">Scheduled Agents</span>
       </div>
       <div class="hero-stat">
@@ -209,7 +215,7 @@ footer{padding:60px 0;border-top:1px solid var(--line);text-align:center}
         <span class="hero-stat-label">Graph Links</span>
       </div>
     </div>
-    <div class="generated-badge">Auto-generated 2026-04-29 from live sources</div>
+    <div class="generated-badge">v1.3 · 2026-05-09 · adds Governance + Production-Truth + Live-Notes + Modes + Vault-Linker + LinkedIn pipeline</div>
   </div>
 </section>
 
@@ -221,7 +227,7 @@ footer{padding:60px 0;border-top:1px solid var(--line);text-align:center}
     <div class="layer-stack">
       <div class="layer-row"><div class="layer-label"><div class="layer-bar" style="background:var(--orange);"></div><div><div class="layer-num">L1</div><div class="layer-name">Human Interface</div></div></div><div class="layer-content"><span class="pill pill-orange">Obsidian (vault UI)</span><span class="pill pill-orange">Claude Code (dev shell)</span><span class="pill pill-orange">Daily Brief</span><span class="pill pill-orange">Hub-App / Compass</span><span class="pill pill-dim">MacBook → VNC / SMB</span><span class="pill pill-dim">Tailscale mesh</span></div></div>
       <div class="layer-row"><div class="layer-label"><div class="layer-bar" style="background:var(--purple);"></div><div><div class="layer-num">L2</div><div class="layer-name">AI Inference</div></div></div><div class="layer-content"><span class="pill pill-purple">Gemma 4 E4B — local fast</span><span class="pill pill-purple">Gemma 4 26B — local heavy</span><span class="pill pill-purple">Nomic embed-text</span><span class="pill pill-dim">Claude Sonnet / Opus — cloud</span><span class="pill pill-dim">XAI Grok — web-grounded</span><span class="pill pill-dim">Gemini 2.5 Pro — NotebookLM</span></div></div>
-      <div class="layer-row"><div class="layer-label"><div class="layer-bar" style="background:var(--blue);"></div><div><div class="layer-num">L3</div><div class="layer-name">Intelligence Engine</div></div></div><div class="layer-content"><span class="pill pill-blue">Indexer</span><span class="pill pill-blue">Embedder</span><span class="pill pill-blue">Graph Builder</span><span class="pill pill-blue">Entity Extractor</span><span class="pill pill-blue">Autoresearch</span><span class="pill pill-blue">Brief Pipeline</span><span class="pill pill-blue">Vault Writeback</span><span class="pill pill-blue">Action Register</span><span class="pill pill-blue">Self-Healing (3-layer)</span></div></div>
+      <div class="layer-row"><div class="layer-label"><div class="layer-bar" style="background:var(--blue);"></div><div><div class="layer-num">L3</div><div class="layer-name">Intelligence Engine</div></div></div><div class="layer-content"><span class="pill pill-blue">Indexer</span><span class="pill pill-blue">Embedder</span><span class="pill pill-blue">Graph Builder</span><span class="pill pill-blue">Entity Extractor</span><span class="pill pill-blue">Autoresearch</span><span class="pill pill-blue">Brief Pipeline</span><span class="pill pill-blue">Vault Writeback</span><span class="pill pill-blue">Action Register</span><span class="pill pill-blue">Self-Healing (3-layer)</span><span class="pill pill-blue">Learning Loop Gate</span><span class="pill pill-blue">Lineage Spine</span></div></div>
       <div class="layer-row"><div class="layer-label"><div class="layer-bar" style="background:var(--green);"></div><div><div class="layer-num">L4</div><div class="layer-name">Storage</div></div></div><div class="layer-content"><span class="pill pill-green">BlickVault (1024 notes)</span><span class="pill pill-green">nexus-vault.db (SQLite)</span><span class="pill pill-green">blick-memory.db</span><span class="pill pill-green">Session logs (JSONL)</span><span class="pill pill-dim">All on /Volumes/NewmanDrive/</span></div></div>
       <div class="layer-row"><div class="layer-label"><div class="layer-bar" style="background:var(--cyan);"></div><div><div class="layer-num">L5</div><div class="layer-name">External</div></div></div><div class="layer-content"><span class="pill pill-cyan">Google Drive</span><span class="pill pill-cyan">BigQuery</span><span class="pill pill-cyan">Fly.io</span><span class="pill pill-cyan">GitHub</span><span class="pill pill-cyan">n8n (self-hosted)</span><span class="pill pill-cyan">Sentry</span><span class="pill pill-cyan">Brave · Firecrawl · XAI</span></div></div>
     </div>
@@ -250,7 +256,7 @@ footer{padding:60px 0;border-top:1px solid var(--line);text-align:center}
   <div class="container fade-up">
     <div class="eyebrow">Layer 3 — Autonomy</div>
     <div class="section-divider"></div>
-    <h2 style="margin-bottom:16px;">37 agents.<br>Always running.</h2>
+    <h2 style="margin-bottom:16px;">41 agents.<br>Always running.</h2>
     <p style="max-width:560px;margin-bottom:48px;">Every agent is a <code>launchd</code> plist in <code>~/Library/LaunchAgents/</code>. They reload automatically at login. The source of truth lives in <code>nexus/launchd/</code> — installed via <code>install-launch-agents.sh</code>.</p>
     
     <div class="schedule-group">
@@ -344,8 +350,56 @@ footer{padding:60px 0;border-top:1px solid var(--line);text-align:center}
           <div class="sched-out">→ action_register table · brief section</div>
         </div>
       </div>
+      <div class="sched-row">
+        <div class="sched-time">Daily 08:45</div>
+        <div class="sched-agent">workspace-git-hygiene</div>
+        <div>
+          <div class="sched-desc"><span class="accent-orange">v1.3</span> · Read-only scan of every git repo under /Volumes/NewmanDrive/development/. Classifies by severity (clean / safe-refresh / review / needs-human). Surfaces dirty/diverged/no-remote work in the daily brief — the filesystem-truth half of "production runs only committed code".</div>
+          <div class="sched-out">→ BlickVault/Operations/GitHub Daily Reviews/YYYY-MM-DD.md · brief integration</div>
+        </div>
+      </div>
+      <div class="sched-row">
+        <div class="sched-time">Daily 21:30</div>
+        <div class="sched-agent">watchdog</div>
+        <div>
+          <div class="sched-desc"><span class="accent-orange">v1.3</span> · Verifies today's health-report exists. Rotates ~/Library/Logs/nexus/*.log. Runs <code>runtime-sha-check</code> to alarm if any alive daemon is on uncommitted/old code — the runtime-truth half of the same fix. Writes alert vault notes when triggered.</div>
+          <div class="sched-out">→ alert vault notes · log rotation</div>
+        </div>
+      </div>
+      <div class="sched-row">
+        <div class="sched-time">Always-on</div>
+        <div class="sched-agent">live-notes-daemon</div>
+        <div>
+          <div class="sched-desc"><span class="accent-orange">v1.3</span> · 15s scheduler tick + 5s event consumer. Reads <code>research:</code> directives from vault frontmatter, fires due ones, rewrites only the named H2 section (frontmatter byte-preserved). Adapted from rowboatlabs/rowboat Tracks. KeepAlive launchd agent.</div>
+          <div class="sched-out">→ targeted vault sections · live-notes-soak-status.md</div>
+        </div>
+      </div>
+      <div class="sched-row">
+        <div class="sched-time">Always-on</div>
+        <div class="sched-agent">live-notes-watchdog</div>
+        <div>
+          <div class="sched-desc"><span class="accent-orange">v1.3</span> · Supervises the live-notes daemon. Restarts it if it stops, flags stuck event queues, surfaces error rates.</div>
+          <div class="sched-out">→ daemon restarts · soak metrics</div>
+        </div>
+      </div>
+      <div class="sched-row">
+        <div class="sched-time">Daily</div>
+        <div class="sched-agent">live-notes-soak-reminder</div>
+        <div>
+          <div class="sched-desc"><span class="accent-orange">v1.3</span> · While any live-notes feature switch remains off, prepends a soak-status banner to the daily brief so the rollout doesn't get forgotten mid-soak.</div>
+          <div class="sched-out">→ daily brief banner</div>
+        </div>
+      </div>
+      <div class="sched-row">
+        <div class="sched-time">Every 30 min</div>
+        <div class="sched-agent">claude-orphan-reaper</div>
+        <div>
+          <div class="sched-desc"><span class="accent-orange">v1.3</span> · Kills Claude agent-mode subprocesses orphaned to PID 1 or older than 6h. Stops the slow accumulation that eats memory on long-running Mac Mini sessions.</div>
+          <div class="sched-out">→ reaped pids · log line per kill</div>
+        </div>
+      </div>
     </div>
-    
+
     <div class="schedule-group">
       <div class="schedule-group-label">Monday</div>
       
@@ -406,7 +460,20 @@ footer{padding:60px 0;border-top:1px solid var(--line);text-align:center}
         </div>
       </div>
     </div>
-    
+
+    <div class="schedule-group">
+      <div class="schedule-group-label">Wednesday</div>
+
+      <div class="sched-row">
+        <div class="sched-time">Wed 06:45</div>
+        <div class="sched-agent">vault-linker-weekly</div>
+        <div>
+          <div class="sched-desc"><span class="accent-orange">v1.3</span> · Two-pass enforcer. Pass 1 wraps entity mentions in <code>[[wikilinks]]</code> using canonical slugs. Pass 2 stamps <code>## References</code> sections on target notes so every link has a return path. Idempotent — running twice produces no diff. First run 2026-04-30 lifted vault wikilink coverage 64% → 90%.</div>
+          <div class="sched-out">→ Vault notes (wikilinks + References sections)</div>
+        </div>
+      </div>
+    </div>
+
     <div class="schedule-group">
       <div class="schedule-group-label">Friday</div>
       
@@ -908,7 +975,7 @@ footer{padding:60px 0;border-top:1px solid var(--line);text-align:center}
           <div class="tnode-name">launchd</div>
           <div class="tnode-type">macOS scheduler</div>
           <div class="tnode-tags">
-            <span class="ttag">37 agents</span>
+            <span class="ttag">41 agents</span>
             <span class="ttag">brief pipeline</span>
             <span class="ttag">health checks</span>
             <span class="ttag">self-healing</span>
@@ -1132,10 +1199,152 @@ footer{padding:60px 0;border-top:1px solid var(--line);text-align:center}
   </div>
 </section>
 
+<section id="learning">
+  <div class="container fade-up">
+    <div class="eyebrow">v1.2 — Compounding</div>
+    <div class="section-divider" style="background:var(--purple);"></div>
+    <div class="section-intro">
+      <div><h2>Universal<br>Learning Loop.</h2></div>
+      <div><p style="margin-bottom:16px;">Every Nexus interaction — CLI session, MCP call, brief, autoresearch run, health finding, skill run — passes through a single fail-soft gate. Gemma 4 E4B scores it on three axes; anything above threshold becomes a triage proposal, never an auto-write.</p><p>This is the mechanism that makes the system <em>compound</em> rather than just run. The judgement that used to live in conversation now lives in code, applied consistently to every artifact.</p></div>
+    </div>
+
+    <div class="bento" style="grid-auto-rows:minmax(140px,auto);margin-bottom:24px;">
+      <div class="bento-cell c4"><div class="bento-accent-bar" style="background:var(--green);"></div><div class="bento-eyebrow">Axis 1</div><div class="bento-title accent-green">vault_worthy</div><div class="bento-body">New fact about a company, person, product, or project worth a vault note. Threshold ≥ <strong style="color:var(--text);">0.65</strong>.</div></div>
+      <div class="bento-cell c4"><div class="bento-accent-bar" style="background:var(--orange);"></div><div class="bento-eyebrow">Axis 2</div><div class="bento-title accent-orange">skill_worthy</div><div class="bento-body">A repeated workflow pattern that could become a <code>/skill</code>. Threshold ≥ <strong style="color:var(--text);">0.70</strong>.</div></div>
+      <div class="bento-cell c4"><div class="bento-accent-bar" style="background:var(--cyan);"></div><div class="bento-eyebrow">Axis 3</div><div class="bento-title accent-cyan">feedback_worthy</div><div class="bento-body">Explicit correction or validated approach to remember in <code>MEMORY.md</code>. Threshold ≥ <strong style="color:var(--text);">0.60</strong>.</div></div>
+    </div>
+
+    <div class="layer-stack" style="margin-bottom:24px;">
+      <div class="layer-row"><div class="layer-label"><div class="layer-bar" style="background:var(--purple);"></div><div><div class="layer-num">FLOW</div><div class="layer-name">Gate Pipeline</div></div></div><div class="layer-content"><span class="pill pill-blue">artifact</span><span class="pill pill-dim">→</span><span class="pill pill-purple">gemma4:e4b classifier</span><span class="pill pill-dim">→</span><span class="pill pill-green">scores 3 axes</span><span class="pill pill-dim">→</span><span class="pill pill-orange">learning_queue (pending)</span><span class="pill pill-dim">→</span><span class="pill pill-cyan">human / scheduled triage</span></div></div>
+    </div>
+
+    <div class="callout"><strong>Fail-soft contract:</strong> Any classifier error, timeout (30s), or malformed response → <code>{ proposed: [], skipped: 'classifier-unavailable' }</code>. The gate will never throw, never block, never slow a real pipeline. Worst case: a turn passes ungated.</div>
+
+    <div style="margin-top:24px;display:grid;grid-template-columns:1fr 1fr;gap:12px;">
+      <div class="infra-card"><div class="infra-host">lib/learning-loop.js</div><div class="infra-name">gate(artifact)</div><div class="infra-desc">Async entry point. Takes <code>{kind, ref, summary, body?}</code>. Returns proposed rows + raw scores. Records lineage edge from artifact → proposal automatically.</div></div>
+      <div class="infra-card"><div class="infra-host">nexus-vault.db</div><div class="infra-name">learning_queue table</div><div class="infra-desc">Indexed on status, axis, source. Three lifecycle states: <code>pending → accepted | rejected | deferred</code>. Decision metadata recorded for offline analysis.</div></div>
+    </div>
+
+    <div class="callout callout-warn" style="margin-top:16px;"><strong>Nothing auto-applies.</strong> The gate is a proposal mechanism, not a writer. Vault writeback, skill creation, and feedback-memory writes all remain human-gated. This is deliberate: compounding without trust is just noise amplification.</div>
+  </div>
+</section>
+
+<section id="lineage">
+  <div class="container fade-up">
+    <div class="eyebrow">v1.2 — Attribution</div>
+    <div class="section-divider" style="background:var(--cyan);"></div>
+    <div class="section-intro">
+      <div><h2>Lineage Spine.<br>Every artifact<br>has a parent.</h2></div>
+      <div><p style="margin-bottom:16px;">Nexus state lives across many tables and files: action_register, briefs, autoresearch runs, vault notes, health findings, n8n workflows. The spine doesn't consolidate them — it joins them with directional edges.</p><p>Without lineage, the Karpathy-style keep/revert optimisation loop cannot attribute outcomes to changes. With it, every brief claim can trace back through autoresearch run → trigger → action register item.</p></div>
+    </div>
+
+    <div class="bento" style="grid-auto-rows:minmax(120px,auto);margin-bottom:24px;">
+      <div class="bento-cell c3"><div class="bento-accent-bar" style="background:var(--orange);"></div><div class="bento-eyebrow">Node</div><div class="bento-title">action</div><div class="bento-body">Action Register entry</div></div>
+      <div class="bento-cell c3"><div class="bento-accent-bar" style="background:var(--purple);"></div><div class="bento-eyebrow">Node</div><div class="bento-title">brief</div><div class="bento-body">Daily synthesised brief</div></div>
+      <div class="bento-cell c3"><div class="bento-accent-bar" style="background:var(--blue);"></div><div class="bento-eyebrow">Node</div><div class="bento-title">autoresearch_run</div><div class="bento-body">Single research execution</div></div>
+      <div class="bento-cell c3"><div class="bento-accent-bar" style="background:var(--green);"></div><div class="bento-eyebrow">Node</div><div class="bento-title">vault_note</div><div class="bento-body">Markdown note path</div></div>
+      <div class="bento-cell c3"><div class="bento-accent-bar" style="background:var(--cyan);"></div><div class="bento-eyebrow">Node</div><div class="bento-title">claim</div><div class="bento-body">Extracted named-entity claim</div></div>
+      <div class="bento-cell c3"><div class="bento-accent-bar" style="background:var(--yellow);"></div><div class="bento-eyebrow">Node</div><div class="bento-title">health_finding</div><div class="bento-body">Night Watchman detection</div></div>
+      <div class="bento-cell c3"><div class="bento-accent-bar" style="background:var(--red);"></div><div class="bento-eyebrow">Node</div><div class="bento-title">fix_draft</div><div class="bento-body">Fix Drafter output</div></div>
+      <div class="bento-cell c3"><div class="bento-accent-bar" style="background:var(--text3);"></div><div class="bento-eyebrow">Node</div><div class="bento-title">trigger</div><div class="bento-body">Cron tick / event source</div></div>
+    </div>
+
+    <div class="layer-stack" style="margin-bottom:24px;">
+      <div class="layer-row"><div class="layer-label"><div class="layer-bar" style="background:var(--cyan);"></div><div><div class="layer-num">EX 1</div><div class="layer-name">Brief claim</div></div></div><div class="layer-content"><span class="pill pill-dim">trigger:cron@07:00</span><span class="pill pill-dim">→</span><span class="pill pill-blue">autoresearch_run:1842</span><span class="pill pill-dim">→</span><span class="pill pill-purple">brief:2026-05-01</span><span class="pill pill-dim">→</span><span class="pill pill-cyan">claim:#318</span></div></div>
+      <div class="layer-row"><div class="layer-label"><div class="layer-bar" style="background:var(--cyan);"></div><div><div class="layer-num">EX 2</div><div class="layer-name">Auto-fix path</div></div></div><div class="layer-content"><span class="pill pill-yellow">health_finding:n8n-deact</span><span class="pill pill-dim">→</span><span class="pill pill-orange">action:482</span><span class="pill pill-dim">→</span><span class="pill pill-green">fix_draft:nexus/n8n-restart.js</span></div></div>
+    </div>
+
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px;">
+      <div class="infra-card"><div class="infra-host">lib/lineage.js</div><div class="infra-name">record / trace / render</div><div class="infra-desc"><code>record({parent, child, relation})</code> idempotent on the (parent, child, relation) tuple. <code>trace(node, {direction, depth})</code> walks ancestors or descendants up to N hops.</div></div>
+      <div class="infra-card"><div class="infra-host">nexus-vault.db</div><div class="infra-name">lineage_edge table</div><div class="infra-desc">Indexed both directions. Validated <code>kind</code> set prevents typo-driven graph drift. JSON <code>meta</code> column carries scores, timestamps, run-specific context.</div></div>
+    </div>
+
+    <div class="callout" style="margin-top:16px;"><strong>Why this unlocks Karpathy:</strong> the optimiser needs to attribute brief-relevance scores back to the autoresearch policy that produced them. With lineage, "this Monday brief was bad" can be traced to "these three runs used the new prompt"; without it, every change is an undisputable opinion. Keep/revert needs a paper trail.</div>
+  </div>
+</section>
+
+<section id="governance">
+  <div class="container fade-up">
+    <div class="eyebrow">v1.3 — Documentation Discipline</div>
+    <div class="section-divider" style="background:var(--cyan);"></div>
+    <div class="section-intro">
+      <div><h2>Drift Watch.<br>Docs can't<br>silently rot.</h2></div>
+      <div><p style="margin-bottom:16px;">A registry, a checker, and a CI gate that fail PRs touching anchor code without updating the artifacts the registry says depend on it. The decision is deterministic — no LLM in the binary path. Gemma decorates failure output with actionable hints; Claude is never asked to judge.</p><p>Built 2026-05-09 after a session shipped six new subsystems with only two vault notes and zero diagram updates. Observability without enforcement is decoration.</p></div>
+    </div>
+
+    <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:12px;margin-bottom:24px;">
+      <div class="infra-card">
+        <div class="infra-host">data/drift-watch.json</div>
+        <div class="infra-name">The registry</div>
+        <div class="infra-desc">14 anchors, 11 explicit exemptions. Each anchor lists code paths and the dependent vault notes / diagrams / READMEs / CLAUDE.md sections that must change with them. New systems must register or be exempted with a reason.</div>
+      </div>
+      <div class="infra-card">
+        <div class="infra-host">scripts/drift-gate.js</div>
+        <div class="infra-name">CI gate (deterministic)</div>
+        <div class="infra-desc">Computes <code>git merge-base origin/main HEAD</code>, walks anchors, fails if anchor code changed without dependent artifacts. Cross-repo paths (BlickVault/) checked by mtime. External URLs (design diagram) require human confirmation. Exemption via commit trailer.</div>
+      </div>
+      <div class="infra-card">
+        <div class="infra-host">tests/registry-coverage.test.js</div>
+        <div class="infra-name">Surface coverage</div>
+        <div class="infra-desc">Enumerates public surfaces — launchd plists, MCP servers, package.json bin, top-level shebang scripts, subsystem dirs — and asserts each is in the registry. Pre-existing surfaces sit on a documented BACKLOG (51 items): visible debt, not blocking.</div>
+      </div>
+    </div>
+
+    <div class="callout"><strong>Three layers, reinforcing:</strong> the gate (hard CI block), the test (no new debt), the PR template (free-text N/A reasons, not boxes). Repo-owned operating rules at <code>nexus/docs/agents/operating-rules.md</code> travel with the code so the rule outlives the machine.</div>
+  </div>
+</section>
+
+<section id="production-truth">
+  <div class="container fade-up">
+    <div class="eyebrow">v1.3 — Restoreability</div>
+    <div class="section-divider" style="background:var(--orange);"></div>
+    <div class="section-intro">
+      <div><h2>Production runs<br>only committed code.</h2></div>
+      <div><p style="margin-bottom:16px;">Two checks, paired. Filesystem-truth catches edits sitting unstaged on disk. Runtime-truth catches daemons running uncommitted code that started before the working tree was cleaned.</p><p>Built 2026-05-09 after diagnosing why a 502 incident was hard to debug: ~2 weeks of unmerged code had been running in production with no signal. Filesystem state alone was insufficient — daemons can hold dirty SHAs invisibly long after the disk looks clean.</p></div>
+    </div>
+
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-bottom:24px;">
+      <div class="infra-card">
+        <div class="infra-host">scripts/workspace-git-hygiene.js</div>
+        <div class="infra-name">Filesystem truth · daily 08:45</div>
+        <div class="infra-desc">Read-only scan of every git repo under /Volumes/NewmanDrive/development/. Classifies dirty / diverged / ahead / behind / no-remote / no-upstream. Severity mapped to needs-human / review / safe-refresh / clean. Surfaces in daily brief whenever <code>summary.needs_human &gt; 0</code> or <code>restoreability_risk: true</code>. Never mutates working trees — fail-closed by design.</div>
+      </div>
+      <div class="infra-card">
+        <div class="infra-host">lib/runtime-sha.js + scripts/runtime-sha-check.js</div>
+        <div class="infra-name">Runtime truth · daily 21:30</div>
+        <div class="infra-desc">Long-running daemons call <code>recordStartup({name})</code> at boot to write {pid, sha, branch, dirty, ts} to <code>data/runtime-state.jsonl</code>. The watchdog filters to alive pids (kill -0), then alarms if any daemon is dirty&gt;24h, on a SHA not in <code>git log</code>, or on a SHA different from HEAD &gt;24h. Recording is fail-safe — never throws, never blocks daemon startup.</div>
+      </div>
+    </div>
+
+    <div class="callout"><strong>Why both halves:</strong> filesystem-clean at any moment can hide a daemon that started from earlier dirty state. Runtime-truth catches that case. Together they make production-only-runs-committed-code an enforced invariant, not a hope.</div>
+
+    <div style="margin-top:32px;padding-top:24px;border-top:1px solid var(--line);">
+      <div class="eyebrow" style="margin-bottom:12px;">v1.3 also added</div>
+      <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:12px;">
+        <div class="infra-card">
+          <div class="infra-host">live-notes/</div>
+          <div class="infra-name">Self-refreshing vault notes</div>
+          <div class="infra-desc">Notes carry <code>research:</code> directives in YAML frontmatter declaring "keep this section fresh on this schedule". Long-running daemon (15s scheduler tick + 5s event consumer) fires due directives, rewrites only the named H2 section. Frontmatter byte-preserved. Adapted from rowboatlabs/rowboat Tracks. Paired with <code>entity-gate.js</code> (2-source rule before vault canonicalisation).</div>
+        </div>
+        <div class="infra-card">
+          <div class="infra-host">modes/</div>
+          <div class="infra-name">Plug-in reasoning modes</div>
+          <div class="infra-desc">First mode: <code>research-synthesizer</code> — consolidates N findings on one topic into a conflict-aware synthesis. Cloud Sonnet (Gemma 26B local timed out on heavy batches in Phase 1 dry-run). Currently shadow-soaked alongside autoresearch via fire-and-forget <code>runShadow</code>; ≥7 days before cutover.</div>
+        </div>
+        <div class="infra-card">
+          <div class="infra-host">linkedin-preview-generator.js</div>
+          <div class="infra-name">WYSIWYG content pipeline</div>
+          <div class="infra-desc">Renders LinkedIn drafts as GitHub Pages HTML matching LinkedIn's actual feed rendering. Versioned slugs (W{ISO_WEEK}-v{N}). 6-product rotation: Wednesday teaches the mechanism, Friday spotlights the same product. n8n publisher watches for <code>status: approved</code>.</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
 <footer>
   <div class="container">
     <div class="footer-brand">Blick <span>Group</span></div>
-    <div class="footer-sub">Nexus OS · Internal Reference · Auto-generated 2026-04-29 · blick.group</div>
+    <div class="footer-sub">Nexus OS · Internal Reference · v1.3 · 2026-05-09 · blick.group</div>
   </div>
 </footer>
 
