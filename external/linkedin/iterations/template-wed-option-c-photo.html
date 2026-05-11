@@ -1,0 +1,256 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Wednesday Option C — Field Photo Card</title>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet">
+<style>
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body { background: #f3f2ef; font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif; padding: 32px; color: #0a0a0a; }
+  .page { max-width: 600px; margin: 0 auto; }
+  .page-header { margin-bottom: 20px; }
+  .page-header h1 { font-size: 17px; font-weight: 700; color: #0a0a0a; }
+  .page-header p { font-size: 13px; color: #5a5a5a; margin-top: 4px; line-height: 1.4; }
+  .badge { display: inline-block; padding: 2px 9px; border-radius: 4px; font-size: 11px; font-weight: 600; text-transform: uppercase; background: #dbeafe; color: #1e40af; margin-left: 8px; vertical-align: middle; letter-spacing: 0.04em; }
+  .badge-warn { background: #fef3c7; color: #92400e; }
+  .option-label { font-family: 'JetBrains Mono', monospace; font-size: 11px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.1em; color: #f05323; margin-bottom: 10px; }
+
+  /* 1080×1350 portrait card — preview at 432×540 (40%) */
+  .card {
+    width: 432px; height: 540px;
+    background: #111;
+    color: #ffffff;
+    display: flex; flex-direction: column;
+    box-shadow: 0 4px 20px rgba(0,0,0,0.16);
+    position: relative;
+    overflow: hidden;
+  }
+
+  /* ── Photo zone (top 58%) ── */
+  .photo-zone {
+    flex: 0 0 auto;
+    height: 312px;
+    position: relative;
+    overflow: hidden;
+    background: #1a1a1a;
+  }
+
+  /* Simulated drilling site photo using CSS gradients + shapes */
+  .photo-sim {
+    width: 100%; height: 100%;
+    background:
+      /* sky */
+      linear-gradient(to bottom, #1a2a3a 0%, #2a3d50 35%, #3d5068 55%, #2a3040 100%);
+    position: relative;
+  }
+  /* ground surface suggestion */
+  .photo-sim::before {
+    content: '';
+    position: absolute;
+    bottom: 0; left: 0; right: 0;
+    height: 35%;
+    background: linear-gradient(to top, #1a130a 0%, #2a1e10 60%, transparent 100%);
+  }
+  /* rig tower silhouette */
+  .photo-sim::after {
+    content: '';
+    position: absolute;
+    bottom: 28%;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 8px; height: 55%;
+    background: rgba(0,0,0,0.7);
+    clip-path: polygon(20% 100%, 0% 60%, 50% 0%, 100% 60%, 80% 100%);
+  }
+
+  /* Rig parts via extra elements */
+  .rig-body { position: absolute; bottom: 20%; left: calc(50% - 22px); width: 44px; height: 55%; }
+  .mast { position: absolute; bottom: 0; left: 50%; transform: translateX(-50%); width: 6px; height: 100%; background: rgba(20,20,20,0.9); }
+  .mast-x { position: absolute; left: -14px; right: -14px; top: 30%; height: 1px; background: rgba(20,20,20,0.7); }
+  .mast-x2 { position: absolute; left: -10px; right: -10px; top: 55%; height: 1px; background: rgba(20,20,20,0.7); }
+  .cabin { position: absolute; bottom: -6px; left: -20px; right: -20px; height: 22px; background: rgba(20,20,20,0.85); border-radius: 2px; }
+  /* Drill floor / pad suggestion */
+  .pad { position: absolute; bottom: 19%; left: 20%; right: 20%; height: 3px; background: rgba(50,40,30,0.8); }
+  /* Mud line (orange glow at ground level — the fluid story) */
+  .mud-glow {
+    position: absolute;
+    bottom: 18%;
+    left: 30%; right: 30%;
+    height: 10px;
+    background: radial-gradient(ellipse at center, rgba(240,83,35,0.55) 0%, transparent 100%);
+    filter: blur(4px);
+  }
+  /* Ambient lighting */
+  .ambient {
+    position: absolute;
+    top: 0; left: 0; right: 0; bottom: 0;
+    background: radial-gradient(ellipse at 55% 70%, rgba(240,83,35,0.08) 0%, transparent 60%);
+  }
+
+  /* Overlay — gradient from bottom */
+  .photo-overlay {
+    position: absolute;
+    bottom: 0; left: 0; right: 0;
+    height: 60%;
+    background: linear-gradient(to top, rgba(10,10,10,0.95) 0%, transparent 100%);
+  }
+
+  /* Badge on photo */
+  .photo-badge {
+    position: absolute;
+    top: 16px; left: 18px;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 9px;
+    font-weight: 700;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: #fff;
+    background: rgba(240,83,35,0.9);
+    padding: 4px 10px;
+    border-radius: 2px;
+  }
+
+  /* Product callout on photo bottom-left */
+  .photo-product {
+    position: absolute;
+    bottom: 16px; left: 18px;
+    right: 18px;
+  }
+  .photo-product-name {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 11px;
+    font-weight: 700;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: #f05323;
+    margin-bottom: 4px;
+  }
+  .photo-hook {
+    font-size: 18px;
+    font-weight: 800;
+    line-height: 1.15;
+    letter-spacing: -0.01em;
+    color: #ffffff;
+  }
+
+  /* ── Text zone ── */
+  .text-zone {
+    flex: 1;
+    padding: 16px 22px 18px;
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    border-top: 2px solid #f05323;
+  }
+
+  .mechanism-row {
+    display: flex;
+    gap: 10px;
+    flex: 1;
+  }
+
+  .mechanism-step {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+  }
+  .step-num {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 22px;
+    font-weight: 700;
+    color: #f05323;
+    line-height: 1;
+  }
+  .step-text {
+    font-size: 10.5px;
+    line-height: 1.4;
+    color: rgba(255,255,255,0.7);
+  }
+  .step-divider { width: 1px; background: rgba(255,255,255,0.12); }
+
+  .footer {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-top: 4px;
+  }
+  .footer-brand { font-size: 12px; font-weight: 800; }
+  .footer-brand span { color: #f05323; }
+  .hashtag { font-family: 'JetBrains Mono', monospace; font-size: 8.5px; color: rgba(255,255,255,0.3); letter-spacing: 0.04em; }
+
+  /* Photo placeholder note */
+  .photo-note {
+    margin-top: 10px;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 11px;
+    color: #5a5a5a;
+    border-left: 2px solid #f05323;
+    padding-left: 10px;
+    line-height: 1.5;
+  }
+</style>
+</head>
+<body>
+<div class="page">
+  <div class="page-header">
+    <h1>Option C — Field Photo Card <span class="badge">Wednesday</span> <span class="badge badge-warn">Needs photo library</span></h1>
+    <p>Top half is a real site or mud-pit photo; bottom half breaks the mechanism into 3 numbered steps. Grittier and more editorial than A or B. Requires Blick to build a photo library of field shots (rig on site, mud returns, drill floor). The preview below simulates the layout with a CSS scene — replace with a real photo.</p>
+  </div>
+  <div class="option-label">Option C · Field Photo + 3-Step Mechanism</div>
+
+  <div class="card">
+    <div class="photo-zone">
+      <!-- CSS-simulated drilling site scene -->
+      <div class="photo-sim">
+        <div class="rig-body">
+          <div class="mast">
+            <div class="mast-x"></div>
+            <div class="mast-x2"></div>
+          </div>
+          <div class="cabin"></div>
+        </div>
+        <div class="pad"></div>
+        <div class="mud-glow"></div>
+        <div class="ambient"></div>
+      </div>
+      <div class="photo-overlay"></div>
+      <div class="photo-badge">Wednesday · Educational</div>
+      <div class="photo-product">
+        <div class="photo-product-name">Torque Down</div>
+        <div class="photo-hook">Why torque climbs the longer your bore gets.</div>
+      </div>
+    </div>
+
+    <div class="text-zone">
+      <div class="mechanism-row">
+        <div class="mechanism-step">
+          <div class="step-num">01</div>
+          <div class="step-text">Longer bore = more pipe touching the wall</div>
+        </div>
+        <div class="step-divider"></div>
+        <div class="mechanism-step">
+          <div class="step-num">02</div>
+          <div class="step-text">More contact = more friction, higher torque readings</div>
+        </div>
+        <div class="step-divider"></div>
+        <div class="mechanism-step">
+          <div class="step-num">03</div>
+          <div class="step-text">Torque Down coats the string — cuts drag across the full length</div>
+        </div>
+      </div>
+      <div class="footer">
+        <div class="footer-brand">BLICK<span>.</span></div>
+        <div class="hashtag">#TorqueDown #DrillingFluids</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="photo-note">
+    Photo zone: replace CSS scene with a real JPG — rig on site, mud returns coming back, drill floor in action.<br>
+    1080×600px min for top half. Currently: CSS placeholder only.
+  </div>
+</div>
+</body>
+</html>

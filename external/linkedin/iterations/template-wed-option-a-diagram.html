@@ -1,0 +1,196 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Wednesday Option A — Mechanism Diagram Card</title>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet">
+<style>
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body { background: #f3f2ef; font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif; padding: 32px; color: #0a0a0a; }
+  .page { max-width: 600px; margin: 0 auto; }
+  .page-header { margin-bottom: 20px; }
+  .page-header h1 { font-size: 17px; font-weight: 700; color: #0a0a0a; }
+  .page-header p { font-size: 13px; color: #5a5a5a; margin-top: 4px; line-height: 1.4; }
+  .badge { display: inline-block; padding: 2px 9px; border-radius: 4px; font-size: 11px; font-weight: 600; text-transform: uppercase; background: #dbeafe; color: #1e40af; margin-left: 8px; vertical-align: middle; letter-spacing: 0.04em; }
+  .option-label { font-family: 'JetBrains Mono', monospace; font-size: 11px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.1em; color: #f05323; margin-bottom: 10px; }
+
+  /* 1080×1350 portrait card — preview at 432×540 (40%) */
+  .card {
+    width: 432px; height: 540px;
+    background: #0a0a0a;
+    color: #ffffff;
+    display: flex; flex-direction: column;
+    box-shadow: 0 4px 20px rgba(0,0,0,0.16);
+    position: relative;
+    overflow: hidden;
+  }
+
+  /* ── Diagram zone (top 55%) ── */
+  .diagram-zone {
+    flex: 0 0 auto;
+    height: 280px;
+    background: #0a0a0a;
+    position: relative;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 24px 28px 16px;
+  }
+
+  /* Borehole cross-section SVG wrapper */
+  .borehole-svg { width: 100%; height: 100%; }
+
+  /* ── Text zone (bottom 45%) ── */
+  .text-zone {
+    flex: 1;
+    background: #0a0a0a;
+    padding: 14px 28px 20px;
+    display: flex;
+    flex-direction: column;
+    border-top: 1px solid rgba(240,83,35,0.4);
+  }
+
+  .kicker {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 9.5px;
+    font-weight: 700;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: #f05323;
+    margin-bottom: 7px;
+  }
+
+  .hook {
+    font-size: 20px;
+    font-weight: 800;
+    line-height: 1.12;
+    letter-spacing: -0.02em;
+    color: #ffffff;
+    margin-bottom: 10px;
+  }
+
+  .body-text {
+    font-size: 11.5px;
+    line-height: 1.5;
+    color: rgba(255,255,255,0.72);
+    flex: 1;
+  }
+
+  .footer {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-top: 12px;
+  }
+  .footer-brand {
+    font-size: 11px;
+    font-weight: 800;
+    letter-spacing: -0.01em;
+    color: #ffffff;
+  }
+  .footer-brand span { color: #f05323; }
+  .hashtag { font-family: 'JetBrains Mono', monospace; font-size: 9px; color: rgba(255,255,255,0.38); letter-spacing: 0.04em; }
+</style>
+</head>
+<body>
+<div class="page">
+  <div class="page-header">
+    <h1>Option A — Mechanism Diagram <span class="badge">Wednesday</span></h1>
+    <p>The card teaches a concept visually. Top half: an annotated cross-section of a borehole showing friction forces on pipe. Bottom half: product + hook. Works without a product photo — the diagram IS the image.</p>
+  </div>
+  <div class="option-label">Option A · Mechanism Diagram</div>
+
+  <div class="card">
+    <div class="diagram-zone">
+      <svg class="borehole-svg" viewBox="0 0 376 232" fill="none" xmlns="http://www.w3.org/2000/svg">
+
+        <!-- Ground layers (horizontal bands) -->
+        <rect x="0" y="0" width="376" height="44" fill="#1a1208" opacity="0.9"/>
+        <rect x="0" y="44" width="376" height="52" fill="#22180a" opacity="0.9"/>
+        <rect x="0" y="96" width="376" height="64" fill="#2a1c0c" opacity="0.9"/>
+        <rect x="0" y="160" width="376" height="72" fill="#1a1208" opacity="0.9"/>
+
+        <!-- Layer labels -->
+        <text x="12" y="26" fill="rgba(255,255,255,0.35)" font-family="'JetBrains Mono',monospace" font-size="8" letter-spacing="0.1em" text-transform="uppercase">CLAY</text>
+        <text x="12" y="72" fill="rgba(255,255,255,0.35)" font-family="'JetBrains Mono',monospace" font-size="8" letter-spacing="0.1em">SAND</text>
+        <text x="12" y="130" fill="rgba(255,255,255,0.35)" font-family="'JetBrains Mono',monospace" font-size="8" letter-spacing="0.1em">ROCK</text>
+        <text x="12" y="194" fill="rgba(255,255,255,0.35)" font-family="'JetBrains Mono',monospace" font-size="8" letter-spacing="0.1em">SHALE</text>
+
+        <!-- Borehole walls -->
+        <rect x="148" y="0" width="3" height="232" fill="#f05323" opacity="0.55"/>
+        <rect x="225" y="0" width="3" height="232" fill="#f05323" opacity="0.55"/>
+
+        <!-- Bore wall label -->
+        <line x1="151" y1="16" x2="188" y2="16" stroke="rgba(240,83,35,0.5)" stroke-width="0.75"/>
+        <text x="155" y="13" fill="rgba(240,83,35,0.7)" font-family="'JetBrains Mono',monospace" font-size="7.5" letter-spacing="0.05em">BORE WALL</text>
+
+        <!-- Drill pipe (centre column) -->
+        <rect x="172" y="0" width="32" height="232" fill="#333" rx="2"/>
+        <rect x="175" y="0" width="26" height="232" fill="#555" rx="1"/>
+        <!-- pipe shine -->
+        <rect x="177" y="0" width="6" height="232" fill="rgba(255,255,255,0.08)" rx="1"/>
+        <text x="164" y="120" fill="rgba(255,255,255,0.45)" font-family="'JetBrains Mono',monospace" font-size="7" text-anchor="middle" transform="rotate(-90 164 120)" letter-spacing="0.08em">DRILL PIPE</text>
+
+        <!-- Friction force arrows (left side — pointing towards bore wall) -->
+        <!-- Multiple red arrows showing friction contact -->
+        <g opacity="0.85">
+          <line x1="148" y1="55" x2="175" y2="55" stroke="#f05323" stroke-width="1.5"/>
+          <polygon points="175,55 169,51.5 169,58.5" fill="#f05323"/>
+
+          <line x1="148" y1="110" x2="175" y2="110" stroke="#f05323" stroke-width="1.5"/>
+          <polygon points="175,110 169,106.5 169,113.5" fill="#f05323"/>
+
+          <line x1="148" y1="165" x2="175" y2="165" stroke="#f05323" stroke-width="1.5"/>
+          <polygon points="175,165 169,161.5 169,168.5" fill="#f05323"/>
+        </g>
+
+        <!-- Friction label -->
+        <text x="94" y="52" fill="#f05323" font-family="'JetBrains Mono',monospace" font-size="8" letter-spacing="0.06em" text-anchor="middle">FRICTION</text>
+        <text x="94" y="63" fill="rgba(255,255,255,0.45)" font-family="'JetBrains Mono',monospace" font-size="7" letter-spacing="0.04em" text-anchor="middle">= higher torque</text>
+
+        <!-- Protective film layer (when Torque Down is used) — thin highlight on bore wall inside -->
+        <rect x="151" y="0" width="7" height="232" fill="url(#filmGrad)" opacity="0.65"/>
+        <rect x="220" y="0" width="7" height="232" fill="url(#filmGradR)" opacity="0.65"/>
+
+        <!-- Film label (right side) -->
+        <line x1="228" y1="80" x2="268" y2="80" stroke="rgba(240,83,35,0.5)" stroke-width="0.75"/>
+        <text x="270" y="77" fill="rgba(240,83,35,0.85)" font-family="'JetBrains Mono',monospace" font-size="7.5" letter-spacing="0.04em">PROTECTIVE</text>
+        <text x="270" y="87" fill="rgba(240,83,35,0.85)" font-family="'JetBrains Mono',monospace" font-size="7.5" letter-spacing="0.04em">FILM</text>
+
+        <!-- Torque Down dosage annotation -->
+        <rect x="258" y="130" width="96" height="32" rx="3" fill="rgba(240,83,35,0.14)" stroke="rgba(240,83,35,0.4)" stroke-width="0.75"/>
+        <text x="306" y="144" fill="#f05323" font-family="'JetBrains Mono',monospace" font-size="10" font-weight="700" text-anchor="middle">2 L/m³</text>
+        <text x="306" y="156" fill="rgba(255,255,255,0.5)" font-family="'JetBrains Mono',monospace" font-size="7" text-anchor="middle" letter-spacing="0.06em">TORQUE DOWN</text>
+
+        <!-- Downhole arrow -->
+        <line x1="188" y1="198" x2="188" y2="225" stroke="rgba(255,255,255,0.25)" stroke-width="1"/>
+        <polygon points="188,228 184,220 192,220" fill="rgba(255,255,255,0.25)"/>
+        <text x="188" y="196" fill="rgba(255,255,255,0.3)" font-family="'JetBrains Mono',monospace" font-size="6.5" text-anchor="middle" letter-spacing="0.06em">DOWNHOLE</text>
+
+        <defs>
+          <linearGradient id="filmGrad" x1="0" y1="0" x2="1" y2="0">
+            <stop offset="0%" stop-color="#f05323" stop-opacity="0.1"/>
+            <stop offset="100%" stop-color="#f05323" stop-opacity="0.45"/>
+          </linearGradient>
+          <linearGradient id="filmGradR" x1="1" y1="0" x2="0" y2="0">
+            <stop offset="0%" stop-color="#f05323" stop-opacity="0.1"/>
+            <stop offset="100%" stop-color="#f05323" stop-opacity="0.45"/>
+          </linearGradient>
+        </defs>
+      </svg>
+    </div>
+
+    <div class="text-zone">
+      <div class="kicker">Wednesday · Torque Down</div>
+      <div class="hook">Your rig is telling you something when torque climbs.</div>
+      <div class="body-text">More pipe in ground = more wall contact = more drag. Torque Down coats the bore with a protective film. Less friction. Smoother pullback.</div>
+      <div class="footer">
+        <div class="footer-brand">BLICK<span>.</span></div>
+        <div class="hashtag">#TorqueDown #DrillingFluids</div>
+      </div>
+    </div>
+  </div>
+</div>
+</body>
+</html>
