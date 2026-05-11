@@ -1,0 +1,668 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Blick Mud Schools — Full Vision</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap');
+
+  *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+
+  :root {
+    --orange: #FD4F00;
+    --orange-light: #FF6B26;
+    --black: #1A1A1A;
+    --charcoal: #2D2D2D;
+    --grey-dark: #66615C;
+    --grey-mid: #A9A9A9;
+    --grey-light: #EBEAEB;
+    --off-white: #FAFAFA;
+    --white: #FFFFFF;
+    --font: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+  }
+
+  html { scroll-behavior: smooth; font-size: 16px; -webkit-font-smoothing: antialiased; }
+  body { font-family: var(--font); color: var(--charcoal); background: var(--white); line-height: 1.6; overflow-x: hidden; }
+  .container { max-width: 1280px; margin: 0 auto; padding: 0 clamp(24px, 5vw, 80px); }
+
+  .reveal { opacity: 0; transform: translateY(32px); transition: opacity 0.7s cubic-bezier(0.16,1,0.3,1), transform 0.7s cubic-bezier(0.16,1,0.3,1); }
+  .reveal.visible { opacity: 1; transform: translateY(0); }
+  .stagger-1 { transition-delay: 0.08s; }
+  .stagger-2 { transition-delay: 0.16s; }
+  .stagger-3 { transition-delay: 0.24s; }
+  .stagger-4 { transition-delay: 0.32s; }
+  .stagger-5 { transition-delay: 0.40s; }
+
+  /* ── NAV ── */
+  nav { position: fixed; top: 0; left: 0; right: 0; z-index: 1000; padding: 24px 0; transition: all 0.4s cubic-bezier(0.16,1,0.3,1); }
+  nav.scrolled { padding: 16px 0; background: rgba(255,255,255,0.92); backdrop-filter: blur(20px); box-shadow: 0 1px 0 rgba(0,0,0,0.05); }
+  nav .container { display: flex; align-items: center; justify-content: space-between; }
+  .nav-logo { display: flex; align-items: center; gap: 12px; text-decoration: none; }
+  .nav-logo img { height: 36px; width: auto; }
+  nav:not(.scrolled) .nav-logo img { filter: brightness(0) invert(1); }
+  .nav-links { display: flex; gap: 36px; list-style: none; align-items: center; }
+  .nav-links a { text-decoration: none; color: rgba(255,255,255,0.7); font-size: 0.85rem; font-weight: 500; letter-spacing: 0.02em; transition: color 0.3s; }
+  nav.scrolled .nav-links a { color: var(--grey-dark); }
+  .nav-links a:hover { color: var(--orange) !important; }
+  .nav-cta { background: var(--orange); color: var(--white) !important; padding: 10px 24px; border-radius: 100px; font-weight: 600 !important; }
+
+  .section-tag { display: inline-flex; align-items: center; gap: 8px; font-size: 0.75rem; font-weight: 600; letter-spacing: 0.15em; text-transform: uppercase; color: var(--orange); margin-bottom: 24px; }
+  .section-tag::before { content: ''; width: 24px; height: 2px; background: var(--orange); }
+
+  /* ── HERO ── */
+  .hero {
+    background: var(--black); padding: 220px 0 120px;
+    position: relative; overflow: hidden; min-height: 80vh; display: flex; align-items: center;
+  }
+  .hero-orb {
+    position: absolute; border-radius: 50%;
+    background: var(--orange); opacity: 0.055;
+    animation: orbFloat 18s ease-in-out infinite;
+  }
+  .hero-orb-1 { width: 700px; height: 700px; top: -250px; right: -100px; animation-delay: 0s; }
+  .hero-orb-2 { width: 280px; height: 280px; bottom: -60px; left: -80px; animation-delay: -9s; opacity: 0.04; }
+  @keyframes orbFloat {
+    0%,100% { transform: translate(0,0) scale(1); }
+    33% { transform: translate(20px,-24px) scale(1.035); }
+    66% { transform: translate(-14px,16px) scale(0.97); }
+  }
+  .hero::after {
+    content: ''; position: absolute; inset: 0;
+    background-image: linear-gradient(rgba(253,79,0,0.025) 1px, transparent 1px), linear-gradient(90deg, rgba(253,79,0,0.025) 1px, transparent 1px);
+    background-size: 80px 80px;
+    mask-image: radial-gradient(ellipse 80% 80% at 60% 40%, black 10%, transparent 70%);
+  }
+  .hero-inner { position: relative; z-index: 1; max-width: 800px; }
+  .hero h1 {
+    font-size: clamp(3rem, 5.5vw, 4.6rem); font-weight: 800;
+    line-height: 1.06; letter-spacing: -0.03em; color: var(--white);
+    margin-bottom: 28px;
+  }
+  .hero h1 em { font-style: normal; color: var(--orange); }
+  .hero p { font-size: clamp(1rem, 1.5vw, 1.15rem); line-height: 1.75; color: rgba(255,255,255,0.55); max-width: 580px; margin-bottom: 48px; }
+  .hero-actions { display: flex; align-items: center; gap: 16px; flex-wrap: wrap; }
+  .btn { display: inline-flex; align-items: center; gap: 8px; padding: 16px 36px; border-radius: 100px; font-size: 0.9rem; font-weight: 600; text-decoration: none; transition: all 0.3s; cursor: pointer; border: none; font-family: var(--font); }
+  .btn-primary { background: var(--orange); color: var(--white); box-shadow: 0 4px 24px rgba(253,79,0,0.25); }
+  .btn-primary:hover { background: var(--orange-light); transform: translateY(-2px); }
+  .btn-ghost { background: transparent; color: rgba(255,255,255,0.7); border: 1.5px solid rgba(255,255,255,0.2); }
+  .btn-ghost:hover { border-color: rgba(255,255,255,0.5); color: white; }
+  .hero-stats { display: flex; gap: 48px; margin-top: 64px; padding-top: 48px; border-top: 1px solid rgba(255,255,255,0.08); }
+  .hero-stat-value { font-size: 2rem; font-weight: 800; color: var(--white); letter-spacing: -0.03em; }
+  .hero-stat-label { font-size: 0.8rem; color: rgba(255,255,255,0.4); margin-top: 4px; }
+
+  /* ── INTRO STRIP ── */
+  .intro-strip { background: var(--orange); padding: 28px 0; }
+  .intro-strip .container { display: flex; align-items: center; gap: 16px; }
+  .intro-strip p { font-size: 0.95rem; font-weight: 500; color: var(--white); line-height: 1.5; }
+  .intro-strip strong { font-weight: 700; }
+
+  /* ── WHO SECTION ── */
+  .who-section { background: var(--white); padding: 100px 0; }
+  .who-layout { display: grid; grid-template-columns: 1fr 1fr; gap: 80px; align-items: center; }
+  .who-copy h2 { font-size: clamp(2rem, 3.5vw, 3rem); font-weight: 800; letter-spacing: -0.025em; line-height: 1.1; color: var(--black); margin-bottom: 24px; }
+  .who-copy p { font-size: 1rem; color: var(--grey-dark); line-height: 1.75; margin-bottom: 20px; }
+  .who-copy p:last-child { margin-bottom: 0; }
+  .who-roles { display: flex; flex-direction: column; gap: 2px; }
+  .who-role {
+    display: flex; align-items: center; gap: 16px;
+    padding: 18px 24px; background: var(--off-white); border-radius: 10px;
+    transition: background 0.2s;
+  }
+  .who-role:hover { background: var(--grey-light); }
+  .who-role-icon { width: 40px; height: 40px; border-radius: 10px; background: rgba(253,79,0,0.1); display: flex; align-items: center; justify-content: center; flex-shrink: 0; }
+  .who-role-icon svg { stroke: var(--orange); }
+  .who-role-name { font-size: 0.9rem; font-weight: 600; color: var(--black); }
+  .who-role-desc { font-size: 0.8rem; color: var(--grey-dark); margin-top: 2px; }
+
+  /* ── CURRICULUM ── */
+  .curriculum { background: var(--off-white); padding: 100px 0; }
+  .curriculum-header { margin-bottom: 56px; }
+  .curriculum-header h2 { font-size: clamp(2rem, 3.5vw, 3rem); font-weight: 800; letter-spacing: -0.025em; line-height: 1.1; color: var(--black); margin-bottom: 16px; }
+  .curriculum-header p { font-size: 1rem; color: var(--grey-dark); line-height: 1.7; max-width: 600px; }
+  .curriculum-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 2px; background: var(--grey-light); border-radius: 20px; overflow: hidden; }
+  .curriculum-module {
+    background: var(--white); padding: 36px;
+    position: relative;
+  }
+  .module-number { font-size: 0.65rem; font-weight: 700; letter-spacing: 0.15em; text-transform: uppercase; color: var(--orange); margin-bottom: 16px; }
+  .module-title { font-size: 1rem; font-weight: 700; color: var(--black); margin-bottom: 12px; line-height: 1.3; }
+  .module-items { list-style: none; display: flex; flex-direction: column; gap: 8px; }
+  .module-items li { font-size: 0.82rem; color: var(--grey-dark); padding-left: 16px; position: relative; line-height: 1.5; }
+  .module-items li::before { content: '—'; position: absolute; left: 0; color: var(--orange); font-weight: 600; }
+
+  /* ── SESSIONS ── */
+  .sessions { background: var(--black); padding: 100px 0; }
+  .sessions-header { margin-bottom: 56px; }
+  .sessions-header h2 { font-size: clamp(2rem, 3.5vw, 3rem); font-weight: 800; letter-spacing: -0.025em; line-height: 1.1; color: var(--white); margin-bottom: 16px; }
+  .sessions-header p { font-size: 1rem; color: rgba(255,255,255,0.5); line-height: 1.7; max-width: 600px; }
+  .sessions-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: 16px; margin-bottom: 40px; }
+  .session-card {
+    background: var(--charcoal); border-radius: 16px; padding: 28px;
+    border: 1px solid rgba(255,255,255,0.06); position: relative; overflow: hidden;
+  }
+  .session-card::before { content: ''; position: absolute; top: -60px; right: -60px; width: 160px; height: 160px; border-radius: 50%; background: rgba(253,79,0,0.05); }
+  .session-card .market { font-size: 0.65rem; font-weight: 700; letter-spacing: 0.15em; text-transform: uppercase; color: var(--orange); margin-bottom: 16px; display: flex; align-items: center; gap: 8px; }
+  .session-card .market::before { content: ''; width: 16px; height: 2px; background: var(--orange); }
+  .session-card .city { font-size: 1.3rem; font-weight: 700; color: var(--white); margin-bottom: 6px; letter-spacing: -0.02em; }
+  .session-card .date-line { font-size: 0.85rem; color: rgba(255,255,255,0.45); margin-bottom: 20px; }
+  .session-status-pill {
+    display: inline-flex; align-items: center; gap: 8px;
+    font-size: 0.72rem; font-weight: 600; padding: 6px 12px; border-radius: 100px;
+  }
+  .pill-tbc { background: rgba(253,79,0,0.12); color: rgba(253,79,0,0.85); }
+  .pill-open { background: rgba(26,122,74,0.2); color: #4ADE80; }
+  .session-status-pill::before { content: ''; width: 6px; height: 6px; border-radius: 50%; background: currentColor; }
+  .sessions-cta { text-align: center; }
+  .sessions-cta p { font-size: 0.9rem; color: rgba(255,255,255,0.4); margin-top: 16px; }
+
+  /* ── TESTIMONIALS ── */
+  .testimonials { background: var(--white); padding: 100px 0; }
+  .testimonials h2 { font-size: clamp(2rem, 3.5vw, 3rem); font-weight: 800; letter-spacing: -0.025em; line-height: 1.1; color: var(--black); margin-bottom: 48px; }
+  .testimonials-grid { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 24px; }
+  .testimonial-card { background: var(--off-white); border-radius: 16px; padding: 36px; }
+  .testimonial-quote { font-size: 1rem; color: var(--charcoal); line-height: 1.7; margin-bottom: 28px; font-style: italic; }
+  .testimonial-quote::before { content: '"'; font-size: 2.5rem; line-height: 0.5; color: var(--orange); display: block; margin-bottom: 16px; font-style: normal; }
+  .testimonial-person { display: flex; align-items: center; gap: 14px; }
+  .testimonial-avatar { width: 44px; height: 44px; border-radius: 50%; background: var(--grey-light); display: flex; align-items: center; justify-content: center; font-size: 0.8rem; font-weight: 700; color: var(--grey-dark); flex-shrink: 0; }
+  .testimonial-name { font-size: 0.85rem; font-weight: 600; color: var(--black); }
+  .testimonial-role { font-size: 0.75rem; color: var(--grey-dark); }
+
+  /* ── FAQ ── */
+  .faq-section { background: var(--off-white); padding: 100px 0; }
+  .faq-layout { display: grid; grid-template-columns: 1fr 2fr; gap: 80px; align-items: start; }
+  .faq-aside h2 { font-size: clamp(1.8rem, 3vw, 2.6rem); font-weight: 800; letter-spacing: -0.025em; line-height: 1.1; color: var(--black); margin-bottom: 16px; }
+  .faq-aside p { font-size: 0.9rem; color: var(--grey-dark); line-height: 1.7; }
+  .faq-list { display: flex; flex-direction: column; gap: 2px; }
+  .faq-item { background: var(--white); border-radius: 10px; overflow: hidden; }
+  .faq-question {
+    padding: 20px 24px; font-size: 0.9rem; font-weight: 600; color: var(--black);
+    cursor: pointer; display: flex; justify-content: space-between; align-items: center;
+    user-select: none;
+  }
+  .faq-question:hover { color: var(--orange); }
+  .faq-question svg { flex-shrink: 0; transition: transform 0.3s; stroke: var(--grey-mid); }
+  .faq-item.open .faq-question svg { transform: rotate(45deg); }
+  .faq-answer { padding: 0 24px; max-height: 0; overflow: hidden; transition: max-height 0.4s cubic-bezier(0.16,1,0.3,1), padding 0.3s; }
+  .faq-item.open .faq-answer { max-height: 200px; padding-bottom: 20px; }
+  .faq-answer p { font-size: 0.85rem; color: var(--grey-dark); line-height: 1.7; }
+
+  /* ── REGISTER FORM (bottom) ── */
+  .register-section { background: var(--charcoal); padding: 100px 0; }
+  .register-layout { display: grid; grid-template-columns: 1fr 1.4fr; gap: 80px; align-items: start; }
+  .register-copy h2 { font-size: clamp(2rem, 3.5vw, 3rem); font-weight: 800; letter-spacing: -0.025em; line-height: 1.1; color: var(--white); margin-bottom: 20px; }
+  .register-copy p { font-size: 0.95rem; color: rgba(255,255,255,0.5); line-height: 1.75; }
+  .register-card { background: var(--black); border-radius: 20px; padding: 48px; border: 1px solid rgba(255,255,255,0.06); }
+  .register-card h3 { font-size: 1.15rem; font-weight: 700; color: var(--white); margin-bottom: 6px; }
+  .register-card .form-sub { font-size: 0.82rem; color: rgba(255,255,255,0.4); margin-bottom: 32px; }
+  .form-row { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; }
+  .form-group { display: flex; flex-direction: column; gap: 6px; margin-bottom: 14px; }
+  .form-group label { font-size: 0.75rem; font-weight: 600; color: rgba(255,255,255,0.5); }
+  .form-group input,
+  .form-group select {
+    font-family: var(--font); font-size: 0.88rem;
+    padding: 13px 16px; border-radius: 10px;
+    border: 1.5px solid rgba(255,255,255,0.08);
+    background: rgba(255,255,255,0.05); color: var(--white);
+    transition: border-color 0.2s;
+  }
+  .form-group input::placeholder { color: rgba(255,255,255,0.25); }
+  .form-group input:focus,
+  .form-group select:focus { outline: none; border-color: var(--orange); }
+  .form-group select { background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='8' viewBox='0 0 12 8'%3E%3Cpath d='M1 1l5 5 5-5' stroke='rgba(255,255,255,0.3)' stroke-width='1.5' fill='none'/%3E%3C/svg%3E"); background-repeat: no-repeat; background-position: right 14px center; padding-right: 36px; }
+  .form-group select option { background: var(--charcoal); color: var(--white); }
+  .form-submit-dark { width: 100%; padding: 17px; border-radius: 100px; background: var(--orange); color: var(--white); font-size: 0.95rem; font-weight: 600; font-family: var(--font); border: none; cursor: pointer; transition: all 0.3s; margin-top: 8px; }
+  .form-submit-dark:hover { background: var(--orange-light); transform: translateY(-1px); }
+  .form-note-dark { font-size: 0.72rem; color: rgba(255,255,255,0.3); text-align: center; margin-top: 12px; line-height: 1.5; }
+
+  /* ── FOOTER ── */
+  footer { background: var(--black); padding: 48px 0; border-top: 1px solid rgba(255,255,255,0.06); }
+  .footer-inner { display: flex; align-items: center; justify-content: space-between; }
+  .footer-logo { display: flex; align-items: center; gap: 10px; }
+  .footer-logo-mark { width: 28px; height: 28px; background: var(--orange); border-radius: 4px; display: flex; align-items: center; justify-content: center; font-size: 0.75rem; font-weight: 800; color: white; }
+  .footer-logo-name { font-size: 0.85rem; font-weight: 700; color: white; letter-spacing: 0.04em; text-transform: uppercase; }
+  .footer-copy { font-size: 0.75rem; color: rgba(255,255,255,0.3); }
+
+  .proto-badge { position: fixed; bottom: 20px; right: 20px; z-index: 9999; background: var(--charcoal); color: rgba(255,255,255,0.7); font-size: 0.7rem; font-weight: 600; letter-spacing: 0.08em; padding: 8px 14px; border-radius: 100px; font-family: var(--font); pointer-events: none; }
+
+  @media (max-width: 900px) {
+    .who-layout, .faq-layout, .register-layout { grid-template-columns: 1fr; gap: 48px; }
+    .curriculum-grid { grid-template-columns: 1fr; }
+    .testimonials-grid { grid-template-columns: 1fr; }
+    .sessions-grid { grid-template-columns: 1fr 1fr; }
+    .form-row { grid-template-columns: 1fr; }
+    .hero-stats { gap: 32px; }
+  }
+  @media (max-width: 600px) {
+    .hero { padding: 160px 0 100px; }
+    .sessions-grid { grid-template-columns: 1fr; }
+  }
+</style>
+</head>
+<body>
+
+<nav id="nav">
+  <div class="container">
+    <a href="index.html" class="nav-logo"><img src="blick-logo.png" alt="Blick Group"></a>
+    <ul class="nav-links">
+      <li><a href="products.html">Products</a></li>
+      <li><a href="services.html">Services</a></li>
+      <li><a href="team.html">Team</a></li>
+      <li><a href="contact.html" class="nav-cta">Contact</a></li>
+    </ul>
+  </div>
+</nav>
+
+<!-- HERO -->
+<section class="hero">
+  <div class="hero-orb hero-orb-1"></div>
+  <div class="hero-orb hero-orb-2"></div>
+  <div class="container">
+    <div class="hero-inner">
+      <div class="section-tag reveal">Training</div>
+      <h1 class="reveal stagger-1">Lifting standards.<br><em>Lifting the industry.</em></h1>
+      <p class="reveal stagger-2">Experience builds good drillers. Understanding turns them into great ones. Blick Mud Schools turn hard-won experience into clear, practical know-how — from mastering fluid systems to reading the ground.</p>
+      <div class="hero-actions reveal stagger-3">
+        <a href="#register" class="btn btn-primary">Register for next session</a>
+        <a href="#curriculum" class="btn btn-ghost">View curriculum</a>
+      </div>
+      <div class="hero-stats reveal stagger-4">
+        <div>
+          <div class="hero-stat-value">1 day</div>
+          <div class="hero-stat-label">Classroom + field format</div>
+        </div>
+        <div>
+          <div class="hero-stat-value">NZ + AU</div>
+          <div class="hero-stat-label">Regional sessions</div>
+        </div>
+        <div>
+          <div class="hero-stat-value">All levels</div>
+          <div class="hero-stat-label">Drillers to consultants</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- INTRO STRIP -->
+<div class="intro-strip">
+  <div class="container">
+    <p><strong>You bring the crew.</strong> We bring the insight that keeps them learning, improving, and confident on site.</p>
+  </div>
+</div>
+
+<!-- WHO IT'S FOR -->
+<section class="who-section">
+  <div class="container">
+    <div class="who-layout">
+      <div class="who-copy reveal">
+        <div class="section-tag">Who it's for</div>
+        <h2>Built for the people in the ground — and the people behind the design.</h2>
+        <p>Mud School works best when the full project team attends. Drillers, engineers, and consultants learn the same language — so when conditions change on site, everyone makes the same call.</p>
+        <p>We've run sessions for teams ranging from 6 to 60. The conversations are always worth it.</p>
+      </div>
+      <div class="who-roles reveal stagger-2">
+        <div class="who-role">
+          <div class="who-role-icon">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke-width="2"><circle cx="12" cy="8" r="4"/><path d="M4 20c0-4 3.6-7 8-7s8 3 8 7"/></svg>
+          </div>
+          <div>
+            <div class="who-role-name">Drillers &amp; Operators</div>
+            <div class="who-role-desc">Understand what's happening downhole and why — so you can fix it faster.</div>
+          </div>
+        </div>
+        <div class="who-role">
+          <div class="who-role-icon">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke-width="2"><rect x="2" y="3" width="20" height="14" rx="2"/><path d="M8 21h8M12 17v4"/></svg>
+          </div>
+          <div>
+            <div class="who-role-name">Site Supervisors</div>
+            <div class="who-role-desc">Lead confident conversations with clients and crews when conditions change.</div>
+          </div>
+        </div>
+        <div class="who-role">
+          <div class="who-role-icon">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke-width="2"><path d="M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5"/></svg>
+          </div>
+          <div>
+            <div class="who-role-name">Drilling Engineers</div>
+            <div class="who-role-desc">Design programs with the field context that makes the difference between spec and reality.</div>
+          </div>
+        </div>
+        <div class="who-role">
+          <div class="who-role-icon">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke-width="2"><path d="M9 11l3 3L22 4"/><path d="M21 12v7a2 2 0 01-2 2H5a2 2 0 01-2-2V5a2 2 0 012-2h11"/></svg>
+          </div>
+          <div>
+            <div class="who-role-name">Consultants</div>
+            <div class="who-role-desc">Specify with confidence — knowing the product, the ground, and the crew behind the plan.</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- CURRICULUM -->
+<section class="curriculum" id="curriculum">
+  <div class="container">
+    <div class="curriculum-header reveal">
+      <div class="section-tag">What you'll learn</div>
+      <h2>One day. Practical, applicable, field-ready.</h2>
+      <p>Each module combines classroom explanation with hands-on demonstration. Sessions are tailored to the group — a waterwell team covers different ground conditions than an HDD crew.</p>
+    </div>
+    <div class="curriculum-grid reveal stagger-1">
+      <div class="curriculum-module">
+        <div class="module-number">Module 01</div>
+        <div class="module-title">Drilling Fluid Fundamentals</div>
+        <ul class="module-items">
+          <li>What drilling fluids actually do (and why it matters)</li>
+          <li>Bentonite vs polymer — when and why</li>
+          <li>Reading fluid properties: viscosity, density, pH, gel strength</li>
+          <li>Marsh funnel testing — how to do it right on site</li>
+        </ul>
+      </div>
+      <div class="curriculum-module">
+        <div class="module-number">Module 02</div>
+        <div class="module-title">Ground Conditions &amp; Fluid Selection</div>
+        <ul class="module-items">
+          <li>Matching fluid to ground — sand, clay, rock, volcanic, reactive formations</li>
+          <li>Why the same fluid behaves differently in different soils</li>
+          <li>Designing a fluid program before the first rod turns</li>
+          <li>When to change strategy mid-bore</li>
+        </ul>
+      </div>
+      <div class="curriculum-module">
+        <div class="module-number">Module 03</div>
+        <div class="module-title">Mixing, Dosage &amp; Additives</div>
+        <ul class="module-items">
+          <li>How to mix correctly — sequence, hydration, timing</li>
+          <li>Dosage ranges and when to go high or low</li>
+          <li>When to add clay inhibitors, soda ash, defoamers</li>
+          <li>Common mixing mistakes and how to spot them</li>
+        </ul>
+      </div>
+      <div class="curriculum-module">
+        <div class="module-number">Module 04</div>
+        <div class="module-title">On-Site Troubleshooting</div>
+        <ul class="module-items">
+          <li>Hole collapse — causes and real fixes</li>
+          <li>Loss of circulation — how to respond, not just react</li>
+          <li>Stuck pipe — prevention and fluid factors</li>
+          <li>Viscosity problems — too thick, too thin, why it changes</li>
+        </ul>
+      </div>
+      <div class="curriculum-module">
+        <div class="module-number">Module 05</div>
+        <div class="module-title">Environmental &amp; Compliance</div>
+        <ul class="module-items">
+          <li>Fluid disposal — what's legal, what's not, and what MetaFLO solves</li>
+          <li>NSF/ANSI certification — when it matters and why</li>
+          <li>Spill response and site management</li>
+          <li>Documenting what you mixed and when</li>
+        </ul>
+      </div>
+      <div class="curriculum-module">
+        <div class="module-number">Module 06</div>
+        <div class="module-title">Program Design Workshop</div>
+        <ul class="module-items">
+          <li>Live design exercise — real bore specs, group problem-solving</li>
+          <li>How to write a fluid program for a tender</li>
+          <li>Reviewing and adjusting mid-project</li>
+          <li>When to call Blick and what information to have ready</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- SESSIONS -->
+<section class="sessions">
+  <div class="container">
+    <div class="sessions-header reveal">
+      <div class="section-tag" style="color:var(--orange);">Upcoming sessions</div>
+      <h2>Find a session near you.</h2>
+      <p>Sessions run when there's enough interest in a region. Register below — we'll reach out when one is confirmed near you.</p>
+    </div>
+    <div class="sessions-grid reveal stagger-1">
+      <div class="session-card">
+        <div class="market">New Zealand</div>
+        <div class="city">Auckland</div>
+        <div class="date-line">Date to be confirmed — 2025</div>
+        <div class="session-status-pill pill-tbc">Dates TBC — register interest</div>
+      </div>
+      <div class="session-card">
+        <div class="market">New Zealand</div>
+        <div class="city">Hamilton</div>
+        <div class="date-line">Date to be confirmed — 2025</div>
+        <div class="session-status-pill pill-tbc">Dates TBC — register interest</div>
+      </div>
+      <div class="session-card">
+        <div class="market">Australia</div>
+        <div class="city">Brisbane</div>
+        <div class="date-line">Date to be confirmed — 2025</div>
+        <div class="session-status-pill pill-tbc">Dates TBC — register interest</div>
+      </div>
+      <div class="session-card">
+        <div class="market">Australia</div>
+        <div class="city">Melbourne / Perth</div>
+        <div class="date-line">Date to be confirmed — 2025</div>
+        <div class="session-status-pill pill-tbc">Dates TBC — register interest</div>
+      </div>
+    </div>
+    <div class="sessions-cta reveal stagger-2">
+      <a href="#register" class="btn btn-primary">Register your interest</a>
+      <p>We'll notify you when a session near you is confirmed — no commitment required.</p>
+    </div>
+  </div>
+</section>
+
+<!-- TESTIMONIALS -->
+<section class="testimonials">
+  <div class="container">
+    <div class="section-tag reveal">What attendees say</div>
+    <h2 class="reveal stagger-1">The conversations are always worth it.</h2>
+    <div class="testimonials-grid reveal stagger-2">
+      <div class="testimonial-card">
+        <div class="testimonial-quote">We've been running HDD crews for years and thought we knew our fluids. Mud School filled gaps we didn't even know we had. The troubleshooting session alone saved us from a costly mistake on the next job.</div>
+        <div class="testimonial-person">
+          <div class="testimonial-avatar">SW</div>
+          <div>
+            <div class="testimonial-name">Site Supervisor</div>
+            <div class="testimonial-role">HDD Contractor, Auckland</div>
+          </div>
+        </div>
+      </div>
+      <div class="testimonial-card">
+        <div class="testimonial-quote">I came as an engineer who specifies fluid programs. I left understanding exactly why crews make different calls on site — and how to write programs that actually work in the ground we have here.</div>
+        <div class="testimonial-person">
+          <div class="testimonial-avatar">RH</div>
+          <div>
+            <div class="testimonial-name">Geotechnical Engineer</div>
+            <div class="testimonial-role">Consulting Firm, Wellington</div>
+          </div>
+        </div>
+      </div>
+      <div class="testimonial-card">
+        <div class="testimonial-quote">Brought four drillers from our team. All four came back asking better questions and making better decisions. That's what good training looks like.</div>
+        <div class="testimonial-person">
+          <div class="testimonial-avatar">TM</div>
+          <div>
+            <div class="testimonial-name">Operations Manager</div>
+            <div class="testimonial-role">Waterwell Contractor, Queensland</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- FAQ -->
+<section class="faq-section">
+  <div class="container">
+    <div class="faq-layout">
+      <div class="faq-aside reveal">
+        <div class="section-tag">Common questions</div>
+        <h2>What to know before you register.</h2>
+        <p>If you don't see your question here, call us — we're happy to talk through whether Mud School is right for you or your team.</p>
+      </div>
+      <div class="faq-list reveal stagger-1">
+        <div class="faq-item open">
+          <div class="faq-question" onclick="toggleFaq(this)">
+            Is there a cost to attend?
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke-width="2"><path d="M12 5v14M5 12h14"/></svg>
+          </div>
+          <div class="faq-answer"><p>Mud School is run by Blick as a service to the industry. There is no charge to attend — we believe knowledge shared makes everyone better. Some sessions may require a small venue contribution for hosted formats. We'll confirm details when sessions are confirmed.</p></div>
+        </div>
+        <div class="faq-item">
+          <div class="faq-question" onclick="toggleFaq(this)">
+            How long is a session?
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke-width="2"><path d="M12 5v14M5 12h14"/></svg>
+          </div>
+          <div class="faq-answer"><p>Sessions are typically a full day — starting around 8am and wrapping by 4–4:30pm. This gives enough time to cover theory, do hands-on demonstrations, and run the program design workshop without rushing.</p></div>
+        </div>
+        <div class="faq-item">
+          <div class="faq-question" onclick="toggleFaq(this)">
+            Can we book a private session for our team?
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke-width="2"><path d="M12 5v14M5 12h14"/></svg>
+          </div>
+          <div class="faq-answer"><p>Yes. If you have a team of 8 or more, we can run a dedicated session tailored to your ground conditions, the fluids you're using, and the applications your crew works in. Get in touch to discuss.</p></div>
+        </div>
+        <div class="faq-item">
+          <div class="faq-question" onclick="toggleFaq(this)">
+            Do I need any prior knowledge?
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke-width="2"><path d="M12 5v14M5 12h14"/></svg>
+          </div>
+          <div class="faq-answer"><p>No. Sessions are designed for all experience levels. Experienced drillers and new operators both get value — the conversations between them are often the best part.</p></div>
+        </div>
+        <div class="faq-item">
+          <div class="faq-question" onclick="toggleFaq(this)">
+            Is there a certificate or CPD credit?
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke-width="2"><path d="M12 5v14M5 12h14"/></svg>
+          </div>
+          <div class="faq-answer"><p>We issue a completion record that can be used for your own training records. We're working towards formal CPD accreditation — register your interest and we'll keep you informed as that progresses.</p></div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- REGISTER FORM -->
+<section class="register-section" id="register">
+  <div class="container">
+    <div class="register-layout">
+      <div class="register-copy reveal">
+        <div class="section-tag" style="color:var(--orange);">Register interest</div>
+        <h2>Put your hand up for the next session.</h2>
+        <p>Sessions run when there's enough interest in a region. Tell us where you're based — we'll reach out when one is scheduled near you. No commitment, no cost.</p>
+      </div>
+      <div class="register-card reveal stagger-2">
+        <h3 style="color:var(--white)">Register your interest</h3>
+        <p class="form-sub">60 seconds. We'll notify you when a session is confirmed near you.</p>
+        <form onsubmit="handleSubmit(event)">
+          <div class="form-row">
+            <div class="form-group">
+              <label>First name</label>
+              <input type="text" placeholder="Sam" required>
+            </div>
+            <div class="form-group">
+              <label>Last name</label>
+              <input type="text" placeholder="Wilson" required>
+            </div>
+          </div>
+          <div class="form-group">
+            <label>Company</label>
+            <input type="text" placeholder="Wilson Drilling" required>
+          </div>
+          <div class="form-row">
+            <div class="form-group">
+              <label>Your role</label>
+              <select required>
+                <option value="" disabled selected>Select your role</option>
+                <option>Driller / Operator</option>
+                <option>Site Supervisor</option>
+                <option>Drilling Engineer</option>
+                <option>Consultant</option>
+                <option>Project Manager</option>
+                <option>Other</option>
+              </select>
+            </div>
+            <div class="form-group">
+              <label>Your region</label>
+              <select required>
+                <option value="" disabled selected>Select your region</option>
+                <optgroup label="New Zealand">
+                  <option>Auckland</option>
+                  <option>Waikato / Bay of Plenty</option>
+                  <option>Wellington</option>
+                  <option>Canterbury / South Island</option>
+                  <option>Other NZ</option>
+                </optgroup>
+                <optgroup label="Australia">
+                  <option>Queensland</option>
+                  <option>New South Wales</option>
+                  <option>Victoria</option>
+                  <option>Western Australia</option>
+                  <option>Other AU</option>
+                </optgroup>
+              </select>
+            </div>
+          </div>
+          <div class="form-group">
+            <label>Email</label>
+            <input type="email" placeholder="sam@wilsondrilling.co.nz" required>
+          </div>
+          <button type="submit" class="form-submit-dark">Register my interest</button>
+          <p class="form-note-dark">We won't add you to a mailing list. Mud School notifications only.</p>
+        </form>
+        <div id="success-dark" style="display:none; text-align:center; padding:40px 0;">
+          <div style="width:52px;height:52px;border-radius:50%;background:rgba(253,79,0,0.15);display:flex;align-items:center;justify-content:center;margin:0 auto 16px;">
+            <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="var(--orange)" stroke-width="2.5"><path d="M20 6L9 17l-5-5"/></svg>
+          </div>
+          <h3 style="font-size:1.1rem;font-weight:700;color:var(--white);margin-bottom:8px;">You're on the list.</h3>
+          <p style="font-size:0.85rem;color:rgba(255,255,255,0.5);line-height:1.65;">We'll reach out when a session near you is confirmed.</p>
+          <a href="contact.html" style="display:inline-flex;align-items:center;gap:8px;margin-top:20px;font-size:0.82rem;font-weight:600;color:var(--orange);text-decoration:none;">Talk to the team in the meantime →</a>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<footer>
+  <div class="container">
+    <div class="footer-inner">
+      <div class="footer-logo">
+        <div class="footer-logo-mark">B</div>
+        <span class="footer-logo-name">Blick Group</span>
+      </div>
+      <span class="footer-copy">© 2025 Blick Group. All rights reserved.</span>
+    </div>
+  </div>
+</footer>
+
+<div class="proto-badge">Mud School — Full Vision (v2)</div>
+
+<script>
+  const nav = document.getElementById('nav');
+  window.addEventListener('scroll', () => nav.classList.toggle('scrolled', window.scrollY > 40));
+
+  const observer = new IntersectionObserver(entries => {
+    entries.forEach(e => { if (e.isIntersecting) { e.target.classList.add('visible'); observer.unobserve(e.target); } });
+  }, { threshold: 0.08 });
+  document.querySelectorAll('.reveal').forEach(el => observer.observe(el));
+
+  function toggleFaq(el) {
+    const item = el.parentElement;
+    const isOpen = item.classList.contains('open');
+    document.querySelectorAll('.faq-item').forEach(i => i.classList.remove('open'));
+    if (!isOpen) item.classList.add('open');
+  }
+
+  function handleSubmit(e) {
+    e.preventDefault();
+    e.target.style.display = 'none';
+    document.getElementById('success-dark').style.display = 'block';
+  }
+</script>
+</body>
+</html>

@@ -1,0 +1,1076 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Blick Group — Site Architecture Wireframe</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap');
+  *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+  :root {
+    --orange: #FD4F00;
+    --black: #1A1A1A;
+    --charcoal: #2D2D2D;
+    --grey-dark: #66615C;
+    --grey-mid: #A9A9A9;
+    --grey-light: #EBEAEB;
+    --off-white: #FAFAFA;
+    --white: #FFFFFF;
+    --font: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+
+    /* Status colours */
+    --built:     #1A7A4A;
+    --built-bg:  #EDFAF2;
+    --next:      #C45200;
+    --next-bg:   #FFF3EC;
+    --phase2:    #5559C0;
+    --phase2-bg: #EEEFFE;
+    --utility:   #3A6EA5;
+    --utility-bg:#EAF2FB;
+  }
+
+  body {
+    font-family: var(--font);
+    background: var(--off-white);
+    color: var(--charcoal);
+    min-height: 100vh;
+  }
+
+  /* ── HEADER ── */
+  header {
+    background: var(--black);
+    padding: 32px 48px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+  }
+  .logo { display: flex; align-items: center; gap: 12px; }
+  .logo-mark {
+    width: 32px; height: 32px; background: var(--orange); border-radius: 4px;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 0.85rem; font-weight: 800; color: white; letter-spacing: -0.03em;
+  }
+  .logo-name { font-size: 1rem; font-weight: 700; color: white; letter-spacing: 0.04em; text-transform: uppercase; }
+  .header-label {
+    font-size: 0.7rem; font-weight: 600; letter-spacing: 0.15em;
+    text-transform: uppercase; color: rgba(255,255,255,0.4);
+  }
+
+  /* ── LAYOUT ── */
+  main { max-width: 1200px; margin: 0 auto; padding: 56px 48px; }
+
+  .page-title {
+    font-size: 1.75rem; font-weight: 800; color: var(--black);
+    letter-spacing: -0.03em; margin-bottom: 8px;
+  }
+  .page-subtitle { font-size: 0.95rem; color: var(--grey-dark); margin-bottom: 40px; line-height: 1.5; }
+
+  /* ── LEGEND ── */
+  .legend {
+    display: flex; gap: 20px; flex-wrap: wrap; margin-bottom: 48px;
+    padding: 16px 20px; background: white; border: 1px solid var(--grey-light);
+    border-radius: 8px;
+  }
+  .legend-item { display: flex; align-items: center; gap: 8px; font-size: 0.8rem; font-weight: 500; }
+  .legend-dot {
+    width: 10px; height: 10px; border-radius: 50%;
+  }
+  .dot-built   { background: var(--built); }
+  .dot-next    { background: var(--next); }
+  .dot-phase2  { background: var(--phase2); }
+  .dot-utility { background: var(--utility); }
+
+  /* ── STRUCTURE SECTIONS ── */
+  .structure { display: flex; flex-direction: column; gap: 0; }
+
+  /* ROOT node */
+  .root-node {
+    background: var(--black); color: white; border-radius: 10px;
+    padding: 18px 24px; display: flex; align-items: center; gap: 16px;
+    margin-bottom: 0; position: relative; z-index: 2;
+  }
+  .root-url { font-size: 1rem; font-weight: 700; letter-spacing: 0.02em; }
+  .root-desc { font-size: 0.8rem; color: rgba(255,255,255,0.55); margin-left: auto; }
+
+  /* CONNECTOR TRUNK */
+  .trunk {
+    width: 2px; background: var(--grey-light);
+    margin-left: 32px; height: 24px;
+  }
+
+  /* MARKET SPLIT */
+  .market-split {
+    display: grid; grid-template-columns: 1fr 1fr; gap: 24px;
+    margin-bottom: 0;
+  }
+  .market-col {
+    background: white; border: 1.5px solid var(--grey-light);
+    border-radius: 10px; overflow: hidden;
+  }
+  .market-header {
+    padding: 14px 20px; display: flex; align-items: center; gap: 10px;
+    border-bottom: 1px solid var(--grey-light); background: #F5F5F5;
+  }
+  .market-flag {
+    font-size: 1.1rem;
+  }
+  .market-url { font-size: 0.9rem; font-weight: 700; color: var(--black); }
+  .market-desc { font-size: 0.75rem; color: var(--grey-dark); margin-left: auto; }
+
+  /* PAGE NODES */
+  .page-list { padding: 8px 0; }
+
+  .page-node {
+    display: flex; align-items: flex-start; gap: 0;
+    border-bottom: 1px solid var(--grey-light);
+  }
+  .page-node:last-child { border-bottom: none; }
+
+  /* indentation levels */
+  .page-node.l0 { padding: 0; }
+  .page-node.l1 .indent { width: 20px; }
+  .page-node.l2 .indent { width: 40px; }
+  .page-node.l3 .indent { width: 60px; }
+
+  .indent { flex-shrink: 0; position: relative; }
+  .indent::before {
+    content: '';
+    position: absolute; right: 0; top: 0; bottom: 0;
+    width: 1px; background: var(--grey-light);
+  }
+  .page-node.l1 .indent::after,
+  .page-node.l2 .indent::after,
+  .page-node.l3 .indent::after {
+    content: '';
+    position: absolute; right: 0; top: 22px;
+    width: 10px; height: 1px; background: var(--grey-light);
+  }
+
+  .page-inner {
+    flex: 1; padding: 11px 16px 11px 8px;
+    display: flex; align-items: center; gap: 10px; flex-wrap: wrap;
+  }
+
+  .status-dot {
+    width: 8px; height: 8px; border-radius: 50%; flex-shrink: 0;
+  }
+  .sd-built   { background: var(--built); }
+  .sd-next    { background: var(--next); }
+  .sd-phase2  { background: var(--phase2); }
+  .sd-utility { background: var(--utility); }
+
+  .page-url {
+    font-size: 0.8rem; font-weight: 600; color: var(--black);
+    font-family: 'Courier New', monospace; letter-spacing: 0.01em;
+  }
+  .page-name {
+    font-size: 0.8rem; font-weight: 500; color: var(--charcoal);
+  }
+  .page-tag {
+    font-size: 0.65rem; font-weight: 600; letter-spacing: 0.08em;
+    text-transform: uppercase; padding: 2px 7px; border-radius: 20px;
+    margin-left: auto; flex-shrink: 0;
+  }
+  .tag-built   { background: var(--built-bg);  color: var(--built); }
+  .tag-next    { background: var(--next-bg);   color: var(--next); }
+  .tag-phase2  { background: var(--phase2-bg); color: var(--phase2); }
+  .tag-utility { background: var(--utility-bg);color: var(--utility); }
+
+  /* section labels inside page list */
+  .section-label {
+    padding: 8px 16px 4px 16px;
+    font-size: 0.6rem; font-weight: 700; letter-spacing: 0.15em;
+    text-transform: uppercase; color: var(--grey-mid);
+    background: #FAFAFA; border-bottom: 1px solid var(--grey-light);
+  }
+
+  /* ── UTILITY ROW (below markets) ── */
+  .utility-section { margin-top: 32px; }
+  .utility-title {
+    font-size: 0.7rem; font-weight: 700; letter-spacing: 0.15em;
+    text-transform: uppercase; color: var(--grey-mid); margin-bottom: 12px;
+  }
+  .utility-row { display: flex; gap: 12px; flex-wrap: wrap; }
+  .utility-node {
+    background: white; border: 1.5px solid var(--grey-light);
+    border-radius: 8px; padding: 12px 16px;
+    display: flex; align-items: center; gap: 10px;
+    flex: 1; min-width: 160px;
+  }
+  .utility-url { font-size: 0.8rem; font-weight: 600; font-family: 'Courier New', monospace; color: var(--black); }
+  .utility-desc { font-size: 0.75rem; color: var(--grey-dark); }
+
+  /* ── PAGE DETAIL PANELS ── */
+  .detail-section { margin-top: 56px; }
+  .detail-title {
+    font-size: 1.1rem; font-weight: 700; color: var(--black);
+    letter-spacing: -0.02em; margin-bottom: 4px;
+  }
+  .detail-subtitle { font-size: 0.85rem; color: var(--grey-dark); margin-bottom: 24px; }
+
+  .detail-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(320px, 1fr)); gap: 16px; }
+
+  .detail-card {
+    background: white; border: 1.5px solid var(--grey-light);
+    border-radius: 10px; overflow: hidden;
+  }
+  .detail-card-header {
+    padding: 14px 18px; border-bottom: 1px solid var(--grey-light);
+    display: flex; align-items: center; gap: 10px;
+  }
+  .detail-card-url {
+    font-size: 0.8rem; font-weight: 700; font-family: 'Courier New', monospace;
+    color: var(--black); flex: 1;
+  }
+  .detail-card-body { padding: 16px 18px; }
+  .detail-card-name { font-size: 0.9rem; font-weight: 600; color: var(--black); margin-bottom: 8px; }
+  .detail-card-desc { font-size: 0.8rem; color: var(--grey-dark); line-height: 1.55; margin-bottom: 12px; }
+
+  .section-list { list-style: none; }
+  .section-list li {
+    font-size: 0.78rem; color: var(--charcoal); padding: 5px 0;
+    border-bottom: 1px solid var(--grey-light);
+    display: flex; align-items: baseline; gap: 8px;
+  }
+  .section-list li:last-child { border-bottom: none; }
+  .section-num { font-size: 0.65rem; font-weight: 700; color: var(--grey-mid); flex-shrink: 0; width: 16px; }
+
+  /* product chips */
+  .product-chips { display: flex; flex-wrap: wrap; gap: 6px; margin-top: 12px; }
+  .chip {
+    font-size: 0.7rem; font-weight: 500; padding: 4px 10px;
+    border-radius: 20px; background: var(--grey-light); color: var(--charcoal);
+  }
+  .chip-primary { background: var(--next-bg); color: var(--next); }
+
+  /* ── DIVIDER ── */
+  .divider {
+    height: 1px; background: var(--grey-light); margin: 48px 0;
+  }
+
+  @media (max-width: 768px) {
+    main { padding: 32px 20px; }
+    header { padding: 24px 20px; }
+    .market-split { grid-template-columns: 1fr; }
+    .detail-grid { grid-template-columns: 1fr; }
+  }
+</style>
+</head>
+<body>
+
+<header>
+  <div class="logo">
+    <div class="logo-mark">B</div>
+    <span class="logo-name">Blick Group</span>
+  </div>
+  <span class="header-label">Site Architecture — Wireframe</span>
+</header>
+
+<main>
+
+  <p class="page-title">Site Architecture</p>
+  <p class="page-subtitle">Lean structure for blick.group/nz and blick.group/au — Phase 1 MVP.<br>
+  Shows all pages, their URLs, build status, and page sections.</p>
+
+  <!-- LEGEND -->
+  <div class="legend">
+    <div class="legend-item"><div class="legend-dot dot-built"></div> Already built (Next.js or static prototype)</div>
+    <div class="legend-item"><div class="legend-dot dot-next"></div> Build next (Phase 1 priority)</div>
+    <div class="legend-item"><div class="legend-dot dot-phase2"></div> Phase 2 / later</div>
+    <div class="legend-item"><div class="legend-dot dot-utility"></div> Utility / infrastructure</div>
+  </div>
+
+  <!-- SITE TREE -->
+  <div class="structure">
+
+    <!-- Root -->
+    <div class="root-node">
+      <div class="status-dot sd-utility"></div>
+      <span class="root-url">blick.group /</span>
+      <span class="root-desc">Geo-redirect → /nz or /au based on visitor location</span>
+    </div>
+
+    <div class="trunk"></div>
+
+    <!-- Market split -->
+    <div class="market-split">
+
+      <!-- NZ Column -->
+      <div class="market-col">
+        <div class="market-header">
+          <span class="market-flag">🇳🇿</span>
+          <span class="market-url">/nz</span>
+          <span class="market-desc">New Zealand</span>
+        </div>
+        <div class="page-list">
+
+          <!-- Homepage -->
+          <div class="page-node l0">
+            <div class="page-inner">
+              <div class="status-dot sd-built"></div>
+              <span class="page-url">/nz/</span>
+              <span class="page-name">Homepage</span>
+              <span class="page-tag tag-built">Built</span>
+            </div>
+          </div>
+
+          <div class="section-label">Products</div>
+
+          <div class="page-node l0">
+            <div class="page-inner">
+              <div class="status-dot sd-built"></div>
+              <span class="page-url">/nz/products</span>
+              <span class="page-name">Products index</span>
+              <span class="page-tag tag-built">Built</span>
+            </div>
+          </div>
+
+          <div class="page-node l1">
+            <div class="indent"></div>
+            <div class="page-inner">
+              <div class="status-dot sd-built"></div>
+              <span class="page-url">/products/fluids</span>
+              <span class="page-name">Fluids range + fluid selector</span>
+              <span class="page-tag tag-built">Built</span>
+            </div>
+          </div>
+
+          <div class="page-node l2">
+            <div class="indent"></div>
+            <div class="indent"></div>
+            <div class="page-inner">
+              <div class="status-dot sd-built"></div>
+              <span class="page-url">/fluids/[slug]</span>
+              <span class="page-name">Individual product detail</span>
+              <span class="page-tag tag-built">Built</span>
+            </div>
+          </div>
+
+          <div class="page-node l1">
+            <div class="indent"></div>
+            <div class="page-inner">
+              <div class="status-dot sd-built"></div>
+              <span class="page-url">/products/tooling</span>
+              <span class="page-name">Equipment &amp; tooling</span>
+              <span class="page-tag tag-built">Built</span>
+            </div>
+          </div>
+
+          <div class="page-node l1">
+            <div class="indent"></div>
+            <div class="page-inner">
+              <div class="status-dot sd-built"></div>
+              <span class="page-url">/products/grease</span>
+              <span class="page-name">Grease &amp; compounds</span>
+              <span class="page-tag tag-built">Built</span>
+            </div>
+          </div>
+
+          <div class="section-label">Tools &amp; Engagement</div>
+
+          <div class="page-node l0">
+            <div class="page-inner">
+              <div class="status-dot sd-built"></div>
+              <span class="page-url">/nz/fluid-selector</span>
+              <span class="page-name">Fluid selector tool</span>
+              <span class="page-tag tag-built">Built</span>
+            </div>
+          </div>
+
+          <div class="section-label">Documents</div>
+
+          <div class="page-node l0">
+            <div class="page-inner">
+              <div class="status-dot sd-next"></div>
+              <span class="page-url">/nz/sds</span>
+              <span class="page-name">SDS library (searchable, crawlable)</span>
+              <span class="page-tag tag-next">Build next</span>
+            </div>
+          </div>
+
+          <div class="section-label">Training</div>
+
+          <div class="page-node l0">
+            <div class="page-inner">
+              <div class="status-dot sd-next"></div>
+              <span class="page-url">/nz/mud-school</span>
+              <span class="page-name">Blick Mud Schools</span>
+              <span class="page-tag tag-next">Build next</span>
+            </div>
+          </div>
+
+          <div class="section-label">Company</div>
+
+          <div class="page-node l0">
+            <div class="page-inner">
+              <div class="status-dot sd-utility"></div>
+              <span class="page-url">partners</span>
+              <span class="page-name">No standalone page — live on homepage strip + within product sections (tooling, grease)</span>
+            </div>
+          </div>
+
+          <div class="page-node l0">
+            <div class="page-inner">
+              <div class="status-dot sd-built"></div>
+              <span class="page-url">/nz/team</span>
+              <span class="page-name">The team</span>
+              <span class="page-tag tag-built">Built</span>
+            </div>
+          </div>
+
+          <div class="page-node l0">
+            <div class="page-inner">
+              <div class="status-dot sd-built"></div>
+              <span class="page-url">/nz/services</span>
+              <span class="page-name">Services (lean, one page)</span>
+              <span class="page-tag tag-built">Built</span>
+            </div>
+          </div>
+
+          <div class="page-node l0">
+            <div class="page-inner">
+              <div class="status-dot sd-built"></div>
+              <span class="page-url">/nz/contact</span>
+              <span class="page-name">Contact + about merged</span>
+              <span class="page-tag tag-built">Built</span>
+            </div>
+          </div>
+
+          <div class="section-label">Knowledge (Phase 2)</div>
+
+          <div class="page-node l0">
+            <div class="page-inner">
+              <div class="status-dot sd-phase2"></div>
+              <span class="page-url">/nz/knowledge</span>
+              <span class="page-name">Knowledge hub / case studies</span>
+              <span class="page-tag tag-phase2">Phase 2</span>
+            </div>
+          </div>
+
+          <div class="page-node l1">
+            <div class="indent"></div>
+            <div class="page-inner">
+              <div class="status-dot sd-phase2"></div>
+              <span class="page-url">/knowledge/[slug]</span>
+              <span class="page-name">Guides, comparisons, troubleshooting</span>
+              <span class="page-tag tag-phase2">Phase 2</span>
+            </div>
+          </div>
+
+          <div class="page-node l0">
+            <div class="page-inner">
+              <div class="status-dot sd-phase2"></div>
+              <span class="page-url">/nz/blog</span>
+              <span class="page-name">Blog / news</span>
+              <span class="page-tag tag-phase2">Phase 2</span>
+            </div>
+          </div>
+
+        </div>
+      </div><!-- /NZ -->
+
+      <!-- AU Column -->
+      <div class="market-col">
+        <div class="market-header">
+          <span class="market-flag">🇦🇺</span>
+          <span class="market-url">/au</span>
+          <span class="market-desc">Australia — mirrors /nz structure, market-specific content</span>
+        </div>
+        <div class="page-list">
+
+          <div class="page-node l0">
+            <div class="page-inner">
+              <div class="status-dot sd-built"></div>
+              <span class="page-url">/au/</span>
+              <span class="page-name">Homepage</span>
+              <span class="page-tag tag-built">Built</span>
+            </div>
+          </div>
+
+          <div class="section-label">Products</div>
+
+          <div class="page-node l0">
+            <div class="page-inner">
+              <div class="status-dot sd-built"></div>
+              <span class="page-url">/au/products</span>
+              <span class="page-name">Products index</span>
+              <span class="page-tag tag-built">Built</span>
+            </div>
+          </div>
+
+          <div class="page-node l1">
+            <div class="indent"></div>
+            <div class="page-inner">
+              <div class="status-dot sd-built"></div>
+              <span class="page-url">/products/fluids</span>
+              <span class="page-name">Fluids range (AU subset)</span>
+              <span class="page-tag tag-built">Built</span>
+            </div>
+          </div>
+
+          <div class="page-node l2">
+            <div class="indent"></div>
+            <div class="indent"></div>
+            <div class="page-inner">
+              <div class="status-dot sd-built"></div>
+              <span class="page-url">/fluids/[slug]</span>
+              <span class="page-name">Individual product detail</span>
+              <span class="page-tag tag-built">Built</span>
+            </div>
+          </div>
+
+          <div class="page-node l1">
+            <div class="indent"></div>
+            <div class="page-inner">
+              <div class="status-dot sd-built"></div>
+              <span class="page-url">/products/tooling</span>
+              <span class="page-name">Equipment &amp; tooling</span>
+              <span class="page-tag tag-built">Built</span>
+            </div>
+          </div>
+
+          <div class="page-node l1">
+            <div class="indent"></div>
+            <div class="page-inner">
+              <div class="status-dot sd-built"></div>
+              <span class="page-url">/products/grease</span>
+              <span class="page-name">Grease &amp; compounds</span>
+              <span class="page-tag tag-built">Built</span>
+            </div>
+          </div>
+
+          <div class="section-label">Tools &amp; Engagement</div>
+
+          <div class="page-node l0">
+            <div class="page-inner">
+              <div class="status-dot sd-built"></div>
+              <span class="page-url">/au/fluid-selector</span>
+              <span class="page-name">Fluid selector tool</span>
+              <span class="page-tag tag-built">Built</span>
+            </div>
+          </div>
+
+          <div class="section-label">Documents</div>
+
+          <div class="page-node l0">
+            <div class="page-inner">
+              <div class="status-dot sd-next"></div>
+              <span class="page-url">/au/sds</span>
+              <span class="page-name">SDS library</span>
+              <span class="page-tag tag-next">Build next</span>
+            </div>
+          </div>
+
+          <div class="section-label">Training</div>
+
+          <div class="page-node l0">
+            <div class="page-inner">
+              <div class="status-dot sd-next"></div>
+              <span class="page-url">/au/mud-school</span>
+              <span class="page-name">Blick Mud Schools</span>
+              <span class="page-tag tag-next">Build next</span>
+            </div>
+          </div>
+
+          <div class="section-label">Company</div>
+
+          <div class="page-node l0">
+            <div class="page-inner">
+              <div class="status-dot sd-utility"></div>
+              <span class="page-url">partners</span>
+              <span class="page-name">No standalone page — live on homepage strip + within product sections (tooling, grease)</span>
+            </div>
+          </div>
+
+          <div class="page-node l0">
+            <div class="page-inner">
+              <div class="status-dot sd-built"></div>
+              <span class="page-url">/au/team</span>
+              <span class="page-name">The team</span>
+              <span class="page-tag tag-built">Built</span>
+            </div>
+          </div>
+
+          <div class="page-node l0">
+            <div class="page-inner">
+              <div class="status-dot sd-built"></div>
+              <span class="page-url">/au/services</span>
+              <span class="page-name">Services</span>
+              <span class="page-tag tag-built">Built</span>
+            </div>
+          </div>
+
+          <div class="page-node l0">
+            <div class="page-inner">
+              <div class="status-dot sd-built"></div>
+              <span class="page-url">/au/contact</span>
+              <span class="page-name">Contact + about merged</span>
+              <span class="page-tag tag-built">Built</span>
+            </div>
+          </div>
+
+          <div class="section-label">Knowledge (Phase 2)</div>
+
+          <div class="page-node l0">
+            <div class="page-inner">
+              <div class="status-dot sd-phase2"></div>
+              <span class="page-url">/au/knowledge</span>
+              <span class="page-name">Knowledge hub / case studies</span>
+              <span class="page-tag tag-phase2">Phase 2</span>
+            </div>
+          </div>
+
+          <div class="page-node l1">
+            <div class="indent"></div>
+            <div class="page-inner">
+              <div class="status-dot sd-phase2"></div>
+              <span class="page-url">/knowledge/[slug]</span>
+              <span class="page-name">Guides, comparisons, troubleshooting</span>
+              <span class="page-tag tag-phase2">Phase 2</span>
+            </div>
+          </div>
+
+          <div class="page-node l0">
+            <div class="page-inner">
+              <div class="status-dot sd-phase2"></div>
+              <span class="page-url">/au/blog</span>
+              <span class="page-name">Blog / news</span>
+              <span class="page-tag tag-phase2">Phase 2</span>
+            </div>
+          </div>
+
+        </div>
+      </div><!-- /AU -->
+
+    </div><!-- /market-split -->
+
+    <!-- Utility row -->
+    <div class="utility-section">
+      <div class="utility-title">Global — infrastructure</div>
+      <div class="utility-row">
+        <div class="utility-node">
+          <div class="status-dot sd-utility"></div>
+          <div>
+            <div class="utility-url">/studio</div>
+            <div class="utility-desc">Sanity CMS — Phase 1 setup</div>
+          </div>
+          <span class="page-tag tag-next" style="margin-left:auto">Build next</span>
+        </div>
+        <div class="utility-node">
+          <div class="status-dot sd-utility"></div>
+          <div>
+            <div class="utility-url">/llms.txt</div>
+            <div class="utility-desc">AI crawler guide — Phase 1</div>
+          </div>
+          <span class="page-tag tag-next" style="margin-left:auto">Build next</span>
+        </div>
+        <div class="utility-node">
+          <div class="status-dot sd-utility"></div>
+          <div>
+            <div class="utility-url">/sitemap.xml</div>
+            <div class="utility-desc">Auto-generated sitemap</div>
+          </div>
+          <span class="page-tag tag-next" style="margin-left:auto">Build next</span>
+        </div>
+        <div class="utility-node">
+          <div class="status-dot sd-utility"></div>
+          <div>
+            <div class="utility-url">/robots.txt</div>
+            <div class="utility-desc">Search engine directives</div>
+          </div>
+          <span class="page-tag tag-next" style="margin-left:auto">Build next</span>
+        </div>
+      </div>
+    </div>
+
+  </div><!-- /structure -->
+
+  <div class="divider"></div>
+
+  <!-- ── PAGE DETAIL PANELS ── -->
+  <div class="detail-section">
+    <p class="detail-title">Page detail — what's on each page</p>
+    <p class="detail-subtitle">Key sections and content for every page in the lean structure.</p>
+
+    <div class="detail-grid">
+
+      <!-- Homepage -->
+      <div class="detail-card">
+        <div class="detail-card-header">
+          <div class="status-dot sd-built"></div>
+          <span class="detail-card-url">/[market]/</span>
+          <span class="page-tag tag-built">Built</span>
+        </div>
+        <div class="detail-card-body">
+          <div class="detail-card-name">Homepage — action-first</div>
+          <div class="detail-card-desc">First impression. Establish authority. Route visitors to what they need fast.</div>
+          <ul class="section-list">
+            <li><span class="section-num">1</span> Hero — headline, NZ/AU voice, single CTA + animated orbs</li>
+            <li><span class="section-num">2</span> "Find your fluid in 30 seconds" — fluid selector entry</li>
+            <li><span class="section-num">3</span> Products strip — Fluids / Tooling / Grease</li>
+            <li><span class="section-num">4</span> Industries — HDD, Geotech, Waterwell, Piling, Oilfield</li>
+            <li><span class="section-num">5</span> Technical support section</li>
+            <li><span class="section-num">6</span> Case study teaser</li>
+            <li><span class="section-num">7</span> Partners logo strip</li>
+            <li><span class="section-num">8</span> Mud School callout</li>
+            <li><span class="section-num">9</span> CTA — Talk to a Blick expert</li>
+          </ul>
+        </div>
+      </div>
+
+      <!-- Products index -->
+      <div class="detail-card">
+        <div class="detail-card-header">
+          <div class="status-dot sd-built"></div>
+          <span class="detail-card-url">/[market]/products</span>
+          <span class="page-tag tag-built">Built</span>
+        </div>
+        <div class="detail-card-body">
+          <div class="detail-card-name">Products index</div>
+          <div class="detail-card-desc">Overview of all three ranges. Quick orientation with sticky anchor nav.</div>
+          <ul class="section-list">
+            <li><span class="section-num">1</span> Hero — "The products behind better outcomes"</li>
+            <li><span class="section-num">2</span> Sticky nav — Fluids / Tooling / Grease anchors</li>
+            <li><span class="section-num">3</span> Blick Fluids — hero feature section</li>
+            <li><span class="section-num">4</span> Equipment &amp; Tooling — Melfred Borzall, rods, bits</li>
+            <li><span class="section-num">5</span> Grease &amp; Compounds — Jet Lube range</li>
+            <li><span class="section-num">6</span> Closing promise + CTA</li>
+          </ul>
+        </div>
+      </div>
+
+      <!-- Fluids range -->
+      <div class="detail-card">
+        <div class="detail-card-header">
+          <div class="status-dot sd-built"></div>
+          <span class="detail-card-url">/products/fluids</span>
+          <span class="page-tag tag-built">Built</span>
+        </div>
+        <div class="detail-card-body">
+          <div class="detail-card-name">Fluids range + fluid selector</div>
+          <div class="detail-card-desc">Engineered for local ground. Fluid selector tool lives here.</div>
+          <ul class="section-list">
+            <li><span class="section-num">1</span> Fluid selector tool — 4-step recommendation engine</li>
+            <li><span class="section-num">2</span> Core Fluids category</li>
+            <li><span class="section-num">3</span> Additives &amp; Conditioners</li>
+            <li><span class="section-num">4</span> Specialty Products (MetaFLO)</li>
+          </ul>
+          <div class="product-chips">
+            <span class="chip chip-primary">Carry Flow</span>
+            <span class="chip chip-primary">Carry Max</span>
+            <span class="chip chip-primary">Carry Foam</span>
+            <span class="chip">Clay Control</span>
+            <span class="chip">Clay Dissolve</span>
+            <span class="chip">Swell Stop</span>
+            <span class="chip">Filter Low / High</span>
+            <span class="chip">Soda Ash</span>
+            <span class="chip">Bentonite Plug</span>
+            <span class="chip">Defoam</span>
+            <span class="chip">Biocide 75</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- Product detail -->
+      <div class="detail-card">
+        <div class="detail-card-header">
+          <div class="status-dot sd-built"></div>
+          <span class="detail-card-url">/products/fluids/[slug]</span>
+          <span class="page-tag tag-built">Built</span>
+        </div>
+        <div class="detail-card-body">
+          <div class="detail-card-name">Individual product detail</div>
+          <div class="detail-card-desc">Everything a driller, engineer, or procurement team needs. Optimised for AI citation.</div>
+          <ul class="section-list">
+            <li><span class="section-num">1</span> Product header + category breadcrumb</li>
+            <li><span class="section-num">2</span> Key specs — application, dosage, packaging, pH</li>
+            <li><span class="section-num">3</span> "When to use this" — plain language guide</li>
+            <li><span class="section-num">4</span> How to mix — step-by-step ratios</li>
+            <li><span class="section-num">5</span> Soil compatibility table</li>
+            <li><span class="section-num">6</span> Downloads — SDS PDF, TDS PDF, Product Sheet</li>
+            <li><span class="section-num">7</span> Related products — "Often used with"</li>
+          </ul>
+        </div>
+      </div>
+
+      <!-- Tooling -->
+      <div class="detail-card">
+        <div class="detail-card-header">
+          <div class="status-dot sd-built"></div>
+          <span class="detail-card-url">/products/tooling</span>
+          <span class="page-tag tag-built">Built</span>
+        </div>
+        <div class="detail-card-body">
+          <div class="detail-card-name">Equipment &amp; Tooling</div>
+          <div class="detail-card-desc">Reliable tools. Local support. Partners: Melfred Borzall, Palmer Bit, Premiere Drill Pipe.</div>
+          <ul class="section-list">
+            <li><span class="section-num">1</span> Melfred Borzall HDD tools — reamers, bits, housings</li>
+            <li><span class="section-num">2</span> Drill rods &amp; collars</li>
+            <li><span class="section-num">3</span> Bits &amp; accessories — DTH, coring, stabilisers</li>
+            <li><span class="section-num">4</span> CTA — talk to us about tooling</li>
+          </ul>
+        </div>
+      </div>
+
+      <!-- Grease -->
+      <div class="detail-card">
+        <div class="detail-card-header">
+          <div class="status-dot sd-built"></div>
+          <span class="detail-card-url">/products/grease</span>
+          <span class="page-tag tag-built">Built</span>
+        </div>
+        <div class="detail-card-body">
+          <div class="detail-card-name">Grease &amp; Compounds</div>
+          <div class="detail-card-desc">Protection that performs. Full Jet Lube range — thread compounds, valve &amp; sealing, specialty grease.</div>
+          <ul class="section-list">
+            <li><span class="section-num">1</span> Thread compounds — anti-seize, makeup lubricants</li>
+            <li><span class="section-num">2</span> Valve &amp; sealing compounds</li>
+            <li><span class="section-num">3</span> Specialty grease — high-temp, food-grade, eco</li>
+            <li><span class="section-num">4</span> CTA — view Jet Lube range</li>
+          </ul>
+        </div>
+      </div>
+
+      <!-- SDS Library -->
+      <div class="detail-card">
+        <div class="detail-card-header">
+          <div class="status-dot sd-next"></div>
+          <span class="detail-card-url">/[market]/sds</span>
+          <span class="page-tag tag-next">Build next</span>
+        </div>
+        <div class="detail-card-body">
+          <div class="detail-card-name">SDS Library — Phase 1</div>
+          <div class="detail-card-desc">Two-level delivery: (1) SDS download button on every product detail page, (2) standalone searchable index at /sds for procurement teams who need SDS without navigating products. No email gate — free access.</div>
+          <ul class="section-list">
+            <li><span class="section-num">↓</span> <strong>On product pages:</strong> SDS + TDS + Product Sheet download buttons</li>
+            <li><span class="section-num">1</span> Search bar — by product name</li>
+            <li><span class="section-num">2</span> Filter — Fluids / Tooling / Grease / All</li>
+            <li><span class="section-num">3</span> Table: product name, category, version, PDF download</li>
+            <li><span class="section-num">4</span> Each row links back to full product detail page</li>
+          </ul>
+          <div class="product-chips">
+            <span class="chip">Carry Flow SDS</span>
+            <span class="chip">Carry Max SDS</span>
+            <span class="chip">Clay Control SDS</span>
+            <span class="chip">Biocide 75 SDS</span>
+            <span class="chip">Soda Ash SDS</span>
+            <span class="chip">+ all products</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- Mud School -->
+      <div class="detail-card">
+        <div class="detail-card-header">
+          <div class="status-dot sd-next"></div>
+          <span class="detail-card-url">/[market]/mud-school</span>
+          <span class="page-tag tag-next">Build next</span>
+        </div>
+        <div class="detail-card-body">
+          <div class="detail-card-name">Blick Mud Schools</div>
+          <div class="detail-card-desc">Lifting standards. Lifting the industry. Training as a differentiator — drive registrations.</div>
+          <ul class="section-list">
+            <li><span class="section-num">1</span> What is Mud School — overview</li>
+            <li><span class="section-num">2</span> Who it's for — drillers, engineers, consultants</li>
+            <li><span class="section-num">3</span> What you'll learn — curriculum overview</li>
+            <li><span class="section-num">4</span> Upcoming sessions — dates, locations</li>
+            <li><span class="section-num">5</span> Testimonials from past attendees</li>
+            <li><span class="section-num">6</span> CTA — register interest</li>
+          </ul>
+        </div>
+      </div>
+
+      <!-- Partners — no standalone page -->
+      <div class="detail-card" style="border-color: #D0D0D0;">
+        <div class="detail-card-header" style="background:#F5F5F5;">
+          <div class="status-dot sd-utility"></div>
+          <span class="detail-card-url" style="color:var(--grey-dark);">Partners — no standalone page</span>
+        </div>
+        <div class="detail-card-body">
+          <div class="detail-card-name">Partners live within product sections + homepage</div>
+          <div class="detail-card-desc">No dedicated /partners URL. Partners appear in two places: (1) logo strip on the homepage, (2) featured within the relevant product section — Melfred Borzall within /products/tooling, Jet Lube within /products/grease.</div>
+          <ul class="section-list">
+            <li><span class="section-num">↓</span> Homepage — partner logo strip (all brands)</li>
+            <li><span class="section-num">↓</span> /products/tooling — Melfred Borzall, Palmer Bit, Premiere Drill Pipe featured</li>
+            <li><span class="section-num">↓</span> /products/grease — Jet Lube range featured</li>
+          </ul>
+          <div class="product-chips" style="margin-top:10px;">
+            <span class="chip chip-primary">Melfred Borzall → tooling</span>
+            <span class="chip chip-primary">Jet Lube → grease</span>
+            <span class="chip">Black Diamond</span>
+            <span class="chip">Dimatec</span>
+            <span class="chip">Fann</span>
+            <span class="chip">Grundomat</span>
+            <span class="chip">MetaFLO</span>
+            <span class="chip">Palmer Bit</span>
+            <span class="chip">Premiere Drill Pipe</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- Services -->
+      <div class="detail-card">
+        <div class="detail-card-header">
+          <div class="status-dot sd-built"></div>
+          <span class="detail-card-url">/[market]/services</span>
+          <span class="page-tag tag-built">Built</span>
+        </div>
+        <div class="detail-card-body">
+          <div class="detail-card-name">Services — lean, one page</div>
+          <div class="detail-card-desc">How Blick works with you. From tender through to project completion.</div>
+          <ul class="section-list">
+            <li><span class="section-num">1</span> Tender &amp; planning support</li>
+            <li><span class="section-num">2</span> On-site execution &amp; support</li>
+            <li><span class="section-num">3</span> Industry expertise — HDD, Geotech, Waterwell, Piling, Oilfield</li>
+            <li><span class="section-num">4</span> Training &amp; knowledge</li>
+            <li><span class="section-num">5</span> CTA — talk to the team</li>
+          </ul>
+        </div>
+      </div>
+
+      <!-- Contact -->
+      <div class="detail-card">
+        <div class="detail-card-header">
+          <div class="status-dot sd-built"></div>
+          <span class="detail-card-url">/[market]/contact</span>
+          <span class="page-tag tag-built">Built</span>
+        </div>
+        <div class="detail-card-body">
+          <div class="detail-card-name">Contact + about merged</div>
+          <div class="detail-card-desc">Talk to the team by your side. Big job or small question, we're ready to help.</div>
+          <ul class="section-list">
+            <li><span class="section-num">1</span> Brief about statement — who Blick is</li>
+            <li><span class="section-num">2</span> General enquiries — phone + email</li>
+            <li><span class="section-num">3</span> Sales &amp; technical support contacts</li>
+            <li><span class="section-num">4</span> Office locations — NZ / AU</li>
+            <li><span class="section-num">5</span> Contact form — name, company, email, message</li>
+          </ul>
+        </div>
+      </div>
+
+      <!-- Knowledge hub -->
+      <div class="detail-card">
+        <div class="detail-card-header">
+          <div class="status-dot sd-phase2"></div>
+          <span class="detail-card-url">/[market]/knowledge</span>
+          <span class="page-tag tag-phase2">Phase 2</span>
+        </div>
+        <div class="detail-card-body">
+          <div class="detail-card-name">Knowledge Hub / Case Studies</div>
+          <div class="detail-card-desc">Technical authority. The SEO and AI citation engine. Filterable grid of guides, comparisons, case studies, troubleshooting.</div>
+          <ul class="section-list">
+            <li><span class="section-num">1</span> Filterable grid — Industry / Content type</li>
+            <li><span class="section-num">2</span> Guides — "Bentonite vs Polymer", "Reactive Clay in HDD"</li>
+            <li><span class="section-num">3</span> Comparisons — product vs product</li>
+            <li><span class="section-num">4</span> Case studies — project outcomes with stats</li>
+            <li><span class="section-num">5</span> Troubleshooting trees — on-site decision flows</li>
+          </ul>
+        </div>
+      </div>
+
+    </div><!-- /detail-grid -->
+  </div>
+
+  <div class="divider"></div>
+
+  <!-- HOW IT GETS BUILT -->
+  <div class="detail-section">
+    <p class="detail-title">How design becomes a real page</p>
+    <p class="detail-subtitle">The workflow from approved prototype to live site — and where market differences and copy live.</p>
+
+    <div class="detail-grid" style="grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));">
+
+      <div class="detail-card">
+        <div class="detail-card-header" style="background:#F5F5F5;">
+          <span style="font-size:1.1rem">1</span>
+          <span class="detail-card-url" style="font-family:var(--font); font-size:0.85rem;">Prototype approved</span>
+        </div>
+        <div class="detail-card-body">
+          <div class="detail-card-name">HTML prototype → Next.js page</div>
+          <div class="detail-card-desc">Once a prototype is signed off, the builder implements it as a real Next.js page at <code style="font-size:0.75rem; background:var(--grey-light); padding:1px 5px; border-radius:3px;">src/app/(site)/[market]/</code> using the same CSS tokens. The prototype becomes the spec. Both run in parallel until the Next.js version replaces the static one.</div>
+        </div>
+      </div>
+
+      <div class="detail-card">
+        <div class="detail-card-header" style="background:#F5F5F5;">
+          <span style="font-size:1.1rem">2</span>
+          <span class="detail-card-url" style="font-family:var(--font); font-size:0.85rem;">Sanity CMS setup</span>
+        </div>
+        <div class="detail-card-body">
+          <div class="detail-card-name">Content management at /studio</div>
+          <div class="detail-card-desc">Sanity Studio at <code style="font-size:0.75rem; background:var(--grey-light); padding:1px 5px; border-radius:3px;">/studio</code> gives you and the team a visual editor for all content — products, SDS files, homepage copy, team bios, partner profiles. No code deploys needed for content changes.</div>
+        </div>
+      </div>
+
+      <div class="detail-card">
+        <div class="detail-card-header" style="background:#FFF3EC; border-bottom-color:var(--grey-light);">
+          <span style="font-size:1.1rem">3</span>
+          <span class="detail-card-url" style="font-family:var(--font); font-size:0.85rem; color:var(--next);">AU vs NZ differences</span>
+        </div>
+        <div class="detail-card-body">
+          <div class="detail-card-name">Market field on every document</div>
+          <div class="detail-card-desc">Each Sanity document (product, homepage, partner) has a <strong>markets</strong> field. Example: Melfred Borzall reamers tagged <code style="font-size:0.75rem; background:var(--grey-light); padding:1px 5px; border-radius:3px;">markets: [nz]</code> only appear on <code style="font-size:0.75rem; background:var(--grey-light); padding:1px 5px; border-radius:3px;">/nz/products/tooling</code>. AU gets only AU-stocked products. One template, two market outputs.</div>
+          <div class="product-chips" style="margin-top:10px;">
+            <span class="chip chip-primary">NZ full tooling range</span>
+            <span class="chip">AU subset only</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="detail-card">
+        <div class="detail-card-header" style="background:#FFF3EC; border-bottom-color:var(--grey-light);">
+          <span style="font-size:1.1rem">4</span>
+          <span class="detail-card-url" style="font-family:var(--font); font-size:0.85rem; color:var(--next);">Copy per market</span>
+        </div>
+        <div class="detail-card-body">
+          <div class="detail-card-name">Two homepage documents in Sanity</div>
+          <div class="detail-card-desc">Homepage NZ and Homepage AU are separate Sanity documents — same template, different content. Hero headline, eyebrow, CTA copy, and market-specific callouts all live in Sanity. You edit copy in Studio; it publishes live without a code deploy.</div>
+          <div class="product-chips" style="margin-top:10px;">
+            <span class="chip chip-primary">Homepage NZ doc</span>
+            <span class="chip chip-primary">Homepage AU doc</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="detail-card">
+        <div class="detail-card-header" style="background:#F5F5F5;">
+          <span style="font-size:1.1rem">5</span>
+          <span class="detail-card-url" style="font-family:var(--font); font-size:0.85rem;">SDS files in Sanity</span>
+        </div>
+        <div class="detail-card-body">
+          <div class="detail-card-name">PDFs stored in Sanity, linked everywhere</div>
+          <div class="detail-card-desc">SDS PDFs are uploaded once to Sanity as file assets on the product document. They auto-appear on the product detail page <em>and</em> in the /sds searchable index. Update a PDF in Sanity and it updates everywhere instantly — no code change required.</div>
+        </div>
+      </div>
+
+      <div class="detail-card">
+        <div class="detail-card-header" style="background:#F5F5F5;">
+          <span style="font-size:1.1rem">6</span>
+          <span class="detail-card-url" style="font-family:var(--font); font-size:0.85rem;">Build order</span>
+        </div>
+        <div class="detail-card-body">
+          <div class="detail-card-name">What gets built in what order</div>
+          <ul class="section-list">
+            <li><span class="section-num">→</span> Sanity schemas + Studio setup</li>
+            <li><span class="section-num">→</span> Products connected to Sanity (fluids, tooling, grease)</li>
+            <li><span class="section-num">→</span> Homepage NZ + AU from Sanity content</li>
+            <li><span class="section-num">→</span> SDS library (product pages + /sds search)</li>
+            <li><span class="section-num">→</span> Mud School page</li>
+            <li><span class="section-num">→</span> llms.txt, sitemap.xml, robots.txt</li>
+          </ul>
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- PROTOTYPE BANNER -->
+  <div style="margin-top:48px; padding:20px 24px; background:var(--grey-light); border-radius:8px; font-size:0.78rem; color:var(--grey-dark); line-height:1.6;">
+    <strong style="color:var(--charcoal)">Site Architecture Wireframe — Prototype</strong><br>
+    Lean structure per user brief. Reflects Phase 1 MVP. Phase 2 (knowledge hub, blog) shown for context.
+    SDS library is Phase 1: product-page download buttons + standalone /sds search index.
+  </div>
+
+</main>
+</body>
+</html>

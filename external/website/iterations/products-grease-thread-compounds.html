@@ -1,0 +1,1217 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Jet Lube Grease &amp; Compounds — via Blick</title>
+<style>
+  /* ── Reset & Base ─────────────────────────────────── */
+  *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+
+  :root {
+    --orange: #FD4F00;
+    --orange-light: #FF6B26;
+    --black: #1A1A1A;
+    --charcoal: #2D2D2D;
+    --grey-dark: #66615C;
+    --grey-mid: #A9A9A9;
+    --grey-light: #EBEAEB;
+    --off-white: #FAFAFA;
+    --white: #FFFFFF;
+    --font: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+  }
+
+  @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap');
+
+  html { scroll-behavior: smooth; font-size: 16px; -webkit-font-smoothing: antialiased; }
+  body { font-family: var(--font); color: var(--charcoal); background: var(--white); line-height: 1.6; overflow-x: hidden; }
+
+  .container { max-width: 1280px; margin: 0 auto; padding: 0 clamp(24px, 5vw, 80px); }
+
+  .reveal {
+    opacity: 0; transform: translateY(40px);
+    transition: opacity 0.8s cubic-bezier(0.16, 1, 0.3, 1), transform 0.8s cubic-bezier(0.16, 1, 0.3, 1);
+  }
+  .reveal.visible { opacity: 1; transform: translateY(0); }
+  .stagger-1 { transition-delay: 0.1s; }
+  .stagger-2 { transition-delay: 0.2s; }
+  .stagger-3 { transition-delay: 0.3s; }
+  .stagger-4 { transition-delay: 0.4s; }
+  .stagger-5 { transition-delay: 0.5s; }
+
+  .section-tag {
+    display: inline-flex; align-items: center; gap: 12px;
+    font-size: 0.72rem; font-weight: 700; letter-spacing: 0.14em;
+    text-transform: uppercase; color: var(--orange); margin-bottom: 20px;
+  }
+  .section-tag::before { content: ''; width: 32px; height: 2px; background: var(--orange); }
+  .accent { color: var(--orange); }
+
+  .btn {
+    display: inline-flex; align-items: center; gap: 8px;
+    padding: 14px 32px; border-radius: 100px; font-size: 0.88rem;
+    font-weight: 600; text-decoration: none; transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+    cursor: pointer; border: none;
+  }
+  .btn-primary { background: var(--orange); color: var(--white); }
+  .btn-primary:hover { background: var(--orange-light); transform: translateY(-2px); box-shadow: 0 8px 24px rgba(253, 79, 0, 0.25); }
+  .btn-secondary { background: transparent; color: var(--charcoal); border: 1.5px solid var(--grey-light); }
+  .btn-secondary:hover { border-color: var(--orange); color: var(--orange); }
+  .btn-ghost { background: transparent; color: var(--white); border: 1.5px solid rgba(255,255,255,0.2); }
+  .btn-ghost:hover { border-color: var(--orange); color: var(--orange); }
+
+  /* ── Nav ──────────────────────────────────────── */
+  nav {
+    position: fixed; top: 0; left: 0; right: 0; z-index: 1000; padding: 24px 0;
+    transition: all 0.4s; background: rgba(255,255,255,0.92); backdrop-filter: blur(20px);
+    box-shadow: 0 1px 0 rgba(0,0,0,0.05);
+  }
+  nav.scrolled { padding: 16px 0; }
+  nav .container { display: flex; justify-content: space-between; align-items: center; }
+  .nav-logo img { height: 36px; width: auto; }
+  .nav-links { display: flex; align-items: center; gap: 8px; list-style: none; }
+  .nav-links a { text-decoration: none; color: var(--grey-dark); font-size: 0.88rem; font-weight: 500; padding: 8px 16px; border-radius: 8px; transition: all 0.3s; }
+  .nav-links a:hover, .nav-links a.active { color: var(--orange); }
+  .nav-cta { background: var(--orange) !important; color: var(--white) !important; border-radius: 100px !important; padding: 10px 24px !important; }
+
+  /* ── Breadcrumb ──────────────────────────────── */
+  .breadcrumb { padding: 100px 0 0; }
+  .breadcrumb-links { display: flex; align-items: center; gap: 8px; font-size: 0.82rem; color: var(--grey-mid); flex-wrap: wrap; }
+  .breadcrumb-links a { color: var(--grey-dark); text-decoration: none; transition: color 0.3s; }
+  .breadcrumb-links a:hover { color: var(--orange); }
+  .breadcrumb-links .sep { opacity: 0.4; }
+
+  /* ══════════════════════════════════════════════════
+     DARK HERO — Grease pages use dark treatment
+     ══════════════════════════════════════════════════ */
+  .dark-hero {
+    padding: 40px 0 100px;
+    background: var(--black);
+    color: var(--white);
+    position: relative;
+    overflow: hidden;
+  }
+  .dark-hero .breadcrumb { padding: 0 0 40px; }
+  .dark-hero .breadcrumb-links { color: rgba(255,255,255,0.4); }
+  .dark-hero .breadcrumb-links a { color: rgba(255,255,255,0.6); }
+  .dark-hero .breadcrumb-links a:hover { color: var(--orange); }
+  .dark-hero::before {
+    content: '';
+    position: absolute; top: -200px; left: -200px;
+    width: 600px; height: 600px; border-radius: 50%;
+    background: var(--orange); opacity: 0.04; pointer-events: none;
+  }
+
+  .dark-hero-grid {
+    display: grid;
+    grid-template-columns: 1fr auto;
+    gap: 80px;
+    align-items: center;
+  }
+  .dark-hero-text h1 {
+    font-size: clamp(2rem, 3.5vw, 2.8rem);
+    font-weight: 800; letter-spacing: -0.02em; line-height: 1.1;
+    margin-bottom: 12px;
+  }
+  .dark-hero-text .sub {
+    font-size: 1.1rem; font-weight: 500; color: var(--orange); margin-bottom: 28px;
+  }
+  .dark-hero-text p {
+    font-size: 1.02rem; line-height: 1.8; color: rgba(255,255,255,0.6); margin-bottom: 16px;
+  }
+  .dark-hero-actions {
+    display: flex; gap: 16px; flex-wrap: wrap; margin-top: 32px;
+  }
+
+  /* Hero stats */
+  .hero-stats {
+    display: flex; gap: 40px; margin-top: 36px; padding-top: 28px;
+    border-top: 1px solid rgba(255,255,255,0.08);
+  }
+  .hero-stat .stat-num { font-size: 1.8rem; font-weight: 800; color: var(--orange); line-height: 1; }
+  .hero-stat .stat-label { font-size: 0.75rem; font-weight: 500; color: rgba(255,255,255,0.4); text-transform: uppercase; letter-spacing: 0.08em; margin-top: 6px; }
+
+  /* Shield visual — grease theme */
+  .shield-visual { display: flex; align-items: center; justify-content: center; }
+  .shield-graphic {
+    width: 200px; height: 240px; position: relative;
+    display: flex; align-items: center; justify-content: center;
+  }
+  .shield-outline {
+    position: absolute; inset: 0;
+    border: 2px solid rgba(253, 79, 0, 0.2);
+    border-radius: 50% 50% 50% 50% / 40% 40% 60% 60%;
+    animation: float 12s ease-in-out infinite;
+  }
+  .shield-inner {
+    position: absolute; inset: 20%;
+    border: 1px dashed rgba(253, 79, 0, 0.1);
+    border-radius: 50% 50% 50% 50% / 40% 40% 60% 60%;
+    animation: float 16s ease-in-out infinite reverse;
+  }
+  .shield-core {
+    width: 72px; height: 72px; border-radius: 50%;
+    background: rgba(253, 79, 0, 0.12);
+    display: flex; align-items: center; justify-content: center; z-index: 1;
+  }
+  .shield-core svg {
+    width: 32px; height: 32px; stroke: var(--orange); fill: none;
+    stroke-width: 1.5; stroke-linecap: round; stroke-linejoin: round;
+  }
+
+  @keyframes float {
+    0%, 100% { transform: translateY(0) rotate(0deg); }
+    50% { transform: translateY(-8px) rotate(1deg); }
+  }
+
+  /* ══════════════════════════════════════════════════
+     CATEGORY NAV — Jump links for product families
+     ══════════════════════════════════════════════════ */
+  .cat-nav {
+    padding: 0;
+    background: var(--off-white);
+    border-bottom: 1px solid var(--grey-light);
+    position: sticky; top: 72px; z-index: 100;
+  }
+  .cat-nav-inner {
+    display: flex; gap: 0; overflow-x: auto; -webkit-overflow-scrolling: touch;
+  }
+  .cat-nav-inner::-webkit-scrollbar { display: none; }
+  .cat-nav-link {
+    flex-shrink: 0;
+    padding: 16px 24px;
+    text-decoration: none;
+    font-size: 0.82rem; font-weight: 600;
+    color: var(--grey-dark);
+    border-bottom: 2px solid transparent;
+    transition: all 0.3s;
+    white-space: nowrap;
+  }
+  .cat-nav-link:hover, .cat-nav-link.active {
+    color: var(--orange);
+    border-bottom-color: var(--orange);
+  }
+
+  /* ══════════════════════════════════════════════════
+     PRODUCT SECTIONS — Category-based layout
+     ══════════════════════════════════════════════════ */
+  .products-section {
+    padding: 80px 0;
+    position: relative;
+  }
+  .products-section:nth-child(even) {
+    background: var(--off-white);
+  }
+  .products-section .section-intro {
+    margin-bottom: 48px;
+  }
+  .products-section .section-intro h2 {
+    font-size: clamp(1.6rem, 3vw, 2.2rem);
+    font-weight: 800; letter-spacing: -0.02em; color: var(--black);
+  }
+  .products-section .section-intro p {
+    font-size: 1rem; color: var(--grey-dark); margin-top: 12px; max-width: 680px; line-height: 1.7;
+  }
+
+  /* Product cards grid */
+  .product-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 20px;
+  }
+  .product-card {
+    background: var(--white);
+    border: 1px solid var(--grey-light);
+    border-radius: 16px;
+    padding: 28px 24px;
+    transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+    position: relative;
+  }
+  .products-section:nth-child(even) .product-card {
+    background: var(--white);
+  }
+  .product-card:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 16px 48px rgba(0,0,0,0.06);
+    border-color: rgba(253, 79, 0, 0.2);
+  }
+  .product-card .pc-badge {
+    display: inline-flex; padding: 4px 10px; border-radius: 100px;
+    background: rgba(253, 79, 0, 0.08); color: var(--orange);
+    font-size: 0.65rem; font-weight: 600; letter-spacing: 0.06em;
+    text-transform: uppercase; margin-bottom: 10px;
+  }
+  .product-card h3 {
+    font-size: 1.05rem; font-weight: 700; color: var(--black); margin-bottom: 4px;
+  }
+  .product-card .pc-subtitle {
+    font-size: 0.78rem; font-weight: 600; color: var(--grey-dark); margin-bottom: 10px;
+  }
+  .product-card .pc-desc {
+    font-size: 0.85rem; line-height: 1.6; color: var(--grey-dark); margin-bottom: 16px;
+  }
+  .product-card .pc-specs {
+    display: flex; flex-wrap: wrap; gap: 8px;
+  }
+  .pc-spec {
+    display: inline-flex; align-items: center; gap: 5px;
+    padding: 4px 10px; border-radius: 8px;
+    background: var(--off-white); border: 1px solid var(--grey-light);
+    font-size: 0.7rem; font-weight: 500; color: var(--grey-dark);
+  }
+  .pc-spec svg { width: 12px; height: 12px; stroke: var(--orange); fill: none; stroke-width: 2; }
+
+  /* Product table — for DEACON which has many specs */
+  .product-table {
+    width: 100%;
+    border-collapse: separate;
+    border-spacing: 0;
+    border-radius: 16px;
+    overflow: hidden;
+    border: 1px solid var(--grey-light);
+    background: var(--white);
+  }
+  .product-table thead th {
+    background: var(--charcoal);
+    padding: 14px 20px;
+    font-size: 0.7rem;
+    font-weight: 700;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--white);
+    text-align: left;
+    border-bottom: 1px solid rgba(255,255,255,0.1);
+  }
+  .product-table tbody td {
+    padding: 14px 20px;
+    font-size: 0.85rem;
+    color: var(--charcoal);
+    border-bottom: 1px solid var(--grey-light);
+    vertical-align: top;
+  }
+  .product-table tbody tr:last-child td { border-bottom: none; }
+  .product-table tbody tr:hover { background: rgba(253, 79, 0, 0.02); }
+  .product-table .product-name {
+    font-weight: 700;
+    color: var(--black);
+  }
+  .product-table .tag {
+    display: inline-flex;
+    padding: 3px 10px;
+    border-radius: 100px;
+    background: rgba(253, 79, 0, 0.08);
+    color: var(--orange);
+    font-size: 0.68rem;
+    font-weight: 600;
+    letter-spacing: 0.04em;
+    white-space: nowrap;
+  }
+
+  /* Rig guide mini table */
+  .rig-guide {
+    margin-top: 24px; padding: 20px 24px;
+    background: var(--off-white); border-radius: 12px;
+    border: 1px solid var(--grey-light);
+  }
+  .rig-guide h4 {
+    font-size: 0.78rem; font-weight: 700; text-transform: uppercase;
+    letter-spacing: 0.08em; color: var(--orange); margin-bottom: 12px;
+  }
+  .rig-guide-row {
+    display: flex; justify-content: space-between; align-items: center;
+    padding: 8px 0; border-bottom: 1px solid var(--grey-light);
+    font-size: 0.82rem;
+  }
+  .rig-guide-row:last-child { border-bottom: none; }
+  .rig-guide-row .rg-rig { font-weight: 600; color: var(--black); }
+  .rig-guide-row .rg-size { color: var(--grey-dark); }
+
+  /* Part number table */
+  .part-table {
+    width: 100%; margin-top: 16px;
+    border-collapse: collapse;
+    font-size: 0.82rem;
+  }
+  .part-table th {
+    text-align: left; padding: 8px 12px;
+    background: var(--charcoal); color: var(--white);
+    font-size: 0.7rem; font-weight: 600; letter-spacing: 0.06em; text-transform: uppercase;
+  }
+  .part-table th:first-child { border-radius: 8px 0 0 0; }
+  .part-table th:last-child { border-radius: 0 8px 0 0; }
+  .part-table td {
+    padding: 8px 12px; border-bottom: 1px solid var(--grey-light);
+    color: var(--charcoal);
+  }
+  .part-table tbody tr:last-child td { border-bottom: none; }
+
+  /* ══════════════════════════════════════════════════
+     CROSS-SELL
+     ══════════════════════════════════════════════════ */
+  .cross-sell {
+    padding: 100px 0;
+    background: var(--off-white);
+    position: relative;
+    overflow: hidden;
+  }
+  .cross-sell .geo-ring {
+    position: absolute; top: 50%; right: -100px; transform: translateY(-50%);
+    width: 400px; height: 400px; border: 1px solid rgba(253, 79, 0, 0.05);
+    border-radius: 50%; pointer-events: none;
+  }
+  .cross-sell-header { margin-bottom: 40px; }
+  .cross-sell-header h2 { font-size: clamp(1.4rem, 2.5vw, 1.8rem); font-weight: 800; letter-spacing: -0.02em; color: var(--black); }
+  .cross-sell-header p { font-size: 0.95rem; color: var(--grey-dark); margin-top: 10px; max-width: 520px; line-height: 1.7; }
+  .cross-sell-grid {
+    display: grid; grid-template-columns: repeat(3, 1fr); gap: 20px;
+  }
+  .fluid-card {
+    background: var(--white); border: 1px solid var(--grey-light); border-radius: 16px;
+    padding: 28px 24px; text-decoration: none; color: inherit;
+    transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+  }
+  .fluid-card:hover { transform: translateY(-4px); box-shadow: 0 16px 48px rgba(0,0,0,0.06); border-color: rgba(253, 79, 0, 0.2); }
+  .fluid-card .fc-badge {
+    display: inline-flex; padding: 4px 10px; border-radius: 100px;
+    background: rgba(253, 79, 0, 0.08); color: var(--orange);
+    font-size: 0.65rem; font-weight: 600; letter-spacing: 0.06em;
+    text-transform: uppercase; margin-bottom: 12px;
+  }
+  .fluid-card h4 { font-size: 0.95rem; font-weight: 700; color: var(--black); margin-bottom: 8px; }
+  .fluid-card p { font-size: 0.82rem; line-height: 1.6; color: var(--grey-dark); }
+
+  /* ── CTA ──────────────────────────────────────── */
+  .cta {
+    padding: 100px 0; text-align: center; position: relative; overflow: hidden;
+  }
+  .cta .geo-glow {
+    position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%);
+    width: 500px; height: 500px; border-radius: 50%;
+    background: radial-gradient(circle, rgba(253, 79, 0, 0.05) 0%, transparent 70%);
+    pointer-events: none;
+  }
+  .cta-content { position: relative; z-index: 1; }
+  .cta h2 { font-size: clamp(1.6rem, 3vw, 2.2rem); font-weight: 800; letter-spacing: -0.02em; line-height: 1.15; color: var(--black); margin-bottom: 16px; }
+  .cta-content > p { font-size: 1rem; color: var(--grey-dark); margin-bottom: 32px; }
+  .cta-actions { display: flex; gap: 16px; justify-content: center; flex-wrap: wrap; }
+
+  /* ── Footer ──────────────────────────────────── */
+  footer { padding: 80px 0 40px; border-top: 1px solid var(--grey-light); }
+  .footer-grid { display: grid; grid-template-columns: 2fr 1fr 1fr 1fr; gap: 64px; margin-bottom: 64px; }
+  .footer-brand p { font-size: 0.9rem; line-height: 1.7; color: var(--grey-dark); margin-top: 16px; max-width: 300px; }
+  .footer-col h4 { font-size: 0.75rem; font-weight: 700; letter-spacing: 0.12em; text-transform: uppercase; color: var(--black); margin-bottom: 20px; }
+  .footer-col ul { list-style: none; display: flex; flex-direction: column; gap: 12px; }
+  .footer-col a { text-decoration: none; color: var(--grey-dark); font-size: 0.88rem; transition: color 0.3s; }
+  .footer-col a:hover { color: var(--orange); }
+  .footer-bottom { padding-top: 32px; border-top: 1px solid var(--grey-light); display: flex; justify-content: space-between; align-items: center; font-size: 0.8rem; color: var(--grey-mid); }
+
+  /* ── Responsive ──────────────────────────────── */
+  @media (max-width: 1024px) {
+    .dark-hero-grid { grid-template-columns: 1fr; gap: 40px; }
+    .shield-visual { display: none; }
+    .product-grid { grid-template-columns: 1fr 1fr; }
+    .cross-sell-grid { grid-template-columns: 1fr 1fr; }
+    .footer-grid { grid-template-columns: 1fr 1fr; gap: 40px; }
+  }
+  @media (max-width: 768px) {
+    .product-grid { grid-template-columns: 1fr; }
+    .hero-stats { flex-wrap: wrap; gap: 24px; }
+    .product-table { font-size: 0.8rem; }
+    .product-table thead th, .product-table tbody td { padding: 10px 12px; }
+    .cat-nav-link { padding: 14px 16px; font-size: 0.78rem; }
+  }
+  @media (max-width: 640px) {
+    .nav-links { display: none; }
+    .cross-sell-grid { grid-template-columns: 1fr; }
+    .footer-grid { grid-template-columns: 1fr; gap: 32px; }
+    .footer-bottom { flex-direction: column; gap: 12px; text-align: center; }
+    .rig-guide-row { flex-direction: column; gap: 4px; align-items: flex-start; }
+    /* Stack DEACON table on mobile */
+    .product-table thead { display: none; }
+    .product-table, .product-table tbody, .product-table tr, .product-table td { display: block; width: 100%; }
+    .product-table tr { padding: 16px 0; border-bottom: 1px solid var(--grey-light); }
+    .product-table td { padding: 3px 0; border: none; }
+    .product-table td:first-child { padding-bottom: 6px; }
+  }
+</style>
+</head>
+<body>
+
+<!-- ════════ Navigation ════════ -->
+<nav id="nav">
+  <div class="container">
+    <a href="index.html" class="nav-logo"><img src="blick-logo.png" alt="Blick"></a>
+    <ul class="nav-links">
+      <li><a href="index.html">Home</a></li>
+      <li><a href="products.html" class="active">Products</a></li>
+      <li><a href="services.html">Services</a></li>
+      <li><a href="team.html">Team</a></li>
+      <li><a href="contact.html" class="nav-cta">Contact Us</a></li>
+    </ul>
+  </div>
+</nav>
+
+<!-- ══════════════════════════════════════════════════
+     DARK HERO
+     ══════════════════════════════════════════════════ -->
+<section class="dark-hero">
+  <div class="container">
+    <div class="breadcrumb">
+      <div class="breadcrumb-links">
+        <a href="products.html">Products</a>
+        <span class="sep">›</span>
+        <a href="products.html#jetlube">Grease &amp; Compounds</a>
+        <span class="sep">›</span>
+        <span style="color: rgba(255,255,255,0.4);">Jet Lube Range</span>
+      </div>
+    </div>
+
+    <div class="dark-hero-grid">
+      <div class="dark-hero-text">
+        <div class="section-tag reveal">Jet Lube via Blick</div>
+        <h1 class="reveal stagger-1">Grease, Compounds <br>&amp; <span class="accent">Sealants</span></h1>
+        <div class="sub reveal stagger-2">The complete Jet Lube range — stocked in AU &amp; NZ.</div>
+        <p class="reveal stagger-3">From HDD thread grease designed for auto-greasers, to premium oilfield compounds trusted on every continent, to DEACON high-temperature sealants rated to 982&deg;C &mdash; Blick carries the full Jet Lube catalog across Australia and New Zealand.</p>
+        <p class="reveal stagger-4">Every threaded connection is a potential failure point. The right compound prevents galling, reduces wear, and protects against extreme torque and downhole pressure.</p>
+
+        <div class="hero-stats reveal stagger-4">
+          <div class="hero-stat">
+            <div class="stat-num">30+</div>
+            <div class="stat-label">Products</div>
+          </div>
+          <div class="hero-stat">
+            <div class="stat-num">982&deg;C</div>
+            <div class="stat-label">Max temp rating</div>
+          </div>
+          <div class="hero-stat">
+            <div class="stat-num">11,000</div>
+            <div class="stat-label">Max PSI</div>
+          </div>
+        </div>
+
+        <div class="dark-hero-actions reveal stagger-5">
+          <a href="mailto:sales@blick.group?subject=Jet%20Lube%20Enquiry" class="btn btn-primary">Request a Quote</a>
+          <a href="products.html#jetlube" class="btn btn-ghost">Back to Products</a>
+        </div>
+      </div>
+
+      <div class="shield-visual reveal">
+        <div class="shield-graphic">
+          <div class="shield-outline"></div>
+          <div class="shield-inner"></div>
+          <div class="shield-core">
+            <svg viewBox="0 0 24 24"><path d="M14.7 6.3a1 1 0 000 1.4l1.6 1.6a1 1 0 001.4 0l3.77-3.77a6 6 0 01-7.94 7.94l-6.91 6.91a2.12 2.12 0 01-3-3l6.91-6.91a6 6 0 017.94-7.94l-3.76 3.76z"/></svg>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ══════════════════════════════════════════════════
+     CATEGORY NAV — Sticky jump links
+     ══════════════════════════════════════════════════ -->
+<div class="cat-nav" id="cat-nav">
+  <div class="container">
+    <div class="cat-nav-inner">
+      <a href="#hdd" class="cat-nav-link active">HDD Thread Grease</a>
+      <a href="#oilfield" class="cat-nav-link">Oilfield Compounds</a>
+      <a href="#octg" class="cat-nav-link">OCTG Running Compounds</a>
+      <a href="#deacon" class="cat-nav-link">DEACON Sealants</a>
+      <a href="#specialty" class="cat-nav-link">Specialty &amp; Brushes</a>
+    </div>
+  </div>
+</div>
+
+<!-- ══════════════════════════════════════════════════
+     1. HDD THREAD GREASE
+     ══════════════════════════════════════════════════ -->
+<section class="products-section" id="hdd">
+  <div class="container">
+    <div class="section-intro">
+      <div class="section-tag reveal">HDD Thread Grease</div>
+      <h2 class="reveal stagger-1">Designed for HDD auto-greasers</h2>
+      <p class="reveal stagger-2">Copper and graphite-based oilfield grade grease ground to a finer particle size to suit HDD rig auto-greasers. Prevents galling and reduces wear in high-torque situations.</p>
+    </div>
+
+    <div class="product-grid">
+      <div class="product-card reveal stagger-1">
+        <span class="pc-badge">Copper-based</span>
+        <h3>HDD KOPR</h3>
+        <div class="pc-subtitle">Premium Auto-Greaser Compound</div>
+        <div class="pc-desc">A very finely ground copper-based grease designed to work well in auto-greasers. Specified to prevent galling and reduce wear in very high torque situations. The industry choice for serious HDD operations.</div>
+        <div class="pc-specs">
+          <span class="pc-spec">
+            <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><path d="M12 6v6l4 2"/></svg>
+            Auto-greaser compatible
+          </span>
+          <span class="pc-spec">
+            <svg viewBox="0 0 24 24"><path d="M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5"/></svg>
+            Anti-galling
+          </span>
+        </div>
+      </div>
+
+      <div class="product-card reveal stagger-2">
+        <span class="pc-badge">Cost-effective</span>
+        <h3>Thread Grease 21</h3>
+        <div class="pc-subtitle">Double-Duty Tool Joint Compound</div>
+        <div class="pc-desc">A cost-effective option on rigs up to 40,000 lbs where an auto-greaser is not being used. A high-quality product for less severe applications that still protects against galling and high stress.</div>
+        <div class="pc-specs">
+          <span class="pc-spec">
+            <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><path d="M12 6v6l4 2"/></svg>
+            Manual application
+          </span>
+          <span class="pc-spec">
+            <svg viewBox="0 0 24 24"><path d="M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5"/></svg>
+            Up to 40,000 lbs
+          </span>
+        </div>
+      </div>
+    </div>
+
+    <!-- Rig compatibility guide -->
+    <div class="rig-guide reveal stagger-3">
+      <h4>Rig Compatibility Guide — HDD KOPR</h4>
+      <div class="rig-guide-row">
+        <span class="rg-rig">Vermeer&reg; D7x11 to D36x50</span>
+        <span class="rg-size">Small 3.8L pail &bull; #1210015</span>
+      </div>
+      <div class="rig-guide-row">
+        <span class="rg-rig">Vermeer&reg; D40x55 to D100x120</span>
+        <span class="rg-size">Medium 7.6L pail &bull; #1210014</span>
+      </div>
+      <div class="rig-guide-row">
+        <span class="rg-rig">Ditch Witch&reg; JT922 to JT100</span>
+        <span class="rg-size">Medium 7.6L pail &bull; #1210014</span>
+      </div>
+      <div class="rig-guide-row">
+        <span class="rg-rig">Astec/Toro&reg; DD2024C, DD2426, DD4045</span>
+        <span class="rg-size">Medium 7.6L pail &bull; #1210014</span>
+      </div>
+    </div>
+
+    <!-- Part number table -->
+    <table class="part-table reveal stagger-4" style="margin-top: 24px;">
+      <thead>
+        <tr>
+          <th>Size</th>
+          <th>HDD KOPR</th>
+          <th>Thread Grease 21</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr><td>Small 3.8L</td><td>#1210015</td><td>#1210036</td></tr>
+        <tr><td>Medium 7.6L</td><td>#1210014</td><td>#1210026</td></tr>
+        <tr><td>Large 18.9L</td><td>—</td><td>#1210031</td></tr>
+      </tbody>
+    </table>
+  </div>
+</section>
+
+<!-- ══════════════════════════════════════════════════
+     2. OILFIELD DRILL COLLAR & TOOL JOINT COMPOUNDS
+     ══════════════════════════════════════════════════ -->
+<section class="products-section" id="oilfield">
+  <div class="container">
+    <div class="section-intro">
+      <div class="section-tag reveal">Oilfield &amp; Valve Compounds</div>
+      <h2 class="reveal stagger-1">Premium drill collar &amp; tool joint compounds</h2>
+      <p class="reveal stagger-2">Copper-based and metal-free compounds for every drill string requirement — from standard tool joints to extreme environments and marine-pollutant regulated operations.</p>
+    </div>
+
+    <!-- Copper-based -->
+    <h3 class="reveal" style="font-size: 0.85rem; font-weight: 700; text-transform: uppercase; letter-spacing: 0.1em; color: var(--orange); margin-bottom: 20px;">Premium Copper-Based</h3>
+
+    <div class="product-grid" style="margin-bottom: 48px;">
+      <div class="product-card reveal stagger-1">
+        <span class="pc-badge">Industry standard</span>
+        <h3>KOPR-KOTE&reg;</h3>
+        <div class="pc-subtitle">Premium Drill Collar &amp; Tool Joint Compound</div>
+        <div class="pc-desc">Widely recognised as the best copper-based drilling compound in the world. Uniquely formulated to prevent excessive circumferential make up with a very high static friction factor. Prevents galling, seizure, and allows easy breakout.</div>
+        <div class="pc-specs">
+          <span class="pc-spec">
+            <svg viewBox="0 0 24 24"><path d="M13 2L3 14h9l-1 8 10-12h-9l1-8z"/></svg>
+            -18&deg;C to 450&deg;F (232&deg;C)
+          </span>
+          <span class="pc-spec">
+            <svg viewBox="0 0 24 24"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
+            DOT marine-pollutant exception
+          </span>
+        </div>
+      </div>
+
+      <div class="product-card reveal stagger-2">
+        <span class="pc-badge">Mud-resistant</span>
+        <h3>EXTREME&reg;</h3>
+        <div class="pc-subtitle">Mud Resistant Drill Collar &amp; Tool Joint Compound</div>
+        <div class="pc-desc">Premium unleaded compound blended into Jet-Lube's high-temp, mud-resistant, complex-base grease. Offers extended storage capability. Prevents excessive circumferential make up by increasing the coefficient of friction.</div>
+        <div class="pc-specs">
+          <span class="pc-spec">
+            <svg viewBox="0 0 24 24"><path d="M13 2L3 14h9l-1 8 10-12h-9l1-8z"/></svg>
+            -18&deg;C to 450&deg;F (232&deg;C)
+          </span>
+          <span class="pc-spec">
+            <svg viewBox="0 0 24 24"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
+            DOT marine-pollutant exception
+          </span>
+        </div>
+      </div>
+
+      <div class="product-card reveal stagger-3">
+        <span class="pc-badge">Double-duty</span>
+        <h3>21&reg;</h3>
+        <div class="pc-subtitle">Double-Duty Tool Joint &amp; Drill Collar Compound</div>
+        <div class="pc-desc">High-quality product designed for less severe applications than KOPR-KOTE. Formulated to prevent excessive circumferential make up of tool joints and protects against galling and high stress.</div>
+        <div class="pc-specs">
+          <span class="pc-spec">
+            <svg viewBox="0 0 24 24"><path d="M13 2L3 14h9l-1 8 10-12h-9l1-8z"/></svg>
+            -18&deg;C to 232&deg;C standard
+          </span>
+          <span class="pc-spec">NSF H2 Registered</span>
+        </div>
+      </div>
+
+      <div class="product-card reveal stagger-4">
+        <span class="pc-badge">Economical</span>
+        <h3>JLS&reg;</h3>
+        <div class="pc-subtitle">Tool Joint Compound</div>
+        <div class="pc-desc">Economical compound containing premium-grade copper flakes, amorphous graphite, extreme-pressure additives, rust and corrosion inhibitors. Recommended for tool joints in medium-depth formations.</div>
+        <div class="pc-specs">
+          <span class="pc-spec">
+            <svg viewBox="0 0 24 24"><path d="M13 2L3 14h9l-1 8 10-12h-9l1-8z"/></svg>
+            -18&deg;C to 232&deg;C
+          </span>
+          <span class="pc-spec">Arctic: -55&deg;C to 149&deg;C</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- Metal-free -->
+    <h3 class="reveal" style="font-size: 0.85rem; font-weight: 700; text-transform: uppercase; letter-spacing: 0.1em; color: var(--orange); margin-bottom: 20px;">Premium Metal-Free</h3>
+
+    <div class="product-grid">
+      <div class="product-card reveal stagger-1">
+        <span class="pc-badge">Non-metallic</span>
+        <h3>NCS-30&reg;</h3>
+        <div class="pc-subtitle">Tool Joint &amp; Drill Collar Compound</div>
+        <div class="pc-desc">Premium non-metallic compound containing carbon-based fibres, natural extreme-pressure and anti-wear additives. Superior adhesion to wet steel and resistance to water wash-off. Effective for invert or high-pH muds.</div>
+        <div class="pc-specs">
+          <span class="pc-spec">-29&deg;C to 260&deg;C</span>
+          <span class="pc-spec">NSF H2 Registered</span>
+        </div>
+      </div>
+
+      <div class="product-card reveal stagger-2">
+        <span class="pc-badge">ECF / Biodegradable</span>
+        <h3>NCS-30&reg; ECF</h3>
+        <div class="pc-subtitle">Tool Joint &amp; Drill Collar Compound</div>
+        <div class="pc-desc">Biodegradable, non-metallic formula meeting Norway &ldquo;Yellow&rdquo;, British and Dutch &ldquo;E&rdquo; HOCNF classifications. Non-conductive for MWD. Excellent for high-chrome or nickel-alloy connections.</div>
+        <div class="pc-specs">
+          <span class="pc-spec">-23&deg;C to 260&deg;C</span>
+          <span class="pc-spec">HOCNF compliant</span>
+        </div>
+      </div>
+
+      <div class="product-card reveal stagger-3">
+        <span class="pc-badge">Multi-functional</span>
+        <h3>KOV'R-KOTE&reg;</h3>
+        <div class="pc-subtitle">Double-Duty Tool Joint Compound / Sealant</div>
+        <div class="pc-desc">Metal-free formula using polymers, graphite and friction-reducing additives. Ideal for drill collars, drill pipe, tubing, and bottom hole assemblies. Developed to replace compounds containing zinc, copper and heavy metals.</div>
+        <div class="pc-specs">
+          <span class="pc-spec">-18&deg;C to 232&deg;C standard</span>
+          <span class="pc-spec">Thermal: to 370&deg;C</span>
+        </div>
+      </div>
+
+      <div class="product-card reveal stagger-4">
+        <span class="pc-badge">Eco-friendly</span>
+        <h3>CUR&Auml;L&trade;</h3>
+        <div class="pc-subtitle">Work Over / Non-Critical Tool Joint Compound</div>
+        <div class="pc-desc">Non-metallic, environmentally acceptable compound for non-critical drilling, work over and production applications. Can also be used for lubricating, sealing and storage of drilling and production equipment.</div>
+        <div class="pc-specs">
+          <span class="pc-spec">-18&deg;C to 232&deg;C</span>
+          <span class="pc-spec">API-MODIFIED alternative</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- API Compounds -->
+    <h3 class="reveal" style="font-size: 0.85rem; font-weight: 700; text-transform: uppercase; letter-spacing: 0.1em; color: var(--orange); margin: 48px 0 20px;">API Compounds</h3>
+
+    <div class="product-grid">
+      <div class="product-card reveal stagger-1">
+        <span class="pc-badge">Zinc-based</span>
+        <h3>Z-50&trade; &amp; Z-60&trade;</h3>
+        <div class="pc-subtitle">Zinc Tool Joint Compounds</div>
+        <div class="pc-desc">Contain varying percentages of prime-grade metallic zinc dust with special additives. Ensure consistent floor make up, are brushable over a wide temperature range, adhere to all surfaces, resist water wash-off and prevent rust and corrosion.</div>
+        <div class="pc-specs">
+          <span class="pc-spec">-18&deg;C to 149&deg;C</span>
+        </div>
+      </div>
+
+      <div class="product-card reveal stagger-2">
+        <span class="pc-badge">API grade</span>
+        <h3>API-MODIFIED</h3>
+        <div class="pc-subtitle">Thread Compound Sealant</div>
+        <div class="pc-desc">High-pressure thread compound conforming to API Bulletin 5A2 and R.P. 5A3 requirements. Tenaciously adheres to wet or oily surfaces. Seals and withstands pressures to 10,000 psi on API connections. Will not harden or dry.</div>
+        <div class="pc-specs">
+          <span class="pc-spec">-18&deg;C to 149&deg;C</span>
+          <span class="pc-spec">Up to 10,000 PSI</span>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ══════════════════════════════════════════════════
+     3. OCTG RUNNING COMPOUNDS
+     ══════════════════════════════════════════════════ -->
+<section class="products-section" id="octg">
+  <div class="container">
+    <div class="section-intro">
+      <div class="section-tag reveal">OCTG Running Compounds</div>
+      <h2 class="reveal stagger-1">Casing, tubing &amp; connection sealants</h2>
+      <p class="reveal stagger-2">High-pressure sealant alternatives for API buttress, proprietary connections, and premium thread designs. Many meet ECF environmental classifications for offshore operations.</p>
+    </div>
+
+    <div class="product-grid">
+      <div class="product-card reveal stagger-1">
+        <span class="pc-badge">ECF / High-pressure</span>
+        <h3>RUN-N-SEAL&reg; ECF</h3>
+        <div class="pc-subtitle">Non-Premium Thread Connection Sealant</div>
+        <div class="pc-desc">High-pressure sealant alternative for API Buttress and other larger clearance thread seal connection designs. Excellent water resistance — sticks to wet and oily steel, ensuring compound will not wash-off threads.</div>
+        <div class="pc-specs">
+          <span class="pc-spec">-18&deg;C to 232&deg;C</span>
+          <span class="pc-spec">Norway &ldquo;Yellow&rdquo; / &ldquo;E&rdquo; rated</span>
+        </div>
+      </div>
+
+      <div class="product-card reveal stagger-2">
+        <span class="pc-badge">Storage compound</span>
+        <h3>RUN-N-SEAL&reg; EXTREME</h3>
+        <div class="pc-subtitle">Running &amp; Storage Compound</div>
+        <div class="pc-desc">Non-metallic, high-pressure sealant for API connections (buttress and 8-round) and storage compound. Contains graphite and anti-wear additives blended into a state-of-the-art, rust-inhibiting complex soap-based grease.</div>
+        <div class="pc-specs">
+          <span class="pc-spec">-18&deg;C to 232&deg;C standard</span>
+          <span class="pc-spec">Non-toxic / Non-hazardous</span>
+        </div>
+      </div>
+
+      <div class="product-card reveal stagger-3">
+        <span class="pc-badge">Premium seal</span>
+        <h3>SEAL-GUARD&trade; ECF</h3>
+        <div class="pc-subtitle">Yellow/&ldquo;E&rdquo;-Rated Premium Connection Compound</div>
+        <div class="pc-desc">Specifically formulated for mechanical seal thread designs and high-alloy steel materials. Biodegradable, metal-free with frictional properties similar to API-MODIFIED.</div>
+        <div class="pc-specs">
+          <span class="pc-spec">-29&deg;C to 260&deg;C</span>
+          <span class="pc-spec">HOCNF compliant</span>
+        </div>
+      </div>
+
+      <div class="product-card reveal stagger-4">
+        <span class="pc-badge">Heavy wall</span>
+        <h3>HPHT THREAD COMPOUND&trade;</h3>
+        <div class="pc-subtitle">High Pressure / High-Temp Thread Compound</div>
+        <div class="pc-desc">Specifically formulated for high performance, proprietary metal-to-metal seal and high interference connection designs. Utilises high-performance materials for &ldquo;super chrome&rdquo; and high-alloy steels.</div>
+        <div class="pc-specs">
+          <span class="pc-spec">Up to 232&deg;C</span>
+          <span class="pc-spec">Eco-safe &bull; Metal-free</span>
+        </div>
+      </div>
+
+      <div class="product-card reveal stagger-1">
+        <span class="pc-badge">Proprietary connection</span>
+        <h3>SEAL-GUARD&trade;</h3>
+        <div class="pc-subtitle">Proprietary Connection Thread Compound</div>
+        <div class="pc-desc">Non-metallic thread compound providing optimum galling resistance and frictional properties in the make up of high-chrome, proprietary designs (metal to metal seals), and API 8-round designs.</div>
+        <div class="pc-specs">
+          <span class="pc-spec">-29&deg;C to 260&deg;C</span>
+          <span class="pc-spec">Friction factor 0.9 vs API-MODIFIED</span>
+        </div>
+      </div>
+
+      <div class="product-card reveal stagger-2">
+        <span class="pc-badge">All-weather</span>
+        <h3>RUN-N-SEAL&reg; EXTREME AWG</h3>
+        <div class="pc-subtitle">All Weather Grade, Metal-Free Thread Sealant</div>
+        <div class="pc-desc">Metal-free, high-pressure sealant alternative versus API-MODIFIED for OCTG 8-round and buttress connections. Contains graphite and anti-wear additives. Non-toxic, H2S inhibited.</div>
+        <div class="pc-specs">
+          <span class="pc-spec">-40&deg;C to 232&deg;C</span>
+          <span class="pc-spec">H2S inhibited</span>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ══════════════════════════════════════════════════
+     4. DEACON HIGH TEMPERATURE SEALANTS
+     ══════════════════════════════════════════════════ -->
+<section class="products-section" id="deacon">
+  <div class="container">
+    <div class="section-intro">
+      <div class="section-tag reveal">DEACON High Temperature Sealants</div>
+      <h2 class="reveal stagger-1">Flange &amp; thread sealants for extreme environments</h2>
+      <p class="reveal stagger-2">Jet-Lube's DEACON line of flange sealants, sealing compounds, injectable packings and specialty products — formulated for iron and steel producers, power generators, pipelines, oil refineries, wastewater treatment, and petrochemical producers.</p>
+    </div>
+
+    <!-- High Temp Sealants table — best viewed as table due to specs density -->
+    <h3 class="reveal" style="font-size: 0.85rem; font-weight: 700; text-transform: uppercase; letter-spacing: 0.1em; color: var(--orange); margin-bottom: 20px;">Flange &amp; Thread Sealants</h3>
+
+    <table class="product-table reveal stagger-1">
+      <thead>
+        <tr>
+          <th>Product</th>
+          <th>Description</th>
+          <th>Temp Rating</th>
+          <th>Pressure</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td><span class="product-name">DEACON&reg; 770-L</span></td>
+          <td>Thermal Reactive Liquid Sealing Compound — heat curing liquid for threads, turbine split casings, metal-to-metal joints, pump casings, boilers and pressure vessels</td>
+          <td>93&deg;C to 510&deg;C</td>
+          <td><span class="tag">11,000 PSI</span></td>
+        </tr>
+        <tr>
+          <td><span class="product-name">DEACON&reg; 770-P</span></td>
+          <td>Thermal Reactive Paste Sealing Compound — heat curing paste for flanges, threads, and as a dressing on fabricated gaskets. Unaffected by thermal cycling</td>
+          <td>93&deg;C to 510&deg;C</td>
+          <td><span class="tag">11,000 PSI</span></td>
+        </tr>
+        <tr>
+          <td><span class="product-name">DEACON&reg; 4011</span></td>
+          <td>Thermal Reactive Liquid Sealing Compound — for higher temperature applications. Achieves leak-free seal on similar or dissimilar mating surfaces in steam, hot air, oil, or chemicals</td>
+          <td>315&deg;C to 732&deg;C</td>
+          <td><span class="tag">11,000 PSI</span></td>
+        </tr>
+        <tr>
+          <td><span class="product-name">DEACON&reg; 4011-P</span></td>
+          <td>Thermal Reactive Paste Sealing Compound — paste version of 4011 for flanges, threads, access doors, stacks, heat exchangers and pressure vessels</td>
+          <td>315&deg;C to 732&deg;C</td>
+          <td><span class="tag">11,000 PSI</span></td>
+        </tr>
+        <tr>
+          <td><span class="product-name">DEACON&reg; 8875-THIN</span></td>
+          <td>Thermal Reactive Paste — designed for the most extreme temperature applications. Flows to fill voids and surface irregularities, prolonging gasket life</td>
+          <td>65&deg;C to 982&deg;C</td>
+          <td><span class="tag">5,000 PSI</span></td>
+        </tr>
+        <tr>
+          <td><span class="product-name">DEACON&reg; 8875</span></td>
+          <td>Thick, fibrous heat curing paste sealant and refractory hybrid. Expands to fill pits, steam cuts, or gaps. Not weak and brittle like ceramics</td>
+          <td>260&deg;C to 982&deg;C</td>
+          <td><span class="tag">5,000 PSI</span></td>
+        </tr>
+      </tbody>
+    </table>
+
+    <h3 class="reveal" style="font-size: 0.85rem; font-weight: 700; text-transform: uppercase; letter-spacing: 0.1em; color: var(--orange); margin: 48px 0 20px;">Sealing Compounds</h3>
+
+    <table class="product-table reveal stagger-1">
+      <thead>
+        <tr>
+          <th>Product</th>
+          <th>Description</th>
+          <th>Temp Rating</th>
+          <th>Pressure</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td><span class="product-name">DEACON&reg; 3100</span></td>
+          <td>Extruded Gasket Compound — putty-like joint sealant usable with or without fabricated gaskets. Fully compressible to 0.002. Cures to flexible leather-like consistency</td>
+          <td>93&deg;C to 510&deg;C</td>
+          <td><span class="tag">1,500 PSI</span></td>
+        </tr>
+        <tr>
+          <td><span class="product-name">DEACON&reg; 3300</span></td>
+          <td>Extruded Gasket Compound — higher temperature version. Putty-like sealant for ducts, heat exchangers, blowers, pumps, compressors, boilers, stacks</td>
+          <td>315&deg;C to 871&deg;C</td>
+          <td><span class="tag">1,500 PSI</span></td>
+        </tr>
+        <tr>
+          <td><span class="product-name">DEACON&reg; 7228</span></td>
+          <td>Thread / Gasket Sealant Paste — viscous paste for threaded fittings, flanges, NPT connections, wellhead flanges, mud motor threads. Slow drying, flexible setting</td>
+          <td>-32&deg;C to 232&deg;C</td>
+          <td><span class="tag">10,000 PSI</span></td>
+        </tr>
+        <tr>
+          <td><span class="product-name">DEACON&reg; 6328</span></td>
+          <td>2-Part Rubber Sealant Compound — strong adhesion, excellent dielectric properties. Cures in 30 minutes. Chemically resistant to gasoline, solvents, transformer oil</td>
+          <td>-45&deg;C to 110&deg;C</td>
+          <td>—</td>
+        </tr>
+        <tr>
+          <td><span class="product-name">DEACON&reg; 327-RTV</span></td>
+          <td>One-part Acetoxy Cure Adhesive — general industrial sealing. Adheres to metal, glass, wood, silicone, ceramics. Meets USDA, FDA, MIL-A-46106 specifications</td>
+          <td>-51&deg;C to 260&deg;C</td>
+          <td>—</td>
+        </tr>
+        <tr>
+          <td><span class="product-name">DEACON&reg; 329-RED</span></td>
+          <td>One-part Acetoxy Cure Adhesive — higher temperature version of 327-RTV. Same sealing and adhesive performance with extended heat resistance</td>
+          <td>-51&deg;C to 315&deg;C</td>
+          <td>—</td>
+        </tr>
+      </tbody>
+    </table>
+
+    <h3 class="reveal" style="font-size: 0.85rem; font-weight: 700; text-transform: uppercase; letter-spacing: 0.1em; color: var(--orange); margin: 48px 0 20px;">DEACON Specialty Products</h3>
+
+    <table class="product-table reveal stagger-1">
+      <thead>
+        <tr>
+          <th>Product</th>
+          <th>Description</th>
+          <th>Temp Rating</th>
+          <th>Pressure</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td><span class="product-name">DEACON&reg; MOLD-PAC</span></td>
+          <td>Casting Retainer Putty — asbestos-free damming, molding and positioning putty for vibration suppression, pouring Babbitt, epoxies, and molten materials</td>
+          <td>Up to 649&deg;C</td>
+          <td>—</td>
+        </tr>
+        <tr>
+          <td><span class="product-name">DEACON&reg; 427</span></td>
+          <td>2-Part Epoxy — 1:1 mix ratio, cures at room temperature. Available in liquid, medium, or fibered mix. Tensile strength 7,500 PSI</td>
+          <td>21&deg;C to 204&deg;C</td>
+          <td>—</td>
+        </tr>
+        <tr>
+          <td><span class="product-name">DEACON&reg; PFPE GREASE</span></td>
+          <td>Chemically Inert Lubricant — nonflammable, nontoxic PTFE-thickened perfluorinated polyether. Unmatched chemical and solvent resistance for oxygen systems, food processing, cryogenics</td>
+          <td>-18&deg;C to 260&deg;C</td>
+          <td>—</td>
+        </tr>
+        <tr>
+          <td><span class="product-name">DEACON&reg; 275-CHLORINE</span></td>
+          <td>Chemically Inert Thread Sealant — non-hardening, hydrocarbon-free, self-lubricating. Designed for chlorine systems, aggressive chemicals, and powerful oxidisers</td>
+          <td>-45&deg;C to 204&deg;C</td>
+          <td><span class="tag">10,000 PSI</span></td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+</section>
+
+<!-- ══════════════════════════════════════════════════
+     5. OILFIELD SPECIALTY + BRUSHES
+     ══════════════════════════════════════════════════ -->
+<section class="products-section" id="specialty">
+  <div class="container">
+    <div class="section-intro">
+      <div class="section-tag reveal">Oilfield Specialty</div>
+      <h2 class="reveal stagger-1">Specialty grease, compounds &amp; dope brushes</h2>
+      <p class="reveal stagger-2">Extreme-service greases, threadlockers, wireline lubricants, storage compounds, and the brushes to apply them — all from the Jet Lube range.</p>
+    </div>
+
+    <div class="product-grid" style="margin-bottom: 48px;">
+      <div class="product-card reveal stagger-1">
+        <span class="pc-badge">Extreme service</span>
+        <h3>ALCO-EP&trade; ECF</h3>
+        <div class="pc-subtitle">Extreme-Service Grease</div>
+        <div class="pc-desc">Premium, biodegradable grease containing a synergistic blend of rust and oxidation inhibitors plus extreme pressure and anti-wear additives. Excellent for subsea and topside moving components. Approved for RC-4S and ALT-2 connections.</div>
+        <div class="pc-specs">
+          <span class="pc-spec">-29&deg;C to 232&deg;C</span>
+          <span class="pc-spec">Norway &ldquo;Yellow&rdquo; / &ldquo;E&rdquo; rated</span>
+        </div>
+      </div>
+
+      <div class="product-card reveal stagger-2">
+        <span class="pc-badge">Wireline</span>
+        <h3>WIRE LINE LUBRICANT&trade; ECF</h3>
+        <div class="pc-subtitle">Slick / Electric Braided Wireline Lubricant</div>
+        <div class="pc-desc">Unique product for wire line applications where a grease-type lubricant is required. Easy-flow formula sticks to the wire line and penetrates for added protection. H2S inhibited with anti-rust and anti-corrosion properties.</div>
+        <div class="pc-specs">
+          <span class="pc-spec">-29&deg;C to 260&deg;C</span>
+          <span class="pc-spec">H2S inhibited</span>
+        </div>
+      </div>
+
+      <div class="product-card reveal stagger-3">
+        <span class="pc-badge">Threadlocker</span>
+        <h3>JET-LOK&reg; III</h3>
+        <div class="pc-subtitle">High-Friction &amp; Sealing Compound</div>
+        <div class="pc-desc">Two-part zinc-free epoxy with non-metallic fillers. Permanently locks threaded connections under normal operating conditions. Recommended for casing, shoes, couplings, sub savers, towing eyes and collars.</div>
+        <div class="pc-specs">
+          <span class="pc-spec">Up to 204&deg;C</span>
+          <span class="pc-spec">68 ML &amp; 255 ML kits</span>
+        </div>
+      </div>
+
+      <div class="product-card reveal stagger-4">
+        <span class="pc-badge">Storage protection</span>
+        <h3>KORR-GUARD&trade;</h3>
+        <div class="pc-subtitle">Storage Compound</div>
+        <div class="pc-desc">Water-displacing, semi-fluid grease that flows into thread roots, displacing moisture, cutting oils and residual threading materials. Ideal for short or long-term storage of casing, tubing, drill pipe, or any threaded metal surface.</div>
+        <div class="pc-specs">
+          <span class="pc-spec">-29&deg;C to 218&deg;C</span>
+          <span class="pc-spec">Applied by brush — will not harden</span>
+        </div>
+      </div>
+
+      <div class="product-card reveal stagger-1">
+        <span class="pc-badge">Jacking system</span>
+        <h3>JACKING SYSTEM GREASE&trade; ECF</h3>
+        <div class="pc-subtitle">Heavy-Load Equipment Grease</div>
+        <div class="pc-desc">For jacking systems, slides, cantilever-type rigs and any heavily loaded gear equipment requiring extreme-pressure protection in demanding offshore environments.</div>
+        <div class="pc-specs">
+          <span class="pc-spec">ECF certified</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- Brushes -->
+    <h3 class="reveal" style="font-size: 0.85rem; font-weight: 700; text-transform: uppercase; letter-spacing: 0.1em; color: var(--orange); margin-bottom: 20px;">Dope Brushes — ISO 9001 Certified</h3>
+
+    <div class="product-grid">
+      <div class="product-card reveal stagger-1">
+        <span class="pc-badge">Standard</span>
+        <h3>Dope Brushes</h3>
+        <div class="pc-subtitle">Tapered &amp; Bevelled Styles</div>
+        <div class="pc-desc">Engineered for rough conditions where they are used and the materials being applied. Solid wood handles with rubber drip collars for safe handling. Heavy-duty bristles designed for uniform application. Available in two styles.</div>
+        <div class="pc-specs">
+          <span class="pc-spec">400mm wooden handles</span>
+          <span class="pc-spec">12 per case</span>
+        </div>
+      </div>
+
+      <div class="product-card reveal stagger-2">
+        <span class="pc-badge">Premium</span>
+        <h3>Mustache Brushes</h3>
+        <div class="pc-subtitle">Premium Connection Applicator</div>
+        <div class="pc-desc">Engineered for rough conditions with the same durability as standard dope brushes. The preferred option when applying grease to Premium Connections — designed for precise, even application on critical thread profiles.</div>
+        <div class="pc-specs">
+          <span class="pc-spec">Premium connection specialist</span>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ══════════════════════════════════════════════════
+     CROSS-SELL
+     ══════════════════════════════════════════════════ -->
+<section class="cross-sell">
+  <div class="geo-ring"></div>
+  <div class="container">
+    <div class="cross-sell-header">
+      <div class="section-tag reveal">Pair With</div>
+      <h2 class="reveal stagger-1">Complete the string with Blick Fluids</h2>
+      <p class="reveal stagger-2">Thread protection starts at the surface. Downhole, your fluid system keeps everything moving.</p>
+    </div>
+
+    <div class="cross-sell-grid">
+      <a href="#" class="fluid-card reveal stagger-1">
+        <span class="fc-badge">Lubricant</span>
+        <h4>Torque Down</h4>
+        <p>Reduces friction and torque on the drill string — extends rod and tooling life.</p>
+      </a>
+      <a href="#" class="fluid-card reveal stagger-2">
+        <span class="fc-badge">Core Fluid</span>
+        <h4>HDD Gel</h4>
+        <p>Premium bentonite for hole stability and fluid-loss control in all ground types.</p>
+      </a>
+      <a href="carry-flow-v4.html" class="fluid-card reveal stagger-3">
+        <span class="fc-badge">Stabiliser</span>
+        <h4>Carry Flow</h4>
+        <p>Suspension and carrying capacity for HDD pullbacks — keeps cuttings moving.</p>
+      </a>
+    </div>
+  </div>
+</section>
+
+<!-- ══════════════════════════════════════════════════
+     CTA
+     ══════════════════════════════════════════════════ -->
+<section class="cta">
+  <div class="geo-glow"></div>
+  <div class="container">
+    <div class="cta-content">
+      <div class="section-tag reveal">Get in Touch</div>
+      <h2 class="reveal stagger-1">Need grease or compounds?</h2>
+      <p class="reveal stagger-2">Tell us what you're running and we'll recommend the right Jet Lube product — and get it to you fast.</p>
+      <div class="cta-actions reveal stagger-3">
+        <a href="mailto:sales@blick.group?subject=Jet%20Lube%20Quote%20Request" class="btn btn-primary">Request a Quote</a>
+        <a href="tel:+6478492366" class="btn btn-secondary">Call Blick NZ: +64 7 849 2366</a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ════════ Footer ════════ -->
+<footer>
+  <div class="container">
+    <div class="footer-grid">
+      <div class="footer-brand">
+        <a href="index.html" class="nav-logo"><img src="blick-logo.png" alt="Blick" style="height:32px;width:auto;"></a>
+        <p>Australasia's leading drilling fluid solutions partner. Serving Australia, New Zealand, and the Pacific Islands.</p>
+      </div>
+      <div class="footer-col">
+        <h4>Products</h4>
+        <ul>
+          <li><a href="products.html#fluids">Blick Fluids</a></li>
+          <li><a href="products.html#tooling">Equipment &amp; Tooling</a></li>
+          <li><a href="products.html#jetlube">Grease &amp; Compounds</a></li>
+        </ul>
+      </div>
+      <div class="footer-col">
+        <h4>Grease Range</h4>
+        <ul>
+          <li><a href="#hdd">HDD Thread Grease</a></li>
+          <li><a href="#oilfield">Oilfield Compounds</a></li>
+          <li><a href="#deacon">DEACON Sealants</a></li>
+          <li><a href="#specialty">Specialty &amp; Brushes</a></li>
+        </ul>
+      </div>
+      <div class="footer-col">
+        <h4>Connect</h4>
+        <ul>
+          <li><a href="mailto:sales@blick.group">sales@blick.group</a></li>
+          <li><a href="tel:+6478492366">+64 7 849 2366</a></li>
+          <li><a href="tel:+61390685688">+61 3 9068 5688</a></li>
+        </ul>
+      </div>
+    </div>
+    <div class="footer-bottom">
+      <span>&copy; 2026 Blick Group. All rights reserved.</span>
+      <span>Australia &middot; New Zealand &middot; Pacific Islands</span>
+    </div>
+  </div>
+</footer>
+
+<script>
+  // Scroll reveal
+  const reveals = document.querySelectorAll('.reveal');
+  const observer = new IntersectionObserver((entries) => {
+    entries.forEach(entry => { if (entry.isIntersecting) entry.target.classList.add('visible'); });
+  }, { threshold: 0.1, rootMargin: '0px 0px -60px 0px' });
+  reveals.forEach(el => observer.observe(el));
+
+  // Nav scroll
+  const nav = document.getElementById('nav');
+  window.addEventListener('scroll', () => { nav.classList.toggle('scrolled', window.scrollY > 50); });
+
+  // Category nav active state
+  const catLinks = document.querySelectorAll('.cat-nav-link');
+  const sections = document.querySelectorAll('.products-section[id]');
+  const catObserver = new IntersectionObserver((entries) => {
+    entries.forEach(entry => {
+      if (entry.isIntersecting) {
+        catLinks.forEach(l => l.classList.remove('active'));
+        const active = document.querySelector(`.cat-nav-link[href="#${entry.target.id}"]`);
+        if (active) active.classList.add('active');
+      }
+    });
+  }, { threshold: 0.2, rootMargin: '-80px 0px -60% 0px' });
+  sections.forEach(s => catObserver.observe(s));
+</script>
+
+</body>
+</html>

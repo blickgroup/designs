@@ -1,0 +1,1656 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>kwik-ZIP Casing Spacers & Centralisers — Blick Group</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<style>
+/* ─── Reset & Tokens ─── */
+*, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+:root {
+  --orange: #FD4F00;
+  --orange-light: #FF6B2B;
+  --black: #1A1A1A;
+  --charcoal: #2D2D2D;
+  --grey-dark: #66615C;
+  --grey-mid: #A9A9A9;
+  --grey-light: #EBEAEB;
+  --off-white: #FAFAFA;
+  --white: #FFFFFF;
+  --green: #22C55E;
+  --amber: #F59E0B;
+  --red: #EF4444;
+  --font: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+}
+body { font-family: var(--font); background: var(--off-white); color: var(--charcoal); }
+
+/* ─── Nav ─── */
+nav {
+  position: fixed; top: 0; left: 0; right: 0; z-index: 100;
+  padding: 0 48px;
+  height: 64px;
+  display: flex; align-items: center; justify-content: space-between;
+  background: var(--black);
+  transition: background 0.3s, backdrop-filter 0.3s;
+}
+nav.frosted { background: rgba(26,26,26,0.88); backdrop-filter: blur(12px); }
+.nav-logo { display: flex; align-items: center; gap: 10px; text-decoration: none; }
+.nav-logo-mark {
+  width: 32px; height: 32px;
+  background: var(--orange); border-radius: 50%;
+  display: flex; align-items: center; justify-content: center;
+}
+.nav-logo-mark svg { width: 16px; height: 16px; fill: white; }
+.nav-logo-name { font-size: 1rem; font-weight: 700; color: white; letter-spacing: -0.01em; }
+.nav-links { display: flex; gap: 32px; }
+.nav-links a { color: rgba(255,255,255,0.6); text-decoration: none; font-size: 0.875rem; font-weight: 500; transition: color 0.2s; }
+.nav-links a:hover { color: white; }
+.nav-cta {
+  background: var(--orange); color: white; border: none;
+  padding: 8px 20px; border-radius: 8px;
+  font-size: 0.875rem; font-weight: 600; cursor: pointer;
+  font-family: var(--font); text-decoration: none;
+  transition: background 0.2s;
+}
+.nav-cta:hover { background: var(--orange-light); }
+
+/* ─── Hero ─── */
+.hero {
+  background: var(--black);
+  padding: 120px 48px 80px;
+  position: relative; overflow: hidden;
+}
+.hero-orb {
+  position: absolute; border-radius: 50%;
+  background: var(--orange); opacity: 0.06;
+  animation: orbFloat 18s ease-in-out infinite;
+}
+.hero-orb-1 { width: 600px; height: 600px; top: -200px; right: -80px; }
+.hero-orb-2 { width: 240px; height: 240px; bottom: -60px; left: -60px; animation-delay: -9s; opacity: 0.04; }
+@keyframes orbFloat {
+  0%,100% { transform: translate(0,0) scale(1); }
+  33% { transform: translate(18px,-22px) scale(1.03); }
+  66% { transform: translate(-12px,14px) scale(0.97); }
+}
+.hero-inner { max-width: 1100px; margin: 0 auto; position: relative; z-index: 1; }
+.hero-tag {
+  display: inline-flex; align-items: center; gap: 8px;
+  background: rgba(253,79,0,0.15); border: 1px solid rgba(253,79,0,0.3);
+  color: var(--orange); border-radius: 100px;
+  font-size: 0.75rem; font-weight: 700; letter-spacing: 0.1em; text-transform: uppercase;
+  padding: 6px 14px; margin-bottom: 24px;
+}
+.hero h1 {
+  font-size: clamp(2rem, 4vw, 3.2rem);
+  font-weight: 800; letter-spacing: -0.03em;
+  color: white; line-height: 1.1;
+  margin-bottom: 20px;
+}
+.hero h1 span { color: var(--orange); }
+.hero-sub {
+  font-size: 1.1rem; color: rgba(255,255,255,0.65);
+  line-height: 1.65; max-width: 640px; margin-bottom: 40px;
+}
+.hero-stats {
+  display: flex; gap: 48px;
+}
+.hero-stat-val {
+  font-size: 1.6rem; font-weight: 800; color: white; letter-spacing: -0.03em;
+}
+.hero-stat-label {
+  font-size: 0.78rem; color: rgba(255,255,255,0.4);
+  font-weight: 500; letter-spacing: 0.05em; margin-top: 2px;
+}
+
+/* ─── Series Strip ─── */
+.series-strip {
+  background: var(--charcoal);
+  padding: 48px;
+  border-bottom: 1px solid rgba(255,255,255,0.06);
+}
+.series-strip-inner { max-width: 1100px; margin: 0 auto; }
+.strip-label {
+  font-size: 0.7rem; font-weight: 700; letter-spacing: 0.15em;
+  text-transform: uppercase; color: var(--orange);
+  margin-bottom: 24px;
+}
+.series-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(160px, 1fr));
+  gap: 16px;
+}
+.series-card {
+  background: rgba(255,255,255,0.05);
+  border: 1px solid rgba(255,255,255,0.08);
+  border-radius: 12px; padding: 20px 16px;
+  cursor: pointer; transition: all 0.2s;
+}
+.series-card:hover { background: rgba(253,79,0,0.1); border-color: rgba(253,79,0,0.3); }
+.series-card.active { background: rgba(253,79,0,0.15); border-color: var(--orange); }
+.series-name {
+  font-size: 0.85rem; font-weight: 700; color: white;
+  margin-bottom: 4px;
+}
+.series-od {
+  font-size: 0.72rem; color: var(--orange);
+  font-weight: 600; letter-spacing: 0.05em; margin-bottom: 8px;
+}
+.series-desc { font-size: 0.75rem; color: rgba(255,255,255,0.45); line-height: 1.5; }
+
+/* ─── Main Content ─── */
+main { max-width: 1100px; margin: 0 auto; padding: 64px 48px; }
+
+/* ─── Wizard ─── */
+.wizard-section { margin-bottom: 80px; }
+.section-header { margin-bottom: 40px; }
+.section-tag {
+  font-size: 0.7rem; font-weight: 700; letter-spacing: 0.15em;
+  text-transform: uppercase; color: var(--orange); margin-bottom: 12px;
+}
+.section-header h2 {
+  font-size: 1.8rem; font-weight: 800; letter-spacing: -0.025em;
+  color: var(--black); margin-bottom: 10px;
+}
+.section-header p { font-size: 0.95rem; color: var(--grey-dark); line-height: 1.65; max-width: 580px; }
+
+/* Progress bar */
+.wizard-progress { display: flex; gap: 8px; margin-bottom: 32px; align-items: center; }
+.prog-step {
+  display: flex; align-items: center; gap: 8px;
+  font-size: 0.78rem; font-weight: 600; color: var(--grey-mid);
+  transition: color 0.25s;
+}
+.prog-step.active { color: var(--orange); }
+.prog-step.done { color: var(--green); }
+.prog-dot {
+  width: 28px; height: 28px; border-radius: 50%;
+  border: 2px solid var(--grey-light);
+  display: flex; align-items: center; justify-content: center;
+  font-size: 0.7rem; font-weight: 700; color: var(--grey-mid);
+  transition: all 0.25s; flex-shrink: 0;
+}
+.prog-step.active .prog-dot { border-color: var(--orange); color: var(--orange); background: rgba(253,79,0,0.08); }
+.prog-step.done .prog-dot { border-color: var(--green); background: var(--green); color: white; }
+.prog-line { flex: 1; height: 2px; background: var(--grey-light); border-radius: 1px; max-width: 60px; }
+.prog-line.done { background: var(--green); }
+
+/* Wizard card */
+.wizard-card {
+  background: white;
+  border: 1.5px solid var(--grey-light);
+  border-radius: 20px; overflow: hidden;
+}
+.wizard-step { display: none; }
+.wizard-step.active { display: block; }
+
+.step-header {
+  padding: 32px 40px 0;
+  border-bottom: 1px solid var(--grey-light);
+  padding-bottom: 28px;
+}
+.step-number {
+  font-size: 0.7rem; font-weight: 700; letter-spacing: 0.12em;
+  text-transform: uppercase; color: var(--orange); margin-bottom: 8px;
+}
+.step-header h3 {
+  font-size: 1.3rem; font-weight: 800; color: var(--black);
+  letter-spacing: -0.02em; margin-bottom: 6px;
+}
+.step-header p { font-size: 0.88rem; color: var(--grey-dark); line-height: 1.55; }
+
+.step-body { padding: 36px 40px; }
+
+/* Option cards */
+.option-grid { display: grid; gap: 12px; }
+.option-grid.two-col { grid-template-columns: 1fr 1fr; }
+.option-grid.three-col { grid-template-columns: 1fr 1fr 1fr; }
+.option-card {
+  border: 2px solid var(--grey-light);
+  border-radius: 14px; padding: 20px 22px;
+  cursor: pointer; transition: all 0.2s;
+  display: flex; align-items: flex-start; gap: 14px;
+  user-select: none;
+}
+.option-card:hover { border-color: rgba(253,79,0,0.4); background: rgba(253,79,0,0.03); }
+.option-card.selected { border-color: var(--orange); background: rgba(253,79,0,0.05); }
+.option-icon {
+  width: 44px; height: 44px; border-radius: 10px;
+  background: var(--grey-light);
+  display: flex; align-items: center; justify-content: center;
+  flex-shrink: 0; transition: background 0.2s;
+}
+.option-card.selected .option-icon { background: rgba(253,79,0,0.12); }
+.option-icon svg { width: 22px; height: 22px; }
+.option-label { font-size: 0.95rem; font-weight: 700; color: var(--black); margin-bottom: 4px; }
+.option-hint { font-size: 0.78rem; color: var(--grey-dark); line-height: 1.45; }
+
+/* Two-section layout for steps with diagram */
+.step-two-col { display: grid; grid-template-columns: 1fr 1fr; gap: 48px; align-items: start; }
+
+/* Input fields */
+.field-group { margin-bottom: 24px; }
+.field-label {
+  font-size: 0.82rem; font-weight: 700; color: var(--charcoal);
+  margin-bottom: 8px; display: flex; align-items: center; gap: 8px;
+}
+.field-optional {
+  font-size: 0.72rem; font-weight: 500; color: var(--grey-mid);
+  background: var(--grey-light); padding: 2px 8px; border-radius: 100px;
+}
+.field-hint { font-size: 0.78rem; color: var(--grey-mid); margin-top: 6px; line-height: 1.4; }
+.input-wrap { position: relative; }
+.input-wrap input {
+  width: 100%; height: 52px;
+  border: 2px solid var(--grey-light);
+  border-radius: 10px; padding: 0 64px 0 16px;
+  font-size: 1rem; font-family: var(--font); font-weight: 600;
+  color: var(--black); background: white; outline: none;
+  transition: border-color 0.2s;
+  -moz-appearance: textfield;
+}
+.input-wrap input::-webkit-outer-spin-button,
+.input-wrap input::-webkit-inner-spin-button { -webkit-appearance: none; }
+.input-wrap input:focus { border-color: var(--orange); }
+.input-unit {
+  position: absolute; right: 16px; top: 50%; transform: translateY(-50%);
+  font-size: 0.8rem; font-weight: 700; color: var(--grey-mid);
+  pointer-events: none;
+}
+.unit-toggle {
+  display: flex; background: var(--grey-light); border-radius: 8px;
+  padding: 3px; margin-top: 8px; width: fit-content;
+}
+.unit-btn {
+  padding: 6px 14px; border-radius: 6px;
+  font-size: 0.78rem; font-weight: 700; cursor: pointer;
+  border: none; background: transparent; color: var(--grey-dark);
+  font-family: var(--font); transition: all 0.2s;
+}
+.unit-btn.active { background: white; color: var(--black); box-shadow: 0 1px 3px rgba(0,0,0,0.1); }
+
+/* Cross-section SVG diagram */
+.diagram-box {
+  background: #F5F5F5;
+  border: 1.5px solid var(--grey-light);
+  border-radius: 16px; padding: 24px;
+  text-align: center;
+}
+.diagram-title {
+  font-size: 0.75rem; font-weight: 700; color: var(--grey-dark);
+  letter-spacing: 0.08em; text-transform: uppercase; margin-bottom: 16px;
+}
+#cross-section-svg { width: 100%; max-width: 260px; }
+.diagram-legend {
+  margin-top: 16px; text-align: left;
+  display: flex; flex-direction: column; gap: 6px;
+}
+.legend-row { display: flex; align-items: center; gap: 10px; font-size: 0.8rem; }
+.legend-dot {
+  width: 10px; height: 10px; border-radius: 50%; flex-shrink: 0;
+}
+.legend-val { font-weight: 700; color: var(--black); margin-left: auto; }
+
+/* Toggle (yes/no) */
+.toggle-field { display: flex; gap: 12px; }
+.toggle-opt {
+  flex: 1; border: 2px solid var(--grey-light);
+  border-radius: 10px; padding: 14px 20px;
+  font-size: 0.9rem; font-weight: 700; color: var(--grey-dark);
+  cursor: pointer; transition: all 0.2s; text-align: center;
+  user-select: none;
+}
+.toggle-opt:hover { border-color: rgba(253,79,0,0.4); }
+.toggle-opt.selected { border-color: var(--orange); color: var(--orange); background: rgba(253,79,0,0.05); }
+
+/* Step nav */
+.step-footer {
+  padding: 24px 40px;
+  border-top: 1px solid var(--grey-light);
+  display: flex; align-items: center; justify-content: space-between;
+}
+.btn {
+  display: inline-flex; align-items: center; gap: 8px;
+  padding: 12px 24px; border-radius: 10px;
+  font-size: 0.9rem; font-weight: 700; cursor: pointer;
+  border: none; font-family: var(--font); transition: all 0.2s;
+}
+.btn-primary { background: var(--orange); color: white; }
+.btn-primary:hover { background: var(--orange-light); }
+.btn-primary:disabled { background: var(--grey-light); color: var(--grey-mid); cursor: not-allowed; }
+.btn-ghost { background: transparent; color: var(--grey-dark); border: 2px solid var(--grey-light); }
+.btn-ghost:hover { border-color: var(--grey-dark); color: var(--black); }
+.btn svg { width: 16px; height: 16px; stroke: currentColor; fill: none; stroke-width: 2.5; stroke-linecap: round; stroke-linejoin: round; }
+
+/* Validation error */
+.field-error { font-size: 0.78rem; color: var(--red); margin-top: 6px; display: none; }
+.field-error.show { display: block; }
+.input-wrap input.error { border-color: var(--red); }
+
+/* ─── Single-page wizard form ─── */
+.wf-body { padding: 36px 40px; }
+.wf-section { margin-bottom: 28px; }
+.wf-section-label {
+  font-size: 0.7rem; font-weight: 700; letter-spacing: 0.12em;
+  text-transform: uppercase; color: var(--orange); margin-bottom: 16px;
+}
+.wf-divider { border: none; border-top: 1px solid var(--grey-light); margin: 0 0 28px; }
+.wf-row-two { display: grid; grid-template-columns: 1fr 1fr; gap: 32px; }
+.wf-row-three { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 24px; }
+.wf-section-dims { display: grid; grid-template-columns: 1fr 1fr; gap: 40px; align-items: start; }
+.wf-footer {
+  padding: 24px 40px; border-top: 1px solid var(--grey-light);
+  display: flex; align-items: center; gap: 20px;
+}
+.wf-footer-hint { font-size: 0.82rem; color: var(--grey-mid); }
+.btn-large { padding: 14px 32px; font-size: 1rem; }
+
+/* Expandable bell joint field */
+.expandable-field { margin-bottom: 24px; }
+.expand-toggle {
+  display: flex; align-items: center; gap: 8px;
+  background: none; border: 1.5px dashed var(--grey-light);
+  border-radius: 8px; padding: 10px 14px; cursor: pointer;
+  font-size: 0.82rem; font-weight: 600; color: var(--grey-dark);
+  font-family: var(--font); transition: all 0.2s; width: 100%;
+  text-align: left;
+}
+.expand-toggle:hover { border-color: var(--orange); color: var(--orange); }
+.expand-toggle.open { border-color: var(--orange); color: var(--orange); border-style: solid; }
+.expandable-body { padding: 16px 0 0; }
+
+/* ─── Results ─── */
+#results { display: none; }
+#results.show { display: block; }
+
+.results-card {
+  background: white; border: 1.5px solid var(--grey-light);
+  border-radius: 20px; overflow: hidden; margin-bottom: 24px;
+}
+.results-header {
+  background: var(--black); padding: 36px 40px;
+  display: flex; align-items: flex-start; justify-content: space-between; gap: 24px;
+}
+.results-header-left { flex: 1; }
+.results-tag {
+  font-size: 0.7rem; font-weight: 700; letter-spacing: 0.12em;
+  text-transform: uppercase; color: var(--orange);
+  display: flex; align-items: center; gap: 8px; margin-bottom: 12px;
+}
+.results-tag::before {
+  content: ''; width: 8px; height: 8px; border-radius: 50%;
+  background: var(--green);
+  box-shadow: 0 0 0 3px rgba(34,197,94,0.2);
+}
+.results-series {
+  font-size: 2.2rem; font-weight: 800; color: white;
+  letter-spacing: -0.03em; line-height: 1;
+  margin-bottom: 6px;
+}
+.results-model {
+  font-size: 1rem; color: rgba(255,255,255,0.6); font-weight: 500;
+}
+.results-diagram-wrap {
+  background: rgba(255,255,255,0.06);
+  border: 1px solid rgba(255,255,255,0.1);
+  border-radius: 12px; padding: 16px;
+  min-width: 180px; text-align: center;
+}
+#results-svg { width: 160px; }
+
+.results-body { padding: 36px 40px; }
+.results-grid {
+  display: grid; grid-template-columns: repeat(3, 1fr);
+  gap: 20px; margin-bottom: 32px;
+}
+.result-stat {
+  background: var(--off-white); border-radius: 12px;
+  padding: 20px; border: 1px solid var(--grey-light);
+}
+.result-stat-label {
+  font-size: 0.72rem; font-weight: 700; letter-spacing: 0.08em;
+  text-transform: uppercase; color: var(--grey-mid); margin-bottom: 6px;
+}
+.result-stat-val {
+  font-size: 1.5rem; font-weight: 800; color: var(--black);
+  letter-spacing: -0.02em;
+}
+.result-stat-sub { font-size: 0.78rem; color: var(--grey-dark); margin-top: 2px; }
+
+.results-breakdown {
+  background: var(--off-white); border: 1px solid var(--grey-light);
+  border-radius: 12px; padding: 24px; margin-bottom: 24px;
+}
+.breakdown-title {
+  font-size: 0.8rem; font-weight: 700; color: var(--charcoal);
+  letter-spacing: 0.05em; text-transform: uppercase; margin-bottom: 16px;
+}
+.breakdown-row {
+  display: flex; justify-content: space-between; align-items: center;
+  padding: 10px 0; border-bottom: 1px solid var(--grey-light);
+  font-size: 0.88rem;
+}
+.breakdown-row:last-child { border-bottom: none; }
+.breakdown-row span:first-child { color: var(--grey-dark); }
+.breakdown-row span:last-child { font-weight: 700; color: var(--black); }
+
+/* Product Info Panel */
+.product-info-panel {
+  background: var(--off-white); border: 1px solid var(--grey-light);
+  border-radius: 12px; padding: 24px; margin-bottom: 24px;
+}
+.product-info-grid { display: flex; flex-direction: column; gap: 0; margin-bottom: 16px; }
+.product-info-row {
+  display: flex; justify-content: space-between; align-items: baseline;
+  padding: 9px 0; border-bottom: 1px solid var(--grey-light);
+  font-size: 0.88rem;
+}
+.product-info-row:last-child { border-bottom: none; }
+.pi-label { color: var(--grey-dark); }
+.pi-val { font-weight: 700; color: var(--black); }
+.pi-code {
+  font-family: 'Courier New', monospace; font-size: 0.85rem;
+  background: var(--grey-light); padding: 2px 8px; border-radius: 4px;
+  font-weight: 600;
+}
+.compliance-row {
+  display: flex; align-items: flex-start; gap: 16px;
+  padding: 12px 0 0; border-top: 1px solid var(--grey-light);
+  font-size: 0.88rem; margin-bottom: 12px;
+}
+.compliance-row .pi-label { flex-shrink: 0; color: var(--grey-dark); padding-top: 2px; }
+.compliance-badges { display: flex; flex-wrap: wrap; gap: 6px; }
+.compliance-badge {
+  background: rgba(34,197,94,0.1); border: 1px solid rgba(34,197,94,0.3);
+  color: #15803d; border-radius: 4px;
+  font-size: 0.72rem; font-weight: 700; padding: 3px 8px;
+  letter-spacing: 0.03em;
+}
+.product-note {
+  font-size: 0.82rem; color: var(--grey-dark); line-height: 1.55;
+  border-top: 1px solid var(--grey-light); padding-top: 12px;
+  font-style: italic;
+}
+
+/* Warnings */
+.warning-box {
+  background: rgba(245,158,11,0.08);
+  border: 1.5px solid rgba(245,158,11,0.3);
+  border-radius: 12px; padding: 16px 20px;
+  display: flex; gap: 12px; margin-bottom: 16px;
+}
+.warning-box.error-box {
+  background: rgba(239,68,68,0.08);
+  border-color: rgba(239,68,68,0.3);
+}
+.warning-icon { font-size: 1.1rem; flex-shrink: 0; }
+.warning-text { font-size: 0.85rem; color: var(--charcoal); line-height: 1.5; }
+.warning-text strong { color: var(--black); }
+
+/* Action buttons */
+.results-actions { display: flex; gap: 12px; flex-wrap: wrap; }
+.btn-large { padding: 16px 32px; font-size: 1rem; border-radius: 12px; }
+.btn-outline {
+  background: transparent; color: var(--charcoal);
+  border: 2px solid var(--grey-light);
+}
+.btn-outline:hover { border-color: var(--charcoal); }
+
+/* Restart */
+.restart-link {
+  display: inline-flex; align-items: center; gap: 6px;
+  font-size: 0.85rem; font-weight: 600; color: var(--grey-dark);
+  cursor: pointer; margin-top: 16px; text-decoration: none;
+  background: none; border: none; font-family: var(--font);
+}
+.restart-link:hover { color: var(--orange); }
+
+/* ─── Series Info Section ─── */
+.series-info-section {
+  margin-top: 80px; margin-bottom: 64px;
+}
+.series-info-grid {
+  display: grid; grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+  gap: 24px;
+}
+.series-info-card {
+  background: white; border: 1.5px solid var(--grey-light);
+  border-radius: 16px; padding: 28px;
+  transition: border-color 0.2s;
+}
+.series-info-card:hover { border-color: var(--orange); }
+.series-badge {
+  display: inline-block;
+  background: rgba(253,79,0,0.1); color: var(--orange);
+  font-size: 0.72rem; font-weight: 700; letter-spacing: 0.1em;
+  text-transform: uppercase; padding: 4px 12px; border-radius: 100px;
+  margin-bottom: 16px;
+}
+.series-info-card h3 {
+  font-size: 1.05rem; font-weight: 800; color: var(--black);
+  margin-bottom: 6px; letter-spacing: -0.015em;
+}
+.series-info-card .od-range {
+  font-size: 0.8rem; color: var(--orange); font-weight: 700; margin-bottom: 12px;
+}
+.series-info-card p { font-size: 0.85rem; color: var(--grey-dark); line-height: 1.6; margin-bottom: 16px; }
+.series-uses { display: flex; flex-wrap: wrap; gap: 6px; }
+.series-use-chip {
+  background: var(--off-white); border: 1px solid var(--grey-light);
+  border-radius: 100px; padding: 4px 12px;
+  font-size: 0.72rem; font-weight: 600; color: var(--grey-dark);
+}
+
+/* ─── Print / PDF styles ─── */
+@media print {
+  nav, .hero, .series-strip, .wizard-section,
+  .series-info-section, .results-actions, footer,
+  .restart-link, .btn-ghost { display: none !important; }
+
+  body { background: white; font-size: 12px; }
+  main { padding: 0; max-width: 100%; }
+
+  #results { display: block !important; }
+  .results-card { border: 1px solid #ddd; border-radius: 8px; margin-bottom: 16px; page-break-inside: avoid; }
+
+  .results-header { background: #1A1A1A !important; -webkit-print-color-adjust: exact; print-color-adjust: exact; padding: 24px 28px; }
+  .results-series { font-size: 1.8rem !important; }
+
+  .results-body { padding: 24px 28px; }
+  .results-grid { gap: 12px; margin-bottom: 20px; }
+  .result-stat { padding: 14px; }
+  .result-stat-val { font-size: 1.2rem; }
+
+  .results-breakdown { padding: 16px; }
+
+  .print-header {
+    display: flex !important;
+    align-items: center; justify-content: space-between;
+    padding: 16px 0 20px; border-bottom: 2px solid var(--orange);
+    margin-bottom: 24px;
+  }
+  .print-logo-text { font-size: 1.1rem; font-weight: 800; color: #1A1A1A; }
+  .print-date { font-size: 0.78rem; color: #888; }
+
+  .print-footer {
+    display: block !important;
+    margin-top: 24px; padding-top: 16px;
+    border-top: 1px solid #ddd;
+    font-size: 0.72rem; color: #999;
+    text-align: center;
+  }
+
+  #results-svg-print { display: block !important; }
+}
+
+/* Hide print-only elements on screen */
+.print-header { display: none; }
+.print-footer { display: none; }
+
+/* ─── Footer ─── */
+footer {
+  background: var(--black); padding: 40px 48px;
+  display: flex; align-items: center; justify-content: space-between;
+}
+.footer-copy { font-size: 0.8rem; color: rgba(255,255,255,0.3); }
+.footer-links { display: flex; gap: 24px; }
+.footer-links a { font-size: 0.8rem; color: rgba(255,255,255,0.4); text-decoration: none; }
+.footer-links a:hover { color: rgba(255,255,255,0.8); }
+
+/* ─── Prototype badge ─── */
+.proto-badge {
+  position: fixed; bottom: 20px; right: 20px; z-index: 200;
+  background: var(--orange); color: white;
+  font-size: 0.7rem; font-weight: 700; letter-spacing: 0.1em; text-transform: uppercase;
+  padding: 6px 14px; border-radius: 100px;
+  box-shadow: 0 4px 16px rgba(253,79,0,0.4);
+}
+
+@media (max-width: 768px) {
+  nav { padding: 0 24px; }
+  .hero { padding: 100px 24px 60px; }
+  .series-strip { padding: 32px 24px; }
+  main { padding: 48px 24px; }
+  footer { padding: 32px 24px; flex-direction: column; gap: 20px; }
+  .hero-stats { gap: 24px; }
+  .option-grid.two-col { grid-template-columns: 1fr; }
+  .option-grid.three-col { grid-template-columns: 1fr; }
+  .results-grid { grid-template-columns: 1fr 1fr; }
+  .results-header { flex-direction: column; }
+  .wf-body { padding: 24px; }
+  .wf-row-two { grid-template-columns: 1fr; }
+  .wf-row-three { grid-template-columns: 1fr; }
+  .wf-section-dims { grid-template-columns: 1fr; }
+  .wf-footer { padding: 20px 24px; flex-direction: column; align-items: flex-start; }
+}
+</style>
+</head>
+<body>
+
+<!-- Print-only header (hidden on screen) -->
+<div class="print-header">
+  <div class="print-logo-text">Blick Group — kwik-ZIP Selection Report</div>
+  <div class="print-date" id="print-date"></div>
+</div>
+
+<div class="proto-badge">Prototype</div>
+
+<!-- Nav -->
+<nav id="nav">
+  <a href="gallery.html" class="nav-logo">
+    <div class="nav-logo-mark">
+      <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="8"/></svg>
+    </div>
+    <span class="nav-logo-name">Blick Group</span>
+  </a>
+  <div class="nav-links">
+    <a href="products.html">Products</a>
+    <a href="services.html">Services</a>
+    <a href="contact.html">Contact</a>
+  </div>
+  <a href="contact.html" class="nav-cta">Get a Quote</a>
+</nav>
+
+<!-- Hero -->
+<section class="hero">
+  <div class="hero-orb hero-orb-1"></div>
+  <div class="hero-orb hero-orb-2"></div>
+  <div class="hero-inner">
+    <div class="hero-tag">kwik-ZIP Product Family</div>
+    <h1>Casing Spacers &<br><span>Centralisers</span></h1>
+    <p class="hero-sub">Non-metallic, non-corroding casing spacers for trenchless pipeline, water well, and ground engineering applications — from 18mm to 1,600mm+ pipe OD. Use the selection wizard below to find your product in under 60 seconds.</p>
+    <div class="hero-stats">
+      <div><div class="hero-stat-val">18mm – 1,600mm+</div><div class="hero-stat-label">Pipe OD coverage</div></div>
+      <div><div class="hero-stat-val">6 Series</div><div class="hero-stat-label">GT · HD · HDX · HDXT · 155 · 380</div></div>
+      <div><div class="hero-stat-val">WSAA Certified</div><div class="hero-stat-label">HDX series</div></div>
+    </div>
+  </div>
+</section>
+
+<!-- Series overview strip -->
+<div class="series-strip">
+  <div class="series-strip-inner">
+    <div class="strip-label">All Series — quick reference</div>
+    <div class="series-grid">
+      <div class="series-card">
+        <div class="series-name">GT Series</div>
+        <div class="series-od">18 – 65mm OD</div>
+        <div class="series-desc">Small bore: soil nails, anchors, monitor wells, drop pipe</div>
+      </div>
+      <div class="series-card">
+        <div class="series-name">155 Series</div>
+        <div class="series-od">58 – 180mm OD</div>
+        <div class="series-desc">Vertical: well casing, gravel packed screens, pump install</div>
+      </div>
+      <div class="series-card">
+        <div class="series-name">380 Series</div>
+        <div class="series-od">160 – 760mm OD</div>
+        <div class="series-desc">Vertical large bore: production casing, piles, sheathing</div>
+      </div>
+      <div class="series-card">
+        <div class="series-name">HD Series</div>
+        <div class="series-od">&gt;110mm OD</div>
+        <div class="series-desc">Horizontal light/medium: trenchless, cased crossings, HDD</div>
+      </div>
+      <div class="series-card">
+        <div class="series-name">HDX Series</div>
+        <div class="series-od">&gt;100mm OD</div>
+        <div class="series-desc">Horizontal heavy pipe: steel, DICL, MSCL, GRE, PIP</div>
+      </div>
+      <div class="series-card">
+        <div class="series-name">HDXT Series</div>
+        <div class="series-od">&gt;100mm OD</div>
+        <div class="series-desc">HDX + load inserts: high temp, ungrouted, elevated loads</div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Main content -->
+<main>
+
+  <!-- ── WIZARD ── -->
+  <section class="wizard-section" id="wizard-section">
+    <div class="section-header">
+      <div class="section-tag">Product Selection</div>
+      <h2>Find your kwik-ZIP in 60 seconds</h2>
+      <p>Enter your project details below — the wizard selects the right series, exact runner height model, and calculates total quantity.</p>
+    </div>
+
+    <div class="wizard-card" id="wizard-card">
+      <div class="wf-body">
+
+        <!-- ── 1. Application Type ── -->
+        <div class="wf-section-label">1 — Application Type</div>
+        <div class="wf-section wf-row-two">
+          <div class="field-group" style="margin-bottom:0">
+            <div class="field-label">Pipe Orientation</div>
+            <div class="option-grid two-col" id="orientation-options">
+              <div class="option-card" data-val="horizontal" onclick="selectOption(this,'orientation')">
+                <div class="option-icon">
+                  <svg viewBox="0 0 24 24" fill="none" stroke="#66615C" stroke-width="2" stroke-linecap="round">
+                    <line x1="3" y1="12" x2="21" y2="12"/>
+                    <circle cx="7" cy="12" r="3" fill="none"/>
+                    <circle cx="17" cy="12" r="3" fill="none"/>
+                  </svg>
+                </div>
+                <div>
+                  <div class="option-label">Horizontal</div>
+                  <div class="option-hint">Cased crossings, HDD, slip lining</div>
+                </div>
+              </div>
+              <div class="option-card" data-val="vertical" onclick="selectOption(this,'orientation')">
+                <div class="option-icon">
+                  <svg viewBox="0 0 24 24" fill="none" stroke="#66615C" stroke-width="2" stroke-linecap="round">
+                    <line x1="12" y1="3" x2="12" y2="21"/>
+                    <circle cx="12" cy="7" r="3" fill="none"/>
+                    <circle cx="12" cy="17" r="3" fill="none"/>
+                  </svg>
+                </div>
+                <div>
+                  <div class="option-label">Vertical</div>
+                  <div class="option-hint">Water wells, bore holes, piles</div>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="field-group" style="margin-bottom:0">
+            <div class="field-label">Pipe Weight / Wall Class</div>
+            <div class="option-grid two-col" id="weight-options">
+              <div class="option-card" data-val="light" onclick="selectOption(this,'weight')">
+                <div class="option-icon">
+                  <svg viewBox="0 0 24 24" fill="none" stroke="#66615C" stroke-width="2" stroke-linecap="round"><circle cx="12" cy="12" r="8"/><circle cx="12" cy="12" r="3"/></svg>
+                </div>
+                <div>
+                  <div class="option-label">Light / Medium</div>
+                  <div class="option-hint">PVC, HDPE, GRE, fibreglass</div>
+                </div>
+              </div>
+              <div class="option-card" data-val="heavy" onclick="selectOption(this,'weight')">
+                <div class="option-icon">
+                  <svg viewBox="0 0 24 24" fill="none" stroke="#66615C" stroke-width="2" stroke-linecap="round"><circle cx="12" cy="12" r="8"/><circle cx="12" cy="12" r="5"/><circle cx="12" cy="12" r="2" fill="#66615C"/></svg>
+                </div>
+                <div>
+                  <div class="option-label">Heavy</div>
+                  <div class="option-hint">Steel, DICL, MSCL — thick-wall</div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="wf-divider"></div>
+
+        <!-- ── 2 & 3. Pipe + Hole dimensions with diagram ── -->
+        <div class="wf-section wf-section-dims">
+          <div class="wf-dims-fields">
+            <div class="wf-section-label">2 — Carrier Pipe Diameter (B)</div>
+            <div class="field-group">
+              <div class="field-label">Pipe Outside Diameter — B</div>
+              <div class="input-wrap">
+                <input type="number" id="pipe-od" min="18" max="2000" placeholder="e.g. 315"
+                  oninput="onDimensionChange()" onchange="validatePipeOD()">
+                <span class="input-unit" id="od-unit-label">mm</span>
+              </div>
+              <div class="unit-toggle">
+                <button class="unit-btn active" onclick="setUnit('mm')" id="unit-mm">mm</button>
+                <button class="unit-btn" onclick="setUnit('in')" id="unit-in">inches</button>
+              </div>
+              <div class="field-error" id="od-error">Please enter a valid pipe OD (18–2000mm).</div>
+            </div>
+
+            <!-- Bell joint — expandable, collapsed by default -->
+            <div class="expandable-field">
+              <button class="expand-toggle" id="bell-toggle" onclick="toggleBellJoint()" type="button">
+                <svg id="bell-toggle-icon" viewBox="0 0 24 24" style="width:14px;height:14px;stroke:currentColor;fill:none;stroke-width:2.5;stroke-linecap:round;flex-shrink:0;transition:transform 0.2s"><polyline points="9 18 15 12 9 6"/></svg>
+                Bell joint / flange height
+                <span class="field-optional">Optional — only needed if pipe has a raised joint or flange</span>
+              </button>
+              <div class="expandable-body" id="bell-body" style="display:none">
+                <div class="input-wrap" style="max-width:220px">
+                  <input type="number" id="bell-height" min="0" max="500" placeholder="0"
+                    oninput="onDimensionChange()">
+                  <span class="input-unit" id="bell-unit-label">mm</span>
+                </div>
+                <div class="field-hint">Height of the bell joint or flange above the pipe surface. Runner height must clear this by at least 15mm.</div>
+              </div>
+            </div>
+
+            <div class="wf-section-label" style="margin-top:8px">3 — Hole / Casing Diameter (A)</div>
+            <div class="field-group">
+              <div class="field-label">Hole / Casing Inner Diameter — A</div>
+              <div class="input-wrap">
+                <input type="number" id="casing-id" min="20" max="3000" placeholder="e.g. 410"
+                  oninput="onDimensionChange()" onchange="validateCasingID()">
+                <span class="input-unit" id="cid-unit-label">mm</span>
+              </div>
+              <div class="field-hint">Inside diameter of the borehole or outer casing. This is dimension A — the outer boundary the spacer sits against.</div>
+              <div class="field-error" id="cid-error">Hole diameter must be greater than Pipe OD.</div>
+            </div>
+
+            <div id="clearance-display" style="display:none">
+              <div style="background:rgba(253,79,0,0.06);border:1.5px solid rgba(253,79,0,0.2);border-radius:12px;padding:16px 20px;">
+                <div style="font-size:0.72rem;font-weight:700;letter-spacing:0.08em;text-transform:uppercase;color:var(--orange);margin-bottom:6px;">Annular Clearance (C)</div>
+                <div style="font-size:1.6rem;font-weight:800;color:var(--black);letter-spacing:-0.02em;" id="clearance-val">—</div>
+                <div style="font-size:0.78rem;color:var(--grey-dark);margin-top:2px;">C = (A − B) ÷ 2</div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Cross-section diagram -->
+          <div class="diagram-box">
+            <div class="diagram-title">Cross-Section A–B–C</div>
+            <svg id="cross-section-svg" viewBox="0 0 200 200" style="width:100%;max-width:260px">
+              <circle cx="100" cy="100" r="75" fill="#E8E8E8" stroke="#CCCCCC" stroke-width="2"/>
+              <circle cx="100" cy="100" r="45" fill="#AAAAAA" stroke="#888888" stroke-width="2"/>
+              <text x="100" y="105" text-anchor="middle" font-size="11" fill="#888" font-family="Inter,sans-serif">Enter dimensions</text>
+            </svg>
+            <div class="diagram-legend" id="diagram-legend">
+              <div class="legend-row">
+                <div class="legend-dot" style="background:#E8E8E8;border:2px solid #CCC"></div>
+                <span style="color:#888;font-size:0.78rem">A — Hole / borehole diameter</span>
+                <span class="legend-val" id="leg-a">—</span>
+              </div>
+              <div class="legend-row">
+                <div class="legend-dot" style="background:#888"></div>
+                <span style="color:#888;font-size:0.78rem">B — Pipe OD</span>
+                <span class="legend-val" id="leg-b">—</span>
+              </div>
+              <div class="legend-row">
+                <div class="legend-dot" style="background:rgba(253,79,0,0.2);border:2px solid var(--orange)"></div>
+                <span style="color:#888;font-size:0.78rem">C — Annular clearance</span>
+                <span class="legend-val" id="leg-c">—</span>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="wf-divider"></div>
+
+        <!-- ── 4. Installation Details ── -->
+        <div class="wf-section-label">4 — Installation Details</div>
+        <div class="wf-section wf-row-three">
+          <div class="field-group" style="margin-bottom:0">
+            <div class="field-label">Total Pipe Run Length</div>
+            <div class="input-wrap">
+              <input type="number" id="run-length" min="1" max="10000" placeholder="e.g. 120" oninput="checkAllFields()">
+              <span class="input-unit">m</span>
+            </div>
+            <div class="field-hint">Total installation length in metres.</div>
+          </div>
+          <div class="field-group" style="margin-bottom:0">
+            <div class="field-label">Will the annulus be grouted?</div>
+            <div class="toggle-field" id="grouted-options">
+              <div class="toggle-opt" data-val="yes" onclick="selectToggle(this,'grouted')">Yes — grouted</div>
+              <div class="toggle-opt" data-val="no" onclick="selectToggle(this,'grouted')">No — open</div>
+            </div>
+          </div>
+          <div class="field-group" style="margin-bottom:0">
+            <div class="field-label">Operating Temperature</div>
+            <div class="toggle-field" id="temp-options">
+              <div class="toggle-opt" data-val="normal" onclick="selectToggle(this,'temp')">≤ 50°C</div>
+              <div class="toggle-opt" data-val="high" onclick="selectToggle(this,'temp')">Over 50°C</div>
+            </div>
+            <div class="field-hint" style="margin-top:8px">At &gt;50°C, HDXT load inserts may be required.</div>
+          </div>
+        </div>
+
+      </div><!-- /wf-body -->
+
+      <div class="wf-footer">
+        <button class="btn btn-primary btn-large" id="btn-calculate" onclick="calculateResults()" disabled>
+          Get Recommendation
+          <svg viewBox="0 0 24 24"><polyline points="9 18 15 12 9 6"/></svg>
+        </button>
+        <div class="wf-footer-hint" id="wf-hint">Complete all fields above to get your recommendation.</div>
+      </div>
+    </div><!-- /wizard-card -->
+  </section>
+
+  <!-- ── RESULTS ── -->
+  <section id="results">
+
+    <div class="section-header">
+      <div class="section-tag">Your Recommendation</div>
+      <h2>kwik-ZIP Selection Result</h2>
+    </div>
+
+    <!-- Warnings (populated by JS) -->
+    <div id="warnings-container"></div>
+
+    <div class="results-card">
+      <div class="results-header">
+        <div class="results-header-left">
+          <div class="results-tag">Recommended Product</div>
+          <div class="results-series" id="res-series">HDX Series</div>
+          <div class="results-model" id="res-model">kwik-ZIP HDX 65 — Runner height 65mm</div>
+        </div>
+        <div class="results-diagram-wrap">
+          <svg id="results-svg" viewBox="0 0 180 180">
+            <!-- drawn by JS -->
+          </svg>
+        </div>
+      </div>
+      <div class="results-body">
+        <div class="results-grid">
+          <div class="result-stat">
+            <div class="result-stat-label">Total Spacers</div>
+            <div class="result-stat-val" id="res-spacers">—</div>
+            <div class="result-stat-sub" id="res-interval">at Xm spacing</div>
+          </div>
+          <div class="result-stat">
+            <div class="result-stat-label">Segments per Spacer</div>
+            <div class="result-stat-val" id="res-segments">—</div>
+            <div class="result-stat-sub">segments per location</div>
+          </div>
+          <div class="result-stat">
+            <div class="result-stat-label">Total to Order</div>
+            <div class="result-stat-val" id="res-total">—</div>
+            <div class="result-stat-sub" id="res-total-label">segments total</div>
+          </div>
+        </div>
+
+        <div class="results-breakdown">
+          <div class="breakdown-title">How we got there</div>
+          <div class="breakdown-row"><span>Pipe OD (B)</span><span id="bd-pipe-od">—</span></div>
+          <div class="breakdown-row"><span>Hole / borehole diameter (A)</span><span id="bd-casing-id">—</span></div>
+          <div class="breakdown-row"><span>Annular clearance C = (A−B) ÷ 2</span><span id="bd-clearance">—</span></div>
+          <div class="breakdown-row"><span>Bell joint height</span><span id="bd-bell">—</span></div>
+          <div class="breakdown-row"><span>Max runner height (C − 10mm)</span><span id="bd-max-runner">—</span></div>
+          <div class="breakdown-row"><span>Min runner height (bell + 15mm)</span><span id="bd-min-runner">—</span></div>
+          <div class="breakdown-row" id="bd-segs-row"><span>Segments per spacer = ⌊(π × B) ÷ 180⌋</span><span id="bd-segs-formula">—</span></div>
+          <div class="breakdown-row"><span>Spacing interval</span><span id="bd-interval">—</span></div>
+          <div class="breakdown-row"><span>Total spacers = (run ÷ interval) + 2</span><span id="bd-total-calc">—</span></div>
+        </div>
+
+        <!-- Product info panel — populated by JS, visible on screen + print -->
+        <div class="product-info-panel" id="product-info-panel" style="display:none">
+          <div class="breakdown-title">Product Details</div>
+          <div class="product-info-grid">
+            <div class="product-info-row">
+              <span class="pi-label">Model</span>
+              <span class="pi-val" id="pi-name">—</span>
+            </div>
+            <div class="product-info-row">
+              <span class="pi-label">Product Code</span>
+              <span class="pi-val pi-code" id="pi-code">—</span>
+            </div>
+            <div class="product-info-row">
+              <span class="pi-label">Operating Temp</span>
+              <span class="pi-val" id="pi-temp">—</span>
+            </div>
+            <div class="product-info-row">
+              <span class="pi-label">Pack / Carton</span>
+              <span class="pi-val" id="pi-carton">—</span>
+            </div>
+            <div class="product-info-row" id="pi-cartons-row">
+              <span class="pi-label">Cartons Required</span>
+              <span class="pi-val" id="pi-cartons-calc">—</span>
+            </div>
+          </div>
+          <div class="compliance-row" id="pi-compliance-wrap">
+            <span class="pi-label">Compliance</span>
+            <div class="compliance-badges" id="pi-compliance">—</div>
+          </div>
+          <div class="product-note" id="pi-description">—</div>
+        </div>
+
+        <div class="results-actions">
+          <button class="btn btn-primary btn-large" onclick="downloadPDF()">
+            <svg viewBox="0 0 24 24"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
+            Download PDF Recommendation
+          </button>
+          <a href="contact.html" class="btn btn-outline btn-large">
+            <svg viewBox="0 0 24 24"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg>
+            Send Enquiry to Blick
+          </a>
+        </div>
+        <button class="restart-link" onclick="restartWizard()">
+          <svg style="width:14px;height:14px;stroke:currentColor;fill:none;stroke-width:2;stroke-linecap:round;" viewBox="0 0 24 24"><polyline points="15 18 9 12 15 6"/></svg>
+          Start over with different dimensions
+        </button>
+      </div>
+    </div>
+
+    <!-- Print footer (screen-hidden) -->
+    <div class="print-footer">
+      Blick Group — blick.group — This recommendation is indicative only. Verify dimensions on site before ordering.<br>
+      Generated by kwik-ZIP Selection Wizard · <span id="print-date-footer"></span>
+    </div>
+
+  </section>
+
+  <!-- ── Series Info ── -->
+  <section class="series-info-section">
+    <div class="section-header">
+      <div class="section-tag">All Series</div>
+      <h2>kwik-ZIP Product Family</h2>
+      <p>Six series covering every application — from 18mm soil nails to 1,600mm+ major diameter pipeline.</p>
+    </div>
+    <div class="series-info-grid">
+
+      <div class="series-info-card">
+        <div class="series-badge">GT Series</div>
+        <h3>kwik-ZIP GT — Small Bore</h3>
+        <div class="od-range">18mm – 65mm OD</div>
+        <p>Bow spring centraliser for small diameter applications. Adjustable diameter design, no special tools required.</p>
+        <div class="series-uses">
+          <span class="series-use-chip">Soil nails</span>
+          <span class="series-use-chip">Rock bolts</span>
+          <span class="series-use-chip">Monitor wells</span>
+          <span class="series-use-chip">Drop pipe</span>
+          <span class="series-use-chip">Post tensioning</span>
+        </div>
+      </div>
+
+      <div class="series-info-card">
+        <div class="series-badge">155 Series</div>
+        <h3>kwik-ZIP 155 — Vertical Medium</h3>
+        <div class="od-range">58mm – 180mm OD</div>
+        <p>Bow spring centraliser for vertical well casing and ground engineering. Suitable for gravel packed screens.</p>
+        <div class="series-uses">
+          <span class="series-use-chip">Well production casing</span>
+          <span class="series-use-chip">Pump install</span>
+          <span class="series-use-chip">Piles</span>
+          <span class="series-use-chip">Anchors</span>
+        </div>
+      </div>
+
+      <div class="series-info-card">
+        <div class="series-badge">380 Series</div>
+        <h3>kwik-ZIP 380 — Vertical Large</h3>
+        <div class="od-range">160mm – 760mm OD</div>
+        <p>Large bore vertical applications. Gravel packed well screens and large diameter production casing.</p>
+        <div class="series-uses">
+          <span class="series-use-chip">Large bore wells</span>
+          <span class="series-use-chip">Sheathing</span>
+          <span class="series-use-chip">Large diameter piles</span>
+        </div>
+      </div>
+
+      <div class="series-info-card">
+        <div class="series-badge">HD Series</div>
+        <h3>kwik-ZIP HD — Horizontal Light/Medium</h3>
+        <div class="od-range">&gt;110mm OD</div>
+        <p>Heavy duty centraliser for horizontal cased crossings with light to medium weight pipe materials. Non-metallic segmented design.</p>
+        <div class="series-uses">
+          <span class="series-use-chip">PVC / HDPE / GRE</span>
+          <span class="series-use-chip">Trenchless</span>
+          <span class="series-use-chip">Cased crossings</span>
+          <span class="series-use-chip">HDD</span>
+        </div>
+      </div>
+
+      <div class="series-info-card">
+        <div class="series-badge">HDX Series</div>
+        <h3>kwik-ZIP HDX — Horizontal Heavy</h3>
+        <div class="od-range">&gt;100mm OD (WSAA certified)</div>
+        <p>Pipe-in-Pipe spacer for heavy weight carrier pipe. Segmented construction scales to any diameter. WSAA certified.</p>
+        <div class="series-uses">
+          <span class="series-use-chip">Steel</span>
+          <span class="series-use-chip">DICL / MSCL</span>
+          <span class="series-use-chip">Slip lining</span>
+          <span class="series-use-chip">Wastewater</span>
+        </div>
+      </div>
+
+      <div class="series-info-card">
+        <div class="series-badge">HDXT Series</div>
+        <h3>kwik-ZIP HDXT — High Load / High Temp</h3>
+        <div class="od-range">&gt;100mm OD</div>
+        <p>HDX base with Heavy Duty Load Inserts (HDLI). Required when operating above 50°C, ungrouted heavy pipe, or elevated structural loads.</p>
+        <div class="series-uses">
+          <span class="series-use-chip">&gt;50°C</span>
+          <span class="series-use-chip">Ungrouted heavy pipe</span>
+          <span class="series-use-chip">High load</span>
+          <span class="series-use-chip">Elevated stress</span>
+        </div>
+      </div>
+
+    </div>
+  </section>
+
+</main>
+
+<footer>
+  <div class="footer-copy">© Blick Group — kwik-ZIP is a registered product</div>
+  <div class="footer-links">
+    <a href="products.html">Products</a>
+    <a href="contact.html">Contact</a>
+    <a href="gallery.html">Design Review</a>
+  </div>
+</footer>
+
+<script>
+// ─── State ───────────────────────────────────────────────
+const state = {
+  orientation: null,   // 'horizontal' | 'vertical'
+  weight: null,        // 'light' | 'heavy'
+  pipeOD: null,        // mm
+  bellHeight: 0,       // mm
+  casingID: null,      // mm
+  runLength: null,     // m
+  grouted: null,       // 'yes' | 'no'
+  temp: null,          // 'normal' | 'high'
+  unit: 'mm',         // 'mm' | 'in'
+  currentStep: 1
+};
+
+// Runner heights (mm) available per series — from kwik-ZIP Solution Finder catalogue
+const RUNNER_HEIGHTS = {
+  GT:   [10, 15, 20, 25, 30, 35, 40],
+  S155: [20, 25, 30, 40, 50, 65, 80, 100],
+  S380: [50, 65, 80, 100, 125, 150, 175, 200],
+  HD:   [30, 50, 75, 100],
+  HDX:  [38, 65, 90, 125],
+  HDXT: [38, 65, 90, 125]
+};
+
+// Product catalogue data — from kwik-ZIP Solution Finder PDF
+// Each model: { code, name, tempRange, cartonQty, compliance }
+const PRODUCT_DATA = {
+  HD: {
+    label: 'kwik-ZIP HD Series',
+    description: 'Standard-load horizontal casing spacer for light/medium duty installations.',
+    tempRange: '–20°C to 80°C',
+    standard: 'HD',
+    models: {
+      30:  { code: '1420026', name: 'kwik-ZIP HD 30',  cartonQty: 30 },
+      50:  { code: '1420031', name: 'kwik-ZIP HD 50',  cartonQty: 30 },
+      75:  { code: '1420032', name: 'kwik-ZIP HD 75',  cartonQty: 30 },
+      100: { code: '1710120', name: 'kwik-ZIP HD 100', cartonQty: 30 },
+    },
+    compliance: ['AS/NZS 4020:2018', 'ISO 9001:2015']
+  },
+  HDX: {
+    label: 'kwik-ZIP HDX Series',
+    description: 'Heavy-duty horizontal casing spacer for large diameter or heavily loaded pipe.',
+    tempRange: '–20°C to 80°C',
+    standard: 'HDX',
+    models: {
+      38:  { code: '1420027', name: 'kwik-ZIP HDX 38',  cartonQty: 20 },
+      65:  { code: '1420033', name: 'kwik-ZIP HDX 65',  cartonQty: 20 },
+      90:  { code: '1420034', name: 'kwik-ZIP HDX 90',  cartonQty: 20 },
+      125: { code: '1420035', name: 'kwik-ZIP HDX 125', cartonQty: 20 },
+    },
+    compliance: ['AS/NZS 4020:2018', 'WSAA #324', 'ISO 9001:2015', 'MRWA', 'SEQ IPAM']
+  },
+  HDXT: {
+    label: 'kwik-ZIP HDXT Series',
+    description: 'Heavy-duty spacer with Load Inserts for high-temperature or extreme-load applications.',
+    tempRange: '–20°C to 80°C (Load Inserts extend to 120°C)',
+    standard: 'HDXT',
+    models: {
+      38:  { code: '1420027', name: 'kwik-ZIP HDXT 38',  cartonQty: 20 },
+      65:  { code: '1420033', name: 'kwik-ZIP HDXT 65',  cartonQty: 20 },
+      90:  { code: '1420034', name: 'kwik-ZIP HDXT 90',  cartonQty: 20 },
+      125: { code: '1420035', name: 'kwik-ZIP HDXT 125', cartonQty: 20 },
+    },
+    compliance: ['AS/NZS 4020:2018', 'WSAA #324', 'ISO 9001:2015', 'MRWA', 'SEQ IPAM']
+  },
+  GT: {
+    label: 'kwik-ZIP GT Series',
+    description: 'Bow spring centraliser for small diameter applications (soil nails, micro-piles).',
+    tempRange: '–20°C to 60°C',
+    standard: 'GT',
+    models: {},
+    compliance: ['ISO 9001:2015']
+  },
+  S155: {
+    label: 'kwik-ZIP 155 Series',
+    description: 'Vertical/inclined centraliser for medium diameter pipe up to 180mm OD.',
+    tempRange: '–20°C to 60°C',
+    standard: '155',
+    models: {},
+    compliance: ['ISO 9001:2015']
+  },
+  S380: {
+    label: 'kwik-ZIP 380 Series',
+    description: 'Vertical/inclined centraliser for large diameter pipe 160–760mm OD.',
+    tempRange: '–20°C to 60°C',
+    standard: '380',
+    models: {},
+    compliance: ['ISO 9001:2015']
+  }
+};
+
+const SERIES_LABELS = {
+  GT: 'GT Series', S155: '155 Series', S380: '380 Series',
+  HD: 'HD Series', HDX: 'HDX Series', HDXT: 'HDXT Series'
+};
+
+// ─── Nav frost ───────────────────────────────────────────
+window.addEventListener('scroll', () => {
+  document.getElementById('nav').classList.toggle('frosted', window.scrollY > 40);
+});
+
+// ─── Unit toggle ─────────────────────────────────────────
+function setUnit(unit) {
+  state.unit = unit;
+  document.getElementById('unit-mm').classList.toggle('active', unit === 'mm');
+  document.getElementById('unit-in').classList.toggle('active', unit === 'in');
+  ['od-unit-label','bell-unit-label','cid-unit-label'].forEach(id => {
+    const el = document.getElementById(id);
+    if (el) el.textContent = unit;
+  });
+  // Convert existing values
+  const odEl = document.getElementById('pipe-od');
+  const bellEl = document.getElementById('bell-height');
+  const cidEl = document.getElementById('casing-id');
+  if (unit === 'in') {
+    if (odEl.value) odEl.value = (parseFloat(odEl.value) / 25.4).toFixed(3);
+    if (bellEl.value) bellEl.value = (parseFloat(bellEl.value) / 25.4).toFixed(3);
+    if (cidEl.value) cidEl.value = (parseFloat(cidEl.value) / 25.4).toFixed(3);
+  } else {
+    if (odEl.value) odEl.value = Math.round(parseFloat(odEl.value) * 25.4);
+    if (bellEl.value) bellEl.value = Math.round(parseFloat(bellEl.value) * 25.4);
+    if (cidEl.value) cidEl.value = Math.round(parseFloat(cidEl.value) * 25.4);
+  }
+  onDimensionChange();
+}
+
+function toMM(val) {
+  if (!val || isNaN(val)) return null;
+  return state.unit === 'in' ? parseFloat(val) * 25.4 : parseFloat(val);
+}
+
+// ─── Option selection ────────────────────────────────────
+function selectOption(el, group) {
+  el.closest('.option-grid').querySelectorAll('.option-card').forEach(c => c.classList.remove('selected'));
+  el.classList.add('selected');
+  state[group] = el.dataset.val;
+  checkAllFields();
+}
+
+function selectToggle(el, group) {
+  el.parentElement.querySelectorAll('.toggle-opt').forEach(c => c.classList.remove('selected'));
+  el.classList.add('selected');
+  state[group] = el.dataset.val;
+  checkAllFields();
+}
+
+// ─── Bell joint expandable ────────────────────────────────
+function toggleBellJoint() {
+  const body = document.getElementById('bell-body');
+  const toggle = document.getElementById('bell-toggle');
+  const icon = document.getElementById('bell-toggle-icon');
+  const open = body.style.display === 'none';
+  body.style.display = open ? 'block' : 'none';
+  toggle.classList.toggle('open', open);
+  icon.style.transform = open ? 'rotate(90deg)' : '';
+  if (!open) {
+    // Closing: clear bell height
+    document.getElementById('bell-height').value = '';
+    state.bellHeight = 0;
+    onDimensionChange();
+  }
+}
+
+// ─── Unified field check ──────────────────────────────────
+function checkAllFields() {
+  const runLen = parseFloat(document.getElementById('run-length').value);
+  state.runLength = runLen > 0 ? runLen : null;
+
+  const allComplete = !!(
+    state.orientation && state.weight &&
+    state.pipeOD && state.casingID && state.casingID > state.pipeOD &&
+    state.runLength && state.grouted && state.temp
+  );
+  const btn = document.getElementById('btn-calculate');
+  btn.disabled = !allComplete;
+  const hint = document.getElementById('wf-hint');
+  if (hint) hint.style.display = allComplete ? 'none' : 'block';
+}
+
+// ─── Dimension input handling ─────────────────────────────
+function onDimensionChange() {
+  const odRaw = parseFloat(document.getElementById('pipe-od').value);
+  const bellEl = document.getElementById('bell-height');
+  const bellRaw = bellEl ? parseFloat(bellEl.value) || 0 : 0;
+  const cidRaw = parseFloat(document.getElementById('casing-id').value);
+
+  const pipeOD = toMM(odRaw);
+  const bellH = toMM(bellRaw) || 0;
+  const casingID = toMM(cidRaw);
+
+  state.pipeOD = pipeOD;
+  state.bellHeight = bellH;
+  state.casingID = casingID;
+
+  updateDiagram(casingID, pipeOD);
+  validatePipeOD();
+  validateCasingID();
+}
+
+function validatePipeOD() {
+  const od = state.pipeOD;
+  const err = document.getElementById('od-error');
+  const inp = document.getElementById('pipe-od');
+  const valid = od !== null && od >= 18 && od <= 2000;
+  inp.classList.toggle('error', !!document.getElementById('pipe-od').value && !valid);
+  err.classList.toggle('show', !!document.getElementById('pipe-od').value && !valid);
+  checkAllFields();
+  return valid;
+}
+
+function validateCasingID() {
+  const cid = state.casingID;
+  const od = state.pipeOD;
+  const err = document.getElementById('cid-error');
+  const inp = document.getElementById('casing-id');
+  const valid = cid !== null && od !== null && cid > od;
+  inp.classList.toggle('error', !!document.getElementById('casing-id').value && !valid);
+  err.classList.toggle('show', !!document.getElementById('casing-id').value && !valid);
+
+  if (valid) {
+    const clearance = (cid - od) / 2;
+    document.getElementById('clearance-val').textContent = clearance.toFixed(1) + ' mm';
+    document.getElementById('clearance-display').style.display = 'block';
+  } else {
+    document.getElementById('clearance-display').style.display = 'none';
+  }
+  checkAllFields();
+  return valid;
+}
+
+// ─── SVG Diagram ─────────────────────────────────────────
+function updateDiagram(casingID, pipeOD) {
+  const svgIds = ['cross-section-svg'];
+  const legSets = [
+    ['leg-a', 'leg-b', 'leg-c']
+  ];
+
+  svgIds.forEach((svgId, idx) => {
+    const svg = document.getElementById(svgId);
+    if (!svg) return;
+    const legs = legSets[idx];
+
+    const sz = 200;
+    const cx = sz / 2, cy = sz / 2;
+    const margin = 16;
+
+    if (!casingID || !pipeOD || pipeOD <= 0 || casingID <= pipeOD) {
+      // Default placeholder
+      svg.innerHTML = `
+        <circle cx="${cx}" cy="${cy}" r="${sz/2 - margin}" fill="#E8E8E8" stroke="#CCC" stroke-width="2"/>
+        <circle cx="${cx}" cy="${cy}" r="${sz/2 - margin - 24}" fill="#AAA" stroke="#888" stroke-width="2"/>
+        <text x="${cx}" y="${cy + 5}" text-anchor="middle" font-size="11" fill="#888" font-family="Inter,sans-serif">Enter dimensions</text>
+      `;
+      ['leg-a','leg-b','leg-c'].forEach(id => {
+        const el = document.getElementById(id);
+        if (el) el.textContent = '—';
+      });
+      return;
+    }
+
+    const clearance = (casingID - pipeOD) / 2;
+    const maxR = sz / 2 - margin;
+    const outerR = maxR;
+    const ratio = pipeOD / casingID;
+    const innerR = outerR * ratio;
+    const gapPx = outerR - innerR;
+
+    svg.innerHTML = `
+      <!-- Casing -->
+      <circle cx="${cx}" cy="${cy}" r="${outerR}" fill="#E8E8E8" stroke="#BBB" stroke-width="2"/>
+      <!-- Annular gap (orange tint) -->
+      <circle cx="${cx}" cy="${cy}" r="${outerR - 1}" fill="rgba(253,79,0,0.08)" stroke="none"/>
+      <!-- Pipe -->
+      <circle cx="${cx}" cy="${cy}" r="${innerR}" fill="#6B7280" stroke="#555" stroke-width="2"/>
+
+      <!-- Label A - Casing ID -->
+      <line x1="${cx}" y1="${cy - outerR}" x2="${cx + 18}" y2="${cy - outerR - 16}" stroke="#FD4F00" stroke-width="1.5"/>
+      <text x="${cx + 21}" y="${cy - outerR - 14}" font-size="13" font-weight="700" fill="#FD4F00" font-family="Inter,sans-serif">A</text>
+
+      <!-- Label B - Pipe OD -->
+      <line x1="${cx + innerR * 0.7}" y1="${cy - innerR * 0.7}" x2="${cx + innerR * 0.7 + 12}" y2="${cy - innerR * 0.7 - 12}" stroke="#FD4F00" stroke-width="1.5"/>
+      <text x="${cx + innerR * 0.7 + 15}" y="${cy - innerR * 0.7 - 10}" font-size="13" font-weight="700" fill="#FD4F00" font-family="Inter,sans-serif">B</text>
+
+      <!-- Label C - Annular gap -->
+      <line x1="${cx + innerR}" y1="${cy}" x2="${cx + innerR + gapPx / 2}" y2="${cy}" stroke="#FD4F00" stroke-width="1.5" stroke-dasharray="3,2"/>
+      <text x="${cx + innerR + gapPx / 2 + 4}" y="${cy + 4}" font-size="13" font-weight="700" fill="#FD4F00" font-family="Inter,sans-serif">C</text>
+
+      <!-- C = formula -->
+      <text x="${cx}" y="${sz - 6}" text-anchor="middle" font-size="9" fill="#999" font-family="Inter,sans-serif">C = (A−B) ÷ 2 = ${clearance.toFixed(1)}mm</text>
+    `;
+
+    const unit = state.unit;
+    const fmt = (mm) => unit === 'in' ? (mm / 25.4).toFixed(3) + '"' : mm + ' mm';
+
+    if (legs[0]) { const el = document.getElementById(legs[0]); if(el) el.textContent = fmt(casingID); }
+    if (legs[1]) { const el = document.getElementById(legs[1]); if(el) el.textContent = fmt(pipeOD); }
+    if (legs[2]) { const el = document.getElementById(legs[2]); if(el) el.textContent = fmt(clearance); }
+  });
+}
+
+// ─── Selection logic ─────────────────────────────────────
+function selectSeries(orientation, weight, pipeOD) {
+  if (pipeOD >= 18 && pipeOD <= 65) return 'GT';
+  if (orientation === 'vertical') {
+    if (pipeOD > 65 && pipeOD <= 180) return 'S155';
+    if (pipeOD > 160 && pipeOD <= 760) return 'S380';
+    if (pipeOD > 760) return 'S380'; // Flag for large vertical
+  }
+  if (orientation === 'horizontal') {
+    if (weight === 'light' && pipeOD > 110) return 'HD';
+    if (weight === 'heavy' && pipeOD > 100) return 'HDX'; // HDXT decision made later
+  }
+  return null;
+}
+
+function selectRunnerHeight(series, annularClearance, bellHeight) {
+  const heights = RUNNER_HEIGHTS[series];
+  if (!heights) return null;
+  const maxH = annularClearance - 10;
+  const minH = bellHeight + 15;
+  if (maxH < minH) return { error: 'clash', maxH, minH };
+  const valid = heights.filter(h => h <= maxH && h >= minH);
+  if (valid.length === 0) return { error: 'none', maxH, minH };
+  return { height: valid[valid.length - 1], maxH, minH };
+}
+
+function calcInterval(weight, grouted) {
+  if (weight === 'heavy' && grouted === 'no') return 1;
+  if (weight === 'heavy' && grouted === 'yes') return 2;
+  return 3; // light/medium + grouted (or any light)
+}
+
+function calcSegmentsPerSpacer(series, pipeOD) {
+  // GT, 155, 380 use static (1 segment — pre-formed collar)
+  if (['GT', 'S155', 'S380'].includes(series)) return 1;
+  return Math.floor((pipeOD * Math.PI) / 180);
+}
+
+// ─── Calculate & display results ─────────────────────────
+function calculateResults() {
+  const { orientation, weight, pipeOD, bellHeight, casingID, runLength, grouted, temp } = state;
+  if (!orientation || !weight || !pipeOD || !casingID || !runLength || !grouted || !temp) return;
+
+  const annularClearance = (casingID - pipeOD) / 2;
+  let series = selectSeries(orientation, weight, pipeOD);
+
+  // HDXT upgrade for high temp or heavy + ungrouted
+  if (series === 'HDX' && (temp === 'high' || (weight === 'heavy' && grouted === 'no' && pipeOD > 300))) {
+    series = 'HDXT';
+  }
+
+  const runnerResult = series ? selectRunnerHeight(series, annularClearance, bellHeight) : null;
+  const interval = calcInterval(weight, grouted);
+  const segmentsPerSpacer = series ? calcSegmentsPerSpacer(series, pipeOD) : 0;
+  const totalSpacers = Math.ceil(runLength / interval) + 2;
+  const totalSegments = totalSpacers * segmentsPerSpacer;
+
+  // Build warnings
+  const warnings = [];
+  if (!series) {
+    warnings.push({ type: 'error', msg: '<strong>No series match found.</strong> Check your pipe OD and orientation combination. Contact Blick for a custom recommendation.' });
+  }
+  if (runnerResult && runnerResult.error === 'clash') {
+    warnings.push({ type: 'error', msg: `<strong>Clearance too tight for bell joint.</strong> The maximum runner height (${runnerResult.maxH.toFixed(1)}mm) is less than the minimum required to clear the bell joint (${runnerResult.minH.toFixed(1)}mm). Please check your dimensions or consider a different casing diameter.` });
+  }
+  if (runnerResult && runnerResult.error === 'none') {
+    warnings.push({ type: 'warn', msg: `<strong>No standard runner height fits this clearance.</strong> Annular clearance leaves a max runner of ${runnerResult.maxH.toFixed(1)}mm, minimum ${runnerResult.minH.toFixed(1)}mm. Contact Blick — a custom model may be available.` });
+  }
+  if (temp === 'high') {
+    warnings.push({ type: 'warn', msg: '<strong>Temperature above 50°C detected.</strong> HDXT Load Inserts or closer spacing intervals may be required for thermal expansion. We\'ve upgraded your recommendation to HDXT where applicable.' });
+  }
+  if (pipeOD > 800) {
+    warnings.push({ type: 'info', msg: '<strong>Large diameter pipe (&gt;800mm).</strong> Recommendation: apply 12mm stainless steel worm drive banding over the collars for additional security on large diameter pipes.' });
+  }
+
+  // Show results
+  document.getElementById('wizard-section').style.display = 'none';
+  const resultsEl = document.getElementById('results');
+  resultsEl.classList.add('show');
+  resultsEl.scrollIntoView({ behavior: 'smooth', block: 'start' });
+
+  // Warnings
+  const wc = document.getElementById('warnings-container');
+  wc.innerHTML = warnings.map(w => `
+    <div class="warning-box${w.type === 'error' ? ' error-box' : ''}">
+      <div class="warning-icon">${w.type === 'error' ? '⚠️' : w.type === 'warn' ? '⚡' : 'ℹ️'}</div>
+      <div class="warning-text">${w.msg}</div>
+    </div>
+  `).join('');
+
+  // Header
+  const seriesLabel = series ? SERIES_LABELS[series] : 'No match';
+  document.getElementById('res-series').textContent = `kwik-ZIP ${seriesLabel}`;
+  const runnerH = runnerResult && runnerResult.height;
+  document.getElementById('res-model').textContent = runnerH
+    ? `${series} ${runnerH} — Runner height ${runnerH}mm`
+    : series ? 'Contact Blick for model selection' : 'No standard match — contact Blick';
+
+  // Stats
+  document.getElementById('res-spacers').textContent = series && !runnerResult?.error ? totalSpacers : '—';
+  document.getElementById('res-interval').textContent = `at ${interval}m spacing`;
+  document.getElementById('res-segments').textContent = series && !runnerResult?.error ? segmentsPerSpacer : '—';
+  document.getElementById('res-total').textContent = series && !runnerResult?.error ? totalSegments : '—';
+  document.getElementById('res-total-label').textContent = ['GT','S155','S380'].includes(series) ? 'units total' : 'segments total';
+
+  // Breakdown
+  const fmt = mm => mm !== null && mm !== undefined ? mm.toFixed(1) + ' mm' : '—';
+  document.getElementById('bd-pipe-od').textContent = fmt(pipeOD);
+  document.getElementById('bd-casing-id').textContent = fmt(casingID);
+  document.getElementById('bd-clearance').textContent = fmt(annularClearance);
+  document.getElementById('bd-bell').textContent = bellHeight > 0 ? fmt(bellHeight) : 'None';
+  document.getElementById('bd-max-runner').textContent = fmt(annularClearance - 10);
+  document.getElementById('bd-min-runner').textContent = bellHeight > 0 ? fmt(bellHeight + 15) : '15mm (no bell joint)';
+  document.getElementById('bd-interval').textContent = `${interval}m`;
+  document.getElementById('bd-total-calc').textContent = series && !runnerResult?.error
+    ? `(${runLength}m ÷ ${interval}m) + 2 = ${totalSpacers}`
+    : '—';
+
+  const showSegs = ['HD','HDX','HDXT'].includes(series);
+  document.getElementById('bd-segs-row').style.display = showSegs ? 'flex' : 'none';
+  if (showSegs) {
+    document.getElementById('bd-segs-formula').textContent = `⌊(π × ${pipeOD.toFixed(0)}) ÷ 180⌋ = ${segmentsPerSpacer}`;
+  }
+
+  // Product info panel
+  const productPanel = document.getElementById('product-info-panel');
+  const pd = series ? PRODUCT_DATA[series] : null;
+  const modelRecord = pd && runnerH ? pd.models[runnerH] : null;
+  if (pd && modelRecord) {
+    const cartonsNeeded = Math.ceil(totalSegments / pd.models[runnerH].cartonQty);
+    document.getElementById('pi-name').textContent = modelRecord.name;
+    document.getElementById('pi-code').textContent = modelRecord.code;
+    document.getElementById('pi-temp').textContent = pd.tempRange;
+    document.getElementById('pi-carton').textContent = `${modelRecord.cartonQty} segments/carton`;
+    document.getElementById('pi-cartons-calc').textContent =
+      `${cartonsNeeded} carton${cartonsNeeded !== 1 ? 's' : ''} (${totalSegments} segments ÷ ${modelRecord.cartonQty}/carton)`;
+    document.getElementById('pi-compliance').innerHTML = pd.compliance
+      .map(c => `<span class="compliance-badge">${c}</span>`).join('');
+    document.getElementById('pi-description').textContent = pd.description;
+    productPanel.style.display = 'block';
+    document.getElementById('pi-cartons-row').style.display = 'flex';
+  } else if (pd) {
+    // Series matched but no standard model (GT/155/380 or no runner height)
+    document.getElementById('pi-name').textContent = pd.label;
+    document.getElementById('pi-code').textContent = 'Contact Blick for product codes';
+    document.getElementById('pi-temp').textContent = pd.tempRange;
+    document.getElementById('pi-carton').textContent = '—';
+    document.getElementById('pi-compliance').innerHTML = pd.compliance
+      .map(c => `<span class="compliance-badge">${c}</span>`).join('');
+    document.getElementById('pi-description').textContent = pd.description;
+    document.getElementById('pi-cartons-row').style.display = 'none';
+    productPanel.style.display = 'block';
+  } else {
+    productPanel.style.display = 'none';
+  }
+
+  // Draw results SVG
+  drawResultsSVG(casingID, pipeOD, runnerH, series);
+
+  // Print date
+  const now = new Date().toLocaleDateString('en-NZ', { day:'numeric', month:'long', year:'numeric' });
+  ['print-date','print-date-footer'].forEach(id => {
+    const el = document.getElementById(id);
+    if (el) el.textContent = now;
+  });
+}
+
+function drawResultsSVG(casingID, pipeOD, runnerHeight, series) {
+  ['results-svg'].forEach(svgId => {
+    const svg = document.getElementById(svgId);
+    if (!svg) return;
+    const sz = 180;
+    const cx = sz / 2, cy = sz / 2;
+    const margin = 14;
+    const outerR = sz / 2 - margin;
+    const ratio = pipeOD / casingID;
+    const innerR = outerR * ratio;
+    const gapPx = outerR - innerR;
+    const runnerPx = runnerHeight ? (runnerHeight / ((casingID - pipeOD) / 2)) * gapPx : 0;
+
+    svg.innerHTML = `
+      <circle cx="${cx}" cy="${cy}" r="${outerR}" fill="rgba(255,255,255,0.06)" stroke="rgba(255,255,255,0.25)" stroke-width="2"/>
+      <circle cx="${cx}" cy="${cy}" r="${innerR}" fill="rgba(255,255,255,0.15)" stroke="rgba(255,255,255,0.5)" stroke-width="2"/>
+      ${runnerHeight ? `
+        <!-- Runner height indicator -->
+        <line x1="${cx + innerR}" y1="${cy}" x2="${cx + innerR + runnerPx}" y2="${cy}" stroke="#FD4F00" stroke-width="3" stroke-linecap="round"/>
+        <circle cx="${cx + innerR + runnerPx}" cy="${cy}" r="3" fill="#FD4F00"/>
+      ` : ''}
+      <text x="${cx}" y="${cy - 6}" text-anchor="middle" font-size="11" fill="rgba(255,255,255,0.5)" font-family="Inter,sans-serif">A = ${casingID.toFixed(0)}mm</text>
+      <text x="${cx}" y="${cy + 8}" text-anchor="middle" font-size="11" fill="rgba(255,255,255,0.5)" font-family="Inter,sans-serif">B = ${pipeOD.toFixed(0)}mm</text>
+      ${runnerHeight ? `<text x="${cx}" y="${cy + 22}" text-anchor="middle" font-size="10" fill="#FD4F00" font-family="Inter,sans-serif">Runner: ${runnerHeight}mm</text>` : ''}
+    `;
+  });
+}
+
+// ─── PDF download ─────────────────────────────────────────
+function downloadPDF() {
+  window.print();
+}
+
+// ─── Restart ─────────────────────────────────────────────
+function restartWizard() {
+  // Reset state
+  Object.assign(state, { orientation:null, weight:null, pipeOD:null, bellHeight:0, casingID:null, runLength:null, grouted:null, temp:null });
+  // Reset UI
+  document.querySelectorAll('.option-card').forEach(c => c.classList.remove('selected'));
+  document.querySelectorAll('.toggle-opt').forEach(c => c.classList.remove('selected'));
+  ['pipe-od','bell-height','casing-id','run-length'].forEach(id => {
+    const el = document.getElementById(id);
+    if (el) el.value = '';
+  });
+  document.getElementById('btn-calculate').disabled = true;
+  document.getElementById('clearance-display').style.display = 'none';
+  // Collapse bell joint
+  const bellBody = document.getElementById('bell-body');
+  if (bellBody) bellBody.style.display = 'none';
+  const bellToggle = document.getElementById('bell-toggle');
+  if (bellToggle) { bellToggle.classList.remove('open'); }
+  const bellIcon = document.getElementById('bell-toggle-icon');
+  if (bellIcon) bellIcon.style.transform = '';
+
+  document.getElementById('results').classList.remove('show');
+  document.getElementById('wizard-section').style.display = '';
+  document.getElementById('wizard-section').scrollIntoView({ behavior: 'smooth', block: 'start' });
+  updateDiagram(null, null);
+}
+</script>
+</body>
+</html>

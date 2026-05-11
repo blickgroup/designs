@@ -1,0 +1,1382 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Blick Group — Homepage | Prototype v2</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+  <style>
+    /* ── Reset ── */
+    *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+    html { scroll-behavior: smooth; font-size: 16px; -webkit-font-smoothing: antialiased; }
+
+    /* ── Tokens ── */
+    :root {
+      --orange:        #FD4F00;
+      --orange-light:  #FF6B26;
+      --orange-glow:   rgba(253,79,0,0.18);
+      --black:         #1A1A1A;
+      --charcoal:      #2D2D2D;
+      --grey-dark:     #66615C;
+      --grey-mid:      #A9A9A9;
+      --grey-light:    #EBEAEB;
+      --off-white:     #FAFAFA;
+      --white:         #FFFFFF;
+      --font:          'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+      --ease:          cubic-bezier(0.16, 1, 0.3, 1);
+      --r-sm: 12px; --r-md: 16px; --r-lg: 20px; --r-xl: 24px; --r-pill: 100px;
+    }
+
+    body {
+      font-family: var(--font);
+      color: var(--charcoal);
+      background: var(--white);
+      line-height: 1.6;
+      overflow-x: hidden;
+    }
+    a { color: inherit; text-decoration: none; }
+    ul { list-style: none; }
+    img { max-width: 100%; display: block; }
+
+    /* ── Layout ── */
+    .container { max-width: 1240px; margin: 0 auto; padding: 0 clamp(20px, 5vw, 80px); }
+
+    /* ── Reveal animations ── */
+    .reveal {
+      opacity: 0;
+      transform: translateY(32px);
+      transition: opacity 0.7s var(--ease), transform 0.7s var(--ease);
+    }
+    .reveal.visible { opacity: 1; transform: translateY(0); }
+    .stagger-1 { transition-delay: 0.08s; }
+    .stagger-2 { transition-delay: 0.16s; }
+    .stagger-3 { transition-delay: 0.24s; }
+    .stagger-4 { transition-delay: 0.32s; }
+    .stagger-5 { transition-delay: 0.40s; }
+
+    /* ── Section tag ── */
+    .section-tag {
+      display: inline-flex; align-items: center; gap: 8px;
+      font-size: 0.72rem; font-weight: 700; letter-spacing: 0.14em; text-transform: uppercase;
+      color: var(--orange); margin-bottom: 20px;
+    }
+    .section-tag::before { content: ''; width: 24px; height: 2px; background: var(--orange); border-radius: 2px; }
+    .section-tag--light { color: rgba(255,255,255,0.5); }
+    .section-tag--light::before { background: rgba(255,255,255,0.3); }
+
+    /* ── Buttons ── */
+    .btn {
+      display: inline-flex; align-items: center; gap: 8px;
+      padding: 14px 32px; border-radius: var(--r-pill);
+      font-size: 0.88rem; font-weight: 600; cursor: pointer; border: none;
+      transition: all 0.3s var(--ease);
+    }
+    .btn svg { width: 16px; height: 16px; stroke: currentColor; fill: none; stroke-width: 2; stroke-linecap: round; stroke-linejoin: round; }
+    .btn-primary { background: var(--orange); color: var(--white); box-shadow: 0 4px 20px rgba(253,79,0,0.3); }
+    .btn-primary:hover { background: var(--orange-light); transform: translateY(-2px); box-shadow: 0 8px 32px rgba(253,79,0,0.35); }
+    .btn-secondary { background: transparent; color: var(--charcoal); border: 1.5px solid var(--grey-light); }
+    .btn-secondary:hover { border-color: var(--orange); color: var(--orange); transform: translateY(-2px); }
+    .btn-white { background: var(--white); color: var(--black); box-shadow: 0 4px 20px rgba(255,255,255,0.12); }
+    .btn-white:hover { transform: translateY(-2px); box-shadow: 0 8px 32px rgba(255,255,255,0.2); }
+    .btn-ghost { background: transparent; color: rgba(255,255,255,0.65); border: 1.5px solid rgba(255,255,255,0.15); }
+    .btn-ghost:hover { border-color: var(--orange); color: var(--orange); transform: translateY(-2px); }
+    .btn-lg { padding: 18px 42px; font-size: 0.95rem; }
+
+    /* ═══════════════════════════════════════════
+       PHASE ANNOTATION BANNER
+       Shows on future sections so client sees end vision
+    ═══════════════════════════════════════════ */
+    .phase-wrap { position: relative; }
+    .phase-badge {
+      position: absolute;
+      top: 24px;
+      right: 32px;
+      z-index: 20;
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      padding: 6px 14px 6px 10px;
+      border-radius: var(--r-pill);
+      font-size: 0.68rem;
+      font-weight: 700;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      backdrop-filter: blur(8px);
+    }
+    .phase-badge::before { content: ''; width: 6px; height: 6px; border-radius: 50%; background: currentColor; }
+    .phase-badge--p2 { background: rgba(255,183,0,0.15); color: #E09000; border: 1px solid rgba(255,183,0,0.3); }
+    .phase-badge--p3 { background: rgba(99,102,241,0.12); color: #818CF8; border: 1px solid rgba(99,102,241,0.25); }
+
+    /* ═══════════════════════════════════════════
+       NAV
+    ═══════════════════════════════════════════ */
+    nav {
+      position: fixed; top: 0; left: 0; right: 0; z-index: 1000;
+      padding: 22px 0;
+      transition: all 0.4s var(--ease);
+    }
+    nav.scrolled {
+      padding: 14px 0;
+      background: rgba(26,26,26,0.92);
+      backdrop-filter: blur(20px);
+      box-shadow: 0 1px 0 rgba(255,255,255,0.06);
+    }
+    nav .container { display: flex; align-items: center; justify-content: space-between; }
+    .nav-logo { display: flex; align-items: center; gap: 10px; }
+    .nav-logo-mark {
+      width: 36px; height: 36px; background: var(--orange); border-radius: 8px;
+      display: flex; align-items: center; justify-content: center;
+    }
+    .nav-logo-mark svg { width: 20px; height: 20px; stroke: var(--white); fill: none; stroke-width: 2.5; stroke-linecap: round; stroke-linejoin: round; }
+    .nav-wordmark { font-size: 1rem; font-weight: 800; letter-spacing: -0.02em; color: var(--white); }
+    .nav-wordmark span { color: var(--orange); }
+    .nav-links { display: flex; gap: 32px; align-items: center; }
+    .nav-links a {
+      font-size: 0.84rem; font-weight: 500; color: rgba(255,255,255,0.65);
+      transition: color 0.25s;
+    }
+    .nav-links a:hover { color: var(--white); }
+    .nav-cta {
+      background: var(--orange) !important; color: var(--white) !important;
+      padding: 9px 22px; border-radius: var(--r-pill); font-weight: 600 !important;
+      box-shadow: 0 2px 12px rgba(253,79,0,0.3);
+      transition: background 0.25s, transform 0.25s, box-shadow 0.25s !important;
+    }
+    .nav-cta:hover { background: var(--orange-light) !important; transform: translateY(-1px) !important; }
+    .nav-market {
+      font-size: 0.72rem; font-weight: 700; letter-spacing: 0.08em; text-transform: uppercase;
+      color: rgba(255,255,255,0.35); padding: 6px 12px; border: 1px solid rgba(255,255,255,0.1);
+      border-radius: var(--r-pill); transition: all 0.25s;
+    }
+    .nav-market:hover { color: rgba(255,255,255,0.7); border-color: rgba(255,255,255,0.2); }
+
+    /* ═══════════════════════════════════════════
+       HERO
+    ═══════════════════════════════════════════ */
+    .hero {
+      min-height: 100vh;
+      background: var(--black);
+      display: flex; align-items: center;
+      position: relative; overflow: hidden;
+      padding: 140px 0 120px;
+    }
+    .hero-noise {
+      position: absolute; inset: 0; z-index: 0;
+      background-image:
+        radial-gradient(ellipse 70% 60% at 75% 40%, rgba(253,79,0,0.07) 0%, transparent 65%),
+        radial-gradient(ellipse 40% 50% at 20% 70%, rgba(253,79,0,0.04) 0%, transparent 60%);
+    }
+    .hero-grid {
+      position: absolute; inset: 0; z-index: 0;
+      background-image:
+        linear-gradient(rgba(253,79,0,0.035) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(253,79,0,0.035) 1px, transparent 1px);
+      background-size: 60px 60px;
+      mask-image: radial-gradient(ellipse 80% 70% at 60% 40%, black 0%, transparent 75%);
+    }
+    /* Animated orbs — two visible orbs, fluid movement */
+    .hero-orb {
+      position: absolute; border-radius: 50%;
+      background: var(--orange); opacity: 0.055;
+      animation: orbFloat 18s ease-in-out infinite;
+    }
+    .hero-orb-1 { width: 700px; height: 700px; top: -250px; right: -100px; animation-delay: 0s; }
+    .hero-orb-2 { width: 280px; height: 280px; bottom: -60px; left: -80px; animation-delay: -9s; opacity: 0.04; }
+    @keyframes orbFloat {
+      0%,100% { transform: translate(0,0) scale(1); }
+      33% { transform: translate(20px,-24px) scale(1.035); }
+      66% { transform: translate(-14px,16px) scale(0.97); }
+    }
+
+    .hero-content { position: relative; z-index: 2; max-width: 760px; }
+    .hero-eyebrow {
+      display: inline-flex; align-items: center; gap: 10px; margin-bottom: 36px;
+      font-size: 0.72rem; font-weight: 700; letter-spacing: 0.16em; text-transform: uppercase;
+      color: var(--orange);
+    }
+    .hero-eyebrow::before { content: ''; width: 32px; height: 2px; background: var(--orange); border-radius: 2px; }
+    .hero h1 {
+      font-size: clamp(3rem, 6.5vw, 5.2rem);
+      font-weight: 800; line-height: 1.03; letter-spacing: -0.03em;
+      color: var(--white); margin-bottom: 28px;
+    }
+    .hero h1 .accent { color: var(--orange); }
+    .hero h1 .line { display: block; }
+    .hero-sub {
+      font-size: clamp(1rem, 1.8vw, 1.18rem); line-height: 1.75;
+      color: rgba(255,255,255,0.55); max-width: 540px; margin-bottom: 48px;
+    }
+    .hero-actions { display: flex; gap: 14px; flex-wrap: wrap; align-items: center; }
+
+    /* v2: floating product card removed — hero is cleaner, text-only layout */
+
+    /* ── Stats bar below hero ── */
+    .hero-stats {
+      position: absolute; bottom: 0; left: 0; right: 0; z-index: 3;
+      background: rgba(255,255,255,0.04); border-top: 1px solid rgba(255,255,255,0.07);
+      backdrop-filter: blur(8px);
+    }
+    .hero-stats .container {
+      display: flex; align-items: stretch;
+      padding-top: 0; padding-bottom: 0;
+    }
+    .hero-stat {
+      flex: 1; padding: 24px 32px;
+      border-right: 1px solid rgba(255,255,255,0.07);
+      display: flex; flex-direction: column; gap: 4px;
+    }
+    .hero-stat:last-child { border-right: none; }
+    .hero-stat-num { font-size: 1.7rem; font-weight: 800; color: var(--white); letter-spacing: -0.03em; }
+    .hero-stat-num span { color: var(--orange); }
+    .hero-stat-label { font-size: 0.76rem; color: rgba(255,255,255,0.4); font-weight: 500; }
+
+    /* ═══════════════════════════════════════════
+       PRODUCTS / VALUE PROPS STRIP
+    ═══════════════════════════════════════════ */
+    .value-props { padding: 120px 0; background: var(--white); }
+    .value-props .section-header { margin-bottom: 64px; }
+    .value-props h2 {
+      font-size: clamp(2rem, 3.5vw, 2.8rem); font-weight: 800;
+      letter-spacing: -0.02em; color: var(--black); margin-top: 8px; max-width: 480px;
+    }
+    .vp-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 20px; }
+    .vp-card {
+      border: 1.5px solid var(--grey-light); border-radius: var(--r-xl);
+      padding: 40px 36px; position: relative; overflow: hidden;
+      transition: all 0.4s var(--ease);
+    }
+    .vp-card:hover {
+      border-color: var(--orange);
+      transform: translateY(-4px);
+      box-shadow: 0 16px 48px rgba(0,0,0,0.07);
+    }
+    .vp-card::before {
+      content: ''; position: absolute; bottom: 0; left: 0; right: 0; height: 3px;
+      background: var(--orange); transform: scaleX(0); transform-origin: left;
+      transition: transform 0.4s var(--ease);
+    }
+    .vp-card:hover::before { transform: scaleX(1); }
+    .vp-card.featured {
+      background: var(--black); border-color: var(--black);
+      color: var(--white);
+    }
+    .vp-card.featured:hover { border-color: var(--orange); }
+    .vp-icon {
+      width: 52px; height: 52px; border-radius: var(--r-sm);
+      background: rgba(253,79,0,0.1); display: flex; align-items: center; justify-content: center;
+      margin-bottom: 28px;
+    }
+    .vp-card.featured .vp-icon { background: rgba(253,79,0,0.18); }
+    .vp-icon svg { width: 24px; height: 24px; stroke: var(--orange); fill: none; stroke-width: 1.8; stroke-linecap: round; stroke-linejoin: round; }
+    .vp-eyebrow {
+      font-size: 0.68rem; font-weight: 700; letter-spacing: 0.12em; text-transform: uppercase;
+      color: var(--orange); margin-bottom: 10px;
+    }
+    .vp-card h3 {
+      font-size: 1.25rem; font-weight: 700; letter-spacing: -0.01em;
+      color: var(--black); margin-bottom: 12px;
+    }
+    .vp-card.featured h3 { color: var(--white); }
+    .vp-card p { font-size: 0.88rem; line-height: 1.7; color: var(--grey-dark); margin-bottom: 28px; }
+    .vp-card.featured p { color: rgba(255,255,255,0.5); }
+    .vp-link {
+      display: inline-flex; align-items: center; gap: 6px;
+      font-size: 0.82rem; font-weight: 600; color: var(--orange);
+      transition: gap 0.25s;
+    }
+    .vp-link svg { width: 14px; height: 14px; stroke: currentColor; fill: none; stroke-width: 2.5; transition: transform 0.25s; }
+    .vp-card:hover .vp-link svg { transform: translate(3px,-3px); }
+    .vp-products { display: flex; flex-wrap: wrap; gap: 6px; margin-bottom: 28px; }
+    .vp-pill {
+      display: inline-flex; align-items: center; padding: 4px 12px;
+      font-size: 0.7rem; font-weight: 600; border-radius: var(--r-pill);
+      background: var(--off-white); color: var(--charcoal); border: 1px solid var(--grey-light);
+    }
+    .vp-card.featured .vp-pill { background: rgba(255,255,255,0.07); color: rgba(255,255,255,0.55); border-color: rgba(255,255,255,0.1); }
+
+    /* ═══════════════════════════════════════════
+       FLUID SELECTOR TEASER
+    ═══════════════════════════════════════════ */
+    .selector-teaser {
+      padding: 100px 0;
+      background: var(--black);
+      position: relative; overflow: hidden;
+    }
+    .selector-teaser::before {
+      content: ''; position: absolute;
+      top: -200px; left: -200px; width: 600px; height: 600px;
+      background: radial-gradient(circle, rgba(253,79,0,0.1) 0%, transparent 70%);
+    }
+    .selector-teaser::after {
+      content: ''; position: absolute;
+      bottom: -100px; right: -100px; width: 400px; height: 400px;
+      background: radial-gradient(circle, rgba(253,79,0,0.06) 0%, transparent 70%);
+    }
+    .selector-inner {
+      position: relative; z-index: 2;
+      display: grid; grid-template-columns: 1fr 1fr; gap: 80px; align-items: center;
+    }
+    .selector-left h2 {
+      font-size: clamp(2rem, 3.8vw, 3rem); font-weight: 800; letter-spacing: -0.02em;
+      line-height: 1.1; color: var(--white); margin-bottom: 20px;
+    }
+    .selector-left h2 .accent { color: var(--orange); }
+    .selector-left p { font-size: 1rem; line-height: 1.75; color: rgba(255,255,255,0.5); margin-bottom: 36px; }
+    .selector-steps { display: flex; flex-direction: column; gap: 0; }
+    .selector-step {
+      display: flex; align-items: center; gap: 16px;
+      padding: 14px 0; border-bottom: 1px solid rgba(255,255,255,0.06);
+    }
+    .selector-step:last-child { border-bottom: none; }
+    .step-num {
+      width: 32px; height: 32px; border-radius: 50%;
+      background: rgba(253,79,0,0.12); border: 1px solid rgba(253,79,0,0.25);
+      display: flex; align-items: center; justify-content: center;
+      font-size: 0.72rem; font-weight: 700; color: var(--orange); flex-shrink: 0;
+    }
+    .step-text { font-size: 0.88rem; color: rgba(255,255,255,0.65); }
+    .step-text strong { color: var(--white); font-weight: 600; }
+
+    .selector-right {
+      background: rgba(255,255,255,0.03);
+      border: 1px solid rgba(255,255,255,0.08);
+      border-radius: var(--r-xl);
+      padding: 36px;
+    }
+    .sr-question {
+      font-size: 0.72rem; font-weight: 700; letter-spacing: 0.1em; text-transform: uppercase;
+      color: var(--orange); margin-bottom: 16px;
+    }
+    .sr-title { font-size: 1.1rem; font-weight: 700; color: var(--white); margin-bottom: 20px; }
+    .sr-options { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-bottom: 24px; }
+    .sr-option {
+      padding: 14px 16px; border-radius: var(--r-md);
+      border: 1.5px solid rgba(255,255,255,0.08);
+      font-size: 0.82rem; font-weight: 500; color: rgba(255,255,255,0.55);
+      text-align: center; cursor: pointer; transition: all 0.25s;
+      display: flex; flex-direction: column; gap: 6px; align-items: center;
+    }
+    .sr-option svg { width: 20px; height: 20px; stroke: currentColor; fill: none; stroke-width: 1.5; opacity: 0.7; }
+    .sr-option.active {
+      border-color: var(--orange); background: rgba(253,79,0,0.1);
+      color: var(--white);
+    }
+    .sr-option.active svg { opacity: 1; stroke: var(--orange); }
+    .sr-progress {
+      display: flex; align-items: center; gap: 10px;
+      font-size: 0.72rem; color: rgba(255,255,255,0.3);
+    }
+    .sr-progress-bar { flex: 1; height: 3px; background: rgba(255,255,255,0.1); border-radius: 3px; overflow: hidden; }
+    .sr-progress-fill { height: 100%; width: 25%; background: var(--orange); border-radius: 3px; }
+
+    /* ═══════════════════════════════════════════
+       INDUSTRIES
+    ═══════════════════════════════════════════ */
+    .industries {
+      padding: 120px 0;
+      background: var(--charcoal);
+      position: relative; overflow: hidden;
+    }
+    .industries .section-header { margin-bottom: 60px; }
+    .industries h2 {
+      font-size: clamp(2rem, 3.5vw, 2.8rem); font-weight: 800;
+      letter-spacing: -0.02em; color: var(--white);
+      margin-top: 8px; max-width: 560px; line-height: 1.15;
+    }
+    .ind-grid { display: grid; grid-template-columns: repeat(5, 1fr); gap: 12px; }
+    .ind-card {
+      background: rgba(255,255,255,0.04); border: 1px solid rgba(255,255,255,0.07);
+      border-radius: var(--r-xl); padding: 32px 28px; position: relative; overflow: hidden;
+      transition: all 0.4s var(--ease);
+    }
+    .ind-card:hover {
+      background: rgba(255,255,255,0.07); border-color: rgba(253,79,0,0.2);
+      transform: translateY(-4px);
+    }
+    .ind-card::before {
+      content: ''; position: absolute; top: 0; left: 0; width: 100%; height: 3px;
+      background: var(--orange); transform: scaleX(0); transform-origin: left;
+      transition: transform 0.4s var(--ease);
+    }
+    .ind-card:hover::before { transform: scaleX(1); }
+    .ind-icon {
+      width: 44px; height: 44px; border-radius: var(--r-sm);
+      background: rgba(253,79,0,0.1); display: flex; align-items: center; justify-content: center;
+      margin-bottom: 20px;
+    }
+    .ind-icon svg { width: 22px; height: 22px; stroke: var(--orange); fill: none; stroke-width: 1.8; stroke-linecap: round; stroke-linejoin: round; }
+    .ind-card h3 { font-size: 1rem; font-weight: 700; color: var(--white); margin-bottom: 8px; }
+    .ind-card p { font-size: 0.78rem; line-height: 1.65; color: rgba(255,255,255,0.4); }
+
+    /* ═══════════════════════════════════════════
+       SERVICES STRIP
+    ═══════════════════════════════════════════ */
+    .services-strip { padding: 100px 0; background: var(--white); }
+    .services-strip .section-header { margin-bottom: 56px; }
+    .services-strip h2 {
+      font-size: clamp(1.8rem, 3.2vw, 2.5rem); font-weight: 800;
+      letter-spacing: -0.02em; color: var(--black); margin-top: 8px;
+    }
+    .svc-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 1px; background: var(--grey-light); border-radius: var(--r-xl); overflow: hidden; }
+    .svc-item {
+      background: var(--white); padding: 40px 32px;
+      transition: background 0.3s;
+    }
+    .svc-item:hover { background: var(--off-white); }
+    .svc-num {
+      font-size: 0.65rem; font-weight: 700; letter-spacing: 0.14em; text-transform: uppercase;
+      color: var(--orange); margin-bottom: 20px;
+    }
+    .svc-item h3 { font-size: 1rem; font-weight: 700; color: var(--black); margin-bottom: 12px; letter-spacing: -0.01em; }
+    .svc-item p { font-size: 0.82rem; line-height: 1.7; color: var(--grey-dark); }
+
+    /* ═══════════════════════════════════════════
+       PARTNERS STRIP
+    ═══════════════════════════════════════════ */
+    .partners-strip { padding: 80px 0; background: var(--off-white); border-top: 1px solid var(--grey-light); border-bottom: 1px solid var(--grey-light); }
+    .partners-inner { display: flex; flex-direction: column; align-items: center; gap: 40px; }
+    .partners-label {
+      font-size: 0.7rem; font-weight: 700; letter-spacing: 0.15em; text-transform: uppercase;
+      color: var(--grey-mid);
+    }
+    .partners-logos {
+      display: flex; flex-wrap: wrap; justify-content: center; align-items: center;
+      gap: 16px;
+    }
+    .partner-pill {
+      display: inline-flex; align-items: center;
+      padding: 8px 20px; border-radius: var(--r-pill);
+      background: var(--white); border: 1.5px solid var(--grey-light);
+      font-size: 0.8rem; font-weight: 600; color: var(--charcoal);
+      transition: all 0.25s; cursor: default;
+    }
+    .partner-pill:hover { border-color: var(--orange); color: var(--black); box-shadow: 0 4px 16px rgba(0,0,0,0.06); }
+
+    /* ═══════════════════════════════════════════
+       CASE STUDY FEATURE — Phase 2
+    ═══════════════════════════════════════════ */
+    .case-study-feature {
+      padding: 120px 0;
+      background: var(--black);
+      position: relative; overflow: hidden;
+    }
+    .csf-inner {
+      display: grid; grid-template-columns: 5fr 4fr; gap: 80px; align-items: center;
+    }
+    .csf-left .section-tag { color: var(--orange); }
+    .csf-left h2 {
+      font-size: clamp(1.9rem, 3.5vw, 2.8rem); font-weight: 800;
+      letter-spacing: -0.02em; color: var(--white); line-height: 1.15; margin-bottom: 16px;
+    }
+    .csf-excerpt { font-size: 0.95rem; line-height: 1.8; color: rgba(255,255,255,0.5); margin-bottom: 36px; }
+    .csf-tags { display: flex; flex-wrap: wrap; gap: 8px; margin-bottom: 32px; }
+    .csf-tag {
+      padding: 5px 14px; border-radius: var(--r-pill);
+      font-size: 0.68rem; font-weight: 700; letter-spacing: 0.06em; text-transform: uppercase;
+      background: rgba(253,79,0,0.1); color: var(--orange); border: 1px solid rgba(253,79,0,0.2);
+    }
+    .csf-stats { display: grid; grid-template-columns: repeat(3, 1fr); gap: 24px; }
+    .csf-stat { text-align: center; padding: 24px; background: rgba(255,255,255,0.04); border-radius: var(--r-lg); border: 1px solid rgba(255,255,255,0.07); }
+    .csf-stat-num { font-size: 2rem; font-weight: 800; color: var(--white); letter-spacing: -0.03em; }
+    .csf-stat-num span { color: var(--orange); }
+    .csf-stat-label { font-size: 0.72rem; color: rgba(255,255,255,0.4); margin-top: 4px; }
+    .csf-image-placeholder {
+      aspect-ratio: 4/3; border-radius: var(--r-xl);
+      background: rgba(255,255,255,0.04); border: 1px solid rgba(255,255,255,0.08);
+      display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 12px;
+    }
+    .csf-image-placeholder svg { width: 40px; height: 40px; stroke: rgba(255,255,255,0.2); fill: none; stroke-width: 1.5; }
+    .csf-image-placeholder span { font-size: 0.72rem; color: rgba(255,255,255,0.2); font-weight: 600; letter-spacing: 0.08em; text-transform: uppercase; }
+
+    /* ═══════════════════════════════════════════
+       KNOWLEDGE HUB TEASER
+    ═══════════════════════════════════════════ */
+    .knowledge-teaser { padding: 120px 0; background: var(--white); }
+    .kt-header { display: flex; align-items: flex-end; justify-content: space-between; margin-bottom: 56px; gap: 24px; }
+    .kt-header-left h2 {
+      font-size: clamp(1.8rem, 3.2vw, 2.5rem); font-weight: 800;
+      letter-spacing: -0.02em; color: var(--black); margin-top: 8px;
+    }
+    .kt-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 20px; }
+    .kt-card {
+      border: 1.5px solid var(--grey-light); border-radius: var(--r-xl); overflow: hidden;
+      transition: all 0.35s var(--ease);
+    }
+    .kt-card:hover { border-color: var(--orange); transform: translateY(-3px); box-shadow: 0 12px 40px rgba(0,0,0,0.07); }
+    .kt-card-top { padding: 28px 28px 20px; }
+    .kt-category {
+      display: inline-flex; padding: 4px 12px; border-radius: var(--r-pill);
+      font-size: 0.65rem; font-weight: 700; letter-spacing: 0.1em; text-transform: uppercase;
+      margin-bottom: 14px;
+    }
+    .kt-cat-guide { background: rgba(253,79,0,0.08); color: var(--orange); }
+    .kt-cat-comparison { background: rgba(33,150,243,0.08); color: #2196F3; }
+    .kt-cat-troubleshoot { background: rgba(76,175,80,0.08); color: #4CAF50; }
+    .kt-card h3 { font-size: 1rem; font-weight: 700; color: var(--black); margin-bottom: 10px; line-height: 1.4; }
+    .kt-card p { font-size: 0.82rem; color: var(--grey-dark); line-height: 1.65; }
+    .kt-card-footer {
+      padding: 16px 28px; border-top: 1px solid var(--grey-light);
+      display: flex; align-items: center; justify-content: space-between;
+    }
+    .kt-read { font-size: 0.78rem; font-weight: 600; color: var(--orange); display: flex; align-items: center; gap: 5px; }
+    .kt-read svg { width: 13px; height: 13px; stroke: currentColor; fill: none; stroke-width: 2.5; }
+    .kt-time { font-size: 0.72rem; color: var(--grey-mid); }
+
+    /* ═══════════════════════════════════════════
+       MUD SCHOOL CALLOUT — Phase 2
+    ═══════════════════════════════════════════ */
+    .mud-school {
+      padding: 100px 0; background: var(--off-white);
+      border-top: 1px solid var(--grey-light);
+    }
+    .ms-inner { display: grid; grid-template-columns: 1fr 1fr; gap: 80px; align-items: center; }
+    .ms-left h2 {
+      font-size: clamp(1.8rem, 3.2vw, 2.5rem); font-weight: 800;
+      letter-spacing: -0.02em; color: var(--black); margin-bottom: 16px; line-height: 1.2;
+    }
+    .ms-left p { font-size: 0.95rem; line-height: 1.8; color: var(--grey-dark); margin-bottom: 28px; }
+    .ms-features { display: flex; flex-direction: column; gap: 14px; margin-bottom: 36px; }
+    .ms-feature { display: flex; align-items: center; gap: 12px; font-size: 0.88rem; color: var(--charcoal); }
+    .ms-feature::before { content: ''; width: 6px; height: 6px; border-radius: 50%; background: var(--orange); flex-shrink: 0; }
+    .ms-visual {
+      aspect-ratio: 4/3; background: var(--black); border-radius: var(--r-xl); overflow: hidden;
+      display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 16px;
+      position: relative;
+    }
+    .ms-visual-label {
+      font-size: 0.65rem; font-weight: 700; letter-spacing: 0.18em; text-transform: uppercase;
+      color: var(--orange);
+    }
+    .ms-visual-title { font-size: 2.2rem; font-weight: 800; color: var(--white); letter-spacing: -0.02em; }
+    .ms-badge {
+      padding: 8px 18px; background: var(--orange); border-radius: var(--r-pill);
+      font-size: 0.72rem; font-weight: 700; color: var(--white);
+      position: absolute; bottom: 28px; right: 28px;
+    }
+
+    /* ═══════════════════════════════════════════
+       SDS QUICK ACCESS — Phase 2
+    ═══════════════════════════════════════════ */
+    .sds-section { padding: 80px 0; background: var(--white); border-top: 1px solid var(--grey-light); }
+    .sds-inner { display: grid; grid-template-columns: 1fr 2fr; gap: 64px; align-items: center; }
+    .sds-left h2 {
+      font-size: clamp(1.4rem, 2.5vw, 1.9rem); font-weight: 800;
+      letter-spacing: -0.02em; color: var(--black); margin-bottom: 12px;
+    }
+    .sds-left p { font-size: 0.88rem; color: var(--grey-dark); line-height: 1.7; }
+    .sds-search {
+      display: flex; align-items: center; gap: 12px;
+      background: var(--off-white); border: 1.5px solid var(--grey-light); border-radius: var(--r-md);
+      padding: 14px 20px; margin-bottom: 20px;
+    }
+    .sds-search svg { width: 18px; height: 18px; stroke: var(--grey-mid); fill: none; stroke-width: 2; }
+    .sds-search input { flex: 1; border: none; background: transparent; font-size: 0.88rem; color: var(--charcoal); outline: none; font-family: var(--font); }
+    .sds-search input::placeholder { color: var(--grey-mid); }
+    .sds-quick-links { display: flex; flex-wrap: wrap; gap: 8px; }
+    .sds-quick { padding: 6px 14px; border-radius: var(--r-pill); border: 1.5px solid var(--grey-light); font-size: 0.75rem; font-weight: 600; color: var(--charcoal); transition: all 0.2s; cursor: pointer; }
+    .sds-quick:hover { border-color: var(--orange); color: var(--orange); }
+
+    /* ═══════════════════════════════════════════
+       AI ASSISTANT — Phase 3
+    ═══════════════════════════════════════════ */
+    .ai-section {
+      padding: 100px 0; background: var(--black); position: relative; overflow: hidden;
+    }
+    .ai-inner { display: grid; grid-template-columns: 1fr 1fr; gap: 80px; align-items: center; }
+    .ai-left .section-tag { color: rgba(129,140,248,0.9); }
+    .ai-left .section-tag::before { background: rgba(129,140,248,0.5); }
+    .ai-left h2 {
+      font-size: clamp(1.8rem, 3.2vw, 2.5rem); font-weight: 800;
+      letter-spacing: -0.02em; color: var(--white); margin-bottom: 16px; line-height: 1.15;
+    }
+    .ai-left h2 .accent { color: #818CF8; }
+    .ai-left p { font-size: 0.95rem; line-height: 1.8; color: rgba(255,255,255,0.5); margin-bottom: 28px; }
+    .ai-chat {
+      background: rgba(255,255,255,0.03); border: 1px solid rgba(255,255,255,0.07);
+      border-radius: var(--r-xl); padding: 28px; display: flex; flex-direction: column; gap: 16px;
+    }
+    .chat-msg { display: flex; gap: 12px; align-items: flex-start; }
+    .chat-avatar {
+      width: 32px; height: 32px; border-radius: 50%; flex-shrink: 0;
+      display: flex; align-items: center; justify-content: center; font-size: 0.72rem; font-weight: 700;
+    }
+    .chat-avatar.user { background: rgba(253,79,0,0.15); color: var(--orange); }
+    .chat-avatar.ai { background: rgba(129,140,248,0.15); color: #818CF8; }
+    .chat-bubble {
+      padding: 12px 16px; border-radius: 12px;
+      font-size: 0.82rem; line-height: 1.65; max-width: 85%;
+    }
+    .chat-bubble.user { background: rgba(253,79,0,0.1); color: rgba(255,255,255,0.8); border: 1px solid rgba(253,79,0,0.15); }
+    .chat-bubble.ai { background: rgba(255,255,255,0.05); color: rgba(255,255,255,0.7); border: 1px solid rgba(255,255,255,0.08); }
+    .chat-product-rec {
+      display: flex; align-items: center; gap: 12px; margin-top: 10px;
+      padding: 12px 14px; background: rgba(129,140,248,0.07); border-radius: 10px; border: 1px solid rgba(129,140,248,0.15);
+    }
+    .cpr-badge { padding: 3px 10px; border-radius: 20px; font-size: 0.65rem; font-weight: 700; background: rgba(129,140,248,0.15); color: #818CF8; }
+    .cpr-name { font-size: 0.82rem; font-weight: 600; color: var(--white); }
+    .cpr-sub { font-size: 0.72rem; color: rgba(255,255,255,0.35); }
+    .chat-input {
+      display: flex; align-items: center; gap: 10px;
+      background: rgba(255,255,255,0.04); border: 1px solid rgba(255,255,255,0.1);
+      border-radius: 10px; padding: 12px 16px; margin-top: 4px;
+    }
+    .chat-input span { flex: 1; font-size: 0.82rem; color: rgba(255,255,255,0.2); }
+    .chat-send {
+      width: 30px; height: 30px; border-radius: 8px; background: rgba(129,140,248,0.2);
+      display: flex; align-items: center; justify-content: center;
+    }
+    .chat-send svg { width: 14px; height: 14px; stroke: #818CF8; fill: none; stroke-width: 2; }
+
+    /* ═══════════════════════════════════════════
+       CTA
+    ═══════════════════════════════════════════ */
+    .cta-section {
+      padding: 140px 0;
+      background: var(--black);
+      position: relative; overflow: hidden; text-align: center;
+    }
+    .cta-section::before {
+      content: ''; position: absolute; top: 50%; left: 50%;
+      transform: translate(-50%, -50%);
+      width: 900px; height: 900px; border-radius: 50%;
+      background: radial-gradient(circle, rgba(253,79,0,0.07) 0%, transparent 65%);
+    }
+    .cta-inner { position: relative; z-index: 2; }
+    .cta-section .section-tag { justify-content: center; }
+    .cta-section h2 {
+      font-size: clamp(2.4rem, 5.5vw, 4.2rem); font-weight: 800;
+      letter-spacing: -0.03em; color: var(--white); line-height: 1.05; margin-bottom: 20px;
+    }
+    .cta-section h2 .accent { color: var(--orange); }
+    .cta-section > .container > p,
+    .cta-inner > p { font-size: 1.1rem; color: rgba(255,255,255,0.45); margin-bottom: 48px; max-width: 500px; margin-left: auto; margin-right: auto; }
+    .cta-actions { display: flex; gap: 14px; justify-content: center; flex-wrap: wrap; }
+
+    /* ═══════════════════════════════════════════
+       FOOTER
+    ═══════════════════════════════════════════ */
+    footer { background: var(--black); border-top: 1px solid rgba(255,255,255,0.07); padding: 80px 0 40px; }
+    .footer-grid { display: grid; grid-template-columns: 2.2fr 1fr 1fr 1fr 1fr; gap: 48px; margin-bottom: 56px; }
+    .footer-brand {}
+    .footer-logo { display: flex; align-items: center; gap: 10px; margin-bottom: 16px; }
+    .footer-logo-mark { width: 32px; height: 32px; background: var(--orange); border-radius: 7px; display: flex; align-items: center; justify-content: center; }
+    .footer-logo-mark svg { width: 18px; height: 18px; stroke: var(--white); fill: none; stroke-width: 2.5; stroke-linecap: round; stroke-linejoin: round; }
+    .footer-wordmark { font-size: 0.95rem; font-weight: 800; color: var(--white); letter-spacing: -0.01em; }
+    .footer-brand p { font-size: 0.82rem; line-height: 1.75; color: rgba(255,255,255,0.4); max-width: 260px; }
+    .footer-markets { display: flex; gap: 8px; margin-top: 20px; }
+    .footer-market-pill {
+      padding: 6px 14px; border-radius: var(--r-pill); border: 1px solid rgba(255,255,255,0.1);
+      font-size: 0.68rem; font-weight: 700; letter-spacing: 0.1em; text-transform: uppercase;
+      color: rgba(255,255,255,0.4); transition: all 0.25s; cursor: pointer;
+    }
+    .footer-market-pill.active { background: var(--orange); border-color: var(--orange); color: var(--white); }
+    .footer-col h4 {
+      font-size: 0.68rem; font-weight: 700; letter-spacing: 0.14em; text-transform: uppercase;
+      color: rgba(255,255,255,0.3); margin-bottom: 20px;
+    }
+    .footer-col ul { display: flex; flex-direction: column; gap: 12px; }
+    .footer-col a { font-size: 0.84rem; color: rgba(255,255,255,0.55); transition: color 0.25s; }
+    .footer-col a:hover { color: var(--white); }
+    .footer-bottom {
+      padding-top: 32px; border-top: 1px solid rgba(255,255,255,0.07);
+      display: flex; align-items: center; justify-content: space-between;
+      font-size: 0.76rem; color: rgba(255,255,255,0.25);
+    }
+
+    /* ═══════════════════════════════════════════
+       RESPONSIVE
+    ═══════════════════════════════════════════ */
+    @media (max-width: 1100px) {
+      .ind-grid { grid-template-columns: repeat(3, 1fr); }
+      .footer-grid { grid-template-columns: 1fr 1fr 1fr; }
+    }
+    @media (max-width: 900px) {
+      .selector-inner, .csf-inner, .ms-inner, .ai-inner, .sds-inner { grid-template-columns: 1fr; gap: 48px; }
+      .vp-grid, .svc-grid { grid-template-columns: 1fr 1fr; }
+      .ind-grid, .kt-grid, .sr-options { grid-template-columns: 1fr 1fr; }
+      .csf-stats { grid-template-columns: repeat(3, 1fr); }
+    }
+    @media (max-width: 640px) {
+      .hero h1 { font-size: 2.4rem; }
+      .nav-links { display: none; }
+      .vp-grid, .svc-grid, .ind-grid, .kt-grid { grid-template-columns: 1fr; }
+      .hero-stats .container { flex-direction: column; }
+      .hero-stat { border-right: none; border-bottom: 1px solid rgba(255,255,255,0.07); }
+      .footer-grid { grid-template-columns: 1fr 1fr; gap: 32px; }
+      .footer-bottom { flex-direction: column; gap: 10px; text-align: center; }
+      .phase-badge { top: 12px; right: 12px; }
+    }
+
+    /* ── Prototype dev banner ── */
+    .proto-banner {
+      background: rgba(253,79,0,0.08);
+      border-bottom: 1px solid rgba(253,79,0,0.15);
+      padding: 10px 0; text-align: center;
+      font-size: 0.72rem; font-weight: 600; letter-spacing: 0.06em;
+      color: var(--orange); position: relative; z-index: 2000;
+    }
+    .proto-banner a { color: var(--orange); text-decoration: underline; opacity: 0.7; margin-left: 12px; font-weight: 500; }
+  </style>
+</head>
+<body>
+
+<!-- ── Prototype banner ── -->
+<div class="proto-banner">
+  Homepage — Prototype v2 · Internal design review only
+  <a href="gallery.html">← Back to gallery</a>
+</div>
+
+<!-- ═══════════════════════════════════════════
+     NAV
+═══════════════════════════════════════════ -->
+<nav id="nav">
+  <div class="container">
+    <div class="nav-logo">
+      <div class="nav-logo-mark">
+        <svg viewBox="0 0 24 24"><path d="M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5"/></svg>
+      </div>
+      <span class="nav-wordmark">Blick<span>.</span></span>
+    </div>
+    <ul class="nav-links">
+      <li><a href="products.html">Products</a></li>
+      <li><a href="services.html">Services</a></li>
+      <li><a href="fluid-calculator.html">Fluid Selector</a></li>
+      <li><a href="#knowledge">Knowledge Hub</a></li>
+      <li><a href="contact.html" class="nav-cta">Contact Us</a></li>
+    </ul>
+  </div>
+</nav>
+
+<!-- ═══════════════════════════════════════════
+     HERO
+═══════════════════════════════════════════ -->
+<section class="hero">
+  <div class="hero-noise"></div>
+  <div class="hero-grid"></div>
+  <div class="hero-orb hero-orb-1"></div>
+  <div class="hero-orb hero-orb-2"></div>
+
+  <div class="container">
+    <div class="hero-content reveal">
+      <div class="hero-eyebrow">New Zealand</div>
+      <h1>
+        <span class="line">The difference is</span>
+        <span class="line">having the <span class="accent">right people</span></span>
+        <span class="line">by your side.</span>
+      </h1>
+      <p class="hero-sub">
+        Every bore adds to your reputation — and outcomes don't happen by chance.
+        Blick combines proven drilling fluids, technical expertise, and on-site support
+        to keep your crew confident and the job moving.
+      </p>
+      <div class="hero-actions">
+        <a href="fluid-calculator.html" class="btn btn-primary btn-lg">
+          Find your fluid
+          <svg viewBox="0 0 24 24"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+        </a>
+        <a href="contact.html" class="btn btn-ghost btn-lg">Talk to an expert</a>
+      </div>
+    </div>
+  </div>
+
+  <!-- Stats bar -->
+  <div class="hero-stats">
+    <div class="container">
+      <div class="hero-stat">
+        <div class="hero-stat-num">25<span>+</span></div>
+        <div class="hero-stat-label">Years supplying Australasia</div>
+      </div>
+      <div class="hero-stat">
+        <div class="hero-stat-num">5</div>
+        <div class="hero-stat-label">Industries served</div>
+      </div>
+      <div class="hero-stat">
+        <div class="hero-stat-num">NZ <span>&amp;</span> AU</div>
+        <div class="hero-stat-label">Local stock &amp; support</div>
+      </div>
+      <div class="hero-stat">
+        <div class="hero-stat-num">60<span>+</span></div>
+        <div class="hero-stat-label">Products in range</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══════════════════════════════════════════
+     PRODUCTS / VALUE PROPS
+═══════════════════════════════════════════ -->
+<section class="value-props">
+  <div class="container">
+    <div class="section-header reveal">
+      <div class="section-tag">Our Range</div>
+      <h2>Fluids, tooling, and support — from people who know how to use them.</h2>
+    </div>
+    <div class="vp-grid">
+
+      <div class="vp-card featured reveal stagger-1">
+        <div class="vp-icon">
+          <svg viewBox="0 0 24 24"><path d="M3 3h18v4H3zM7 7v14M17 7v14M3 17h18"/></svg>
+        </div>
+        <div class="vp-eyebrow">Fluids Range</div>
+        <h3>Blick Fluids</h3>
+        <p>Core bentonite systems, polymer additives, specialty products, and more — formulated for Australasian geology and conditions.</p>
+        <div class="vp-products">
+          <span class="vp-pill">Carry Flow</span>
+          <span class="vp-pill">Carry Max</span>
+          <span class="vp-pill">Carry Foam</span>
+          <span class="vp-pill">Clay Control</span>
+          <span class="vp-pill">Swell Stop</span>
+          <span class="vp-pill">+35 more</span>
+        </div>
+        <a href="products.html" class="vp-link">View fluids range <svg viewBox="0 0 24 24"><path d="M7 17L17 7M17 7H7M17 7v10"/></svg></a>
+      </div>
+
+      <div class="vp-card reveal stagger-2">
+        <div class="vp-icon">
+          <svg viewBox="0 0 24 24"><path d="M14.7 6.3a1 1 0 000 1.4l1.6 1.6a1 1 0 001.4 0l3.77-3.77a6 6 0 01-7.94 7.94l-6.91 6.91a2.12 2.12 0 01-3-3l6.91-6.91a6 6 0 017.94-7.94l-3.76 3.76z"/></svg>
+        </div>
+        <div class="vp-eyebrow">Equipment &amp; Tooling</div>
+        <h3>Tooling &amp; Equipment</h3>
+        <p>HDD tooling, drill rods, bits, and consumables — sourced from world-leading manufacturers including Melfred Borzall and Grundomat.</p>
+        <div class="vp-products">
+          <span class="vp-pill">HDD Tools</span>
+          <span class="vp-pill">Drill Rods</span>
+          <span class="vp-pill">Bits</span>
+          <span class="vp-pill">Reamers</span>
+        </div>
+        <a href="products.html" class="vp-link">View tooling range <svg viewBox="0 0 24 24"><path d="M7 17L17 7M17 7H7M17 7v10"/></svg></a>
+      </div>
+
+      <div class="vp-card reveal stagger-3">
+        <div class="vp-icon">
+          <svg viewBox="0 0 24 24"><ellipse cx="12" cy="5" rx="9" ry="3"/><path d="M21 12c0 1.66-4 3-9 3s-9-1.34-9-3"/><path d="M3 5v14c0 1.66 4 3 9 3s9-1.34 9-3V5"/></svg>
+        </div>
+        <div class="vp-eyebrow">Lubricants &amp; Compounds</div>
+        <h3>Grease &amp; Compounds</h3>
+        <p>Thread compounds, valve sealing greases, and specialty lubricants that protect your equipment under the toughest drilling conditions.</p>
+        <div class="vp-products">
+          <span class="vp-pill">Thread Compounds</span>
+          <span class="vp-pill">Valve Sealing</span>
+          <span class="vp-pill">Specialty</span>
+        </div>
+        <a href="products.html" class="vp-link">View grease range <svg viewBox="0 0 24 24"><path d="M7 17L17 7M17 7H7M17 7v10"/></svg></a>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<!-- ═══════════════════════════════════════════
+     FLUID SELECTOR TEASER
+═══════════════════════════════════════════ -->
+<section class="selector-teaser">
+  <div class="container">
+    <div class="selector-inner">
+      <div class="selector-left reveal">
+        <div class="section-tag section-tag--light">Fluid Selector Tool</div>
+        <h2>Find your fluid<br>in <span class="accent">30 seconds.</span></h2>
+        <p>Tell us what you're drilling, where, and how big — and we'll give you a complete fluid program with products, mixing ratios, and volumes.</p>
+
+        <div class="selector-steps">
+          <div class="selector-step">
+            <div class="step-num">1</div>
+            <div class="step-text"><strong>What are you drilling?</strong> — HDD, Waterwell, Geotech, Piling</div>
+          </div>
+          <div class="selector-step">
+            <div class="step-num">2</div>
+            <div class="step-text"><strong>What's the ground like?</strong> — Sand, clay, rock, volcanic, mixed</div>
+          </div>
+          <div class="selector-step">
+            <div class="step-num">3</div>
+            <div class="step-text"><strong>Bore specs</strong> — diameter + depth</div>
+          </div>
+          <div class="selector-step">
+            <div class="step-num">4</div>
+            <div class="step-text"><strong>Your program</strong> — products, volumes, mixing order, job sheet PDF</div>
+          </div>
+        </div>
+
+        <div style="margin-top: 40px;">
+          <a href="fluid-calculator.html" class="btn btn-primary btn-lg">
+            Start the selector
+            <svg viewBox="0 0 24 24"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+          </a>
+        </div>
+      </div>
+
+      <div class="selector-right reveal stagger-2">
+        <div class="sr-question">Step 1 of 4</div>
+        <div class="sr-title">What are you drilling?</div>
+        <div class="sr-options">
+          <div class="sr-option active">
+            <svg viewBox="0 0 24 24"><path d="M12 22V12M12 12C12 12 7 10 7 6a5 5 0 0110 0c0 4-5 6-5 6z"/></svg>
+            HDD
+          </div>
+          <div class="sr-option">
+            <svg viewBox="0 0 24 24"><path d="M3 3h18v3H3zM12 6v16M9 22h6"/></svg>
+            Waterwell
+          </div>
+          <div class="sr-option">
+            <svg viewBox="0 0 24 24"><path d="M21 16V8a2 2 0 00-1-1.73l-7-4a2 2 0 00-2 0l-7 4A2 2 0 003 8v8a2 2 0 001 1.73l7 4a2 2 0 002 0l7-4A2 2 0 0021 16z"/></svg>
+            Geotech
+          </div>
+          <div class="sr-option">
+            <svg viewBox="0 0 24 24"><path d="M12 2v20M2 12h20"/></svg>
+            Piling
+          </div>
+        </div>
+        <div class="sr-progress">
+          <span>Question 1 of 4</span>
+          <div class="sr-progress-bar"><div class="sr-progress-fill"></div></div>
+          <span>25%</span>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══════════════════════════════════════════
+     INDUSTRIES
+═══════════════════════════════════════════ -->
+<section class="industries">
+  <div class="container">
+    <div class="section-header reveal">
+      <div class="section-tag section-tag--light">Industries We Serve</div>
+      <h2>Wherever Australasians drill, Blick is there.</h2>
+    </div>
+    <div class="ind-grid">
+
+      <div class="ind-card reveal stagger-1">
+        <div class="ind-icon">
+          <svg viewBox="0 0 24 24"><path d="M12 22V12M12 12C12 12 7 10 7 6a5 5 0 0110 0c0 4-5 6-5 6z"/></svg>
+        </div>
+        <h3>Horizontal Directional Drilling</h3>
+        <p>High-performance bentonite and polymer systems for HDD bores from small residential to large diameter crossings.</p>
+      </div>
+
+      <div class="ind-card reveal stagger-2">
+        <div class="ind-icon">
+          <svg viewBox="0 0 24 24"><path d="M3 3h18v3H3zM12 6v16M9 22h6M6 9h12M6 15h12"/></svg>
+        </div>
+        <h3>Waterwell Drilling</h3>
+        <p>Fluid systems designed for waterwell applications — gravel-pack compatible, potable water safe where required.</p>
+      </div>
+
+      <div class="ind-card reveal stagger-3">
+        <div class="ind-icon">
+          <svg viewBox="0 0 24 24"><path d="M21 16V8a2 2 0 00-1-1.73l-7-4a2 2 0 00-2 0l-7 4A2 2 0 003 8v8a2 2 0 001 1.73l7 4a2 2 0 002 0l7-4A2 2 0 0021 16z"/></svg>
+        </div>
+        <h3>Geotechnical &amp; Environmental</h3>
+        <p>Products compatible with environmental requirements and soil investigation work — including low-impact and biodegradable options.</p>
+      </div>
+
+      <div class="ind-card reveal stagger-4">
+        <div class="ind-icon">
+          <svg viewBox="0 0 24 24"><path d="M12 2v20M2 12h20M4.93 4.93l14.14 14.14M19.07 4.93L4.93 19.07"/></svg>
+        </div>
+        <h3>Piling &amp; Construction</h3>
+        <p>Speciality fluids and additives for large-diameter piling, auger boring, and construction drilling applications.</p>
+      </div>
+
+      <div class="ind-card reveal stagger-5">
+        <div class="ind-icon">
+          <svg viewBox="0 0 24 24"><path d="M13 2L3 14h9l-1 8 10-12h-9l1-8z"/></svg>
+        </div>
+        <h3>Oilfield &amp; Geothermal</h3>
+        <p>Technical fluids, additives, and specialist support for oilfield and geothermal drilling operations across the Pacific region.</p>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<!-- ═══════════════════════════════════════════
+     SERVICES STRIP
+═══════════════════════════════════════════ -->
+<section class="services-strip">
+  <div class="container">
+    <div class="section-header reveal">
+      <div class="section-tag">Technical Support</div>
+      <h2>We don't just sell product — we support the job.</h2>
+    </div>
+    <div class="svc-grid reveal stagger-1">
+      <div class="svc-item">
+        <div class="svc-num">01 — Tender</div>
+        <h3>Tender &amp; Specification Support</h3>
+        <p>We help you write technical specifications and fluid programs for tender submissions — fast, accurate, and based on the actual bore conditions.</p>
+      </div>
+      <div class="svc-item">
+        <div class="svc-num">02 — Planning</div>
+        <h3>Fluid Program Planning</h3>
+        <p>Detailed fluid programs for your specific bore: ground conditions, diameter, depth, soil reactivity — calculated before you mobilise.</p>
+      </div>
+      <div class="svc-item">
+        <div class="svc-num">03 — Execution</div>
+        <h3>On-Site Support</h3>
+        <p>Our technical team can attend the job. If something changes mid-bore, we're on the phone or on site to help you adapt.</p>
+      </div>
+      <div class="svc-item">
+        <div class="svc-num">04 — Review</div>
+        <h3>Post-Job Technical Review</h3>
+        <p>Debrief on what worked, what didn't, and how to improve performance on the next bore. Building long-term capability with your team.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══════════════════════════════════════════
+     PARTNERS STRIP
+═══════════════════════════════════════════ -->
+<section class="partners-strip">
+  <div class="container">
+    <div class="partners-inner">
+      <div class="partners-label">Products from world-leading manufacturers</div>
+      <div class="partners-logos">
+        <span class="partner-pill">Melfred Borzall</span>
+        <span class="partner-pill">FANN Instrument</span>
+        <span class="partner-pill">Black Diamond</span>
+        <span class="partner-pill">Technidrill</span>
+        <span class="partner-pill">Jet Lube</span>
+        <span class="partner-pill">Dimatec</span>
+        <span class="partner-pill">Palmer Bit Co.</span>
+        <span class="partner-pill">Grundomat</span>
+        <span class="partner-pill">Premiere Drill Pipe</span>
+        <span class="partner-pill">MI Swaco</span>
+        <span class="partner-pill">MetaFlo</span>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══════════════════════════════════════════
+     CASE STUDY FEATURE — Phase 2
+═══════════════════════════════════════════ -->
+<section class="case-study-feature phase-wrap">
+  <div class="phase-badge phase-badge--p2">Phase 2 — Case Studies</div>
+  <div class="container">
+    <div class="csf-inner">
+      <div class="csf-left reveal">
+        <div class="section-tag section-tag--light">From the Field</div>
+        <h2>800m HDD crossing, Auckland — reactive clay, solved.</h2>
+        <p class="csf-excerpt">
+          A challenging river crossing in volcanic Auckland geology. High reactive clay content was
+          causing bit balling and stuck pipe. Blick's Clay Control + Carry Flow program kept the bore
+          on schedule and delivered ahead of timeline.
+        </p>
+        <div class="csf-tags">
+          <span class="csf-tag">HDD</span>
+          <span class="csf-tag">New Zealand</span>
+          <span class="csf-tag">Clay Control</span>
+          <span class="csf-tag">800m bore</span>
+        </div>
+        <a href="#" class="btn btn-ghost">Read case study <svg viewBox="0 0 24 24"><path d="M5 12h14M12 5l7 7-7 7"/></svg></a>
+      </div>
+      <div class="reveal stagger-2">
+        <div class="csf-image-placeholder" style="margin-bottom: 20px;">
+          <svg viewBox="0 0 24 24"><rect x="3" y="3" width="18" height="18" rx="2"/><path d="M3 9h18M9 21V9"/></svg>
+          <span>Case study photo</span>
+        </div>
+        <div class="csf-stats">
+          <div class="csf-stat">
+            <div class="csf-stat-num">800<span>m</span></div>
+            <div class="csf-stat-label">Bore length</div>
+          </div>
+          <div class="csf-stat">
+            <div class="csf-stat-num">2<span>d</span></div>
+            <div class="csf-stat-label">Ahead of schedule</div>
+          </div>
+          <div class="csf-stat">
+            <div class="csf-stat-num">0</div>
+            <div class="csf-stat-label">Stuck pipe events</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══════════════════════════════════════════
+     KNOWLEDGE HUB TEASER
+═══════════════════════════════════════════ -->
+<section class="knowledge-teaser" id="knowledge">
+  <div class="container">
+    <div class="kt-header reveal">
+      <div class="kt-header-left">
+        <div class="section-tag">Knowledge Hub</div>
+        <h2>Technical guides for the field.</h2>
+      </div>
+      <a href="#" class="btn btn-secondary">View all articles <svg viewBox="0 0 24 24"><path d="M5 12h14M12 5l7 7-7 7"/></svg></a>
+    </div>
+    <div class="kt-grid">
+
+      <div class="kt-card reveal stagger-1">
+        <div class="kt-card-top">
+          <div class="kt-category kt-cat-comparison">Comparison</div>
+          <h3>Bentonite vs Polymer: When to Use Each</h3>
+          <p>The most common question on the job site, answered in plain language — with a soil-type quick reference table for the field.</p>
+        </div>
+        <div class="kt-card-footer">
+          <span class="kt-read">Read guide <svg viewBox="0 0 24 24"><path d="M7 17L17 7M17 7H7M17 7v10"/></svg></span>
+          <span class="kt-time">8 min read</span>
+        </div>
+      </div>
+
+      <div class="kt-card reveal stagger-2">
+        <div class="kt-card-top">
+          <div class="kt-category kt-cat-guide">Guide</div>
+          <h3>Managing Reactive Clay in HDD Bores</h3>
+          <p>Clay swelling causes more stuck pipe than any other ground condition. Here's exactly how to identify it and manage it — before it stops you.</p>
+        </div>
+        <div class="kt-card-footer">
+          <span class="kt-read">Read guide <svg viewBox="0 0 24 24"><path d="M7 17L17 7M17 7H7M17 7v10"/></svg></span>
+          <span class="kt-time">11 min read</span>
+        </div>
+      </div>
+
+      <div class="kt-card reveal stagger-3">
+        <div class="kt-card-top">
+          <div class="kt-category kt-cat-troubleshoot">Troubleshooting</div>
+          <h3>5 Common Drilling Fluid Problems &amp; How to Fix Them</h3>
+          <p>Bit balling, lost circulation, excessive fluid loss, foam collapse, and contaminated returns — what's causing it and what to do on site.</p>
+        </div>
+        <div class="kt-card-footer">
+          <span class="kt-read">Read guide <svg viewBox="0 0 24 24"><path d="M7 17L17 7M17 7H7M17 7v10"/></svg></span>
+          <span class="kt-time">14 min read</span>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<!-- ═══════════════════════════════════════════
+     MUD SCHOOL — Phase 2
+═══════════════════════════════════════════ -->
+<section class="mud-school phase-wrap">
+  <div class="phase-badge phase-badge--p2">Phase 2 — Mud School Page</div>
+  <div class="container">
+    <div class="ms-inner">
+      <div class="ms-left reveal">
+        <div class="section-tag">Blick Mud School</div>
+        <h2>Learn to read your mud. Know your bore.</h2>
+        <p>Blick Mud Schools are practical, field-focused training days for drillers and fluid engineers. You'll leave knowing exactly how to build, test, and adapt a fluid program on-site.</p>
+        <div class="ms-features">
+          <div class="ms-feature">Fluid testing and interpretation</div>
+          <div class="ms-feature">Soil-type identification and fluid response</div>
+          <div class="ms-feature">Mixing, recycling, and disposal</div>
+          <div class="ms-feature">Troubleshooting common bore problems</div>
+          <div class="ms-feature">Hands-on with real equipment</div>
+        </div>
+        <a href="#" class="btn btn-primary">View upcoming dates <svg viewBox="0 0 24 24"><path d="M5 12h14M12 5l7 7-7 7"/></svg></a>
+      </div>
+      <div class="ms-visual reveal stagger-2">
+        <div class="ms-visual-label">Blick Training</div>
+        <div class="ms-visual-title">Mud School</div>
+        <div class="ms-badge">NZ &amp; AU Dates →</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══════════════════════════════════════════
+     SDS QUICK ACCESS — Phase 2
+═══════════════════════════════════════════ -->
+<section class="sds-section phase-wrap">
+  <div class="phase-badge phase-badge--p2">Phase 2 — SDS Library</div>
+  <div class="container">
+    <div class="sds-inner">
+      <div class="sds-left reveal">
+        <div class="section-tag">SDS Library</div>
+        <h2>Safety data sheets, on demand.</h2>
+        <p>Every Blick product. Downloadable SDS and TDS. Search by product name, category, or application.</p>
+      </div>
+      <div class="reveal stagger-2">
+        <div class="sds-search">
+          <svg viewBox="0 0 24 24"><circle cx="11" cy="11" r="8"/><path d="M21 21l-4.35-4.35"/></svg>
+          <input type="text" placeholder="Search product name, e.g. Carry Flow, Bentonite Plug…" disabled>
+        </div>
+        <div class="sds-quick-links">
+          <span class="sds-quick">Carry Flow SDS</span>
+          <span class="sds-quick">Carry Max SDS</span>
+          <span class="sds-quick">Clay Control SDS</span>
+          <span class="sds-quick">Carry Foam SDS</span>
+          <span class="sds-quick">Bentonite Plug SDS</span>
+          <span class="sds-quick">Biocide 75 SDS</span>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══════════════════════════════════════════
+     AI ASSISTANT — Phase 3
+═══════════════════════════════════════════ -->
+<section class="ai-section phase-wrap">
+  <div class="phase-badge phase-badge--p3">Phase 3 — AI Assistant</div>
+  <div class="container">
+    <div class="ai-inner">
+      <div class="ai-left reveal">
+        <div class="section-tag">Blick AI Assistant</div>
+        <h2>Ask any question.<br>Get a <span class="accent">real answer.</span></h2>
+        <p>
+          Our AI assistant is trained on the complete Blick product catalog. Ask it anything — ground conditions,
+          fluid recommendations, mixing ratios, troubleshooting. Available 24/7 on site or in the office.
+        </p>
+        <a href="#" class="btn btn-ghost" style="border-color: rgba(129,140,248,0.3); color: #818CF8;">
+          Coming Phase 3
+          <svg viewBox="0 0 24 24"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+        </a>
+      </div>
+      <div class="ai-chat reveal stagger-2">
+        <div class="chat-msg">
+          <div class="chat-avatar user">JK</div>
+          <div class="chat-bubble user">What fluid for reactive clay in a 200mm HDD bore, 120m long, near a waterway?</div>
+        </div>
+        <div class="chat-msg">
+          <div class="chat-avatar ai">B</div>
+          <div class="chat-bubble ai">
+            For reactive clay near a waterway, I'd recommend a Carry Flow base with Clay Control additive. The Clay Control encapsulates clay particles and prevents swelling. Here's your program:
+            <div class="chat-product-rec" style="display: flex; flex-direction: column; gap: 8px; align-items: flex-start;">
+              <div style="display: flex; gap: 8px; align-items: center;"><span class="cpr-badge">Primary</span><span class="cpr-name">Carry Flow</span></div>
+              <span class="cpr-sub">35 kg/1000L · builds stable viscosity in reactive clays</span>
+              <div style="display: flex; gap: 8px; align-items: center;"><span class="cpr-badge">Additive</span><span class="cpr-name">Clay Control</span></div>
+              <span class="cpr-sub">1–2 L/1000L · prevents clay hydration near watercourses</span>
+            </div>
+          </div>
+        </div>
+        <div class="chat-input">
+          <span>Ask about any bore condition or product…</span>
+          <div class="chat-send"><svg viewBox="0 0 24 24"><path d="M22 2L11 13M22 2L15 22l-4-9-9-4 20-7z"/></svg></div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══════════════════════════════════════════
+     CTA
+═══════════════════════════════════════════ -->
+<section class="cta-section">
+  <div class="container">
+    <div class="cta-inner reveal">
+      <div class="section-tag section-tag--light" style="justify-content: center;">Get in touch</div>
+      <h2>Talk to a<br><span class="accent">Blick expert.</span></h2>
+      <p>Whatever you're drilling, we've probably seen it. Tell us about your bore and we'll help you build the right fluid program.</p>
+      <div class="cta-actions">
+        <a href="contact.html" class="btn btn-primary btn-lg">
+          Contact us
+          <svg viewBox="0 0 24 24"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+        </a>
+        <a href="fluid-calculator.html" class="btn btn-ghost btn-lg">Try the fluid selector</a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══════════════════════════════════════════
+     FOOTER
+═══════════════════════════════════════════ -->
+<footer>
+  <div class="container">
+    <div class="footer-grid">
+
+      <div class="footer-brand">
+        <div class="footer-logo">
+          <div class="footer-logo-mark">
+            <svg viewBox="0 0 24 24"><path d="M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5"/></svg>
+          </div>
+          <span class="footer-wordmark">Blick Group</span>
+        </div>
+        <p>Supplying and supporting Australasia's drilling industry with fluids, tooling, and grease since 1999.</p>
+        <div class="footer-markets">
+          <span class="footer-market-pill active">NZ</span>
+          <span class="footer-market-pill">AU</span>
+        </div>
+      </div>
+
+      <div class="footer-col">
+        <h4>Products</h4>
+        <ul>
+          <li><a href="products.html">Blick Fluids</a></li>
+          <li><a href="products.html">Equipment &amp; Tooling</a></li>
+          <li><a href="products.html">Grease &amp; Compounds</a></li>
+          <li><a href="fluid-calculator.html">Fluid Selector</a></li>
+          <li><a href="#">SDS Library</a></li>
+        </ul>
+      </div>
+
+      <div class="footer-col">
+        <h4>Services</h4>
+        <ul>
+          <li><a href="services.html">Tender Support</a></li>
+          <li><a href="services.html">Fluid Planning</a></li>
+          <li><a href="services.html">On-Site Support</a></li>
+          <li><a href="services.html">Technical Review</a></li>
+        </ul>
+      </div>
+
+      <div class="footer-col">
+        <h4>Learn</h4>
+        <ul>
+          <li><a href="#">Knowledge Hub</a></li>
+          <li><a href="#">Mud School</a></li>
+          <li><a href="#">Case Studies</a></li>
+          <li><a href="#">Fluid Guides</a></li>
+        </ul>
+      </div>
+
+      <div class="footer-col">
+        <h4>Company</h4>
+        <ul>
+          <li><a href="team.html">Team</a></li>
+          <li><a href="contact.html">Contact</a></li>
+          <li><a href="#">Partners</a></li>
+          <li><a href="#">AU Office</a></li>
+          <li><a href="#">NZ Office</a></li>
+        </ul>
+      </div>
+
+    </div>
+
+    <div class="footer-bottom">
+      <span>© 2026 Blick Group. All rights reserved.</span>
+      <span>Hamilton, New Zealand &amp; Brisbane, Australia</span>
+    </div>
+  </div>
+</footer>
+
+<!-- ═══════════════════════════════════════════
+     SCROLL ANIMATIONS
+═══════════════════════════════════════════ -->
+<script>
+  // Nav scroll effect
+  const nav = document.getElementById('nav');
+  window.addEventListener('scroll', () => {
+    nav.classList.toggle('scrolled', window.scrollY > 60);
+  }, { passive: true });
+
+  // Reveal on scroll
+  const revealEls = document.querySelectorAll('.reveal');
+  const io = new IntersectionObserver((entries) => {
+    entries.forEach(e => {
+      if (e.isIntersecting) {
+        e.target.classList.add('visible');
+        io.unobserve(e.target);
+      }
+    });
+  }, { threshold: 0.12 });
+  revealEls.forEach(el => io.observe(el));
+
+  // Fluid selector option toggle
+  document.querySelectorAll('.sr-option').forEach(opt => {
+    opt.addEventListener('click', () => {
+      document.querySelectorAll('.sr-option').forEach(o => o.classList.remove('active'));
+      opt.classList.add('active');
+    });
+  });
+</script>
+
+</body>
+</html>

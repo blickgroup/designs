@@ -1,0 +1,902 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Adaptor Finder — Blick</title>
+<style>
+  /* ── Reset & Base ─────────────────────────────────── */
+  *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+
+  :root {
+    --orange: #FD4F00;
+    --orange-light: #FF6B26;
+    --black: #1A1A1A;
+    --charcoal: #2D2D2D;
+    --grey-dark: #66615C;
+    --grey-mid: #A9A9A9;
+    --grey-light: #EBEAEB;
+    --off-white: #FAFAFA;
+    --white: #FFFFFF;
+    --font: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+  }
+
+  @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap');
+
+  html { scroll-behavior: smooth; font-size: 16px; -webkit-font-smoothing: antialiased; }
+  body { font-family: var(--font); color: var(--charcoal); background: var(--white); line-height: 1.6; overflow-x: hidden; }
+  .container { max-width: 1280px; margin: 0 auto; padding: 0 clamp(24px, 5vw, 80px); }
+
+  .reveal {
+    opacity: 0; transform: translateY(40px);
+    transition: opacity 0.8s cubic-bezier(0.16, 1, 0.3, 1), transform 0.8s cubic-bezier(0.16, 1, 0.3, 1);
+  }
+  .reveal.visible { opacity: 1; transform: translateY(0); }
+  .stagger-1 { transition-delay: 0.1s; }
+  .stagger-2 { transition-delay: 0.2s; }
+  .stagger-3 { transition-delay: 0.3s; }
+
+  .section-tag {
+    display: inline-flex; align-items: center; gap: 12px;
+    font-size: 0.72rem; font-weight: 700; letter-spacing: 0.14em;
+    text-transform: uppercase; color: var(--orange); margin-bottom: 20px;
+  }
+  .section-tag::before { content: ''; width: 32px; height: 2px; background: var(--orange); }
+  .accent { color: var(--orange); }
+
+  .btn {
+    display: inline-flex; align-items: center; gap: 8px;
+    padding: 14px 32px; border-radius: 100px; font-size: 0.88rem;
+    font-weight: 600; text-decoration: none; transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+    cursor: pointer; border: none;
+  }
+  .btn-primary { background: var(--orange); color: var(--white); }
+  .btn-primary:hover { background: var(--orange-light); transform: translateY(-2px); box-shadow: 0 8px 24px rgba(253, 79, 0, 0.25); }
+  .btn-secondary { background: transparent; color: var(--charcoal); border: 1.5px solid var(--grey-light); }
+  .btn-secondary:hover { border-color: var(--orange); color: var(--orange); }
+  .btn-dark { background: var(--charcoal); color: var(--white); }
+  .btn-dark:hover { background: var(--black); transform: translateY(-2px); }
+  .btn:disabled { opacity: 0.4; cursor: not-allowed; transform: none !important; box-shadow: none !important; }
+
+  /* ── Nav ──────────────────────────────────────── */
+  nav {
+    position: fixed; top: 0; left: 0; right: 0; z-index: 1000; padding: 24px 0;
+    transition: all 0.4s; background: rgba(255,255,255,0.92); backdrop-filter: blur(20px);
+    box-shadow: 0 1px 0 rgba(0,0,0,0.05);
+  }
+  nav.scrolled { padding: 16px 0; }
+  nav .container { display: flex; justify-content: space-between; align-items: center; }
+  .nav-logo img { height: 36px; width: auto; }
+  .nav-links { display: flex; align-items: center; gap: 8px; list-style: none; }
+  .nav-links a { text-decoration: none; color: var(--grey-dark); font-size: 0.88rem; font-weight: 500; padding: 8px 16px; border-radius: 8px; transition: all 0.3s; }
+  .nav-links a:hover, .nav-links a.active { color: var(--orange); }
+  .nav-cta { background: var(--orange) !important; color: var(--white) !important; border-radius: 100px !important; padding: 10px 24px !important; }
+
+  /* ── Breadcrumb ──────────────────────────────── */
+  .breadcrumb { padding: 100px 0 0; }
+  .breadcrumb-links { display: flex; align-items: center; gap: 8px; font-size: 0.82rem; color: var(--grey-mid); }
+  .breadcrumb-links a { color: var(--grey-dark); text-decoration: none; transition: color 0.3s; }
+  .breadcrumb-links a:hover { color: var(--orange); }
+  .breadcrumb-links .sep { opacity: 0.4; }
+
+  /* ══════════════════════════════════════════════════
+     HERO
+     ══════════════════════════════════════════════════ */
+  .hero {
+    padding: 40px 0 80px;
+    position: relative;
+  }
+  .hero-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 80px;
+    align-items: center;
+  }
+  .hero-text h1 {
+    font-size: clamp(2rem, 3.5vw, 2.8rem);
+    font-weight: 800; letter-spacing: -0.02em; line-height: 1.1;
+    color: var(--black); margin-bottom: 12px;
+  }
+  .hero-text .sub {
+    font-size: 1.1rem; font-weight: 500; color: var(--orange); margin-bottom: 24px;
+  }
+  .hero-text p {
+    font-size: 1rem; line-height: 1.8; color: var(--grey-dark); margin-bottom: 14px;
+  }
+
+  .hero-stats {
+    display: flex; gap: 32px; margin-top: 32px; padding-top: 32px;
+    border-top: 1px solid var(--grey-light);
+  }
+  .hero-stat { text-align: center; }
+  .hero-stat .stat-num {
+    font-size: 1.8rem; font-weight: 800; color: var(--orange); letter-spacing: -0.02em;
+  }
+  .hero-stat .stat-label {
+    font-size: 0.72rem; font-weight: 600; letter-spacing: 0.08em;
+    text-transform: uppercase; color: var(--grey-dark); margin-top: 4px;
+  }
+
+  /* Connection diagram */
+  .hero-diagram {
+    display: flex; align-items: center; justify-content: center;
+  }
+  .diagram-svg {
+    width: 100%; max-width: 380px;
+  }
+
+  /* ══════════════════════════════════════════════════
+     FINDER WIZARD
+     ══════════════════════════════════════════════════ */
+  .finder {
+    padding: 80px 0 120px;
+    background: var(--off-white);
+    position: relative;
+  }
+  .finder::before {
+    content: ''; position: absolute; top: -100px; right: -100px;
+    width: 400px; height: 400px; border: 1px solid rgba(253, 79, 0, 0.05);
+    border-radius: 50%; pointer-events: none;
+  }
+  .finder-header {
+    margin-bottom: 48px;
+  }
+  .finder-header h2 {
+    font-size: clamp(1.6rem, 3vw, 2.2rem); font-weight: 800;
+    letter-spacing: -0.02em; color: var(--black);
+  }
+  .finder-header p {
+    font-size: 1rem; color: var(--grey-dark); margin-top: 10px; max-width: 600px; line-height: 1.7;
+  }
+
+  .finder-card {
+    background: var(--white);
+    border: 1px solid var(--grey-light);
+    border-radius: 24px;
+    padding: 48px;
+    max-width: 900px;
+  }
+
+  /* Step indicators */
+  .finder-steps {
+    display: flex; gap: 8px; margin-bottom: 40px;
+  }
+  .finder-step {
+    display: flex; align-items: center; gap: 10px;
+    padding: 8px 16px; border-radius: 100px;
+    font-size: 0.78rem; font-weight: 600;
+    color: var(--grey-mid); background: var(--off-white);
+    transition: all 0.3s;
+  }
+  .finder-step.active {
+    color: var(--orange); background: rgba(253, 79, 0, 0.08);
+  }
+  .finder-step.done {
+    color: var(--charcoal); background: rgba(253, 79, 0, 0.06);
+  }
+  .finder-step .step-num {
+    width: 22px; height: 22px; border-radius: 50%;
+    background: var(--grey-light); color: var(--grey-dark);
+    display: flex; align-items: center; justify-content: center;
+    font-size: 0.68rem; font-weight: 700;
+  }
+  .finder-step.active .step-num { background: var(--orange); color: var(--white); }
+  .finder-step.done .step-num { background: var(--charcoal); color: var(--white); }
+
+  /* Panels */
+  .finder-panel { display: none; }
+  .finder-panel.active { display: block; }
+
+  .panel-title {
+    font-size: 1.15rem; font-weight: 700; color: var(--black);
+    margin-bottom: 8px;
+  }
+  .panel-hint {
+    font-size: 0.88rem; color: var(--grey-dark); margin-bottom: 28px; line-height: 1.6;
+  }
+
+  /* Option grid */
+  .option-grid {
+    display: grid; grid-template-columns: repeat(auto-fill, minmax(160px, 1fr));
+    gap: 12px; margin-bottom: 32px;
+  }
+  .option-card {
+    background: var(--off-white);
+    border: 2px solid var(--grey-light);
+    border-radius: 14px;
+    padding: 18px 16px;
+    text-align: center;
+    cursor: pointer;
+    transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+  }
+  .option-card:hover {
+    border-color: rgba(253, 79, 0, 0.3);
+    transform: translateY(-2px);
+    box-shadow: 0 8px 24px rgba(0,0,0,0.04);
+  }
+  .option-card.selected {
+    border-color: var(--orange);
+    background: rgba(253, 79, 0, 0.04);
+    box-shadow: 0 0 0 3px rgba(253, 79, 0, 0.1);
+  }
+  .option-card .opt-name {
+    font-size: 0.88rem; font-weight: 700; color: var(--black);
+    margin-bottom: 4px;
+  }
+  .option-card .opt-desc {
+    font-size: 0.72rem; color: var(--grey-dark); line-height: 1.4;
+  }
+
+  .finder-nav {
+    display: flex; justify-content: space-between; align-items: center;
+    padding-top: 24px; border-top: 1px solid var(--grey-light);
+    margin-top: 32px;
+  }
+  .finder-nav .back-link {
+    font-size: 0.85rem; font-weight: 600; color: var(--grey-dark);
+    text-decoration: none; cursor: pointer; transition: color 0.3s;
+  }
+  .finder-nav .back-link:hover { color: var(--orange); }
+
+  /* ── Result Panel ──────────────────────────────── */
+  .result-card {
+    background: var(--off-white);
+    border: 2px solid var(--orange);
+    border-radius: 20px;
+    padding: 36px;
+    margin-bottom: 24px;
+  }
+  .result-label {
+    font-size: 0.68rem; font-weight: 700; letter-spacing: 0.12em;
+    text-transform: uppercase; color: var(--orange); margin-bottom: 8px;
+  }
+  .result-part {
+    font-size: 2rem; font-weight: 800; color: var(--black);
+    letter-spacing: -0.02em; margin-bottom: 8px;
+  }
+  .result-desc {
+    font-size: 1rem; color: var(--grey-dark); line-height: 1.6; margin-bottom: 20px;
+  }
+  .result-detail {
+    display: grid; grid-template-columns: 1fr 1fr;
+    gap: 16px; margin-bottom: 24px;
+  }
+  .result-detail-item {
+    background: var(--white);
+    border-radius: 12px;
+    padding: 16px 20px;
+    border: 1px solid var(--grey-light);
+  }
+  .result-detail-item .rdi-label {
+    font-size: 0.68rem; font-weight: 600; letter-spacing: 0.08em;
+    text-transform: uppercase; color: var(--grey-mid); margin-bottom: 4px;
+  }
+  .result-detail-item .rdi-value {
+    font-size: 1rem; font-weight: 700; color: var(--black);
+  }
+
+  .result-actions {
+    display: flex; gap: 12px; flex-wrap: wrap;
+  }
+
+  .no-result {
+    background: rgba(253, 79, 0, 0.04);
+    border: 1px dashed rgba(253, 79, 0, 0.2);
+    border-radius: 16px;
+    padding: 40px;
+    text-align: center;
+    margin-bottom: 24px;
+  }
+  .no-result h3 {
+    font-size: 1.1rem; font-weight: 700; color: var(--black); margin-bottom: 8px;
+  }
+  .no-result p {
+    font-size: 0.92rem; color: var(--grey-dark); line-height: 1.6; margin-bottom: 20px;
+  }
+
+  /* ══════════════════════════════════════════════════
+     CROSS-SELL
+     ══════════════════════════════════════════════════ */
+  .cross-sell {
+    padding: 100px 0;
+  }
+  .cross-sell-header { margin-bottom: 40px; }
+  .cross-sell-header h2 { font-size: clamp(1.4rem, 2.5vw, 1.8rem); font-weight: 800; letter-spacing: -0.02em; color: var(--black); }
+  .cross-sell-header p { font-size: 0.95rem; color: var(--grey-dark); margin-top: 10px; max-width: 520px; line-height: 1.7; }
+  .cross-sell-grid {
+    display: grid; grid-template-columns: repeat(3, 1fr); gap: 20px;
+  }
+  .fluid-card {
+    background: var(--off-white); border: 1px solid var(--grey-light); border-radius: 16px;
+    padding: 28px 24px; text-decoration: none; color: inherit;
+    transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+  }
+  .fluid-card:hover { transform: translateY(-4px); box-shadow: 0 16px 48px rgba(0,0,0,0.06); border-color: rgba(253, 79, 0, 0.2); }
+  .fluid-card .fc-badge {
+    display: inline-flex; padding: 4px 10px; border-radius: 100px;
+    background: rgba(253, 79, 0, 0.08); color: var(--orange);
+    font-size: 0.65rem; font-weight: 600; letter-spacing: 0.06em;
+    text-transform: uppercase; margin-bottom: 12px;
+  }
+  .fluid-card h4 { font-size: 0.95rem; font-weight: 700; color: var(--black); margin-bottom: 8px; }
+  .fluid-card p { font-size: 0.82rem; line-height: 1.6; color: var(--grey-dark); }
+
+  /* ── CTA ──────────────────────────────────────── */
+  .cta {
+    padding: 100px 0; background: var(--off-white); text-align: center;
+    position: relative; overflow: hidden;
+  }
+  .cta .geo-glow {
+    position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%);
+    width: 500px; height: 500px; border-radius: 50%;
+    background: radial-gradient(circle, rgba(253, 79, 0, 0.05) 0%, transparent 70%);
+    pointer-events: none;
+  }
+  .cta-content { position: relative; z-index: 1; }
+  .cta h2 { font-size: clamp(1.6rem, 3vw, 2.2rem); font-weight: 800; letter-spacing: -0.02em; line-height: 1.15; color: var(--black); margin-bottom: 16px; }
+  .cta-content > p { font-size: 1rem; color: var(--grey-dark); margin-bottom: 32px; }
+  .cta-actions { display: flex; gap: 16px; justify-content: center; flex-wrap: wrap; }
+
+  /* ── Footer ──────────────────────────────────── */
+  footer { padding: 80px 0 40px; border-top: 1px solid var(--grey-light); }
+  .footer-grid { display: grid; grid-template-columns: 2fr 1fr 1fr 1fr; gap: 64px; margin-bottom: 64px; }
+  .footer-brand p { font-size: 0.9rem; line-height: 1.7; color: var(--grey-dark); margin-top: 16px; max-width: 300px; }
+  .footer-col h4 { font-size: 0.75rem; font-weight: 700; letter-spacing: 0.12em; text-transform: uppercase; color: var(--black); margin-bottom: 20px; }
+  .footer-col ul { list-style: none; display: flex; flex-direction: column; gap: 12px; }
+  .footer-col a { text-decoration: none; color: var(--grey-dark); font-size: 0.88rem; transition: color 0.3s; }
+  .footer-col a:hover { color: var(--orange); }
+  .footer-bottom { padding-top: 32px; border-top: 1px solid var(--grey-light); display: flex; justify-content: space-between; align-items: center; font-size: 0.8rem; color: var(--grey-mid); }
+
+  /* ── Responsive ──────────────────────────────── */
+  @media (max-width: 1024px) {
+    .hero-grid { grid-template-columns: 1fr; gap: 40px; }
+    .hero-diagram { display: none; }
+    .cross-sell-grid { grid-template-columns: 1fr 1fr; }
+    .footer-grid { grid-template-columns: 1fr 1fr; gap: 40px; }
+  }
+  @media (max-width: 640px) {
+    .nav-links { display: none; }
+    .finder-card { padding: 28px 20px; }
+    .finder-steps { flex-wrap: wrap; }
+    .option-grid { grid-template-columns: 1fr 1fr; }
+    .result-detail { grid-template-columns: 1fr; }
+    .cross-sell-grid { grid-template-columns: 1fr; }
+    .footer-grid { grid-template-columns: 1fr; gap: 32px; }
+    .footer-bottom { flex-direction: column; gap: 12px; text-align: center; }
+    .hero-stats { flex-direction: column; gap: 16px; }
+  }
+</style>
+</head>
+<body>
+
+<!-- ════════ Navigation ════════ -->
+<nav id="nav">
+  <div class="container">
+    <a href="index.html" class="nav-logo"><img src="blick-logo.png" alt="Blick"></a>
+    <ul class="nav-links">
+      <li><a href="index.html">Home</a></li>
+      <li><a href="products.html" class="active">Products</a></li>
+      <li><a href="services.html">Services</a></li>
+      <li><a href="team.html">Team</a></li>
+      <li><a href="contact.html" class="nav-cta">Contact Us</a></li>
+    </ul>
+  </div>
+</nav>
+
+<!-- ════════ Breadcrumb ════════ -->
+<div class="breadcrumb">
+  <div class="container">
+    <div class="breadcrumb-links">
+      <a href="products.html">Products</a>
+      <span class="sep">›</span>
+      <a href="products.html#tooling">Tooling &amp; Equipment</a>
+      <span class="sep">›</span>
+      <span>Adaptors</span>
+    </div>
+  </div>
+</div>
+
+<!-- ══════════════════════════════════════════════════
+     HERO
+     ══════════════════════════════════════════════════ -->
+<section class="hero">
+  <div class="container">
+    <div class="hero-grid">
+      <div class="hero-text">
+        <div class="section-tag reveal">Adaptor Finder</div>
+        <h1 class="reveal stagger-1">Find the right <span class="accent">adaptor</span></h1>
+        <div class="sub reveal stagger-2">CNC machined. Heat treated. Phosphate coated.</div>
+        <p class="reveal stagger-3">Connecting different drill string components shouldn't be a guessing game. Our Adaptor Finder helps you match the right connection — from your rig to your tooling — in seconds.</p>
+        <p class="reveal stagger-3">All Blick adaptors are CNC machined to API and coring standards, heat treated for toughness, and phosphate coated to prevent galling.</p>
+
+        <div class="hero-stats reveal stagger-3">
+          <div class="hero-stat">
+            <div class="stat-num">100+</div>
+            <div class="stat-label">Part Numbers</div>
+          </div>
+          <div class="hero-stat">
+            <div class="stat-num">15+</div>
+            <div class="stat-label">Thread Types</div>
+          </div>
+          <div class="hero-stat">
+            <div class="stat-num">CNC</div>
+            <div class="stat-label">Precision</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="hero-diagram reveal">
+        <!-- Simple connection diagram SVG -->
+        <svg class="diagram-svg" viewBox="0 0 380 300" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <!-- Left rod -->
+          <rect x="20" y="115" width="140" height="70" rx="8" fill="#FAFAFA" stroke="#EBEAEB" stroke-width="2"/>
+          <text x="90" y="145" text-anchor="middle" font-family="Inter, sans-serif" font-size="11" font-weight="700" fill="#1A1A1A">FROM</text>
+          <text x="90" y="165" text-anchor="middle" font-family="Inter, sans-serif" font-size="10" fill="#66615C">Connection A</text>
+
+          <!-- Adaptor -->
+          <rect x="150" y="100" width="80" height="100" rx="12" fill="rgba(253,79,0,0.06)" stroke="#FD4F00" stroke-width="2" stroke-dasharray="6,3"/>
+          <text x="190" y="140" text-anchor="middle" font-family="Inter, sans-serif" font-size="10" font-weight="700" fill="#FD4F00">ADAPTOR</text>
+          <text x="190" y="158" text-anchor="middle" font-family="Inter, sans-serif" font-size="16" font-weight="800" fill="#FD4F00">?</text>
+          <text x="190" y="180" text-anchor="middle" font-family="Inter, sans-serif" font-size="9" fill="#66615C">Part number</text>
+
+          <!-- Right rod -->
+          <rect x="220" y="115" width="140" height="70" rx="8" fill="#FAFAFA" stroke="#EBEAEB" stroke-width="2"/>
+          <text x="290" y="145" text-anchor="middle" font-family="Inter, sans-serif" font-size="11" font-weight="700" fill="#1A1A1A">TO</text>
+          <text x="290" y="165" text-anchor="middle" font-family="Inter, sans-serif" font-size="10" fill="#66615C">Connection B</text>
+
+          <!-- Arrows -->
+          <path d="M158 150 L172 150" stroke="#FD4F00" stroke-width="2" marker-end="url(#arrow)"/>
+          <path d="M222 150 L208 150" stroke="#FD4F00" stroke-width="2" marker-end="url(#arrow)"/>
+          <defs>
+            <marker id="arrow" markerWidth="8" markerHeight="6" refX="8" refY="3" orient="auto">
+              <path d="M0,0 L8,3 L0,6" fill="#FD4F00"/>
+            </marker>
+          </defs>
+        </svg>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ══════════════════════════════════════════════════
+     FINDER WIZARD
+     ══════════════════════════════════════════════════ -->
+<section class="finder">
+  <div class="container">
+    <div class="finder-header">
+      <div class="section-tag reveal">Selection Tool</div>
+      <h2 class="reveal stagger-1">Adaptor Finder</h2>
+      <p class="reveal stagger-2">Select your "from" and "to" connections and we'll find the right adaptor part number.</p>
+    </div>
+
+    <div class="finder-card reveal">
+
+      <!-- Steps -->
+      <div class="finder-steps">
+        <div class="finder-step active" id="step-ind-1">
+          <span class="step-num">1</span> From Connection
+        </div>
+        <div class="finder-step" id="step-ind-2">
+          <span class="step-num">2</span> End Type
+        </div>
+        <div class="finder-step" id="step-ind-3">
+          <span class="step-num">3</span> To Connection
+        </div>
+        <div class="finder-step" id="step-ind-4">
+          <span class="step-num">4</span> Result
+        </div>
+      </div>
+
+      <!-- Panel 1: From Connection -->
+      <div class="finder-panel active" id="panel-1">
+        <div class="panel-title">What connection are you coming from?</div>
+        <div class="panel-hint">Select the thread type on the component you're connecting FROM (e.g. your drill rod, housing, or rig output).</div>
+        <div class="option-grid" id="from-grid">
+          <!-- populated by JS -->
+        </div>
+      </div>
+
+      <!-- Panel 2: End Type (Box or Pin) -->
+      <div class="finder-panel" id="panel-2">
+        <div class="panel-title">Is it a Box or Pin end?</div>
+        <div class="panel-hint">Box = female (receives), Pin = male (inserts). Check the end of the component you're connecting from.</div>
+        <div class="option-grid" id="end-grid">
+          <div class="option-card" onclick="selectEndType('Box')">
+            <div class="opt-name">Box</div>
+            <div class="opt-desc">Female — receives</div>
+          </div>
+          <div class="option-card" onclick="selectEndType('Pin')">
+            <div class="opt-name">Pin</div>
+            <div class="opt-desc">Male — inserts</div>
+          </div>
+        </div>
+        <div class="finder-nav">
+          <a class="back-link" onclick="goToStep(1)">← Back</a>
+        </div>
+      </div>
+
+      <!-- Panel 3: To Connection -->
+      <div class="finder-panel" id="panel-3">
+        <div class="panel-title">What connection are you going to?</div>
+        <div class="panel-hint" id="to-hint">Select the thread type on the component you're connecting TO.</div>
+        <div class="option-grid" id="to-grid">
+          <!-- populated by JS -->
+        </div>
+        <div class="finder-nav">
+          <a class="back-link" onclick="goToStep(2)">← Back</a>
+        </div>
+      </div>
+
+      <!-- Panel 4: Result -->
+      <div class="finder-panel" id="panel-4">
+        <div id="result-container">
+          <!-- populated by JS -->
+        </div>
+        <div class="finder-nav">
+          <a class="back-link" onclick="goToStep(1); resetFinder();">← Start Over</a>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<!-- ══════════════════════════════════════════════════
+     CROSS-SELL
+     ══════════════════════════════════════════════════ -->
+<section class="cross-sell">
+  <div class="container">
+    <div class="cross-sell-header">
+      <div class="section-tag reveal">Related</div>
+      <h2 class="reveal stagger-1">Complete your drill string</h2>
+      <p class="reveal stagger-2">Adaptors connect the pieces — but the right fluid system keeps everything running smoothly.</p>
+    </div>
+    <div class="cross-sell-grid">
+      <a href="carry-flow-v4.html" class="fluid-card reveal stagger-1">
+        <span class="fc-badge">Stabiliser</span>
+        <h4>Carry Flow</h4>
+        <p>Suspension and carrying capacity for HDD pullbacks.</p>
+      </a>
+      <a href="#" class="fluid-card reveal stagger-2">
+        <span class="fc-badge">Lubricant</span>
+        <h4>Torque Down</h4>
+        <p>Reduces friction and torque on the drill string.</p>
+      </a>
+      <a href="products-tooling-melfred-borzall.html" class="fluid-card reveal stagger-3">
+        <span class="fc-badge">Tooling</span>
+        <h4>Melfred Borzall</h4>
+        <p>HDD reamers, bits, and housings — available through Blick.</p>
+      </a>
+    </div>
+  </div>
+</section>
+
+<!-- ══════════════════════════════════════════════════
+     CTA
+     ══════════════════════════════════════════════════ -->
+<section class="cta">
+  <div class="geo-glow"></div>
+  <div class="container">
+    <div class="cta-content">
+      <div class="section-tag reveal">Can't Find It?</div>
+      <h2 class="reveal stagger-1">Need a custom adaptor?</h2>
+      <p class="reveal stagger-2">We provide customised adaptors to suit unique requirements. Tell us what you need and we'll make it happen.</p>
+      <div class="cta-actions reveal stagger-3">
+        <a href="mailto:sales@blick.group?subject=Custom%20Adaptor%20Enquiry" class="btn btn-primary">Contact Blick</a>
+        <a href="tel:+6478492366" class="btn btn-secondary">Call NZ: +64 7 849 2366</a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ════════ Footer ════════ -->
+<footer>
+  <div class="container">
+    <div class="footer-grid">
+      <div class="footer-brand">
+        <a href="index.html" class="nav-logo"><img src="blick-logo.png" alt="Blick" style="height:32px;width:auto;"></a>
+        <p>Australasia's leading drilling fluid solutions partner.</p>
+      </div>
+      <div class="footer-col">
+        <h4>Products</h4>
+        <ul>
+          <li><a href="products.html#fluids">Blick Fluids</a></li>
+          <li><a href="products.html#tooling">Equipment &amp; Tooling</a></li>
+          <li><a href="products.html#jetlube">Grease &amp; Compounds</a></li>
+        </ul>
+      </div>
+      <div class="footer-col">
+        <h4>Tooling</h4>
+        <ul>
+          <li><a href="products-tooling-melfred-borzall.html">Melfred Borzall</a></li>
+          <li><a href="products-tooling-adaptors.html">Adaptors</a></li>
+          <li><a href="casing-spacers-v2.html">Casing Spacers</a></li>
+        </ul>
+      </div>
+      <div class="footer-col">
+        <h4>Connect</h4>
+        <ul>
+          <li><a href="mailto:sales@blick.group">sales@blick.group</a></li>
+          <li><a href="tel:+6478492366">+64 7 849 2366</a></li>
+          <li><a href="tel:+61390685688">+61 3 9068 5688</a></li>
+        </ul>
+      </div>
+    </div>
+    <div class="footer-bottom">
+      <span>&copy; 2026 Blick Group. All rights reserved.</span>
+      <span>Australia &middot; New Zealand &middot; Pacific Islands</span>
+    </div>
+  </div>
+</footer>
+
+<script>
+// ═══════════════════════════════════════════════════
+// ADAPTOR DATABASE — from Blick Solution Finder PDF
+// ═══════════════════════════════════════════════════
+const adaptors = [
+  // 2 3/8 Reg Box to...
+  { part: '21F-23F', from: '2 IF', fromEnd: 'Box', to: '2 3/8 Reg', toEnd: 'Box' },
+  { part: '21M-23F', from: '2 IF', fromEnd: 'Pin', to: '2 3/8 Reg', toEnd: 'Box' },
+  { part: '23F-23F', from: '2 3/8 Reg', fromEnd: 'Box', to: '2 3/8 Reg', toEnd: 'Box' },
+  { part: '23F-23M', from: '2 3/8 Reg', fromEnd: 'Box', to: '2 3/8 Reg', toEnd: 'Pin' },
+  { part: '23F-26M', from: '2 3/8 Reg', fromEnd: 'Box', to: '2 7/8 Reg', toEnd: 'Pin' },
+  { part: '23F-28F', from: '2 3/8 Reg', fromEnd: 'Box', to: '3 1/2 Reg', toEnd: 'Box' },
+  { part: '23F-28M', from: '2 3/8 Reg', fromEnd: 'Box', to: '3 1/2 Reg', toEnd: 'Pin' },
+  { part: 'HQM-23F', from: 'HQ', fromEnd: 'Pin', to: '2 3/8 Reg', toEnd: 'Box' },
+  { part: 'HWTM-23F', from: 'HWT', fromEnd: 'Pin', to: '2 3/8 Reg', toEnd: 'Box' },
+  { part: 'NQM-23F', from: 'NQ', fromEnd: 'Pin', to: '2 3/8 Reg', toEnd: 'Box' },
+  // 2 3/8 Reg Pin to...
+  { part: 'AWJM-23M', from: 'AWJ', fromEnd: 'Pin', to: '2 3/8 Reg', toEnd: 'Pin' },
+  { part: 'RD50M-23M', from: 'RD50', fromEnd: 'Pin', to: '2 3/8 Reg', toEnd: 'Pin' },
+  { part: '23F-23M', from: '2 3/8 Reg', fromEnd: 'Box', to: '2 3/8 Reg', toEnd: 'Pin' },
+  { part: '23M-23M', from: '2 3/8 Reg', fromEnd: 'Pin', to: '2 3/8 Reg', toEnd: 'Pin' },
+  { part: '23M-26F', from: '2 3/8 Reg', fromEnd: 'Pin', to: '2 7/8 Reg', toEnd: 'Box' },
+  { part: '23M-28F', from: '2 3/8 Reg', fromEnd: 'Pin', to: '3 1/2 Reg', toEnd: 'Box' },
+  { part: '23M-28M', from: '2 3/8 Reg', fromEnd: 'Pin', to: '3 1/2 Reg', toEnd: 'Pin' },
+  { part: 'HQM-23M', from: 'HQ', fromEnd: 'Pin', to: '2 3/8 Reg', toEnd: 'Pin' },
+  { part: 'NQM-23M', from: 'NQ', fromEnd: 'Pin', to: '2 3/8 Reg', toEnd: 'Pin' },
+  { part: '21M-23M', from: '2 IF', fromEnd: 'Pin', to: '2 3/8 Reg', toEnd: 'Pin' },
+  // 2 7/8 Reg
+  { part: '23M-26F', from: '2 3/8 Reg', fromEnd: 'Pin', to: '2 7/8 Reg', toEnd: 'Box' },
+  { part: 'HQM-26F', from: 'HQ', fromEnd: 'Pin', to: '2 7/8 Reg', toEnd: 'Box' },
+  { part: '23F-26M', from: '2 3/8 Reg', fromEnd: 'Box', to: '2 7/8 Reg', toEnd: 'Pin' },
+  { part: '26M-26M', from: '2 7/8 Reg', fromEnd: 'Pin', to: '2 7/8 Reg', toEnd: 'Pin' },
+  // 3 1/2 Reg
+  { part: '23M-28F', from: '2 3/8 Reg', fromEnd: 'Pin', to: '3 1/2 Reg', toEnd: 'Box' },
+  { part: '23F-28F', from: '2 3/8 Reg', fromEnd: 'Box', to: '3 1/2 Reg', toEnd: 'Box' },
+  { part: '28F-28F', from: '3 1/2 Reg', fromEnd: 'Box', to: '3 1/2 Reg', toEnd: 'Box' },
+  { part: '28F-28M', from: '3 1/2 Reg', fromEnd: 'Box', to: '3 1/2 Reg', toEnd: 'Pin' },
+  { part: '28F-27M', from: '3 1/2 Reg', fromEnd: 'Box', to: '2 7/8 IF', toEnd: 'Pin' },
+  { part: '23F-28M', from: '2 3/8 Reg', fromEnd: 'Box', to: '3 1/2 Reg', toEnd: 'Pin' },
+  { part: '23M-28M', from: '2 3/8 Reg', fromEnd: 'Pin', to: '3 1/2 Reg', toEnd: 'Pin' },
+  // HQ
+  { part: 'HQF-HQM', from: 'HQ', fromEnd: 'Box', to: 'HQ', toEnd: 'Pin' },
+  { part: 'HQF-21F', from: 'HQ', fromEnd: 'Box', to: '2 IF', toEnd: 'Box' },
+  { part: 'HQF-26F', from: 'HQ', fromEnd: 'Box', to: '2 7/8 Reg', toEnd: 'Box' },
+  { part: 'HQF-HWTM', from: 'HQ', fromEnd: 'Box', to: 'HWT', toEnd: 'Pin' },
+  { part: 'HQM-21F', from: 'HQ', fromEnd: 'Pin', to: '2 IF', toEnd: 'Box' },
+  { part: 'HQM-28M', from: 'HQ', fromEnd: 'Pin', to: '3 1/2 Reg', toEnd: 'Pin' },
+  // 2 IF
+  { part: '21F-23F', from: '2 IF', fromEnd: 'Box', to: '2 3/8 Reg', toEnd: 'Box' },
+  { part: '21F-21M', from: '2 IF', fromEnd: 'Box', to: '2 IF', toEnd: 'Pin' },
+  { part: 'NQF-21F', from: 'NQ', fromEnd: 'Box', to: '2 IF', toEnd: 'Box' },
+  { part: 'RD50M-21F', from: 'RD50', fromEnd: 'Pin', to: '2 IF', toEnd: 'Box' },
+  { part: 'HQM-21F', from: 'HQ', fromEnd: 'Pin', to: '2 IF', toEnd: 'Box' },
+  { part: 'HWTM-21F', from: 'HWT', fromEnd: 'Pin', to: '2 IF', toEnd: 'Box' },
+  { part: 'AWJM-21F', from: 'AWJ', fromEnd: 'Pin', to: '2 IF', toEnd: 'Box' },
+  { part: '21F-21M', from: '2 IF', fromEnd: 'Box', to: '2 IF', toEnd: 'Pin' },
+  // AWJ
+  { part: 'AWM-AWJF', from: 'AW', fromEnd: 'Pin', to: 'AWJ', toEnd: 'Box' },
+  { part: 'AWJF-AWJM', from: 'AWJ', fromEnd: 'Box', to: 'AWJ', toEnd: 'Pin' },
+  { part: 'AWJF-RD40M', from: 'AWJ', fromEnd: 'Box', to: 'RD40', toEnd: 'Pin' },
+  { part: 'AWJF-RD50M', from: 'AWJ', fromEnd: 'Box', to: 'RD50', toEnd: 'Pin' },
+  { part: 'AWJF-23F', from: 'AWJ', fromEnd: 'Box', to: '2 3/8 Reg', toEnd: 'Box' },
+  // NQ
+  { part: 'NQF-AWM', from: 'NQ', fromEnd: 'Box', to: 'AW', toEnd: 'Pin' },
+  { part: 'NQF-NQM', from: 'NQ', fromEnd: 'Box', to: 'NQ', toEnd: 'Pin' },
+  { part: 'NQM-23F', from: 'NQ', fromEnd: 'Pin', to: '2 3/8 Reg', toEnd: 'Box' },
+  { part: 'NQM-23M', from: 'NQ', fromEnd: 'Pin', to: '2 3/8 Reg', toEnd: 'Pin' },
+  // AW
+  { part: 'AWM-21F', from: 'AW', fromEnd: 'Pin', to: '2 IF', toEnd: 'Box' },
+  { part: 'AWM-21M', from: 'AW', fromEnd: 'Pin', to: '2 IF', toEnd: 'Pin' },
+  { part: 'NQF-AWM', from: 'NQ', fromEnd: 'Box', to: 'AW', toEnd: 'Pin' },
+  // HWT
+  { part: 'HWTM-21F', from: 'HWT', fromEnd: 'Pin', to: '2 IF', toEnd: 'Box' },
+  { part: 'HWTM-23F', from: 'HWT', fromEnd: 'Pin', to: '2 3/8 Reg', toEnd: 'Box' },
+  { part: 'HQF-HWTM', from: 'HQ', fromEnd: 'Box', to: 'HWT', toEnd: 'Pin' },
+  // RD50
+  { part: 'RD50M-21F', from: 'RD50', fromEnd: 'Pin', to: '2 IF', toEnd: 'Box' },
+  { part: 'RD50M-23M', from: 'RD50', fromEnd: 'Pin', to: '2 3/8 Reg', toEnd: 'Pin' },
+  { part: 'AWJF-RD50M', from: 'AWJ', fromEnd: 'Box', to: 'RD50', toEnd: 'Pin' },
+  // 4 1/2 Reg
+  { part: '28M-48F', from: '3 1/2 Reg', fromEnd: 'Pin', to: '4 1/2 Reg', toEnd: 'Box' },
+  { part: '48F-66F', from: '4 1/2 Reg', fromEnd: 'Box', to: '6 5/8 Reg', toEnd: 'Box' },
+  { part: '28M-48M', from: '3 1/2 Reg', fromEnd: 'Pin', to: '4 1/2 Reg', toEnd: 'Pin' },
+  { part: '48M-66F', from: '4 1/2 Reg', fromEnd: 'Pin', to: '6 5/8 Reg', toEnd: 'Box' },
+];
+
+// Connection types with descriptions
+const connections = [
+  { id: '2 3/8 Reg', name: '2 3/8 Reg', desc: 'API Regular' },
+  { id: '2 7/8 Reg', name: '2 7/8 Reg', desc: 'API Regular' },
+  { id: '3 1/2 Reg', name: '3 1/2 Reg', desc: 'API Regular' },
+  { id: '4 1/2 Reg', name: '4 1/2 Reg', desc: 'API Regular' },
+  { id: '6 5/8 Reg', name: '6 5/8 Reg', desc: 'API Regular' },
+  { id: '2 IF', name: '2 IF', desc: 'Internal Flush' },
+  { id: '2 7/8 IF', name: '2 7/8 IF', desc: 'Internal Flush' },
+  { id: '3 1/2 IF', name: '3 1/2 IF', desc: 'Internal Flush' },
+  { id: 'HQ', name: 'HQ', desc: 'Coring' },
+  { id: 'HWT', name: 'HWT', desc: 'Coring' },
+  { id: 'NQ', name: 'NQ', desc: 'Coring' },
+  { id: 'AW', name: 'AW', desc: 'Wireline' },
+  { id: 'AWJ', name: 'AWJ', desc: 'Wireline' },
+  { id: 'RD40', name: 'RD40', desc: 'Drill Rig' },
+  { id: 'RD50', name: 'RD50', desc: 'Drill Rig' },
+];
+
+// State
+let state = { from: null, fromEnd: null, to: null };
+
+// ── Init ──
+function init() {
+  renderFromGrid();
+}
+
+function renderFromGrid() {
+  const grid = document.getElementById('from-grid');
+  grid.innerHTML = connections.map(c => `
+    <div class="option-card" onclick="selectFrom('${c.id}')">
+      <div class="opt-name">${c.name}</div>
+      <div class="opt-desc">${c.desc}</div>
+    </div>
+  `).join('');
+}
+
+function selectFrom(id) {
+  state.from = id;
+  state.fromEnd = null;
+  state.to = null;
+  highlightSelected('from-grid', id);
+  setTimeout(() => goToStep(2), 200);
+}
+
+function selectEndType(type) {
+  state.fromEnd = type;
+  highlightSelected('end-grid', type);
+  // Filter "to" options based on what's available
+  renderToGrid();
+  setTimeout(() => goToStep(3), 200);
+}
+
+function renderToGrid() {
+  const grid = document.getElementById('to-grid');
+  const hint = document.getElementById('to-hint');
+  hint.textContent = `You have a ${state.from} ${state.fromEnd}. What are you connecting to?`;
+
+  // Find available "to" connections
+  const available = new Map();
+  adaptors.forEach(a => {
+    if (a.from === state.from && a.fromEnd === state.fromEnd) {
+      const key = a.to + '|' + a.toEnd;
+      if (!available.has(a.to)) available.set(a.to, new Set());
+      available.get(a.to).add(a.toEnd);
+    }
+    // Also check reverse (where this connection appears as "to")
+    if (a.to === state.from && a.toEnd === (state.fromEnd === 'Box' ? 'Box' : 'Pin')) {
+      // Reverse lookup — the "from" side could be our "to"
+    }
+  });
+
+  if (available.size === 0) {
+    grid.innerHTML = `<div style="grid-column: 1 / -1; text-align: center; padding: 24px; color: var(--grey-dark);">
+      No standard adaptors found for ${state.from} ${state.fromEnd}. <a href="mailto:sales@blick.group?subject=Custom%20Adaptor%20-%20${encodeURIComponent(state.from)}%20${state.fromEnd}" style="color: var(--orange); font-weight: 600;">Contact Blick for a custom solution.</a>
+    </div>`;
+    return;
+  }
+
+  let html = '';
+  available.forEach((ends, conn) => {
+    ends.forEach(end => {
+      html += `
+        <div class="option-card" onclick="selectTo('${conn}', '${end}')">
+          <div class="opt-name">${conn}</div>
+          <div class="opt-desc">${end}</div>
+        </div>
+      `;
+    });
+  });
+  grid.innerHTML = html;
+}
+
+function selectTo(conn, end) {
+  state.to = conn;
+  state.toEnd = end;
+  showResult();
+  setTimeout(() => goToStep(4), 200);
+}
+
+function showResult() {
+  const container = document.getElementById('result-container');
+
+  // Find matching adaptor(s)
+  const matches = adaptors.filter(a =>
+    a.from === state.from && a.fromEnd === state.fromEnd &&
+    a.to === state.to && a.toEnd === state.toEnd
+  );
+
+  if (matches.length > 0) {
+    const m = matches[0];
+    container.innerHTML = `
+      <div class="result-card">
+        <div class="result-label">Recommended Adaptor</div>
+        <div class="result-part">${m.part}</div>
+        <div class="result-desc">${m.from} ${m.fromEnd} to ${m.to} ${m.toEnd}</div>
+        <div class="result-detail">
+          <div class="result-detail-item">
+            <div class="rdi-label">From</div>
+            <div class="rdi-value">${m.from} ${m.fromEnd}</div>
+          </div>
+          <div class="result-detail-item">
+            <div class="rdi-label">To</div>
+            <div class="rdi-value">${m.to} ${m.toEnd}</div>
+          </div>
+        </div>
+        <div class="result-actions">
+          <a href="mailto:sales@blick.group?subject=Adaptor%20Quote%20-%20${encodeURIComponent(m.part)}&body=Hi%20Blick%2C%0A%0APlease%20quote%20on%3A%0A%0AAdaptor%3A%20${encodeURIComponent(m.part)}%0AFrom%3A%20${encodeURIComponent(m.from + ' ' + m.fromEnd)}%0ATo%3A%20${encodeURIComponent(m.to + ' ' + m.toEnd)}%0A%0AQuantity%3A%20%0A%0AThanks" class="btn btn-primary">Get a Quote — ${m.part}</a>
+          <a href="tel:+6478492366" class="btn btn-secondary">Call Blick NZ</a>
+        </div>
+      </div>
+      ${matches.length > 1 ? `<p style="font-size: 0.85rem; color: var(--grey-dark); margin-top: 16px;">${matches.length} adaptors match this combination. Contact Blick for help choosing.</p>` : ''}
+    `;
+  } else {
+    container.innerHTML = `
+      <div class="no-result">
+        <h3>No standard adaptor found</h3>
+        <p>${state.from} ${state.fromEnd} to ${state.to} ${state.toEnd} isn't in our standard range — but we can make it. Every month we provide customised adaptors to suit unique needs.</p>
+        <a href="mailto:sales@blick.group?subject=Custom%20Adaptor%20Request%20-%20${encodeURIComponent(state.from + ' ' + state.fromEnd + ' to ' + state.to + ' ' + state.toEnd)}" class="btn btn-primary">Request Custom Adaptor</a>
+      </div>
+    `;
+  }
+}
+
+function goToStep(step) {
+  document.querySelectorAll('.finder-panel').forEach(p => p.classList.remove('active'));
+  document.getElementById('panel-' + step).classList.add('active');
+
+  document.querySelectorAll('.finder-step').forEach((s, i) => {
+    s.classList.remove('active', 'done');
+    if (i + 1 < step) s.classList.add('done');
+    if (i + 1 === step) s.classList.add('active');
+  });
+}
+
+function highlightSelected(gridId, value) {
+  const grid = document.getElementById(gridId);
+  grid.querySelectorAll('.option-card').forEach(c => {
+    c.classList.remove('selected');
+    const name = c.querySelector('.opt-name').textContent;
+    if (name === value) c.classList.add('selected');
+  });
+}
+
+function resetFinder() {
+  state = { from: null, fromEnd: null, to: null };
+  renderFromGrid();
+}
+
+// ── Scroll reveal ──
+const reveals = document.querySelectorAll('.reveal');
+const observer = new IntersectionObserver((entries) => {
+  entries.forEach(entry => { if (entry.isIntersecting) entry.target.classList.add('visible'); });
+}, { threshold: 0.1, rootMargin: '0px 0px -60px 0px' });
+reveals.forEach(el => observer.observe(el));
+
+const navEl = document.getElementById('nav');
+window.addEventListener('scroll', () => { navEl.classList.toggle('scrolled', window.scrollY > 50); });
+
+// Init
+init();
+</script>
+
+</body>
+</html>

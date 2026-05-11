@@ -1,0 +1,1155 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Fluid Testing Equipment — Fann — Available through Blick</title>
+<style>
+  /* ── Reset & Base ─────────────────────────────────── */
+  *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+
+  :root {
+    --orange: #FD4F00;
+    --orange-light: #FF6B26;
+    --black: #1A1A1A;
+    --charcoal: #2D2D2D;
+    --grey-dark: #66615C;
+    --grey-mid: #A9A9A9;
+    --grey-light: #EBEAEB;
+    --off-white: #FAFAFA;
+    --white: #FFFFFF;
+    --font: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+  }
+
+  @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap');
+
+  html {
+    scroll-behavior: smooth;
+    font-size: 16px;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+  }
+
+  body {
+    font-family: var(--font);
+    color: var(--charcoal);
+    background: var(--white);
+    line-height: 1.6;
+    overflow-x: hidden;
+  }
+
+  /* ── Utility ──────────────────────────────────────── */
+  .container {
+    max-width: 1280px;
+    margin: 0 auto;
+    padding: 0 clamp(24px, 5vw, 80px);
+  }
+
+  .reveal {
+    opacity: 0;
+    transform: translateY(40px);
+    transition: opacity 0.8s cubic-bezier(0.16, 1, 0.3, 1),
+                transform 0.8s cubic-bezier(0.16, 1, 0.3, 1);
+  }
+  .reveal.visible {
+    opacity: 1;
+    transform: translateY(0);
+  }
+  .stagger-1 { transition-delay: 0.1s; }
+  .stagger-2 { transition-delay: 0.2s; }
+  .stagger-3 { transition-delay: 0.3s; }
+  .stagger-4 { transition-delay: 0.4s; }
+  .stagger-5 { transition-delay: 0.5s; }
+
+  .section-tag {
+    display: inline-flex;
+    align-items: center;
+    gap: 12px;
+    font-size: 0.72rem;
+    font-weight: 700;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: var(--orange);
+    margin-bottom: 20px;
+  }
+  .section-tag::before {
+    content: '';
+    width: 32px;
+    height: 2px;
+    background: var(--orange);
+  }
+
+  .accent { color: var(--orange); }
+
+  /* ── Buttons ────────────────────────────────────── */
+  .btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    padding: 14px 32px;
+    border-radius: 100px;
+    font-size: 0.88rem;
+    font-weight: 600;
+    text-decoration: none;
+    transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+    cursor: pointer;
+    border: none;
+  }
+  .btn-primary {
+    background: var(--orange);
+    color: var(--white);
+  }
+  .btn-primary:hover {
+    background: var(--orange-light);
+    transform: translateY(-2px);
+    box-shadow: 0 8px 24px rgba(253, 79, 0, 0.25);
+  }
+  .btn-secondary {
+    background: transparent;
+    color: var(--charcoal);
+    border: 1.5px solid var(--grey-light);
+  }
+  .btn-secondary:hover {
+    border-color: var(--orange);
+    color: var(--orange);
+  }
+  .btn-dark {
+    background: var(--charcoal);
+    color: var(--white);
+  }
+  .btn-dark:hover {
+    background: var(--black);
+    transform: translateY(-2px);
+    box-shadow: 0 8px 24px rgba(0,0,0,0.15);
+  }
+  .btn-ghost {
+    background: transparent;
+    color: var(--white);
+    border: 1.5px solid rgba(255,255,255,0.2);
+  }
+  .btn-ghost:hover {
+    border-color: var(--orange);
+    color: var(--orange);
+  }
+  .btn .external-icon {
+    width: 14px;
+    height: 14px;
+    stroke: currentColor;
+    fill: none;
+    stroke-width: 2;
+    opacity: 0.6;
+  }
+
+  /* ── Navigation ───────────────────────────────────── */
+  nav {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    z-index: 1000;
+    padding: 24px 0;
+    transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+    background: rgba(255, 255, 255, 0.92);
+    backdrop-filter: blur(20px);
+    box-shadow: 0 1px 0 rgba(0,0,0,0.05);
+  }
+  nav.scrolled { padding: 16px 0; }
+  nav .container {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+  .nav-logo img { height: 36px; width: auto; }
+  .nav-links {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    list-style: none;
+  }
+  .nav-links a {
+    text-decoration: none;
+    color: var(--grey-dark);
+    font-size: 0.88rem;
+    font-weight: 500;
+    padding: 8px 16px;
+    border-radius: 8px;
+    transition: all 0.3s;
+  }
+  .nav-links a:hover, .nav-links a.active { color: var(--orange); }
+  .nav-cta {
+    background: var(--orange) !important;
+    color: var(--white) !important;
+    border-radius: 100px !important;
+    padding: 10px 24px !important;
+  }
+  .nav-cta:hover {
+    background: var(--orange-light) !important;
+  }
+
+  /* ── Breadcrumb ──────────────────────────────────── */
+  .breadcrumb {
+    padding: 100px 0 0;
+  }
+  .breadcrumb-links {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    font-size: 0.82rem;
+    color: var(--grey-mid);
+  }
+  .breadcrumb-links a {
+    color: var(--grey-dark);
+    text-decoration: none;
+    transition: color 0.3s;
+  }
+  .breadcrumb-links a:hover { color: var(--orange); }
+  .breadcrumb-links .sep { opacity: 0.4; }
+
+  /* ══════════════════════════════════════════════════
+     GATEWAY HERO
+     ══════════════════════════════════════════════════ */
+  .gateway-hero {
+    padding: 40px 0 100px;
+    position: relative;
+    overflow: hidden;
+  }
+  .gateway-hero .geo-bg {
+    position: absolute;
+    top: -200px;
+    right: -200px;
+    width: 600px;
+    height: 600px;
+    border-radius: 50%;
+    background: var(--orange);
+    opacity: 0.03;
+    pointer-events: none;
+  }
+
+  .gateway-hero-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 80px;
+    align-items: center;
+  }
+
+  .gateway-hero-text h1 {
+    font-size: clamp(2rem, 3.5vw, 2.8rem);
+    font-weight: 800;
+    letter-spacing: -0.02em;
+    line-height: 1.1;
+    color: var(--black);
+    margin-bottom: 12px;
+  }
+  .gateway-hero-text .sub {
+    font-size: 1.1rem;
+    font-weight: 500;
+    color: var(--orange);
+    margin-bottom: 28px;
+  }
+  .gateway-hero-text p {
+    font-size: 1.02rem;
+    line-height: 1.8;
+    color: var(--grey-dark);
+    margin-bottom: 16px;
+  }
+  .gateway-hero-text .emphasis {
+    font-weight: 600;
+    color: var(--charcoal);
+    font-style: italic;
+  }
+  .gateway-hero-actions {
+    display: flex;
+    gap: 16px;
+    flex-wrap: wrap;
+    margin-top: 32px;
+  }
+
+  /* Co-branded visual */
+  .gateway-visual {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    position: relative;
+  }
+  .cobrand-graphic {
+    width: 100%;
+    max-width: 380px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 24px;
+  }
+  .cobrand-badge {
+    background: var(--orange);
+    color: var(--white);
+    padding: 10px 24px;
+    border-radius: 14px;
+    font-size: 0.7rem;
+    font-weight: 700;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    box-shadow: 0 8px 24px rgba(253, 79, 0, 0.2);
+  }
+  .cobrand-card {
+    background: var(--white);
+    border: 2px solid var(--grey-light);
+    border-radius: 24px;
+    padding: 48px 40px;
+    text-align: center;
+    box-shadow: 0 16px 48px rgba(0,0,0,0.06);
+    width: 100%;
+  }
+  .cobrand-card .brand-text {
+    font-size: 0.65rem;
+    font-weight: 700;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    color: var(--grey-dark);
+    margin-bottom: 6px;
+  }
+  .cobrand-card .partner-text {
+    font-size: 1.6rem;
+    font-weight: 800;
+    color: var(--black);
+    letter-spacing: -0.02em;
+  }
+  .cobrand-card .partner-sub {
+    font-size: 0.85rem;
+    color: var(--grey-dark);
+    margin-top: 8px;
+  }
+  .tool-icon-row {
+    display: flex;
+    gap: 16px;
+    justify-content: center;
+  }
+  .tool-icon-item {
+    width: 56px;
+    height: 56px;
+    border-radius: 16px;
+    background: var(--white);
+    border: 1px solid var(--grey-light);
+    box-shadow: 0 8px 24px rgba(0,0,0,0.06);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: all 0.4s;
+  }
+  .tool-icon-item:hover {
+    border-color: var(--orange);
+    box-shadow: 0 12px 32px rgba(253, 79, 0, 0.12);
+  }
+  .tool-icon-item svg {
+    width: 22px;
+    height: 22px;
+    stroke: var(--orange);
+    fill: none;
+    stroke-width: 1.5;
+    stroke-linecap: round;
+    stroke-linejoin: round;
+  }
+
+  /* ══════════════════════════════════════════════════
+     WHY THROUGH BLICK
+     ══════════════════════════════════════════════════ */
+  .why-blick {
+    padding: 100px 0;
+    background: var(--off-white);
+    position: relative;
+    overflow: hidden;
+  }
+  .why-blick::before {
+    content: '';
+    position: absolute;
+    bottom: -120px;
+    left: -120px;
+    width: 400px;
+    height: 400px;
+    border: 1px solid rgba(253, 79, 0, 0.05);
+    border-radius: 50%;
+    pointer-events: none;
+  }
+  .why-blick-header {
+    margin-bottom: 56px;
+  }
+  .why-blick-header h2 {
+    font-size: clamp(1.6rem, 3vw, 2.2rem);
+    font-weight: 800;
+    letter-spacing: -0.02em;
+    color: var(--black);
+  }
+  .value-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 24px;
+  }
+  .value-card {
+    background: var(--white);
+    border: 1px solid var(--grey-light);
+    border-radius: 24px;
+    padding: 44px 36px;
+    position: relative;
+    overflow: hidden;
+    transition: all 0.5s cubic-bezier(0.16, 1, 0.3, 1);
+  }
+  .value-card::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 3px;
+    background: var(--orange);
+    transform: scaleX(0);
+    transform-origin: left;
+    transition: transform 0.5s cubic-bezier(0.16, 1, 0.3, 1);
+  }
+  .value-card:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 20px 56px rgba(0,0,0,0.06);
+    border-color: transparent;
+  }
+  .value-card:hover::before { transform: scaleX(1); }
+  .value-card-icon {
+    width: 52px;
+    height: 52px;
+    border-radius: 14px;
+    background: rgba(253, 79, 0, 0.06);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-bottom: 24px;
+  }
+  .value-card-icon svg {
+    width: 24px;
+    height: 24px;
+    stroke: var(--orange);
+    fill: none;
+    stroke-width: 1.5;
+    stroke-linecap: round;
+    stroke-linejoin: round;
+  }
+  .value-card h3 {
+    font-size: 1.1rem;
+    font-weight: 700;
+    color: var(--black);
+    margin-bottom: 12px;
+  }
+  .value-card p {
+    font-size: 0.92rem;
+    line-height: 1.75;
+    color: var(--grey-dark);
+  }
+
+  /* ══════════════════════════════════════════════════
+     PRODUCT FAMILIES
+     ══════════════════════════════════════════════════ */
+  .families {
+    padding: 120px 0;
+    position: relative;
+  }
+  .families-header {
+    margin-bottom: 56px;
+  }
+  .families-header h2 {
+    font-size: clamp(1.6rem, 3vw, 2.2rem);
+    font-weight: 800;
+    letter-spacing: -0.02em;
+    color: var(--black);
+  }
+  .families-header p {
+    font-size: 1.02rem;
+    color: var(--grey-dark);
+    margin-top: 12px;
+    max-width: 640px;
+    line-height: 1.7;
+  }
+  .families-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 24px;
+  }
+  .family-card {
+    background: var(--off-white);
+    border: 1px solid var(--grey-light);
+    border-radius: 20px;
+    padding: 40px 32px 36px;
+    transition: all 0.5s cubic-bezier(0.16, 1, 0.3, 1);
+    position: relative;
+    overflow: hidden;
+  }
+  .family-card::after {
+    content: '';
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    height: 3px;
+    background: var(--orange);
+    transform: scaleX(0);
+    transform-origin: right;
+    transition: transform 0.5s cubic-bezier(0.16, 1, 0.3, 1);
+  }
+  .family-card:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 20px 56px rgba(0,0,0,0.06);
+    border-color: transparent;
+  }
+  .family-card:hover::after {
+    transform: scaleX(1);
+    transform-origin: left;
+  }
+  .family-card-icon {
+    width: 48px;
+    height: 48px;
+    border-radius: 14px;
+    background: rgba(253, 79, 0, 0.06);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-bottom: 20px;
+  }
+  .family-card-icon svg {
+    width: 22px;
+    height: 22px;
+    stroke: var(--orange);
+    fill: none;
+    stroke-width: 1.5;
+    stroke-linecap: round;
+    stroke-linejoin: round;
+  }
+  .family-card h3 {
+    font-size: 1.05rem;
+    font-weight: 700;
+    color: var(--black);
+    margin-bottom: 10px;
+  }
+  .family-card p {
+    font-size: 0.88rem;
+    line-height: 1.7;
+    color: var(--grey-dark);
+    margin-bottom: 20px;
+  }
+  .family-card .family-link {
+    font-size: 0.82rem;
+    font-weight: 600;
+    color: var(--orange);
+    text-decoration: none;
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    transition: gap 0.3s;
+  }
+  .family-card:hover .family-link { gap: 10px; }
+  .family-card .family-link svg {
+    width: 14px;
+    height: 14px;
+    stroke: var(--orange);
+    fill: none;
+    stroke-width: 2;
+  }
+
+  /* ══════════════════════════════════════════════════
+     REAMER WIZARD CALLOUT
+     ══════════════════════════════════════════════════ */
+  .tool-callout {
+    padding: 80px 0;
+    background: var(--black);
+    color: var(--white);
+    position: relative;
+    overflow: hidden;
+  }
+  .tool-callout::before {
+    content: '';
+    position: absolute;
+    top: -200px;
+    left: -200px;
+    width: 600px;
+    height: 600px;
+    border-radius: 50%;
+    background: var(--orange);
+    opacity: 0.04;
+    pointer-events: none;
+  }
+  .tool-callout-inner {
+    display: grid;
+    grid-template-columns: 1fr auto;
+    gap: 60px;
+    align-items: center;
+    position: relative;
+    z-index: 1;
+  }
+  .tool-callout h2 {
+    font-size: clamp(1.4rem, 2.5vw, 1.8rem);
+    font-weight: 800;
+    letter-spacing: -0.02em;
+    margin-bottom: 12px;
+  }
+  .tool-callout p {
+    font-size: 1rem;
+    color: rgba(255,255,255,0.6);
+    line-height: 1.7;
+    margin-bottom: 8px;
+  }
+  .tool-callout .external-note {
+    font-size: 0.8rem;
+    color: rgba(255,255,255,0.35);
+    margin-top: 16px;
+  }
+  .tool-callout-actions {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+    min-width: 280px;
+  }
+
+  /* ══════════════════════════════════════════════════
+     CROSS-SELL — Pair with Blick Fluids
+     ══════════════════════════════════════════════════ */
+  .cross-sell {
+    padding: 120px 0;
+    position: relative;
+    overflow: hidden;
+  }
+  .cross-sell .geo-ring {
+    position: absolute;
+    top: 50%;
+    right: -100px;
+    transform: translateY(-50%);
+    width: 400px;
+    height: 400px;
+    border: 1px solid rgba(253, 79, 0, 0.05);
+    border-radius: 50%;
+    pointer-events: none;
+  }
+  .cross-sell-header {
+    margin-bottom: 48px;
+  }
+  .cross-sell-header h2 {
+    font-size: clamp(1.6rem, 3vw, 2.2rem);
+    font-weight: 800;
+    letter-spacing: -0.02em;
+    color: var(--black);
+  }
+  .cross-sell-header p {
+    font-size: 1rem;
+    color: var(--grey-dark);
+    margin-top: 12px;
+    max-width: 560px;
+    line-height: 1.7;
+  }
+  .cross-sell-grid {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 20px;
+  }
+  .fluid-card {
+    background: var(--off-white);
+    border: 1px solid var(--grey-light);
+    border-radius: 16px;
+    padding: 28px 24px;
+    text-decoration: none;
+    color: inherit;
+    transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+  }
+  .fluid-card:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 16px 48px rgba(0,0,0,0.06);
+    border-color: rgba(253, 79, 0, 0.2);
+  }
+  .fluid-card .fc-badge {
+    display: inline-flex;
+    padding: 4px 10px;
+    border-radius: 100px;
+    background: rgba(253, 79, 0, 0.08);
+    color: var(--orange);
+    font-size: 0.65rem;
+    font-weight: 600;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    margin-bottom: 12px;
+  }
+  .fluid-card h4 {
+    font-size: 0.95rem;
+    font-weight: 700;
+    color: var(--black);
+    margin-bottom: 8px;
+  }
+  .fluid-card p {
+    font-size: 0.82rem;
+    line-height: 1.6;
+    color: var(--grey-dark);
+  }
+
+  /* ══════════════════════════════════════════════════
+     CTA
+     ══════════════════════════════════════════════════ */
+  .cta {
+    padding: 120px 0;
+    background: var(--off-white);
+    text-align: center;
+    position: relative;
+    overflow: hidden;
+  }
+  .cta .geo-glow {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 500px;
+    height: 500px;
+    border-radius: 50%;
+    background: radial-gradient(circle, rgba(253, 79, 0, 0.05) 0%, transparent 70%);
+    pointer-events: none;
+  }
+  .cta-content {
+    position: relative;
+    z-index: 1;
+  }
+  .cta h2 {
+    font-size: clamp(1.8rem, 3.5vw, 2.6rem);
+    font-weight: 800;
+    letter-spacing: -0.02em;
+    line-height: 1.15;
+    color: var(--black);
+    margin-bottom: 16px;
+  }
+  .cta-content > p {
+    font-size: 1.05rem;
+    color: var(--grey-dark);
+    margin-bottom: 36px;
+    line-height: 1.7;
+  }
+  .cta-actions {
+    display: flex;
+    gap: 16px;
+    justify-content: center;
+    flex-wrap: wrap;
+  }
+
+  /* ── Footer ───────────────────────────────────────── */
+  footer {
+    padding: 80px 0 40px;
+    border-top: 1px solid var(--grey-light);
+  }
+  .footer-grid {
+    display: grid;
+    grid-template-columns: 2fr 1fr 1fr 1fr;
+    gap: 64px;
+    margin-bottom: 64px;
+  }
+  .footer-brand p {
+    font-size: 0.9rem;
+    line-height: 1.7;
+    color: var(--grey-dark);
+    margin-top: 16px;
+    max-width: 300px;
+  }
+  .footer-col h4 {
+    font-size: 0.75rem;
+    font-weight: 700;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--black);
+    margin-bottom: 20px;
+  }
+  .footer-col ul {
+    list-style: none;
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+  }
+  .footer-col a {
+    text-decoration: none;
+    color: var(--grey-dark);
+    font-size: 0.88rem;
+    transition: color 0.3s;
+  }
+  .footer-col a:hover { color: var(--orange); }
+  .footer-bottom {
+    padding-top: 32px;
+    border-top: 1px solid var(--grey-light);
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    font-size: 0.8rem;
+    color: var(--grey-mid);
+  }
+
+  /* ── Responsive ──────────────────────────────────── */
+  @media (max-width: 1024px) {
+    .gateway-hero-grid {
+      grid-template-columns: 1fr;
+      gap: 48px;
+    }
+    .gateway-visual { display: none; }
+    .value-grid,
+    .families-grid {
+      grid-template-columns: 1fr 1fr;
+    }
+    .cross-sell-grid {
+      grid-template-columns: 1fr 1fr;
+    }
+    .tool-callout-inner {
+      grid-template-columns: 1fr;
+      gap: 32px;
+    }
+    .tool-callout-actions {
+      flex-direction: row;
+      min-width: auto;
+    }
+    .footer-grid {
+      grid-template-columns: 1fr 1fr;
+      gap: 40px;
+    }
+  }
+  @media (max-width: 640px) {
+    .nav-links { display: none; }
+    .value-grid,
+    .families-grid,
+    .cross-sell-grid {
+      grid-template-columns: 1fr;
+    }
+    .tool-callout-actions {
+      flex-direction: column;
+    }
+    .footer-grid {
+      grid-template-columns: 1fr;
+      gap: 32px;
+    }
+    .footer-bottom {
+      flex-direction: column;
+      gap: 12px;
+      text-align: center;
+    }
+  }
+</style>
+</head>
+<body>
+
+<!-- ════════ Navigation ════════ -->
+<nav id="nav">
+  <div class="container">
+    <a href="index.html" class="nav-logo">
+      <img src="blick-logo.png" alt="Blick">
+    </a>
+    <ul class="nav-links">
+      <li><a href="index.html">Home</a></li>
+      <li><a href="products.html" class="active">Products</a></li>
+      <li><a href="services.html">Services</a></li>
+      <li><a href="team.html">Team</a></li>
+      <li><a href="contact.html" class="nav-cta">Contact Us</a></li>
+    </ul>
+  </div>
+</nav>
+
+<!-- ════════ Breadcrumb ════════ -->
+<div class="breadcrumb">
+  <div class="container">
+    <div class="breadcrumb-links">
+      <a href="products.html">Products</a>
+      <span class="sep">›</span>
+      <a href="products.html#tooling">Tooling &amp; Equipment</a>
+      <span class="sep">›</span>
+      <span>Testing Equipment</span>
+    </div>
+  </div>
+</div>
+
+<!-- ══════════════════════════════════════════════════
+     GATEWAY HERO
+     ══════════════════════════════════════════════════ -->
+<section class="gateway-hero">
+  <div class="geo-bg"></div>
+  <div class="container">
+    <div class="gateway-hero-grid">
+
+      <div class="gateway-hero-text">
+        <div class="section-tag reveal">Available through Blick</div>
+        <h1 class="reveal stagger-1">Fann <span class="accent">Testing Equipment</span></h1>
+        <div class="sub reveal stagger-2">Industry-standard fluid testing instruments — supported locally by Blick.</div>
+        <p class="reveal stagger-3">Fann Instrument Company sets the standard for drilling fluid testing worldwide. From simple field kits to precision laboratory instruments, Fann equipment lets you measure, monitor, and control your fluid properties — ensuring every bore runs efficiently and safely.</p>
+        <p class="reveal stagger-4">When you buy Fann through Blick, you get the world's most trusted testing equipment with hands-on training, calibration support, and the backing of Blick's Mud School expertise.</p>
+
+        <div class="gateway-hero-actions reveal stagger-5">
+          <a href="mailto:sales@blick.group?subject=Fann%20Testing%20Equipment%20Enquiry" class="btn btn-primary">Request a Quote</a>
+          <a href="products.html#tooling" class="btn btn-secondary">Back to Tooling</a>
+        </div>
+      </div>
+
+      <!-- Partner badge visual -->
+      <div class="gateway-visual reveal">
+        <div class="cobrand-graphic">
+          <div class="cobrand-badge">Blick Partner</div>
+          <div class="cobrand-card">
+            <div class="brand-text">Fann</div>
+            <div class="partner-text">Instruments</div>
+            <div class="partner-sub">Fluid Testing Equipment</div>
+          </div>
+          <div class="tool-icon-row">
+            <div class="tool-icon-item">
+              <!-- Beaker/flask -->
+              <svg viewBox="0 0 24 24"><path d="M9 3h6v6l4 8H5l4-8V3z"/><line x1="9" y1="3" x2="15" y2="3"/></svg>
+            </div>
+            <div class="tool-icon-item">
+              <!-- Thermometer/gauge -->
+              <svg viewBox="0 0 24 24"><path d="M14 14.76V3.5a2.5 2.5 0 00-5 0v11.26a4.5 4.5 0 105 0z"/></svg>
+            </div>
+            <div class="tool-icon-item">
+              <!-- Funnel -->
+              <svg viewBox="0 0 24 24"><path d="M3 4h18l-7 8v6l-4 2V12L3 4z"/></svg>
+            </div>
+            <div class="tool-icon-item">
+              <!-- Clipboard/check -->
+              <svg viewBox="0 0 24 24"><path d="M16 4h2a2 2 0 012 2v14a2 2 0 01-2 2H6a2 2 0 01-2-2V6a2 2 0 012-2h2"/><rect x="8" y="2" width="8" height="4" rx="1" ry="1"/><path d="M9 14l2 2 4-4"/></svg>
+            </div>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<!-- ══════════════════════════════════════════════════
+     WHY THROUGH BLICK
+     ══════════════════════════════════════════════════ -->
+<section class="why-blick">
+  <div class="container">
+    <div class="why-blick-header">
+      <div class="section-tag reveal">Why Through Blick</div>
+      <h2 class="reveal stagger-1">Training. Support. Calibration.</h2>
+    </div>
+    <div class="value-grid">
+
+      <div class="value-card reveal stagger-1">
+        <div class="value-card-icon">
+          <!-- Graduation cap / book -->
+          <svg viewBox="0 0 24 24"><path d="M2 3h6a4 4 0 014 4v14a3 3 0 00-3-3H2z"/><path d="M22 3h-6a4 4 0 00-4 4v14a3 3 0 013-3h7z"/></svg>
+        </div>
+        <h3>Training Included</h3>
+        <p>Every Fann instrument purchase includes training from Blick's Mud School team. We don't just sell testing equipment — we teach you how to use it properly and interpret the results for better drilling decisions.</p>
+      </div>
+
+      <div class="value-card reveal stagger-2">
+        <div class="value-card-icon">
+          <!-- People / support -->
+          <svg viewBox="0 0 24 24"><path d="M17 21v-2a4 4 0 00-4-4H5a4 4 0 00-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 00-3-3.87"/><path d="M16 3.13a4 4 0 010 7.75"/></svg>
+        </div>
+        <h3>Field &amp; Lab Support</h3>
+        <p>From quick field tests with a Marsh Funnel to detailed lab analysis with a rheometer, our team supports you at every level. We'll help you build a testing program that matches your operation's needs.</p>
+      </div>
+
+      <div class="value-card reveal stagger-3">
+        <div class="value-card-icon">
+          <!-- Wrench / settings -->
+          <svg viewBox="0 0 24 24"><path d="M14.7 6.3a1 1 0 000 1.4l1.6 1.6a1 1 0 001.4 0l3.77-3.77a6 6 0 01-7.94 7.94l-6.91 6.91a2.12 2.12 0 01-3-3l6.91-6.91a6 6 0 017.94-7.94l-3.76 3.76z"/></svg>
+        </div>
+        <h3>Calibration &amp; Spares</h3>
+        <p>We carry replacement parts, calibration standards, and consumables for the full Fann range. Keep your instruments accurate and your results reliable with ongoing Blick support.</p>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<!-- ══════════════════════════════════════════════════
+     PRODUCT FAMILIES
+     ══════════════════════════════════════════════════ -->
+<section class="families">
+  <div class="container">
+    <div class="families-header">
+      <div class="section-tag reveal">Testing Categories</div>
+      <h2 class="reveal stagger-1">Drilling fluid testing — from field to lab</h2>
+      <p class="reveal stagger-2">Blick carries Fann testing equipment across three tiers — daily field tests every crew should run, diagnostic instruments for troubleshooting, and lab-grade rheology for Mud School and complex projects.</p>
+    </div>
+
+    <div class="families-grid">
+
+      <div class="family-card reveal stagger-1">
+        <div class="family-card-icon">
+          <!-- Clipboard / checklist -->
+          <svg viewBox="0 0 24 24"><path d="M16 4h2a2 2 0 012 2v14a2 2 0 01-2 2H6a2 2 0 01-2-2V6a2 2 0 012-2h2"/><rect x="8" y="2" width="8" height="4" rx="1" ry="1"/><line x1="9" y1="12" x2="15" y2="12"/><line x1="9" y1="16" x2="13" y2="16"/></svg>
+        </div>
+        <h3>Field Test Kits</h3>
+        <p>The daily essentials every drilling crew needs on site. Includes pH &amp; water hardness strips for monitoring make-up water, Marsh Funnel &amp; Cup for viscosity checks, and Mud Balance for fluid density. Quick, reliable tests that catch problems before they cost you time.</p>
+        <a href="http://www.fann.com/en/products/field-mud-lab-kits" target="_blank" rel="noopener" class="family-link">
+          View on fann.com
+          <svg viewBox="0 0 24 24"><path d="M18 13v6a2 2 0 01-2 2H5a2 2 0 01-2-2V8a2 2 0 012-2h6"/><polyline points="15,3 21,3 21,9"/><line x1="10" y1="14" x2="21" y2="3"/></svg>
+        </a>
+      </div>
+
+      <div class="family-card reveal stagger-2">
+        <div class="family-card-icon">
+          <!-- Filter / diagnostic -->
+          <svg viewBox="0 0 24 24"><path d="M12 2L2 7l10 5 10-5-10-5z"/><path d="M2 17l10 5 10-5"/><path d="M2 12l10 5 10-5"/></svg>
+        </div>
+        <h3>Filtration &amp; Solids Analysis</h3>
+        <p>Diagnostic instruments for when you need to understand what's happening downhole. Sand Content Kits measure solids percentage (API 200-mesh), while the Half-Area Filter Press tests fluid-loss control under 100 PSI — the key test for bentonite system performance.</p>
+        <a href="http://www.fann.com/en/products/drilling-fluids" target="_blank" rel="noopener" class="family-link">
+          View on fann.com
+          <svg viewBox="0 0 24 24"><path d="M18 13v6a2 2 0 01-2 2H5a2 2 0 01-2-2V8a2 2 0 012-2h6"/><polyline points="15,3 21,3 21,9"/><line x1="10" y1="14" x2="21" y2="3"/></svg>
+        </a>
+      </div>
+
+      <div class="family-card reveal stagger-3">
+        <div class="family-card-icon">
+          <!-- Gauge / dial -->
+          <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><path d="M12 6v6l4 2"/></svg>
+        </div>
+        <h3>Rheology &amp; Viscometry</h3>
+        <p>Lab-grade instruments for detailed fluid characterisation. The Fann Model 35 Viscometer measures plastic viscosity, yield point, and gel strength at multiple shear rates — essential for optimising fluid programs on complex bores and the centrepiece of every Blick Mud School.</p>
+        <a href="http://www.fann.com/en/products/viscosity" target="_blank" rel="noopener" class="family-link">
+          View on fann.com
+          <svg viewBox="0 0 24 24"><path d="M18 13v6a2 2 0 01-2 2H5a2 2 0 01-2-2V8a2 2 0 012-2h6"/><polyline points="15,3 21,3 21,9"/><line x1="10" y1="14" x2="21" y2="3"/></svg>
+        </a>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<!-- ══════════════════════════════════════════════════
+     MUD SCHOOL CALLOUT
+     ══════════════════════════════════════════════════ -->
+<section class="tool-callout">
+  <div class="container">
+    <div class="tool-callout-inner">
+      <div>
+        <div class="section-tag reveal" style="color: var(--orange);">Mud School</div>
+        <h2 class="reveal stagger-1">Want to learn how to test your fluids properly?</h2>
+        <p class="reveal stagger-2">Blick's Mud School covers everything from basic field testing to advanced fluid engineering. When you buy Fann equipment through Blick, you get hands-on training with real instruments and real mud — not just a manual. Our instructors are drilling fluid specialists who've tested thousands of samples in the field.</p>
+        <div class="external-note reveal stagger-3">Product links open fann.com in a new tab. Blick is the NZ &amp; Pacific distributor — contact us for pricing, availability, and training.</div>
+      </div>
+      <div class="tool-callout-actions reveal stagger-2">
+        <a href="mailto:sales@blick.group?subject=Mud%20School%20Training%20Enquiry" class="btn btn-primary">Book Mud School</a>
+        <a href="tel:+6478492366" class="btn btn-ghost">Call Blick NZ</a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ══════════════════════════════════════════════════
+     CROSS-SELL — Test These Fluids
+     ══════════════════════════════════════════════════ -->
+<section class="cross-sell">
+  <div class="geo-ring"></div>
+  <div class="container">
+    <div class="cross-sell-header">
+      <div class="section-tag reveal">Test These</div>
+      <h2 class="reveal stagger-1">Fluids you'll be testing</h2>
+      <p class="reveal stagger-2">Fann instruments are designed to test and optimise drilling fluid systems. Here are the Blick fluids your equipment will help you monitor and control.</p>
+    </div>
+
+    <div class="cross-sell-grid">
+
+      <a href="#" class="fluid-card reveal stagger-1">
+        <span class="fc-badge">Core Fluid</span>
+        <h4>HDD Gel</h4>
+        <p>The fluid you'll be testing most. Premium bentonite for hole stability and fluid-loss control.</p>
+      </a>
+
+      <a href="carry-flow-v4.html" class="fluid-card reveal stagger-2">
+        <span class="fc-badge">Stabiliser</span>
+        <h4>Carry Flow</h4>
+        <p>Test viscosity and carrying capacity with your Marsh Funnel — Carry Flow is designed to hit the numbers.</p>
+      </a>
+
+      <a href="#" class="fluid-card reveal stagger-3">
+        <span class="fc-badge">Additive</span>
+        <h4>Clay Control</h4>
+        <p>When your pH strips show reactive clay — Clay Control inhibits swelling and keeps the bore stable.</p>
+      </a>
+
+      <a href="#" class="fluid-card reveal stagger-4">
+        <span class="fc-badge">Additive</span>
+        <h4>Detergent</h4>
+        <p>Clean your testing equipment between samples — Detergent removes drilling fluid residue quickly.</p>
+      </a>
+
+    </div>
+  </div>
+</section>
+
+<!-- ══════════════════════════════════════════════════
+     CTA
+     ══════════════════════════════════════════════════ -->
+<section class="cta">
+  <div class="geo-glow"></div>
+  <div class="container">
+    <div class="cta-content">
+      <div class="section-tag reveal">Get Started</div>
+      <h2 class="reveal stagger-1">Need Fann testing equipment?</h2>
+      <p class="reveal stagger-2">Tell us what you're testing and we'll recommend the right instruments for your operation — from basic field kits to full lab setups.</p>
+      <div class="cta-actions reveal stagger-3">
+        <a href="mailto:sales@blick.group?subject=Fann%20Testing%20Equipment%20Quote%20Request" class="btn btn-primary">Request a Quote</a>
+        <a href="tel:+6478492366" class="btn btn-secondary">Call Blick NZ: +64 7 849 2366</a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ════════ Footer ════════ -->
+<footer>
+  <div class="container">
+    <div class="footer-grid">
+      <div class="footer-brand">
+        <a href="index.html" class="nav-logo">
+          <img src="blick-logo.png" alt="Blick" style="height:32px;width:auto;">
+        </a>
+        <p>Australasia's leading drilling fluid solutions partner. Serving Australia, New Zealand, and the Pacific Islands.</p>
+      </div>
+      <div class="footer-col">
+        <h4>Products</h4>
+        <ul>
+          <li><a href="products.html#fluids">Blick Fluids</a></li>
+          <li><a href="products.html#tooling">Equipment &amp; Tooling</a></li>
+          <li><a href="products.html#jetlube">Grease &amp; Compounds</a></li>
+        </ul>
+      </div>
+      <div class="footer-col">
+        <h4>Tooling</h4>
+        <ul>
+          <li><a href="products-tooling-melfred-borzall.html">Melfred Borzall</a></li>
+          <li><a href="products-tooling-adaptors.html">Adaptors</a></li>
+          <li><a href="products-tooling-testing-equipment.html">Testing Equipment</a></li>
+          <li><a href="casing-spacers-v2.html">Casing Spacers</a></li>
+        </ul>
+      </div>
+      <div class="footer-col">
+        <h4>Connect</h4>
+        <ul>
+          <li><a href="mailto:sales@blick.group">sales@blick.group</a></li>
+          <li><a href="tel:+6478492366">+64 7 849 2366</a></li>
+          <li><a href="tel:+61390685688">+61 3 9068 5688</a></li>
+        </ul>
+      </div>
+    </div>
+    <div class="footer-bottom">
+      <span>&copy; 2026 Blick Group. All rights reserved.</span>
+      <span>Australia &middot; New Zealand &middot; Pacific Islands</span>
+    </div>
+  </div>
+</footer>
+
+<script>
+  // ── Scroll reveal ──
+  const reveals = document.querySelectorAll('.reveal');
+  const observer = new IntersectionObserver((entries) => {
+    entries.forEach(entry => {
+      if (entry.isIntersecting) {
+        entry.target.classList.add('visible');
+      }
+    });
+  }, { threshold: 0.1, rootMargin: '0px 0px -60px 0px' });
+  reveals.forEach(el => observer.observe(el));
+
+  // ── Nav scroll effect ──
+  const nav = document.getElementById('nav');
+  window.addEventListener('scroll', () => {
+    nav.classList.toggle('scrolled', window.scrollY > 50);
+  });
+</script>
+
+</body>
+</html>

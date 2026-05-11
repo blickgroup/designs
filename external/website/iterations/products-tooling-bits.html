@@ -1,0 +1,1404 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Tricones &amp; PDC Bits — Available through Blick</title>
+<style>
+  /* ── Reset & Base ─────────────────────────────────── */
+  *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+
+  :root {
+    --orange: #FD4F00;
+    --orange-light: #FF6B26;
+    --black: #1A1A1A;
+    --charcoal: #2D2D2D;
+    --grey-dark: #66615C;
+    --grey-mid: #A9A9A9;
+    --grey-light: #EBEAEB;
+    --off-white: #FAFAFA;
+    --white: #FFFFFF;
+    --font: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+  }
+
+  @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap');
+
+  html {
+    scroll-behavior: smooth;
+    font-size: 16px;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+  }
+
+  body {
+    font-family: var(--font);
+    color: var(--charcoal);
+    background: var(--white);
+    line-height: 1.6;
+    overflow-x: hidden;
+  }
+
+  /* ── Utility ──────────────────────────────────────── */
+  .container {
+    max-width: 1280px;
+    margin: 0 auto;
+    padding: 0 clamp(24px, 5vw, 80px);
+  }
+
+  .reveal {
+    opacity: 0;
+    transform: translateY(40px);
+    transition: opacity 0.8s cubic-bezier(0.16, 1, 0.3, 1),
+                transform 0.8s cubic-bezier(0.16, 1, 0.3, 1);
+  }
+  .reveal.visible {
+    opacity: 1;
+    transform: translateY(0);
+  }
+  .stagger-1 { transition-delay: 0.1s; }
+  .stagger-2 { transition-delay: 0.2s; }
+  .stagger-3 { transition-delay: 0.3s; }
+  .stagger-4 { transition-delay: 0.4s; }
+  .stagger-5 { transition-delay: 0.5s; }
+
+  .section-tag {
+    display: inline-flex;
+    align-items: center;
+    gap: 12px;
+    font-size: 0.72rem;
+    font-weight: 700;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: var(--orange);
+    margin-bottom: 20px;
+  }
+  .section-tag::before {
+    content: '';
+    width: 32px;
+    height: 2px;
+    background: var(--orange);
+  }
+
+  .accent { color: var(--orange); }
+
+  /* ── Buttons ────────────────────────────────────── */
+  .btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    padding: 14px 32px;
+    border-radius: 100px;
+    font-size: 0.88rem;
+    font-weight: 600;
+    text-decoration: none;
+    transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+    cursor: pointer;
+    border: none;
+  }
+  .btn-primary {
+    background: var(--orange);
+    color: var(--white);
+  }
+  .btn-primary:hover {
+    background: var(--orange-light);
+    transform: translateY(-2px);
+    box-shadow: 0 8px 24px rgba(253, 79, 0, 0.25);
+  }
+  .btn-secondary {
+    background: transparent;
+    color: var(--charcoal);
+    border: 1.5px solid var(--grey-light);
+  }
+  .btn-secondary:hover {
+    border-color: var(--orange);
+    color: var(--orange);
+  }
+  .btn-dark {
+    background: var(--charcoal);
+    color: var(--white);
+  }
+  .btn-dark:hover {
+    background: var(--black);
+    transform: translateY(-2px);
+    box-shadow: 0 8px 24px rgba(0,0,0,0.15);
+  }
+  .btn-ghost {
+    background: transparent;
+    color: var(--white);
+    border: 1.5px solid rgba(255,255,255,0.2);
+  }
+  .btn-ghost:hover {
+    border-color: var(--orange);
+    color: var(--orange);
+  }
+
+  /* ── Navigation ───────────────────────────────────── */
+  nav {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    z-index: 1000;
+    padding: 24px 0;
+    transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+    background: rgba(255, 255, 255, 0.92);
+    backdrop-filter: blur(20px);
+    box-shadow: 0 1px 0 rgba(0,0,0,0.05);
+  }
+  nav.scrolled { padding: 16px 0; }
+  nav .container {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+  .nav-logo img { height: 36px; width: auto; }
+  .nav-links {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    list-style: none;
+  }
+  .nav-links a {
+    text-decoration: none;
+    color: var(--grey-dark);
+    font-size: 0.88rem;
+    font-weight: 500;
+    padding: 8px 16px;
+    border-radius: 8px;
+    transition: all 0.3s;
+  }
+  .nav-links a:hover, .nav-links a.active { color: var(--orange); }
+  .nav-cta {
+    background: var(--orange) !important;
+    color: var(--white) !important;
+    border-radius: 100px !important;
+    padding: 10px 24px !important;
+  }
+  .nav-cta:hover {
+    background: var(--orange-light) !important;
+  }
+
+  /* ── Breadcrumb ──────────────────────────────────── */
+  .breadcrumb {
+    padding: 100px 0 0;
+  }
+  .breadcrumb-links {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    font-size: 0.82rem;
+    color: var(--grey-mid);
+  }
+  .breadcrumb-links a {
+    color: var(--grey-dark);
+    text-decoration: none;
+    transition: color 0.3s;
+  }
+  .breadcrumb-links a:hover { color: var(--orange); }
+  .breadcrumb-links .sep { opacity: 0.4; }
+
+  /* ══════════════════════════════════════════════════
+     GATEWAY HERO
+     ══════════════════════════════════════════════════ */
+  .gateway-hero {
+    padding: 40px 0 100px;
+    position: relative;
+    overflow: hidden;
+  }
+  .gateway-hero .geo-bg {
+    position: absolute;
+    top: -200px;
+    right: -200px;
+    width: 600px;
+    height: 600px;
+    border-radius: 50%;
+    background: var(--orange);
+    opacity: 0.03;
+    pointer-events: none;
+  }
+
+  .gateway-hero-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 80px;
+    align-items: center;
+  }
+
+  .gateway-hero-text h1 {
+    font-size: clamp(2rem, 3.5vw, 2.8rem);
+    font-weight: 800;
+    letter-spacing: -0.02em;
+    line-height: 1.1;
+    color: var(--black);
+    margin-bottom: 12px;
+  }
+  .gateway-hero-text .sub {
+    font-size: 1.1rem;
+    font-weight: 500;
+    color: var(--orange);
+    margin-bottom: 28px;
+  }
+  .gateway-hero-text p {
+    font-size: 1.02rem;
+    line-height: 1.8;
+    color: var(--grey-dark);
+    margin-bottom: 16px;
+  }
+  .gateway-hero-actions {
+    display: flex;
+    gap: 16px;
+    flex-wrap: wrap;
+    margin-top: 32px;
+  }
+
+  /* Co-branded visual */
+  .gateway-visual {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    position: relative;
+  }
+  .cobrand-graphic {
+    width: 100%;
+    max-width: 380px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 24px;
+  }
+  .cobrand-badge {
+    background: var(--orange);
+    color: var(--white);
+    padding: 10px 24px;
+    border-radius: 14px;
+    font-size: 0.7rem;
+    font-weight: 700;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    box-shadow: 0 8px 24px rgba(253, 79, 0, 0.2);
+  }
+  .cobrand-card {
+    background: var(--white);
+    border: 2px solid var(--grey-light);
+    border-radius: 24px;
+    padding: 48px 40px;
+    text-align: center;
+    box-shadow: 0 16px 48px rgba(0,0,0,0.06);
+    width: 100%;
+  }
+  .cobrand-card .brand-text {
+    font-size: 0.65rem;
+    font-weight: 700;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    color: var(--grey-dark);
+    margin-bottom: 6px;
+  }
+  .cobrand-card .partner-text {
+    font-size: 1.6rem;
+    font-weight: 800;
+    color: var(--black);
+    letter-spacing: -0.02em;
+  }
+  .cobrand-card .partner-sub {
+    font-size: 0.85rem;
+    color: var(--grey-dark);
+    margin-top: 8px;
+  }
+  .tool-icon-row {
+    display: flex;
+    gap: 16px;
+    justify-content: center;
+  }
+  .tool-icon-item {
+    width: 56px;
+    height: 56px;
+    border-radius: 16px;
+    background: var(--white);
+    border: 1px solid var(--grey-light);
+    box-shadow: 0 8px 24px rgba(0,0,0,0.06);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: all 0.4s;
+  }
+  .tool-icon-item:hover {
+    border-color: var(--orange);
+    box-shadow: 0 12px 32px rgba(253, 79, 0, 0.12);
+  }
+  .tool-icon-item svg {
+    width: 22px;
+    height: 22px;
+    stroke: var(--orange);
+    fill: none;
+    stroke-width: 1.5;
+    stroke-linecap: round;
+    stroke-linejoin: round;
+  }
+
+  /* ══════════════════════════════════════════════════
+     WHY THROUGH BLICK
+     ══════════════════════════════════════════════════ */
+  .why-blick {
+    padding: 100px 0;
+    background: var(--off-white);
+    position: relative;
+    overflow: hidden;
+  }
+  .why-blick::before {
+    content: '';
+    position: absolute;
+    bottom: -120px;
+    left: -120px;
+    width: 400px;
+    height: 400px;
+    border: 1px solid rgba(253, 79, 0, 0.05);
+    border-radius: 50%;
+    pointer-events: none;
+  }
+  .why-blick-header {
+    margin-bottom: 56px;
+  }
+  .why-blick-header h2 {
+    font-size: clamp(1.6rem, 3vw, 2.2rem);
+    font-weight: 800;
+    letter-spacing: -0.02em;
+    color: var(--black);
+  }
+  .value-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 24px;
+  }
+  .value-card {
+    background: var(--white);
+    border: 1px solid var(--grey-light);
+    border-radius: 24px;
+    padding: 44px 36px;
+    position: relative;
+    overflow: hidden;
+    transition: all 0.5s cubic-bezier(0.16, 1, 0.3, 1);
+  }
+  .value-card::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 3px;
+    background: var(--orange);
+    transform: scaleX(0);
+    transform-origin: left;
+    transition: transform 0.5s cubic-bezier(0.16, 1, 0.3, 1);
+  }
+  .value-card:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 20px 56px rgba(0,0,0,0.06);
+    border-color: transparent;
+  }
+  .value-card:hover::before { transform: scaleX(1); }
+  .value-card-icon {
+    width: 52px;
+    height: 52px;
+    border-radius: 14px;
+    background: rgba(253, 79, 0, 0.06);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-bottom: 24px;
+  }
+  .value-card-icon svg {
+    width: 24px;
+    height: 24px;
+    stroke: var(--orange);
+    fill: none;
+    stroke-width: 1.5;
+    stroke-linecap: round;
+    stroke-linejoin: round;
+  }
+  .value-card h3 {
+    font-size: 1.1rem;
+    font-weight: 700;
+    color: var(--black);
+    margin-bottom: 12px;
+  }
+  .value-card p {
+    font-size: 0.92rem;
+    line-height: 1.75;
+    color: var(--grey-dark);
+  }
+
+  /* ══════════════════════════════════════════════════
+     PRODUCT FAMILIES
+     ══════════════════════════════════════════════════ */
+  .families {
+    padding: 120px 0;
+    position: relative;
+  }
+  .families-header {
+    margin-bottom: 56px;
+  }
+  .families-header h2 {
+    font-size: clamp(1.6rem, 3vw, 2.2rem);
+    font-weight: 800;
+    letter-spacing: -0.02em;
+    color: var(--black);
+  }
+  .families-header p {
+    font-size: 1.02rem;
+    color: var(--grey-dark);
+    margin-top: 12px;
+    max-width: 640px;
+    line-height: 1.7;
+  }
+  .families-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 24px;
+  }
+  .families-grid--2col {
+    grid-template-columns: repeat(2, 1fr);
+  }
+  .family-card {
+    background: var(--off-white);
+    border: 1px solid var(--grey-light);
+    border-radius: 20px;
+    padding: 40px 32px 36px;
+    transition: all 0.5s cubic-bezier(0.16, 1, 0.3, 1);
+    position: relative;
+    overflow: hidden;
+  }
+  .family-card::after {
+    content: '';
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    height: 3px;
+    background: var(--orange);
+    transform: scaleX(0);
+    transform-origin: right;
+    transition: transform 0.5s cubic-bezier(0.16, 1, 0.3, 1);
+  }
+  .family-card:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 20px 56px rgba(0,0,0,0.06);
+    border-color: transparent;
+  }
+  .family-card:hover::after {
+    transform: scaleX(1);
+    transform-origin: left;
+  }
+  .family-card-icon {
+    width: 48px;
+    height: 48px;
+    border-radius: 14px;
+    background: rgba(253, 79, 0, 0.06);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-bottom: 20px;
+  }
+  .family-card-icon svg {
+    width: 22px;
+    height: 22px;
+    stroke: var(--orange);
+    fill: none;
+    stroke-width: 1.5;
+    stroke-linecap: round;
+    stroke-linejoin: round;
+  }
+  .family-card h3 {
+    font-size: 1.05rem;
+    font-weight: 700;
+    color: var(--black);
+    margin-bottom: 10px;
+  }
+  .family-card p {
+    font-size: 0.88rem;
+    line-height: 1.7;
+    color: var(--grey-dark);
+    margin-bottom: 20px;
+  }
+  .family-card .family-link {
+    font-size: 0.82rem;
+    font-weight: 600;
+    color: var(--orange);
+    text-decoration: none;
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    transition: gap 0.3s;
+  }
+  .family-card:hover .family-link { gap: 10px; }
+
+  /* ══════════════════════════════════════════════════
+     SPECS SECTION
+     ══════════════════════════════════════════════════ */
+  .specs-section {
+    padding: 100px 0;
+    background: var(--off-white);
+  }
+  .specs-header {
+    margin-bottom: 48px;
+  }
+  .specs-header h2 {
+    font-size: clamp(1.6rem, 3vw, 2.2rem);
+    font-weight: 800;
+    letter-spacing: -0.02em;
+    color: var(--black);
+    margin-bottom: 12px;
+  }
+  .specs-header p {
+    font-size: 1rem;
+    color: var(--grey-dark);
+    max-width: 640px;
+    line-height: 1.7;
+  }
+  .specs-table-wrapper {
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
+    margin-bottom: 48px;
+  }
+  .specs-table-label {
+    font-size: 0.82rem;
+    font-weight: 700;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: var(--orange);
+    margin-bottom: 16px;
+  }
+  .specs-table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 0.88rem;
+    min-width: 600px;
+  }
+  .specs-table thead {
+    background: var(--black);
+    color: var(--white);
+  }
+  .specs-table th {
+    padding: 14px 20px;
+    text-align: left;
+    font-weight: 600;
+    font-size: 0.78rem;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    white-space: nowrap;
+  }
+  .specs-table td {
+    padding: 14px 20px;
+    border-bottom: 1px solid var(--grey-light);
+    color: var(--grey-dark);
+  }
+  .specs-table tbody tr:hover {
+    background: rgba(253, 79, 0, 0.03);
+  }
+  .specs-table .product-code {
+    font-weight: 600;
+    color: var(--black);
+    font-family: monospace;
+    font-size: 0.82rem;
+  }
+  .specs-table .size-col {
+    font-weight: 600;
+    color: var(--black);
+  }
+
+  /* ══════════════════════════════════════════════════
+     TOOL CALLOUT
+     ══════════════════════════════════════════════════ */
+  .tool-callout {
+    padding: 80px 0;
+    background: var(--black);
+    color: var(--white);
+    position: relative;
+    overflow: hidden;
+  }
+  .tool-callout::before {
+    content: '';
+    position: absolute;
+    top: -200px;
+    left: -200px;
+    width: 600px;
+    height: 600px;
+    border-radius: 50%;
+    background: var(--orange);
+    opacity: 0.04;
+    pointer-events: none;
+  }
+  .tool-callout-inner {
+    display: grid;
+    grid-template-columns: 1fr auto;
+    gap: 60px;
+    align-items: center;
+    position: relative;
+    z-index: 1;
+  }
+  .tool-callout h2 {
+    font-size: clamp(1.4rem, 2.5vw, 1.8rem);
+    font-weight: 800;
+    letter-spacing: -0.02em;
+    margin-bottom: 12px;
+  }
+  .tool-callout p {
+    font-size: 1rem;
+    color: rgba(255,255,255,0.6);
+    line-height: 1.7;
+    margin-bottom: 8px;
+  }
+  .tool-callout .external-note {
+    font-size: 0.8rem;
+    color: rgba(255,255,255,0.35);
+    margin-top: 16px;
+  }
+  .tool-callout-actions {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+    min-width: 280px;
+  }
+
+  /* ══════════════════════════════════════════════════
+     CROSS-SELL — Pair with Blick Fluids
+     ══════════════════════════════════════════════════ */
+  .cross-sell {
+    padding: 120px 0;
+    position: relative;
+    overflow: hidden;
+  }
+  .cross-sell .geo-ring {
+    position: absolute;
+    top: 50%;
+    right: -100px;
+    transform: translateY(-50%);
+    width: 400px;
+    height: 400px;
+    border: 1px solid rgba(253, 79, 0, 0.05);
+    border-radius: 50%;
+    pointer-events: none;
+  }
+  .cross-sell-header {
+    margin-bottom: 48px;
+  }
+  .cross-sell-header h2 {
+    font-size: clamp(1.6rem, 3vw, 2.2rem);
+    font-weight: 800;
+    letter-spacing: -0.02em;
+    color: var(--black);
+  }
+  .cross-sell-header p {
+    font-size: 1rem;
+    color: var(--grey-dark);
+    margin-top: 12px;
+    max-width: 560px;
+    line-height: 1.7;
+  }
+  .cross-sell-grid {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 20px;
+  }
+  .fluid-card {
+    background: var(--off-white);
+    border: 1px solid var(--grey-light);
+    border-radius: 16px;
+    padding: 28px 24px;
+    text-decoration: none;
+    color: inherit;
+    transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+  }
+  .fluid-card:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 16px 48px rgba(0,0,0,0.06);
+    border-color: rgba(253, 79, 0, 0.2);
+  }
+  .fluid-card .fc-badge {
+    display: inline-flex;
+    padding: 4px 10px;
+    border-radius: 100px;
+    background: rgba(253, 79, 0, 0.08);
+    color: var(--orange);
+    font-size: 0.65rem;
+    font-weight: 600;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    margin-bottom: 12px;
+  }
+  .fluid-card h4 {
+    font-size: 0.95rem;
+    font-weight: 700;
+    color: var(--black);
+    margin-bottom: 8px;
+  }
+  .fluid-card p {
+    font-size: 0.82rem;
+    line-height: 1.6;
+    color: var(--grey-dark);
+  }
+
+  /* ══════════════════════════════════════════════════
+     CTA
+     ══════════════════════════════════════════════════ */
+  .cta {
+    padding: 120px 0;
+    background: var(--off-white);
+    text-align: center;
+    position: relative;
+    overflow: hidden;
+  }
+  .cta .geo-glow {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 500px;
+    height: 500px;
+    border-radius: 50%;
+    background: radial-gradient(circle, rgba(253, 79, 0, 0.05) 0%, transparent 70%);
+    pointer-events: none;
+  }
+  .cta-content {
+    position: relative;
+    z-index: 1;
+  }
+  .cta h2 {
+    font-size: clamp(1.8rem, 3.5vw, 2.6rem);
+    font-weight: 800;
+    letter-spacing: -0.02em;
+    line-height: 1.15;
+    color: var(--black);
+    margin-bottom: 16px;
+  }
+  .cta-content > p {
+    font-size: 1.05rem;
+    color: var(--grey-dark);
+    margin-bottom: 36px;
+    line-height: 1.7;
+  }
+  .cta-actions {
+    display: flex;
+    gap: 16px;
+    justify-content: center;
+    flex-wrap: wrap;
+  }
+
+  /* ── Footer ───────────────────────────────────────── */
+  footer {
+    padding: 80px 0 40px;
+    border-top: 1px solid var(--grey-light);
+  }
+  .footer-grid {
+    display: grid;
+    grid-template-columns: 2fr 1fr 1fr 1fr;
+    gap: 64px;
+    margin-bottom: 64px;
+  }
+  .footer-brand p {
+    font-size: 0.9rem;
+    line-height: 1.7;
+    color: var(--grey-dark);
+    margin-top: 16px;
+    max-width: 300px;
+  }
+  .footer-col h4 {
+    font-size: 0.75rem;
+    font-weight: 700;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--black);
+    margin-bottom: 20px;
+  }
+  .footer-col ul {
+    list-style: none;
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+  }
+  .footer-col a {
+    text-decoration: none;
+    color: var(--grey-dark);
+    font-size: 0.88rem;
+    transition: color 0.3s;
+  }
+  .footer-col a:hover { color: var(--orange); }
+  .footer-bottom {
+    padding-top: 32px;
+    border-top: 1px solid var(--grey-light);
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    font-size: 0.8rem;
+    color: var(--grey-mid);
+  }
+
+  /* ── Responsive ──────────────────────────────────── */
+  @media (max-width: 1024px) {
+    .gateway-hero-grid {
+      grid-template-columns: 1fr;
+      gap: 48px;
+    }
+    .gateway-visual { display: none; }
+    .value-grid,
+    .families-grid {
+      grid-template-columns: 1fr 1fr;
+    }
+    .cross-sell-grid {
+      grid-template-columns: 1fr 1fr;
+    }
+    .tool-callout-inner {
+      grid-template-columns: 1fr;
+      gap: 32px;
+    }
+    .tool-callout-actions {
+      flex-direction: row;
+      min-width: auto;
+    }
+    .footer-grid {
+      grid-template-columns: 1fr 1fr;
+      gap: 40px;
+    }
+  }
+  @media (max-width: 640px) {
+    .nav-links { display: none; }
+    .value-grid,
+    .families-grid,
+    .families-grid--2col,
+    .cross-sell-grid {
+      grid-template-columns: 1fr;
+    }
+    .tool-callout-actions {
+      flex-direction: column;
+    }
+    .footer-grid {
+      grid-template-columns: 1fr;
+      gap: 32px;
+    }
+    .footer-bottom {
+      flex-direction: column;
+      gap: 12px;
+      text-align: center;
+    }
+  }
+</style>
+</head>
+<body>
+
+<!-- ════════ Navigation ════════ -->
+<nav id="nav">
+  <div class="container">
+    <a href="index.html" class="nav-logo">
+      <img src="blick-logo.png" alt="Blick">
+    </a>
+    <ul class="nav-links">
+      <li><a href="index.html">Home</a></li>
+      <li><a href="products.html" class="active">Products</a></li>
+      <li><a href="services.html">Services</a></li>
+      <li><a href="team.html">Team</a></li>
+      <li><a href="contact.html" class="nav-cta">Contact Us</a></li>
+    </ul>
+  </div>
+</nav>
+
+<!-- ════════ Breadcrumb ════════ -->
+<div class="breadcrumb">
+  <div class="container">
+    <div class="breadcrumb-links">
+      <a href="products.html">Products</a>
+      <span class="sep">›</span>
+      <a href="products.html#tooling">Tooling &amp; Equipment</a>
+      <span class="sep">›</span>
+      <span>Tricones &amp; PDC Bits</span>
+    </div>
+  </div>
+</div>
+
+<!-- ══════════════════════════════════════════════════
+     GATEWAY HERO
+     ══════════════════════════════════════════════════ -->
+<section class="gateway-hero">
+  <div class="geo-bg"></div>
+  <div class="container">
+    <div class="gateway-hero-grid">
+
+      <div class="gateway-hero-text">
+        <div class="section-tag reveal">Blick Bits</div>
+        <h1 class="reveal stagger-1">Tricones <span class="accent">&amp; PDC Bits</span></h1>
+        <div class="sub reveal stagger-2">Manufactured to exacting standards. Proven in Australasian conditions.</div>
+        <p class="reveal stagger-3">Blick Bits are manufactured in China and proven across New Zealand and Australian ground conditions. We stock a wide range of tricone and PDC sizes to cover everything from small-diameter geotech bores to large HDD crossings.</p>
+        <p class="reveal stagger-4">Tricones feature sealed roller bearings and shirt-tail hard facing as standard. PDC bits use deep wing designs with large inserts and hard facing for fast cutting and long life. Both are available in common sizes with local stock.</p>
+
+        <div class="gateway-hero-actions reveal stagger-5">
+          <a href="mailto:sales@blick.group?subject=Drill%20Bit%20Enquiry" class="btn btn-primary">Request a Quote</a>
+          <a href="products.html#tooling" class="btn btn-secondary">Back to Tooling</a>
+        </div>
+      </div>
+
+      <!-- Blick product visual -->
+      <div class="gateway-visual reveal">
+        <div class="cobrand-graphic">
+          <div class="cobrand-badge">Blick Product</div>
+          <div class="cobrand-card">
+            <div class="brand-text">Blick Bits</div>
+            <div class="partner-text">Tricones &amp; PDCs</div>
+            <div class="partner-sub">Downhole Cutting Tools</div>
+          </div>
+          <div class="tool-icon-row">
+            <div class="tool-icon-item">
+              <!-- Tricone -->
+              <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="8"/><path d="M12 4v16"/><path d="M4 12h16"/></svg>
+            </div>
+            <div class="tool-icon-item">
+              <!-- PDC wing -->
+              <svg viewBox="0 0 24 24"><path d="M12 2l-4 8h8l-4-8z"/><path d="M8 10v8l4 4 4-4v-8"/></svg>
+            </div>
+            <div class="tool-icon-item">
+              <!-- Size range -->
+              <svg viewBox="0 0 24 24"><path d="M3 5h18v14H3z"/><path d="M7 5v4"/><path d="M11 5v6"/><path d="M15 5v4"/><path d="M19 5v6"/></svg>
+            </div>
+            <div class="tool-icon-item">
+              <!-- Shield / quality -->
+              <svg viewBox="0 0 24 24"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/><path d="M9 12l2 2 4-4"/></svg>
+            </div>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<!-- ══════════════════════════════════════════════════
+     WHY THROUGH BLICK
+     ══════════════════════════════════════════════════ -->
+<section class="why-blick">
+  <div class="container">
+    <div class="why-blick-header">
+      <div class="section-tag reveal">Why Blick Bits</div>
+      <h2 class="reveal stagger-1">Quality bits. Local stock. Competitive pricing.</h2>
+    </div>
+    <div class="value-grid">
+
+      <div class="value-card reveal stagger-1">
+        <div class="value-card-icon">
+          <svg viewBox="0 0 24 24"><path d="M20 7l-8 4-8-4m16 0v10l-8 4m8-14L12 3 4 7m0 0v10l8 4"/></svg>
+        </div>
+        <h3>Common Sizes in Stock</h3>
+        <p>From 3&#x215E;&#x2033; to 9&#x215E;&#x2033; in both tricone and PDC — we carry the sizes most commonly used in HDD, geotech, and waterwell drilling across Australasia.</p>
+      </div>
+
+      <div class="value-card reveal stagger-2">
+        <div class="value-card-icon">
+          <svg viewBox="0 0 24 24"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/><path d="M9 12l2 2 4-4"/></svg>
+        </div>
+        <h3>Proven Performance</h3>
+        <p>Manufactured to exacting standards with sealed roller bearings (tricones) and reinforced deep wing designs (PDCs). Every bit is built for tough Australasian ground conditions.</p>
+      </div>
+
+      <div class="value-card reveal stagger-3">
+        <div class="value-card-icon">
+          <svg viewBox="0 0 24 24"><path d="M12 1v22M17 5H9.5a3.5 3.5 0 000 7h5a3.5 3.5 0 010 7H6"/></svg>
+        </div>
+        <h3>Great Value</h3>
+        <p>Fast cutting, long lasting bits at competitive prices. We also supply new Terelion bits and ex-oilfield rerun tricones for cost-effective alternatives on less demanding applications.</p>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<!-- ══════════════════════════════════════════════════
+     PRODUCT FAMILIES
+     ══════════════════════════════════════════════════ -->
+<section class="families">
+  <div class="container">
+    <div class="families-header">
+      <div class="section-tag reveal">Product Range</div>
+      <h2 class="reveal stagger-1">Two bit types for every ground condition</h2>
+      <p class="reveal stagger-2">Choose tricones for harder rock and mixed formations, or PDCs for fast progress in softer ground. Contact us for sizing advice and availability.</p>
+    </div>
+
+    <div class="families-grid families-grid--2col">
+
+      <div class="family-card reveal stagger-1">
+        <div class="family-card-icon">
+          <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="8"/><path d="M12 4v16"/><path d="M4 12h16"/></svg>
+        </div>
+        <h3>Tricone Bits</h3>
+        <p>Roller cone bits in steel tooth and TCI (Tungsten Carbide Insert) configurations. Sealed roller bearings and shirt-tail hard facing are standard. 18 sizes from 2&#xBC;&#x2033; to 9&#x215E;&#x2033; covering all common pin connections.</p>
+        <a href="#tricone-specs" class="family-link">
+          View tricone specs ↓
+        </a>
+      </div>
+
+      <div class="family-card reveal stagger-2">
+        <div class="family-card-icon">
+          <svg viewBox="0 0 24 24"><path d="M12 2l-4 8h8l-4-8z"/><path d="M8 10v8l4 4 4-4v-8"/></svg>
+        </div>
+        <h3>PDC Bits</h3>
+        <p>Polycrystalline Diamond Compact bits with deep wing designs, hard facing, and large PDC inserts. Precisely aligned cutters ensure rapid and straight progress. 7 sizes from 3&#x215E;&#x2033; to 9&#x215E;&#x2033; in 3 to 6 wing configurations.</p>
+        <a href="#pdc-specs" class="family-link">
+          View PDC specs ↓
+        </a>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<!-- ══════════════════════════════════════════════════
+     TRICONE SPECS
+     ══════════════════════════════════════════════════ -->
+<section class="specs-section" id="tricone-specs">
+  <div class="container">
+    <div class="specs-header">
+      <div class="section-tag reveal">Specifications</div>
+      <h2 class="reveal stagger-1">Tricone Bit Range</h2>
+      <p class="reveal stagger-2">Steel tooth and TCI options across all common sizes. Sealed roller bearings and shirt-tail hard facing standard on all models.</p>
+    </div>
+
+    <div class="specs-table-wrapper reveal stagger-3">
+      <table class="specs-table">
+        <thead>
+          <tr>
+            <th>Product #</th>
+            <th>Size</th>
+            <th>Type</th>
+            <th>Pin Connection</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td class="product-code">1710051</td>
+            <td class="size-col">2 1/4"</td>
+            <td>Bi-cone Steel tooth</td>
+            <td>AW rod pin</td>
+          </tr>
+          <tr>
+            <td class="product-code">1710042</td>
+            <td class="size-col">3 7/8"</td>
+            <td>Steel tooth</td>
+            <td>2 3/8 reg pin</td>
+          </tr>
+          <tr>
+            <td class="product-code">1710043</td>
+            <td class="size-col">3 7/8"</td>
+            <td>TCI</td>
+            <td>2 3/8 reg pin</td>
+          </tr>
+          <tr>
+            <td class="product-code">1710044</td>
+            <td class="size-col">4"</td>
+            <td>Steel tooth</td>
+            <td>2 3/8 reg pin</td>
+          </tr>
+          <tr>
+            <td class="product-code">1710045</td>
+            <td class="size-col">4"</td>
+            <td>TCI</td>
+            <td>2 3/8 reg pin</td>
+          </tr>
+          <tr>
+            <td class="product-code">1710046</td>
+            <td class="size-col">4 1/8"</td>
+            <td>Steel tooth</td>
+            <td>2 3/8 reg pin</td>
+          </tr>
+          <tr>
+            <td class="product-code">1710047</td>
+            <td class="size-col">4 1/8"</td>
+            <td>TCI</td>
+            <td>2 3/8 reg pin</td>
+          </tr>
+          <tr>
+            <td class="product-code">1710048</td>
+            <td class="size-col">4 1/2"</td>
+            <td>Steel tooth</td>
+            <td>2 3/8 reg pin</td>
+          </tr>
+          <tr>
+            <td class="product-code">1710049</td>
+            <td class="size-col">4 1/2"</td>
+            <td>TCI</td>
+            <td>2 3/8 reg pin</td>
+          </tr>
+          <tr>
+            <td class="product-code">1710244</td>
+            <td class="size-col">4 1/4"</td>
+            <td>TCI</td>
+            <td>2 3/8 reg pin</td>
+          </tr>
+          <tr>
+            <td class="product-code">1710236</td>
+            <td class="size-col">5 7/8"</td>
+            <td>Steel tooth</td>
+            <td>3 1/2 reg pin</td>
+          </tr>
+          <tr>
+            <td class="product-code">1710237</td>
+            <td class="size-col">5 7/8"</td>
+            <td>TCI</td>
+            <td>3 1/2 reg pin</td>
+          </tr>
+          <tr>
+            <td class="product-code">1710054</td>
+            <td class="size-col">6"</td>
+            <td>Steel tooth</td>
+            <td>3 1/2 reg pin</td>
+          </tr>
+          <tr>
+            <td class="product-code">1710055</td>
+            <td class="size-col">6"</td>
+            <td>TCI</td>
+            <td>3 1/2 reg pin</td>
+          </tr>
+          <tr>
+            <td class="product-code">1710056</td>
+            <td class="size-col">7 7/8"</td>
+            <td>Steel tooth</td>
+            <td>4 1/2 reg pin</td>
+          </tr>
+          <tr>
+            <td class="product-code">1710057</td>
+            <td class="size-col">7 7/8"</td>
+            <td>TCI</td>
+            <td>4 1/2 reg pin</td>
+          </tr>
+          <tr>
+            <td class="product-code">1710458</td>
+            <td class="size-col">9 7/8"</td>
+            <td>Steel tooth</td>
+            <td>6 5/8 reg pin</td>
+          </tr>
+          <tr>
+            <td class="product-code">1710454</td>
+            <td class="size-col">9 7/8"</td>
+            <td>TCI</td>
+            <td>6 5/8 reg pin</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
+    <p class="reveal stagger-4" style="font-size:0.82rem;color:var(--grey-mid);margin-top:0;">We also supply new Terelion bits and ex-oilfield rerun tricones for all applications. Contact Blick for availability and pricing.</p>
+  </div>
+</section>
+
+<!-- ══════════════════════════════════════════════════
+     PDC SPECS
+     ══════════════════════════════════════════════════ -->
+<section class="specs-section" id="pdc-specs" style="background: var(--white);">
+  <div class="container">
+    <div class="specs-header">
+      <div class="section-tag reveal">Specifications</div>
+      <h2 class="reveal stagger-1">PDC Bit Range</h2>
+      <p class="reveal stagger-2">Deep wing designs with hard facing and large PDC inserts. Precisely aligned cutters for rapid and straight progress.</p>
+    </div>
+
+    <div class="specs-table-wrapper reveal stagger-3">
+      <table class="specs-table">
+        <thead>
+          <tr>
+            <th>Product #</th>
+            <th>Size</th>
+            <th>Wing Config</th>
+            <th>Pin Connection</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td class="product-code">1710003</td>
+            <td class="size-col">3 7/8"</td>
+            <td>3 wing</td>
+            <td>2 3/8 reg pin</td>
+          </tr>
+          <tr>
+            <td class="product-code">1710258</td>
+            <td class="size-col">4"</td>
+            <td>3 wing</td>
+            <td>2 3/8 reg pin</td>
+          </tr>
+          <tr>
+            <td class="product-code">1710037</td>
+            <td class="size-col">4 1/4"</td>
+            <td>3 wing</td>
+            <td>2 3/8 reg pin</td>
+          </tr>
+          <tr>
+            <td class="product-code">1710511</td>
+            <td class="size-col">5 7/8"</td>
+            <td>5 wing</td>
+            <td>3 1/2 reg pin</td>
+          </tr>
+          <tr>
+            <td class="product-code">1710512</td>
+            <td class="size-col">6"</td>
+            <td>3 wing</td>
+            <td>3 1/2 reg pin</td>
+          </tr>
+          <tr>
+            <td class="product-code">1710239</td>
+            <td class="size-col">7 7/8"</td>
+            <td>5 wing</td>
+            <td>4 1/2 reg pin</td>
+          </tr>
+          <tr>
+            <td class="product-code">1710456</td>
+            <td class="size-col">9 7/8"</td>
+            <td>6 wing</td>
+            <td>6 5/8 reg pin</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
+    <p class="reveal stagger-4" style="font-size:0.82rem;color:var(--grey-mid);margin-top:0;">Larger or unusual requirements (such as reaming PDCs) are available on request. Contact Blick for custom sizing.</p>
+  </div>
+</section>
+
+<!-- ══════════════════════════════════════════════════
+     TOOL CALLOUT
+     ══════════════════════════════════════════════════ -->
+<section class="tool-callout">
+  <div class="container">
+    <div class="tool-callout-inner">
+      <div>
+        <div class="section-tag reveal" style="color: var(--orange);">Need Help?</div>
+        <h2 class="reveal stagger-1">Not sure which bit suits your ground?</h2>
+        <p class="reveal stagger-2">Tricones work best in harder rock and mixed formations where rolling action handles the load. PDCs excel in softer ground where shearing action means faster progress. Our team can help you choose the right bit for your ground conditions, hole size, and rig setup.</p>
+        <div class="external-note reveal stagger-3">We stock the most common sizes across both bit types. Custom orders and specialist requirements available on request.</div>
+      </div>
+      <div class="tool-callout-actions reveal stagger-2">
+        <a href="mailto:sales@blick.group?subject=Drill%20Bit%20Enquiry%20-%20Help%20Me%20Choose" class="btn btn-primary">Request a Quote</a>
+        <a href="tel:+6478492366" class="btn btn-ghost">Call Blick NZ</a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ══════════════════════════════════════════════════
+     CROSS-SELL — Pair with Blick Fluids
+     ══════════════════════════════════════════════════ -->
+<section class="cross-sell">
+  <div class="geo-ring"></div>
+  <div class="container">
+    <div class="cross-sell-header">
+      <div class="section-tag reveal">Run It With</div>
+      <h2 class="reveal stagger-1">Pair your bits with Blick Fluids</h2>
+      <p class="reveal stagger-2">The right fluid system keeps your bit cutting efficiently — managing cuttings, cooling the bit face, and stabilising the hole behind it.</p>
+    </div>
+
+    <div class="cross-sell-grid">
+
+      <a href="carry-flow-v4.html" class="fluid-card reveal stagger-1">
+        <span class="fc-badge">Stabiliser</span>
+        <h4>Carry Flow</h4>
+        <p>Suspension and carrying capacity for cuttings — keeps the bore clean and the bit cutting fresh ground.</p>
+      </a>
+
+      <a href="#" class="fluid-card reveal stagger-2">
+        <span class="fc-badge">Core Fluid</span>
+        <h4>HDD Gel</h4>
+        <p>Premium bentonite for hole stability and fluid-loss control — supports the bit face in all ground types.</p>
+      </a>
+
+      <a href="#" class="fluid-card reveal stagger-3">
+        <span class="fc-badge">Lubricant</span>
+        <h4>Torque Down</h4>
+        <p>Reduces friction and torque on the drill string — lowers stress on bit and rod connections.</p>
+      </a>
+
+      <a href="products-grease-thread-compounds.html" class="fluid-card reveal stagger-4">
+        <span class="fc-badge">Thread Compound</span>
+        <h4>Rod Grease</h4>
+        <p>Protects threads during makeup and breakout — prevents galling at the bit-to-rod connection.</p>
+      </a>
+
+    </div>
+  </div>
+</section>
+
+<!-- ══════════════════════════════════════════════════
+     CTA
+     ══════════════════════════════════════════════════ -->
+<section class="cta">
+  <div class="geo-glow"></div>
+  <div class="container">
+    <div class="cta-content">
+      <div class="section-tag reveal">Get Started</div>
+      <h2 class="reveal stagger-1">Need bits for your next job?</h2>
+      <p class="reveal stagger-2">Tell us your hole size, ground conditions, and rig type — we'll recommend the right bit and get you a quote.</p>
+      <div class="cta-actions reveal stagger-3">
+        <a href="mailto:sales@blick.group?subject=Drill%20Bit%20Quote%20Request" class="btn btn-primary">Request a Quote</a>
+        <a href="tel:+6478492366" class="btn btn-secondary">Call Blick NZ: +64 7 849 2366</a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ════════ Footer ════════ -->
+<footer>
+  <div class="container">
+    <div class="footer-grid">
+      <div class="footer-brand">
+        <a href="index.html" class="nav-logo">
+          <img src="blick-logo.png" alt="Blick" style="height:32px;width:auto;">
+        </a>
+        <p>Australasia's leading drilling fluid solutions partner. Serving Australia, New Zealand, and the Pacific Islands.</p>
+      </div>
+      <div class="footer-col">
+        <h4>Products</h4>
+        <ul>
+          <li><a href="products.html#fluids">Blick Fluids</a></li>
+          <li><a href="products.html#tooling">Equipment &amp; Tooling</a></li>
+          <li><a href="products.html#jetlube">Grease &amp; Compounds</a></li>
+        </ul>
+      </div>
+      <div class="footer-col">
+        <h4>Tooling</h4>
+        <ul>
+          <li><a href="products-tooling-melfred-borzall.html">Melfred Borzall</a></li>
+          <li><a href="products-tooling-adaptors.html">Adaptors</a></li>
+          <li><a href="products-tooling-drill-rods.html">Drill Rods &amp; Collars</a></li>
+          <li><a href="products-tooling-bits.html">Tricones &amp; PDCs</a></li>
+          <li><a href="casing-spacers-v2.html">Casing Spacers</a></li>
+        </ul>
+      </div>
+      <div class="footer-col">
+        <h4>Connect</h4>
+        <ul>
+          <li><a href="mailto:sales@blick.group">sales@blick.group</a></li>
+          <li><a href="tel:+6478492366">+64 7 849 2366</a></li>
+          <li><a href="tel:+61390685688">+61 3 9068 5688</a></li>
+        </ul>
+      </div>
+    </div>
+    <div class="footer-bottom">
+      <span>&copy; 2026 Blick Group. All rights reserved.</span>
+      <span>Australia &middot; New Zealand &middot; Pacific Islands</span>
+    </div>
+  </div>
+</footer>
+
+<script>
+  // ── Scroll reveal ──
+  const reveals = document.querySelectorAll('.reveal');
+  const observer = new IntersectionObserver((entries) => {
+    entries.forEach(entry => {
+      if (entry.isIntersecting) {
+        entry.target.classList.add('visible');
+      }
+    });
+  }, { threshold: 0.1, rootMargin: '0px 0px -60px 0px' });
+  reveals.forEach(el => observer.observe(el));
+
+  // ── Nav scroll effect ──
+  const nav = document.getElementById('nav');
+  window.addEventListener('scroll', () => {
+    nav.classList.toggle('scrolled', window.scrollY > 50);
+  });
+</script>
+
+</body>
+</html>
