@@ -1,0 +1,389 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Blick — Internal Brief: LinkedIn Programme</title>
+<link href="https://fonts.googleapis.com/css2?family=Inter:ital,wght@0,400;0,500;0,600;0,700;0,800;0,900;1,700;1,800&family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet">
+<style>
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  html, body { background: #1a1a1a; }
+  body {
+    font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+    color: #fff;
+    padding: 56px 24px 96px;
+    min-height: 100vh;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    line-height: 1.5;
+  }
+
+  .doc { max-width: 760px; margin: 0 auto; }
+
+  /* ── Top metadata bar ── */
+  .meta-bar {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 18px 28px;
+    padding-bottom: 22px;
+    margin-bottom: 36px;
+    border-bottom: 1px solid rgba(255,255,255,0.1);
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 10px;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: rgba(255,255,255,0.5);
+  }
+  .meta-bar strong {
+    color: #f05323;
+    font-weight: 700;
+    margin-right: 6px;
+  }
+
+  /* ── Document header ── */
+  .kicker {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 11px; font-weight: 700;
+    letter-spacing: 0.18em; text-transform: uppercase;
+    color: #f05323;
+    margin-bottom: 18px;
+  }
+  h1 {
+    font-size: 44px;
+    font-weight: 900;
+    line-height: 1.05;
+    letter-spacing: -0.035em;
+    color: #fff;
+    margin-bottom: 18px;
+  }
+  h1 em {
+    font-style: italic;
+    color: rgba(255,255,255,0.45);
+    font-weight: 800;
+  }
+  .deck {
+    font-size: 17px;
+    line-height: 1.55;
+    color: rgba(255,255,255,0.7);
+    max-width: 620px;
+    margin-bottom: 56px;
+  }
+
+  /* ── Section heading ── */
+  h2 {
+    font-size: 11px;
+    font-weight: 700;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    color: #f05323;
+    margin-top: 56px;
+    margin-bottom: 18px;
+    padding-bottom: 10px;
+    border-bottom: 1px solid rgba(255,255,255,0.08);
+  }
+
+  p {
+    font-size: 15px;
+    line-height: 1.65;
+    color: rgba(255,255,255,0.78);
+    margin-bottom: 16px;
+  }
+  p strong { color: #fff; font-weight: 600; }
+
+  /* ── Schedule table (the headline element) ── */
+  .schedule {
+    margin: 26px 0 8px;
+    border: 1px solid rgba(255,255,255,0.1);
+    border-radius: 4px;
+    overflow: hidden;
+  }
+  .schedule-row {
+    display: grid;
+    grid-template-columns: 130px 180px 1fr;
+    align-items: stretch;
+    border-bottom: 1px solid rgba(255,255,255,0.08);
+  }
+  .schedule-row:last-child { border-bottom: none; }
+  .schedule-day, .schedule-type, .schedule-desc {
+    padding: 18px 20px;
+  }
+  .schedule-day {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 11px;
+    font-weight: 700;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    color: #f05323;
+    background: rgba(240,83,35,0.04);
+    border-right: 1px solid rgba(255,255,255,0.08);
+    display: flex;
+    align-items: center;
+  }
+  .schedule-type {
+    font-size: 14px;
+    font-weight: 600;
+    color: #fff;
+    border-right: 1px solid rgba(255,255,255,0.08);
+    display: flex;
+    align-items: center;
+  }
+  .schedule-desc {
+    font-size: 13px;
+    line-height: 1.6;
+    color: rgba(255,255,255,0.65);
+  }
+
+  /* ── Bullet list ── */
+  ul.clean {
+    list-style: none;
+    margin: 4px 0 16px;
+    padding: 0;
+  }
+  ul.clean li {
+    position: relative;
+    padding-left: 22px;
+    margin-bottom: 12px;
+    font-size: 15px;
+    line-height: 1.6;
+    color: rgba(255,255,255,0.78);
+  }
+  ul.clean li::before {
+    content: "";
+    position: absolute;
+    left: 0;
+    top: 11px;
+    width: 8px;
+    height: 1px;
+    background: #f05323;
+  }
+  ul.clean li strong { color: #fff; font-weight: 600; }
+
+  /* ── Callout box ── */
+  .callout {
+    margin: 26px 0;
+    padding: 22px 24px;
+    background: rgba(240,83,35,0.06);
+    border-left: 2px solid #f05323;
+    border-radius: 0 4px 4px 0;
+  }
+  .callout .callout-label {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 9.5px;
+    font-weight: 700;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    color: #f05323;
+    margin-bottom: 8px;
+  }
+  .callout p {
+    font-size: 14.5px;
+    color: rgba(255,255,255,0.85);
+    margin-bottom: 0;
+  }
+  .callout p + p { margin-top: 10px; }
+
+  /* ── TL;DR card ── */
+  .tldr {
+    margin: 0 0 56px;
+    padding: 28px 30px;
+    background: #0a0a0a;
+    border: 1px solid rgba(255,255,255,0.08);
+    border-radius: 4px;
+    position: relative;
+  }
+  .tldr::before {
+    content: "";
+    position: absolute;
+    top: 0; left: 0;
+    width: 3px; height: 100%;
+    background: #f05323;
+    border-radius: 4px 0 0 4px;
+  }
+  .tldr-label {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 10px;
+    font-weight: 700;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    color: #f05323;
+    margin-bottom: 12px;
+  }
+  .tldr p {
+    font-size: 16px;
+    line-height: 1.6;
+    color: rgba(255,255,255,0.85);
+    margin-bottom: 0;
+  }
+
+  /* ── Footer references ── */
+  .refs {
+    margin-top: 64px;
+    padding-top: 28px;
+    border-top: 1px solid rgba(255,255,255,0.08);
+  }
+  .refs h3 {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 10px;
+    font-weight: 700;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    color: rgba(255,255,255,0.4);
+    margin-bottom: 16px;
+  }
+  .refs ul {
+    list-style: none;
+    padding: 0;
+  }
+  .refs li {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 11.5px;
+    color: rgba(255,255,255,0.55);
+    margin-bottom: 8px;
+    padding-left: 14px;
+    position: relative;
+  }
+  .refs li::before {
+    content: "›";
+    position: absolute;
+    left: 0;
+    color: #f05323;
+  }
+
+  /* ── Logo block at top right ── */
+  .brand-mark {
+    position: fixed;
+    top: 28px;
+    right: 32px;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    z-index: 50;
+  }
+  .brand-mark .ring {
+    width: 22px; height: 22px;
+    border: 2px solid #f05323;
+    border-radius: 50%;
+    position: relative;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+  .brand-mark .ring::after {
+    content: "";
+    width: 8px; height: 8px;
+    border-radius: 50%;
+    background: #f05323;
+  }
+  .brand-mark .wordmark {
+    font-size: 13px;
+    font-weight: 800;
+    letter-spacing: 0.16em;
+    color: #fff;
+  }
+
+  @media (max-width: 600px) {
+    body { padding: 48px 18px 72px; }
+    h1 { font-size: 32px; }
+    .deck { font-size: 15px; }
+    .schedule-row {
+      grid-template-columns: 1fr;
+    }
+    .schedule-day, .schedule-type {
+      border-right: none;
+      border-bottom: 1px solid rgba(255,255,255,0.08);
+    }
+    .brand-mark { top: 18px; right: 18px; }
+    .meta-bar { font-size: 9px; gap: 12px 20px; }
+  }
+</style>
+</head>
+<body>
+
+<div class="brand-mark">
+  <div class="ring"></div>
+  <div class="wordmark">BLICK</div>
+</div>
+
+<div class="doc">
+
+  <div class="meta-bar">
+    <span><strong>For</strong> Whole company</span>
+    <span><strong>From</strong> Marketing</span>
+    <span><strong>Date</strong> May 2026</span>
+    <span><strong>Status</strong> FYI · No action required</span>
+  </div>
+
+  <div class="kicker">Internal Brief</div>
+  <h1>The Blick LinkedIn programme is <em>going live.</em></h1>
+  <p class="deck">Three posts a week, every week. A steady drumbeat of real Blick work — site trials, product close-ups, technical know-how. Here's what's happening, why, and what to expect.</p>
+
+  <div class="tldr">
+    <div class="tldr-label">In one paragraph</div>
+    <p>We're starting a regular Blick LinkedIn programme: <strong>three posts a week, Monday / Wednesday / Friday.</strong> It kicks off with the Eco Dry trial video, and from there it's a steady drumbeat of real Blick work. You'll start seeing posts from the Blick page in your feed. There's nothing you need to do. This brief is just so you know what's happening, why, and what to expect.</p>
+  </div>
+
+  <h2>What you'll see</h2>
+  <p>Three post types on a weekly rhythm. Each has its own look so the page reads as a programme, not random content.</p>
+
+  <div class="schedule">
+    <div class="schedule-row">
+      <div class="schedule-day">Monday</div>
+      <div class="schedule-type">Site story</div>
+      <div class="schedule-desc">Real footage or photos from a job — customers, crews, results. The Eco Dry trial video is the first one.</div>
+    </div>
+    <div class="schedule-row">
+      <div class="schedule-day">Wednesday</div>
+      <div class="schedule-type">Technical card</div>
+      <div class="schedule-desc">Dark editorial style. A drilling problem, explained simply, with a diagram. Plain English, no jargon.</div>
+    </div>
+    <div class="schedule-row">
+      <div class="schedule-day">Friday</div>
+      <div class="schedule-type">Product hero</div>
+      <div class="schedule-desc">One product, big photo, minimal copy, one data point. Made to stop the scroll.</div>
+    </div>
+  </div>
+
+  <p>All three styles share the same Blick look (Blick Orange, Proxima Nova, real photos, accurate logo) so the page feels coherent as you scroll it.</p>
+
+  <h2>Why we're doing it</h2>
+  <ul class="clean">
+    <li><strong>WA growth.</strong> Australia is our biggest opportunity. LinkedIn is where decision-makers in that market actually look at suppliers. A consistent, credible page makes us easier to take seriously when Sales reaches out.</li>
+    <li><strong>The competition is loud, not better.</strong> Most of our competitors post — but they post corporate stock-photo content. Real footage of real Blick work on real sites is genuinely different.</li>
+    <li><strong>It compounds.</strong> One post is a flash. Three posts a week for a year is a body of work. We're playing the long game.</li>
+  </ul>
+
+  <h2>What's already done</h2>
+  <ul class="clean">
+    <li>Eco Dry trial post drafted, video edited (62 seconds), thumbnail picked, ready to go live.</li>
+    <li>Three-card visual template designed and published to the internal design library (now on v3 — Torque Down hero card for Fridays, dark technical card for Wednesdays).</li>
+    <li>Blick logo fixed and standardised across the whole template.</li>
+    <li>Brand voice, content rules, and visual identity locked in upstream so every post follows the same recipe.</li>
+    <li>CCL case study photos and signed release form in the bank for future posts.</li>
+  </ul>
+
+  <h2>How leads come in</h2>
+  <p>When someone responds to a post (comment, DM, "interested" reaction), the call-to-action sends them to <strong>sales@blick.group</strong>. From there it's the normal sales flow. Nothing changes about how enquiries are handled. There's just likely to be more of them over time.</p>
+
+  <div class="callout">
+    <div class="callout-label">If you happen to be on a job</div>
+    <p>If something interesting happens — a tricky bore, a product working well, a clean site shot, a customer who's stoked with the result — flick a photo or short clip to Marketing. We'll keep building the bank.</p>
+    <p><strong>Totally optional. Don't go out of your way.</strong></p>
+  </div>
+
+  <h2>Questions</h2>
+  <p>Anything about the programme, the posts, or the assets — ask Shaun or Marketing.</p>
+
+  <div class="refs">
+    <h3>References</h3>
+    <ul>
+      <li>Eco Dry LinkedIn Post.md — the launch post copy</li>
+      <li>Blick Brand Guideline 2025.pdf — visual identity</li>
+      <li>brand-voice-guidelines.md — how we write</li>
+      <li>Design library — blickgroup.github.io/designs (internal)</li>
+    </ul>
+  </div>
+
+</div>
+
+</body>
+</html>
