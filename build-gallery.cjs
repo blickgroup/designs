@@ -1008,6 +1008,22 @@ PROJECTS.forEach(project => {
   // Create project output directory and copy files
   const projectOut = path.join(DESIGNS_OUT, project.id);
   fs.mkdirSync(projectOut, { recursive: true });
+  // Copy any shared `assets/` subfolder alongside iterations/approved/archive (logos, photos referenced by HTML)
+  ['iterationsDir', 'approvedDir', 'archiveDir'].forEach(key => {
+    const dir = project[key];
+    if (!dir) return;
+    const assetsSrc = path.join(dir, 'assets');
+    if (!fs.existsSync(assetsSrc)) return;
+    const assetsDest = path.join(projectOut, 'assets');
+    fs.mkdirSync(assetsDest, { recursive: true });
+    fs.readdirSync(assetsSrc).forEach(f => {
+      const src = path.join(assetsSrc, f);
+      if (fs.statSync(src).isFile()) {
+        fs.copyFileSync(src, path.join(assetsDest, f));
+      }
+    });
+  });
+
   result.all.forEach(d => {
     fs.copyFileSync(d.sourcePath, path.join(projectOut, d.filename));
     // For brand entries, also copy the .card.html sidecar (custom card preview)
