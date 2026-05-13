@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Wednesday + Friday — V3 brand-aligned (real logo, Proxima Nova)</title>
+<title>Wednesday + Friday — V4 final (no day badge, proportional logo)</title>
 <!--
   V3 brand-alignment changes over v2:
   1. Real Blick logo PNG (orange icon + wordmark) replaces the inline SVG fake circle-B
@@ -103,7 +103,9 @@ body { background: #f3f2ef; font-family: var(--font-brand); padding: 32px; color
 .card--wed .footer { border-color: rgba(0,0,0,0.08); }
 .card--fri .footer { border-color: rgba(255,255,255,0.08); }
 
-.brand-logo { height: 24px; width: auto; display: block; }
+/* Proportional logo: ~36px at 360px-preview scale = ~108px on final 1080px card.
+   Clears Blick brand spec minimum (10mm ≈ 38px at 96dpi) with headroom. */
+.brand-logo { height: 36px; width: auto; display: block; }
 .url { font-family: var(--font-mono); font-size: 9px; color: var(--brand-dark-grey); }
 .card--fri .url { color: rgba(255,255,255,0.4); }
 
@@ -192,7 +194,6 @@ body { background: #f3f2ef; font-family: var(--font-brand); padding: 32px; color
               </linearGradient>
             </defs>
           </svg>
-          <div class="day-badge">Wednesday · Educational</div>
         </div>
         <div class="divider"></div>
         <div class="text-zone">
@@ -220,7 +221,6 @@ body { background: #f3f2ef; font-family: var(--font-brand); padding: 32px; color
         <div class="top-zone top-zone--block">
           <div class="block-kicker">Torque Down</div>
           <div class="block-headline">Reduces torque<br>and drag.<br>Keeps you running.</div>
-          <div class="day-badge">Friday · Spotlight</div>
         </div>
         <div class="divider"></div>
         <div class="text-zone">
