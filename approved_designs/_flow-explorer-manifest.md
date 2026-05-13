@@ -6,7 +6,7 @@ Skill to update: `/flow-explorer` (see `~/.claude/skills/flow-explorer/SKILL.md`
 
 | Project    | Status   | File                                          | Components | Flows | Last refreshed | Outstanding              |
 |------------|----------|-----------------------------------------------|------------|-------|----------------|--------------------------|
-| Hub App    | ✅ Live  | `approved_designs/hub-app-flow-explorer.html` | 35         | 27    | 2026-05-13     | —                        |
+| Hub App    | ✅ Live  | `approved_designs/hub-app-flow-explorer.html` | 35         | 27    | 2026-05-13     | reverse highlight + shareable URLs (Esc clears) |
 | Nexus      | ⬜ TODO  | —                                             | —          | —     | —              | Build initial inventory  |
 | Website    | ⬜ TODO  | —                                             | —          | —     | —              | Build initial inventory  |
 | Compass    | n/a      | (lives inside Hub App explorer)               | —          | —     | —              | —                        |

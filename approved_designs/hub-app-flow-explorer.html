@@ -137,6 +137,30 @@
     background: var(--orange);
     color: #fff;
   }
+  .filter-pill {
+    margin: 0 14px 12px;
+    padding: 7px 11px;
+    background: var(--cyan-soft);
+    border: 1px solid rgba(34,211,238,0.35);
+    border-radius: 6px;
+    font-size: 11.5px;
+    color: var(--cyan);
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+  .filter-pill-label { flex: 1; color: var(--text-head); }
+  .filter-pill-target { color: var(--cyan); font-weight: 600; }
+  .filter-pill-clear {
+    background: transparent;
+    border: none;
+    color: var(--text-mute);
+    cursor: pointer;
+    font-size: 13px;
+    line-height: 1;
+    padding: 0 2px;
+  }
+  .filter-pill-clear:hover { color: var(--text-head); }
 
   /* ── Canvas ── */
   .canvas-wrap {
@@ -469,7 +493,7 @@
   <aside class="panel" id="panel">
     <div class="panel-empty">
       <div class="icon">⟶</div>
-      <div>Select a flow on the left to trace its path through the system.</div>
+      <div>Select a flow on the left to trace its path through the system.<br><br>Or click any component on the canvas to see which flows touch it.</div>
     </div>
   </aside>
 
@@ -891,6 +915,17 @@
     const clearBtn = document.getElementById('clearBtn');
 
     let activeFlowId = null;
+    let nodeFilterId = null;  // Reverse highlight: when set, sidebar shows only flows touching this node
+    let suppressHashUpdate = false;
+
+    // Build node → flows index once (used by reverse highlight + tooltips)
+    const flowsByNode = {};
+    components.forEach(c => { flowsByNode[c.id] = []; });
+    flows.forEach(f => {
+      const touched = new Set();
+      f.steps.forEach(s => { touched.add(s.from); touched.add(s.to); });
+      touched.forEach(id => { if (flowsByNode[id]) flowsByNode[id].push(f); });
+    });
 
     // ── Render layer bands ──
     layers.forEach(l => {
@@ -919,6 +954,10 @@
       g.addEventListener('mouseenter', e => showTooltip(c, e));
       g.addEventListener('mousemove', moveTooltip);
       g.addEventListener('mouseleave', hideTooltip);
+      g.addEventListener('click', e => {
+        e.stopPropagation();
+        filterByNode(c.id);
+      });
       nodesG.appendChild(g);
     });
 
@@ -928,10 +967,28 @@
 
     function renderFlowList(filter = '') {
       flowList.innerHTML = '';
+
+      // Optional: filter pill if a node is selected
+      if (nodeFilterId) {
+        const comp = componentById[nodeFilterId];
+        const pill = document.createElement('div');
+        pill.className = 'filter-pill';
+        pill.innerHTML = `
+          <div class="filter-pill-label">Flows touching <span class="filter-pill-target">${escapeHTML(comp ? comp.name : nodeFilterId)}</span></div>
+          <button class="filter-pill-clear" title="Clear node filter" aria-label="Clear filter">×</button>
+        `;
+        pill.querySelector('.filter-pill-clear').addEventListener('click', clearNodeFilter);
+        flowList.appendChild(pill);
+      }
+
       const q = filter.toLowerCase().trim();
+      const flowsAvailable = nodeFilterId ? (flowsByNode[nodeFilterId] || []) : flows;
+
+      let renderedAny = false;
       categories.forEach(cat => {
-        const matched = flows.filter(f => f.category === cat && (!q || f.name.toLowerCase().includes(q) || f.category.toLowerCase().includes(q)));
+        const matched = flowsAvailable.filter(f => f.category === cat && (!q || f.name.toLowerCase().includes(q) || f.category.toLowerCase().includes(q)));
         if (matched.length === 0) return;
+        renderedAny = true;
         const group = document.createElement('div');
         group.className = 'category-group';
         const lbl = document.createElement('div');
@@ -942,19 +999,29 @@
           const item = document.createElement('div');
           item.className = 'flow-item' + (f.id === activeFlowId ? ' active' : '');
           item.dataset.id = f.id;
-          item.innerHTML = `<span>${f.name}</span><span class="flow-item-step-count">${f.steps.length}</span>`;
+          item.innerHTML = `<span>${escapeHTML(f.name)}</span><span class="flow-item-step-count">${f.steps.length}</span>`;
           item.addEventListener('click', () => selectFlow(f.id));
           group.appendChild(item);
         });
         flowList.appendChild(group);
       });
+
+      if (!renderedAny) {
+        const empty = document.createElement('div');
+        empty.style.padding = '20px 16px';
+        empty.style.fontSize = '12px';
+        empty.style.color = 'var(--text-mute)';
+        empty.textContent = nodeFilterId ? 'No flows touch this component.' : 'No flows match your search.';
+        flowList.appendChild(empty);
+      }
     }
     renderFlowList();
 
     document.getElementById('searchInput').addEventListener('input', e => renderFlowList(e.target.value));
 
     // ── Flow selection ──
-    function selectFlow(id) {
+    function selectFlow(id, opts) {
+      opts = opts || {};
       activeFlowId = id;
       const flow = flows.find(f => f.id === id);
       if (!flow) return;
@@ -962,9 +1029,11 @@
       renderActiveFlow(flow);
       renderPanel(flow);
       clearBtn.disabled = false;
+      if (!opts.skipHash) updateHash();
     }
 
-    function clearFlow() {
+    function clearFlow(opts) {
+      opts = opts || {};
       activeFlowId = null;
       edgesG.innerHTML = '';
       badgesG.innerHTML = '';
@@ -972,13 +1041,84 @@
       panel.innerHTML = `
         <div class="panel-empty">
           <div class="icon">⟶</div>
-          <div>Select a flow on the left to trace its path through the system.</div>
+          <div>Select a flow on the left to trace its path through the system.<br><br>Or click any component on the canvas to see which flows touch it.</div>
         </div>`;
       clearBtn.disabled = true;
       renderFlowList(document.getElementById('searchInput').value);
+      if (!opts.skipHash) updateHash();
     }
-    clearBtn.addEventListener('click', clearFlow);
-    document.addEventListener('keydown', e => { if (e.key === 'Escape') clearFlow(); });
+    clearBtn.addEventListener('click', () => clearFlow());
+    document.addEventListener('keydown', e => {
+      if (e.key === 'Escape') {
+        if (activeFlowId) { clearFlow(); }
+        else if (nodeFilterId) { clearNodeFilter(); }
+      }
+    });
+
+    // ── Reverse highlight: filter sidebar by node ──
+    function filterByNode(nodeId) {
+      // Toggle: clicking the same node clears
+      if (nodeFilterId === nodeId) { clearNodeFilter(); return; }
+      nodeFilterId = nodeId;
+      // Visually mark the selected node on canvas (even when no flow active)
+      [...nodesG.querySelectorAll('.node-group')].forEach(n => {
+        n.classList.toggle('active', n.dataset.id === nodeId && !activeFlowId);
+      });
+      // Clear any active flow so the user sees only the filtered list
+      if (activeFlowId) clearFlow({ skipHash: true });
+      renderFlowList(document.getElementById('searchInput').value);
+      updateHash();
+    }
+
+    function clearNodeFilter() {
+      nodeFilterId = null;
+      [...nodesG.querySelectorAll('.node-group')].forEach(n => n.classList.remove('active'));
+      renderFlowList(document.getElementById('searchInput').value);
+      updateHash();
+    }
+
+    // ── URL hash (deep-linking + browser history) ──
+    function updateHash() {
+      if (suppressHashUpdate) return;
+      const parts = [];
+      if (activeFlowId)  parts.push('flow=' + encodeURIComponent(activeFlowId));
+      if (nodeFilterId)  parts.push('node=' + encodeURIComponent(nodeFilterId));
+      const hash = parts.length ? '#' + parts.join('&') : '#';
+      if (window.location.hash !== hash) {
+        history.replaceState(null, '', hash);
+      }
+    }
+
+    function applyHash() {
+      const hash = (window.location.hash || '').replace(/^#/, '');
+      const params = {};
+      hash.split('&').filter(Boolean).forEach(p => {
+        const [k, v] = p.split('=');
+        if (k && v) params[k] = decodeURIComponent(v);
+      });
+      suppressHashUpdate = true;
+      try {
+        // Apply node filter first (so the sidebar list is pre-filtered),
+        // then activate flow if specified.
+        if (params.node && componentById[params.node]) {
+          nodeFilterId = params.node;
+          [...nodesG.querySelectorAll('.node-group')].forEach(n => {
+            n.classList.toggle('active', n.dataset.id === params.node && !params.flow);
+          });
+        }
+        if (params.flow && flows.find(f => f.id === params.flow)) {
+          selectFlow(params.flow, { skipHash: true });
+        } else {
+          renderFlowList(document.getElementById('searchInput').value);
+        }
+      } finally {
+        suppressHashUpdate = false;
+      }
+    }
+
+    window.addEventListener('hashchange', applyHash);
+    // Apply hash on first load (after all rendering is set up)
+    setTimeout(applyHash, 0);
 
     function renderActiveFlow(flow) {
       edgesG.innerHTML = '';
