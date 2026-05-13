@@ -1,0 +1,1172 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Hub App — Interactive Flow Explorer</title>
+<style>
+  :root {
+    --bg-page:      #1a1a1a;
+    --bg-surface:   #2a2a2a;
+    --bg-card:      #212121;
+    --bg-hover:     #3a3a3a;
+    --orange:       #f05323;
+    --orange-soft:  rgba(240,83,35,0.12);
+    --orange-glow:  rgba(240,83,35,0.45);
+    --cyan:         #22d3ee;
+    --cyan-soft:    rgba(34,211,238,0.10);
+    --slate:        #94a3b8;
+    --slate-soft:   rgba(148,163,184,0.10);
+    --text:         #bcbec0;
+    --text-dim:     #a0a0a0;
+    --text-mute:    #707070;
+    --text-head:    #ffffff;
+    --border:       #58595b;
+    --border-sub:   #404040;
+    --font: 'Inter', -apple-system, 'Segoe UI', system-ui, sans-serif;
+    --font-mono: 'Fira Code', 'SF Mono', Menlo, monospace;
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  html, body { height: 100%; overflow: hidden; }
+  body {
+    background: var(--bg-page);
+    color: var(--text);
+    font-family: var(--font);
+    font-size: 13px;
+    line-height: 1.5;
+    display: grid;
+    grid-template-columns: 280px 1fr 340px;
+    grid-template-rows: 52px 1fr;
+    grid-template-areas:
+      "header header header"
+      "sidebar canvas panel";
+  }
+
+  /* ── Header ── */
+  header {
+    grid-area: header;
+    background: var(--bg-surface);
+    border-bottom: 1px solid var(--border-sub);
+    display: flex;
+    align-items: center;
+    padding: 0 20px;
+    gap: 14px;
+    z-index: 10;
+  }
+  .logo {
+    width: 28px; height: 28px;
+    background: linear-gradient(135deg, #f05323 0%, #ff6a3d 100%);
+    border-radius: 7px;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 13px; font-weight: 800; color: #fff; letter-spacing: -.5px;
+  }
+  h1 { font-size: 14px; font-weight: 600; color: var(--text-head); }
+  .subtitle { font-size: 11px; color: var(--text-mute); margin-left: 4px; }
+  .header-actions { margin-left: auto; display: flex; gap: 10px; align-items: center; }
+  .clear-btn {
+    background: transparent;
+    border: 1px solid var(--border);
+    color: var(--text-dim);
+    padding: 5px 12px;
+    border-radius: 6px;
+    font-size: 11px;
+    font-family: inherit;
+    cursor: pointer;
+    transition: all 0.15s;
+  }
+  .clear-btn:hover { border-color: var(--orange); color: var(--orange); }
+  .clear-btn:disabled { opacity: 0.4; cursor: not-allowed; }
+
+  /* ── Sidebar (flows list) ── */
+  .sidebar {
+    grid-area: sidebar;
+    background: var(--bg-surface);
+    border-right: 1px solid var(--border-sub);
+    overflow-y: auto;
+    padding: 14px 0;
+  }
+  .search-wrap { padding: 0 14px 12px; }
+  .search {
+    width: 100%;
+    background: var(--bg-card);
+    border: 1px solid var(--border-sub);
+    color: var(--text-head);
+    padding: 7px 11px;
+    border-radius: 6px;
+    font-family: inherit;
+    font-size: 12px;
+    outline: none;
+  }
+  .search:focus { border-color: var(--orange); }
+  .category-group { margin-bottom: 6px; }
+  .category-label {
+    font-size: 10px;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.07em;
+    color: var(--text-mute);
+    padding: 12px 16px 6px;
+  }
+  .flow-item {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    padding: 8px 16px;
+    cursor: pointer;
+    transition: background 0.12s;
+    border-left: 2px solid transparent;
+    font-size: 12.5px;
+    color: var(--text);
+  }
+  .flow-item:hover { background: var(--bg-hover); }
+  .flow-item.active {
+    background: var(--orange-soft);
+    border-left-color: var(--orange);
+    color: var(--text-head);
+    font-weight: 500;
+  }
+  .flow-item-step-count {
+    margin-left: auto;
+    font-size: 10px;
+    color: var(--text-mute);
+    background: var(--bg-card);
+    padding: 1px 6px;
+    border-radius: 9px;
+  }
+  .flow-item.active .flow-item-step-count {
+    background: var(--orange);
+    color: #fff;
+  }
+
+  /* ── Canvas ── */
+  .canvas-wrap {
+    grid-area: canvas;
+    overflow: auto;
+    background: var(--bg-page);
+    position: relative;
+  }
+  .canvas-wrap::before {
+    content: "";
+    position: absolute;
+    inset: 0;
+    background-image: radial-gradient(circle, rgba(255,255,255,0.025) 1px, transparent 1px);
+    background-size: 24px 24px;
+    pointer-events: none;
+  }
+  svg.canvas {
+    display: block;
+    min-width: 100%;
+    min-height: 100%;
+  }
+  .layer-band {
+    fill: rgba(255,255,255,0.012);
+    stroke: var(--border-sub);
+    stroke-dasharray: 4 4;
+    stroke-width: 1;
+  }
+  .layer-label {
+    fill: var(--text-mute);
+    font-size: 10px;
+    font-weight: 700;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    font-family: var(--font);
+  }
+
+  /* Node */
+  .node-group { cursor: pointer; transition: opacity 0.4s; }
+  .node-group.dim { opacity: 0.15; }
+  .node-rect {
+    rx: 8; ry: 8;
+    stroke-width: 1.5;
+    transition: filter 0.2s, stroke 0.2s;
+  }
+  .node-group:hover .node-rect { stroke: var(--cyan); filter: brightness(1.15); }
+  .node-group.active .node-rect {
+    stroke: var(--orange);
+    stroke-width: 2;
+    filter: drop-shadow(0 0 8px var(--orange-glow));
+  }
+  .node-icon {
+    font-size: 14px;
+    text-anchor: middle;
+    dominant-baseline: central;
+    pointer-events: none;
+  }
+  .node-label {
+    fill: var(--text-head);
+    font-size: 11px;
+    font-weight: 500;
+    font-family: var(--font);
+    text-anchor: middle;
+    pointer-events: none;
+  }
+  .node-sub {
+    fill: var(--text-mute);
+    font-size: 9px;
+    font-family: var(--font);
+    text-anchor: middle;
+    pointer-events: none;
+  }
+
+  /* Kind colours (fill — soft tints) */
+  .kind-frontend-view  .node-rect { fill: var(--orange-soft);  stroke: rgba(240,83,35,0.4); }
+  .kind-frontend-infra .node-rect { fill: rgba(240,83,35,0.05); stroke: rgba(240,83,35,0.3); stroke-dasharray: 3 3; }
+  .kind-package        .node-rect { fill: rgba(240,83,35,0.04); stroke: rgba(240,83,35,0.25); stroke-dasharray: 2 2; }
+  .kind-backend-service .node-rect { fill: var(--cyan-soft);   stroke: rgba(34,211,238,0.45); }
+  .kind-datastore      .node-rect { fill: var(--slate-soft);  stroke: rgba(148,163,184,0.5); }
+  .kind-external       .node-rect { fill: rgba(148,163,184,0.07); stroke: rgba(148,163,184,0.4); }
+  .kind-infrastructure .node-rect { fill: rgba(148,163,184,0.05); stroke: rgba(148,163,184,0.3); stroke-dasharray: 4 2; }
+
+  /* Edges */
+  .edge {
+    fill: none;
+    stroke: var(--border-sub);
+    stroke-width: 1;
+    transition: opacity 0.4s, stroke 0.4s, stroke-width 0.4s;
+    pointer-events: none;
+  }
+  .edge.dim    { opacity: 0.08; }
+  .edge.active { stroke: var(--orange); stroke-width: 2.2; opacity: 1; filter: drop-shadow(0 0 4px var(--orange-glow)); }
+
+  .edge-arrow { fill: var(--border-sub); }
+  .edge-arrow.active { fill: var(--orange); }
+
+  .step-badge-group { pointer-events: all; cursor: pointer; }
+  .step-badge-circle {
+    fill: var(--orange);
+    stroke: var(--bg-page);
+    stroke-width: 2;
+    transition: r 0.2s;
+  }
+  .step-badge-group:hover .step-badge-circle { r: 11; }
+  .step-badge-text {
+    fill: #ffffff;
+    font-size: 10px;
+    font-weight: 700;
+    text-anchor: middle;
+    dominant-baseline: central;
+    font-family: var(--font);
+    pointer-events: none;
+  }
+
+  /* Tooltip */
+  .tooltip {
+    position: fixed;
+    background: var(--bg-card);
+    border: 1px solid var(--border);
+    border-radius: 6px;
+    padding: 8px 11px;
+    font-size: 11.5px;
+    color: var(--text);
+    pointer-events: none;
+    max-width: 260px;
+    box-shadow: 0 6px 24px rgba(0,0,0,0.5);
+    opacity: 0;
+    transition: opacity 0.15s;
+    z-index: 100;
+  }
+  .tooltip.show { opacity: 1; }
+  .tooltip-title { color: var(--text-head); font-weight: 600; margin-bottom: 3px; font-size: 12px; }
+  .tooltip-meta  { color: var(--text-mute); font-size: 10px; text-transform: uppercase; letter-spacing: 0.05em; margin-bottom: 5px; }
+  .tooltip-tech  { color: var(--cyan); font-size: 10.5px; font-family: var(--font-mono); margin-top: 4px; }
+
+  /* ── Right panel (steps) ── */
+  .panel {
+    grid-area: panel;
+    background: var(--bg-surface);
+    border-left: 1px solid var(--border-sub);
+    overflow-y: auto;
+    padding: 18px 18px 30px;
+  }
+  .panel-empty {
+    color: var(--text-mute);
+    font-size: 12.5px;
+    padding: 40px 8px;
+    text-align: center;
+    line-height: 1.6;
+  }
+  .panel-empty .icon { font-size: 30px; opacity: 0.5; margin-bottom: 14px; }
+  .panel-header { margin-bottom: 18px; }
+  .panel-cat {
+    font-size: 10px;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    color: var(--orange);
+    margin-bottom: 5px;
+  }
+  .panel-title {
+    font-size: 16px;
+    font-weight: 700;
+    color: var(--text-head);
+    margin-bottom: 8px;
+  }
+  .panel-trigger {
+    background: var(--bg-card);
+    border: 1px solid var(--border-sub);
+    border-left: 3px solid var(--cyan);
+    padding: 8px 11px;
+    border-radius: 4px;
+    font-size: 11.5px;
+    color: var(--text-dim);
+  }
+  .panel-trigger .label {
+    color: var(--cyan);
+    font-size: 10px;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
+    display: block;
+    margin-bottom: 3px;
+  }
+  .panel-steps { margin-top: 18px; }
+  .panel-step {
+    display: flex;
+    gap: 11px;
+    padding: 11px 0;
+    border-bottom: 1px solid var(--border-sub);
+    cursor: pointer;
+    transition: background 0.12s;
+    margin: 0 -8px;
+    padding-left: 8px; padding-right: 8px;
+    border-radius: 5px;
+  }
+  .panel-step:hover { background: var(--bg-hover); }
+  .panel-step-num {
+    width: 22px; height: 22px;
+    border-radius: 50%;
+    background: var(--orange);
+    color: #fff;
+    font-size: 11px;
+    font-weight: 700;
+    display: flex; align-items: center; justify-content: center;
+    flex-shrink: 0;
+  }
+  .panel-step-body { flex: 1; min-width: 0; }
+  .panel-step-route {
+    font-size: 11.5px;
+    color: var(--text-head);
+    font-weight: 500;
+    margin-bottom: 3px;
+  }
+  .panel-step-route .arrow { color: var(--text-mute); margin: 0 5px; }
+  .panel-step-protocol {
+    display: inline-block;
+    font-size: 9.5px;
+    color: var(--cyan);
+    background: var(--cyan-soft);
+    padding: 1px 6px;
+    border-radius: 3px;
+    font-family: var(--font-mono);
+    margin-bottom: 5px;
+  }
+  .panel-step-payload {
+    font-size: 11px;
+    color: var(--text-dim);
+    font-family: var(--font-mono);
+    background: var(--bg-card);
+    padding: 5px 7px;
+    border-radius: 4px;
+    word-break: break-word;
+    line-height: 1.5;
+  }
+  .panel-step-note {
+    font-size: 10.5px;
+    color: var(--text-mute);
+    margin-top: 5px;
+    font-style: italic;
+  }
+
+  /* Legend (bottom of canvas) */
+  .legend {
+    position: fixed;
+    bottom: 16px;
+    left: 296px;
+    background: rgba(42,42,42,0.92);
+    backdrop-filter: blur(6px);
+    border: 1px solid var(--border-sub);
+    border-radius: 7px;
+    padding: 8px 12px;
+    display: flex;
+    gap: 14px;
+    font-size: 10.5px;
+    color: var(--text-dim);
+    z-index: 5;
+  }
+  .legend-item { display: flex; align-items: center; gap: 6px; }
+  .legend-swatch {
+    width: 11px; height: 11px;
+    border-radius: 3px;
+    border: 1px solid;
+  }
+
+  /* Responsive */
+  @media (max-width: 900px) {
+    body {
+      grid-template-columns: 1fr;
+      grid-template-rows: 52px auto 1fr;
+      grid-template-areas:
+        "header"
+        "sidebar"
+        "panel";
+    }
+    .sidebar { max-height: 30vh; }
+    .canvas-wrap { display: none; }
+    .legend { display: none; }
+  }
+</style>
+</head>
+<body>
+
+  <!-- ═══ HEADER ═══ -->
+  <header>
+    <div class="logo">B</div>
+    <h1>Hub App — Flow Explorer</h1>
+    <span class="subtitle">Click a flow to trace it</span>
+    <div class="header-actions">
+      <button class="clear-btn" id="clearBtn" disabled>Clear (Esc)</button>
+    </div>
+  </header>
+
+  <!-- ═══ SIDEBAR ═══ -->
+  <aside class="sidebar">
+    <div class="search-wrap">
+      <input type="text" class="search" id="searchInput" placeholder="Search flows…" />
+    </div>
+    <div id="flowList"></div>
+  </aside>
+
+  <!-- ═══ CANVAS ═══ -->
+  <div class="canvas-wrap">
+    <svg class="canvas" id="canvas" viewBox="0 0 1640 1180" preserveAspectRatio="xMidYMid meet">
+      <defs>
+        <marker id="arrow-default" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="6" markerHeight="6" orient="auto">
+          <path d="M 0 0 L 10 5 L 0 10 z" class="edge-arrow"/>
+        </marker>
+        <marker id="arrow-active" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="6" markerHeight="6" orient="auto">
+          <path d="M 0 0 L 10 5 L 0 10 z" class="edge-arrow active"/>
+        </marker>
+      </defs>
+      <!-- Layer bands + labels rendered by JS -->
+      <g id="layers"></g>
+      <!-- Edges first (under nodes) -->
+      <g id="edges"></g>
+      <!-- Nodes -->
+      <g id="nodes"></g>
+      <!-- Step badges last (on top) -->
+      <g id="badges"></g>
+    </svg>
+    <div class="legend">
+      <div class="legend-item"><span class="legend-swatch" style="background:var(--orange-soft);border-color:rgba(240,83,35,0.4)"></span>Frontend</div>
+      <div class="legend-item"><span class="legend-swatch" style="background:var(--cyan-soft);border-color:rgba(34,211,238,0.45)"></span>Service</div>
+      <div class="legend-item"><span class="legend-swatch" style="background:var(--slate-soft);border-color:rgba(148,163,184,0.5)"></span>Data</div>
+      <div class="legend-item"><span class="legend-swatch" style="background:rgba(148,163,184,0.07);border-color:rgba(148,163,184,0.4)"></span>External</div>
+    </div>
+  </div>
+
+  <!-- ═══ PANEL ═══ -->
+  <aside class="panel" id="panel">
+    <div class="panel-empty">
+      <div class="icon">⟶</div>
+      <div>Select a flow on the left to trace its path through the system.</div>
+    </div>
+  </aside>
+
+  <!-- ═══ TOOLTIP ═══ -->
+  <div class="tooltip" id="tooltip"></div>
+
+  <!-- ═══ DATA: components ═══ -->
+  <script type="application/json" id="components-data">
+{
+  "layers": [
+    { "id": "ui",       "label": "Frontend (UI)",  "y": 40,   "height": 240 },
+    { "id": "infra",    "label": "Frontend Infra", "y": 300,  "height": 130 },
+    { "id": "service",  "label": "Backend Services", "y": 450, "height": 160 },
+    { "id": "data",     "label": "Data Store",      "y": 630, "height": 110 },
+    { "id": "external", "label": "External Systems / Infrastructure", "y": 760, "height": 380 }
+  ],
+  "components": [
+    { "id": "dashboard",         "name": "Dashboard",          "kind": "frontend-view", "layer": "ui", "icon": "🏠", "tech": "React",                     "pos": { "x": 60,   "y": 80 } },
+    { "id": "rig-mgmt-view",     "name": "Rig Management",     "kind": "frontend-view", "layer": "ui", "icon": "⚙️", "tech": "React + TanStack",          "pos": { "x": 220,  "y": 80 } },
+    { "id": "health-safety-view","name": "Health & Safety",    "kind": "frontend-view", "layer": "ui", "icon": "🦺", "tech": "React forms",               "pos": { "x": 380,  "y": 80 } },
+    { "id": "compass-view",      "name": "Compass",            "kind": "frontend-view", "layer": "ui", "icon": "🧭", "tech": "React",                     "pos": { "x": 540,  "y": 80 } },
+    { "id": "pir-create",        "name": "PIR Create",         "kind": "frontend-view", "layer": "ui", "icon": "📋", "tech": "Multi-step form",           "pos": { "x": 700,  "y": 80 } },
+    { "id": "pir-kanban",        "name": "PIR Kanban",         "kind": "frontend-view", "layer": "ui", "icon": "📦", "tech": "React Kanban",              "pos": { "x": 860,  "y": 80 } },
+    { "id": "pir-detail",        "name": "PIR Detail",         "kind": "frontend-view", "layer": "ui", "icon": "🔬", "tech": "React",                     "pos": { "x": 1020, "y": 80 } },
+    { "id": "its-about-me-view", "name": "It's About Me",      "kind": "frontend-view", "layer": "ui", "icon": "✅", "tech": "Drag-drop Kanban",          "pos": { "x": 1180, "y": 80 } },
+    { "id": "admin-view",        "name": "Admin",              "kind": "frontend-view", "layer": "ui", "icon": "🛠️", "tech": "React",                     "pos": { "x": 1340, "y": 80 } },
+    { "id": "reports-view",      "name": "Reports",            "kind": "frontend-view", "layer": "ui", "icon": "📊", "tech": "Charts + tables",           "pos": { "x": 60,   "y": 180 } },
+    { "id": "actions-view",      "name": "Action Register",    "kind": "frontend-view", "layer": "ui", "icon": "🎯", "tech": "Queue view",                "pos": { "x": 220,  "y": 180 } },
+
+    { "id": "auth-context",      "name": "AuthContext",        "kind": "frontend-infra", "layer": "infra", "icon": "🔐", "tech": "React Context",           "pos": { "x": 60,   "y": 330 } },
+    { "id": "fetch-with-auth",   "name": "fetchWithAuth",      "kind": "frontend-infra", "layer": "infra", "icon": "📡", "tech": "HTTP wrapper",            "pos": { "x": 240,  "y": 330 } },
+    { "id": "tanstack-query",    "name": "TanStack Query",     "kind": "frontend-infra", "layer": "infra", "icon": "🔄", "tech": "Cache layer",             "pos": { "x": 420,  "y": 330 } },
+    { "id": "custom-router",     "name": "History Router",     "kind": "frontend-infra", "layer": "infra", "icon": "🧭", "tech": "window.history",          "pos": { "x": 600,  "y": 330 } },
+    { "id": "error-boundary",    "name": "Error Boundary",     "kind": "frontend-infra", "layer": "infra", "icon": "⚠️", "tech": "React + Sentry SDK",      "pos": { "x": 780,  "y": 330 } },
+    { "id": "shared-types",      "name": "shared-types",       "kind": "package",        "layer": "infra", "icon": "📦", "tech": "TS types",                "pos": { "x": 960,  "y": 330 } },
+    { "id": "shared-backend",    "name": "shared-backend",     "kind": "package",        "layer": "infra", "icon": "📦", "tech": "Node utils",              "pos": { "x": 1140, "y": 330 } },
+    { "id": "shared-frontend",   "name": "shared-frontend",    "kind": "package",        "layer": "infra", "icon": "📦", "tech": "React utils",             "pos": { "x": 1320, "y": 330 } },
+
+    { "id": "rig-api",         "name": "rig-api",         "kind": "backend-service", "layer": "service", "icon": "🔌", "tech": "Express on Fly",       "pos": { "x": 140,  "y": 490 } },
+    { "id": "operations-api",  "name": "operations-api",  "kind": "backend-service", "layer": "service", "icon": "🔌", "tech": "Express on Fly",       "pos": { "x": 500,  "y": 490 } },
+    { "id": "compass-api",     "name": "compass-api",     "kind": "backend-service", "layer": "service", "icon": "🔌", "tech": "Express on Fly",       "pos": { "x": 860,  "y": 490 } },
+    { "id": "copper-api",      "name": "copper-api",      "kind": "backend-service", "layer": "service", "icon": "🔌", "tech": "Express on Cloud Run", "pos": { "x": 1220, "y": 490 } },
+
+    { "id": "bigquery", "name": "Google BigQuery", "kind": "datastore", "layer": "data", "icon": "🗄️", "tech": "rig_management · health_safety · blick_shared · blick_identity", "pos": { "x": 600, "y": 670 } },
+
+    { "id": "google-iap",        "name": "Google IAP",         "kind": "external", "layer": "external", "icon": "🛡️", "tech": "GCP load-balancer auth",    "pos": { "x": 60,   "y": 800 } },
+    { "id": "google-oauth",      "name": "Google OAuth 2.0",   "kind": "external", "layer": "external", "icon": "🔑", "tech": "Token exchange",            "pos": { "x": 240,  "y": 800 } },
+    { "id": "google-drive",      "name": "Google Drive",       "kind": "external", "layer": "external", "icon": "📁", "tech": "File storage",              "pos": { "x": 420,  "y": 800 } },
+    { "id": "workspace-dir",     "name": "Workspace Directory","kind": "external", "layer": "external", "icon": "👥", "tech": "Admin SDK",                 "pos": { "x": 600,  "y": 800 } },
+    { "id": "copper-crm",        "name": "Copper CRM",         "kind": "external", "layer": "external", "icon": "🤝", "tech": "REST API",                  "pos": { "x": 780,  "y": 800 } },
+    { "id": "n8n",               "name": "n8n",                "kind": "external", "layer": "external", "icon": "🤖", "tech": "Self-hosted Fly",           "pos": { "x": 960,  "y": 800 } },
+    { "id": "unleashed-erp",     "name": "Unleashed ERP",      "kind": "external", "layer": "external", "icon": "📋", "tech": "Customer master",           "pos": { "x": 1140, "y": 800 } },
+    { "id": "sentry",            "name": "Sentry",             "kind": "external", "layer": "external", "icon": "🚨", "tech": "Error tracking",            "pos": { "x": 1320, "y": 800 } },
+    { "id": "fly-io",            "name": "Fly.io",             "kind": "infrastructure", "layer": "external", "icon": "🪂", "tech": "Container host",        "pos": { "x": 420,  "y": 930 } },
+    { "id": "gcp-cloud-run",     "name": "Cloud Run",          "kind": "infrastructure", "layer": "external", "icon": "☁️", "tech": "Serverless container",  "pos": { "x": 960,  "y": 930 } },
+    { "id": "browser",           "name": "User Browser",       "kind": "external", "layer": "external", "icon": "🌐", "tech": "Client device",             "pos": { "x": 60,   "y": 930 } }
+  ]
+}
+  </script>
+
+  <!-- ═══ DATA: flows ═══ -->
+  <script type="application/json" id="flows-data">
+{
+  "flows": [
+    {
+      "id": "auth-iap",
+      "name": "Authenticate via GCP IAP",
+      "category": "Auth",
+      "trigger": "User opens hub.blick.group in production",
+      "steps": [
+        { "from": "browser",       "to": "google-iap",     "payload": "GET hub.blick.group",           "protocol": "HTTPS",          "note": "IAP intercepts at the GCP load balancer" },
+        { "from": "google-iap",    "to": "google-oauth",   "payload": "Redirect if no IAP cookie",     "protocol": "OAuth redirect" },
+        { "from": "google-oauth",  "to": "google-iap",     "payload": "Auth code → user identity",     "protocol": "OAuth callback" },
+        { "from": "google-iap",    "to": "dashboard",      "payload": "IAP cookie + X-Goog-Authenticated-User-Email header", "protocol": "HTTPS" },
+        { "from": "dashboard",     "to": "auth-context",   "payload": "Read user email from header",    "protocol": "Internal" },
+        { "from": "auth-context",  "to": "operations-api", "payload": "GET /api/health-safety/current-user", "protocol": "HTTPS + IAP cookie" }
+      ]
+    },
+    {
+      "id": "auth-oauth-fly",
+      "name": "Authenticate via OAuth (Fly.io)",
+      "category": "Auth",
+      "trigger": "User opens app on Fly.io URL (no IAP)",
+      "steps": [
+        { "from": "browser",       "to": "auth-context",   "payload": "Check localStorage for token",    "protocol": "Client-side" },
+        { "from": "auth-context",  "to": "google-oauth",   "payload": "Redirect to Google login",        "protocol": "OAuth redirect", "note": "No token found → trigger login" },
+        { "from": "google-oauth",  "to": "browser",        "payload": "Authorization code in callback",   "protocol": "OAuth callback" },
+        { "from": "browser",       "to": "auth-context",   "payload": "Exchange code for access + refresh tokens", "protocol": "POST /token" },
+        { "from": "auth-context",  "to": "browser",        "payload": "Persist tokens to localStorage",   "protocol": "Client-side" },
+        { "from": "fetch-with-auth", "to": "operations-api", "payload": "Authorization: Bearer <token>", "protocol": "HTTPS" }
+      ]
+    },
+    {
+      "id": "create-rig",
+      "name": "Create Rig Configuration",
+      "category": "Rigs",
+      "trigger": "User clicks 'Add New Rig' in Rig Management",
+      "steps": [
+        { "from": "rig-mgmt-view",   "to": "fetch-with-auth", "payload": "GET /api/customers, /api/rigs, /api/[tools]", "protocol": "Hook call" },
+        { "from": "fetch-with-auth", "to": "rig-api",         "payload": "Multiple GETs to load dropdown data",         "protocol": "HTTPS GET" },
+        { "from": "rig-api",         "to": "bigquery",        "payload": "SELECT customers_view, rigs, tool_*_products","protocol": "BigQuery SQL" },
+        { "from": "rig-mgmt-view",   "to": "rig-api",         "payload": "POST /api/rigs { customerId, rigModelId, tools }", "protocol": "HTTPS POST" },
+        { "from": "rig-api",         "to": "bigquery",        "payload": "INSERT INTO rig_configurations",              "protocol": "BigQuery SQL" },
+        { "from": "tanstack-query",  "to": "rig-api",         "payload": "Auto-refetch /api/rigs after mutation",       "protocol": "HTTPS GET", "note": "Optimistic invalidation" }
+      ]
+    },
+    {
+      "id": "edit-rig-accessories",
+      "name": "Edit Rig — Auto-Accessory Lookup",
+      "category": "Rigs",
+      "trigger": "User changes drive chuck selection on existing rig",
+      "steps": [
+        { "from": "rig-mgmt-view",   "to": "rig-api",  "payload": "GET /api/tools/:toolId/accessories", "protocol": "HTTPS GET" },
+        { "from": "rig-api",         "to": "bigquery", "payload": "SELECT FROM tool_accessories WHERE tool_id = ?", "protocol": "BigQuery SQL" },
+        { "from": "rig-mgmt-view",   "to": "rig-api",  "payload": "PUT /api/rigs/:id { tools, accessories }", "protocol": "HTTPS PUT" },
+        { "from": "rig-api",         "to": "bigquery", "payload": "UPDATE rig_configurations",  "protocol": "BigQuery SQL" }
+      ]
+    },
+    {
+      "id": "submit-vehicle-inspection",
+      "name": "Submit Vehicle Inspection (with defect)",
+      "category": "Health & Safety",
+      "trigger": "User completes vehicle inspection with a defect",
+      "steps": [
+        { "from": "health-safety-view", "to": "operations-api", "payload": "POST /api/health-safety/vehicle-inspections { rego, mileage, defects[] }", "protocol": "HTTPS POST" },
+        { "from": "operations-api",     "to": "bigquery",       "payload": "INSERT INTO vehicle_inspections",       "protocol": "BigQuery SQL" },
+        { "from": "operations-api",     "to": "n8n",            "payload": "Webhook: inspection-submitted",          "protocol": "Webhook",   "note": "Defect detected → trigger follow-up workflow" },
+        { "from": "n8n",                "to": "operations-api", "payload": "POST /api/health-safety/follow-ups { title, assignee, dueDate }", "protocol": "HTTPS POST" },
+        { "from": "operations-api",     "to": "bigquery",       "payload": "INSERT INTO follow_up_tasks",            "protocol": "BigQuery SQL" },
+        { "from": "operations-api",     "to": "copper-api",     "payload": "POST /sync { followUpId, task }",        "protocol": "HTTPS POST" },
+        { "from": "copper-api",         "to": "copper-crm",     "payload": "POST /tasks (create CRM task)",          "protocol": "Copper REST" }
+      ]
+    },
+    {
+      "id": "submit-incident",
+      "name": "Submit Incident Report",
+      "category": "Health & Safety",
+      "trigger": "User submits incident form (with injury)",
+      "steps": [
+        { "from": "health-safety-view", "to": "operations-api", "payload": "POST /api/health-safety/incidents { type, severity, injuryFlag }", "protocol": "HTTPS POST" },
+        { "from": "operations-api",     "to": "bigquery",       "payload": "INSERT INTO incidents",                   "protocol": "BigQuery SQL" },
+        { "from": "operations-api",     "to": "n8n",            "payload": "Webhook: incident-submitted",              "protocol": "Webhook" },
+        { "from": "n8n",                "to": "operations-api", "payload": "Auto-create follow-up if injury=true",     "protocol": "HTTPS POST", "note": "24h SLA on injury incidents" },
+        { "from": "operations-api",     "to": "copper-api",     "payload": "POST /sync (mirror task to Copper)",       "protocol": "HTTPS POST" }
+      ]
+    },
+    {
+      "id": "submit-hazard",
+      "name": "Submit Hazard Report",
+      "category": "Health & Safety",
+      "trigger": "User reports a hazard via H&S form",
+      "steps": [
+        { "from": "health-safety-view", "to": "operations-api", "payload": "POST /api/health-safety/hazards { description, riskLevel, location }", "protocol": "HTTPS POST" },
+        { "from": "operations-api",     "to": "bigquery",       "payload": "INSERT INTO hazards",                                          "protocol": "BigQuery SQL" },
+        { "from": "operations-api",     "to": "n8n",            "payload": "Webhook: hazard-submitted",                                     "protocol": "Webhook" },
+        { "from": "n8n",                "to": "operations-api", "payload": "Create follow-up if riskLevel > medium",                        "protocol": "HTTPS POST" }
+      ]
+    },
+    {
+      "id": "submit-training",
+      "name": "Log Training Record",
+      "category": "Health & Safety",
+      "trigger": "User logs a completed training course",
+      "steps": [
+        { "from": "health-safety-view", "to": "operations-api", "payload": "POST /api/health-safety/training-records { course, completedDate, expiryDate }", "protocol": "HTTPS POST" },
+        { "from": "operations-api",     "to": "workspace-dir",  "payload": "Resolve staff email to canonical user",  "protocol": "Admin SDK", "note": "Fallback: blick_identity.user_profiles view in BQ" },
+        { "from": "operations-api",     "to": "bigquery",       "payload": "INSERT INTO training_records",            "protocol": "BigQuery SQL" }
+      ]
+    },
+    {
+      "id": "create-pir",
+      "name": "Create Product Issue Report",
+      "category": "PIR",
+      "trigger": "User clicks 'Create PIR' on the Kanban board",
+      "steps": [
+        { "from": "pir-kanban",     "to": "custom-router",  "payload": "pushState → /pir/create",                "protocol": "Client-side" },
+        { "from": "pir-create",     "to": "operations-api", "payload": "GET /api/pirs/products, /api/pirs/customers", "protocol": "HTTPS GET" },
+        { "from": "operations-api", "to": "bigquery",       "payload": "SELECT FROM products, customers",         "protocol": "BigQuery SQL" },
+        { "from": "pir-create",     "to": "operations-api", "payload": "POST /api/pirs (page 1) { productCode, severity }", "protocol": "HTTPS POST", "note": "Reserves PIR-2026-xxxx report number" },
+        { "from": "operations-api", "to": "bigquery",       "payload": "INSERT INTO product_issue_reports (stage=new)", "protocol": "BigQuery SQL" },
+        { "from": "pir-create",     "to": "operations-api", "payload": "PATCH /api/pirs/:id (page 2) { customerId, batchNumber, assignTo }", "protocol": "HTTPS PATCH" },
+        { "from": "tanstack-query", "to": "pir-kanban",     "payload": "Refetch board, new card appears in 'new' column", "protocol": "Auto-refetch" }
+      ]
+    },
+    {
+      "id": "pir-stage-transition",
+      "name": "PIR Stage Transition (drag card)",
+      "category": "PIR",
+      "trigger": "Investigator drags PIR card to next column",
+      "steps": [
+        { "from": "pir-kanban",     "to": "operations-api", "payload": "PUT /api/pirs/:id { currentStage: 'containment' }", "protocol": "HTTPS PUT" },
+        { "from": "operations-api", "to": "bigquery",       "payload": "UPDATE pirs + INSERT INTO pir_stage_history",        "protocol": "BigQuery SQL", "note": "Full audit trail of stage transitions" },
+        { "from": "tanstack-query", "to": "pir-kanban",     "payload": "Optimistic update → refetch",                        "protocol": "Client-side" }
+      ]
+    },
+    {
+      "id": "pir-investigation",
+      "name": "Record PIR Investigation Outcome",
+      "category": "PIR",
+      "trigger": "Investigator fills outcome form on PIR Detail",
+      "steps": [
+        { "from": "pir-detail",     "to": "operations-api", "payload": "PUT /api/pirs/:id { outcome, rootCause, investigationNotes }", "protocol": "HTTPS PUT" },
+        { "from": "operations-api", "to": "bigquery",       "payload": "UPDATE pirs + INSERT INTO pir_investigations",              "protocol": "BigQuery SQL" },
+        { "from": "pir-detail",     "to": "operations-api", "payload": "POST /api/pirs/:id/capa-actions [{ type, owner, dueDate }]", "protocol": "HTTPS POST" },
+        { "from": "operations-api", "to": "bigquery",       "payload": "INSERT INTO pir_capa_actions",                              "protocol": "BigQuery SQL" }
+      ]
+    },
+    {
+      "id": "create-compass-idea",
+      "name": "Create Compass Idea",
+      "category": "Compass",
+      "trigger": "User submits a new idea in Ideas Bank",
+      "steps": [
+        { "from": "compass-view",   "to": "compass-api", "payload": "POST /api/ideas { title, description, category, tags }", "protocol": "HTTPS POST" },
+        { "from": "compass-api",    "to": "bigquery",    "payload": "INSERT INTO blick_shared.ideas",                          "protocol": "BigQuery SQL" },
+        { "from": "tanstack-query", "to": "compass-api", "payload": "Refetch /api/ideas",                                      "protocol": "HTTPS GET" }
+      ]
+    },
+    {
+      "id": "triage-idea",
+      "name": "Triage Idea → Planning",
+      "category": "Compass",
+      "trigger": "Admin approves idea in Triage view",
+      "steps": [
+        { "from": "compass-view", "to": "compass-api", "payload": "PUT /api/ideas/:id { priority, effort, status: approved }", "protocol": "HTTPS PUT" },
+        { "from": "compass-api",  "to": "bigquery",    "payload": "UPDATE ideas SET status = 'approved'",                      "protocol": "BigQuery SQL" },
+        { "from": "compass-view", "to": "compass-api", "payload": "POST /api/deliverables { goalId, title, dueDate }",          "protocol": "HTTPS POST" },
+        { "from": "compass-api",  "to": "bigquery",    "payload": "INSERT INTO deliverables",                                  "protocol": "BigQuery SQL" }
+      ]
+    },
+    {
+      "id": "upload-compass-attachment",
+      "name": "Upload Compass Attachment",
+      "category": "Compass",
+      "trigger": "User drops a file onto a Compass idea",
+      "steps": [
+        { "from": "compass-view", "to": "compass-api",  "payload": "POST /api/upload-attachment (multipart)",                            "protocol": "Multipart POST", "note": "100MB/user/day quota; 20 files/ticket limit" },
+        { "from": "compass-api",  "to": "google-drive", "payload": "Service account uploads file to shared drive",                       "protocol": "Drive API" },
+        { "from": "compass-api",  "to": "bigquery",     "payload": "INSERT INTO file_attachments { drive_file_id, mime, sha256, size }", "protocol": "BigQuery SQL" },
+        { "from": "compass-view", "to": "compass-api",  "payload": "GET /api/ideas/:id (returns attachments list)",                      "protocol": "HTTPS GET" }
+      ]
+    },
+    {
+      "id": "create-followup-manual",
+      "name": "Create Follow-Up Task (manual)",
+      "category": "Follow-ups",
+      "trigger": "User creates a follow-up from 'It's About Me'",
+      "steps": [
+        { "from": "its-about-me-view", "to": "operations-api", "payload": "POST /api/health-safety/follow-ups { title, assignee, dueDate }", "protocol": "HTTPS POST" },
+        { "from": "operations-api",    "to": "bigquery",       "payload": "INSERT INTO follow_up_tasks (status: open)", "protocol": "BigQuery SQL" },
+        { "from": "operations-api",    "to": "copper-api",     "payload": "POST /sync (push to Copper)",                "protocol": "HTTPS POST" },
+        { "from": "copper-api",        "to": "copper-crm",     "payload": "POST /tasks",                                "protocol": "Copper REST" }
+      ]
+    },
+    {
+      "id": "drag-followup",
+      "name": "Drag Follow-Up Across Kanban",
+      "category": "Follow-ups",
+      "trigger": "User drags a follow-up between Kanban columns",
+      "steps": [
+        { "from": "its-about-me-view", "to": "operations-api", "payload": "PUT /api/health-safety/follow-ups/:id { status }", "protocol": "HTTPS PUT" },
+        { "from": "operations-api",    "to": "bigquery",       "payload": "UPDATE follow_up_tasks SET status",                "protocol": "BigQuery SQL" },
+        { "from": "operations-api",    "to": "copper-api",     "payload": "PUT /sync/:id { status }",                          "protocol": "HTTPS PUT" },
+        { "from": "copper-api",        "to": "copper-crm",     "payload": "PUT /tasks/:copperId { status }",                   "protocol": "Copper REST" }
+      ]
+    },
+    {
+      "id": "copper-sync",
+      "name": "Bidirectional Copper Sync",
+      "category": "Follow-ups",
+      "trigger": "Follow-up created or status changed in Hub",
+      "steps": [
+        { "from": "operations-api", "to": "copper-api",     "payload": "POST/PUT /sync { followUpId, fields }",     "protocol": "HTTPS" },
+        { "from": "copper-api",     "to": "copper-crm",     "payload": "Mirror to Copper task",                       "protocol": "Copper REST" },
+        { "from": "copper-api",     "to": "operations-api", "payload": "Return copperTaskId on first sync",           "protocol": "HTTPS response" },
+        { "from": "operations-api", "to": "bigquery",       "payload": "UPDATE follow_up_tasks SET copperTaskId",     "protocol": "BigQuery SQL" }
+      ]
+    },
+    {
+      "id": "staff-onboarding",
+      "name": "Staff Onboarding",
+      "category": "Admin",
+      "trigger": "Admin initiates onboarding for a new hire",
+      "steps": [
+        { "from": "admin-view",     "to": "operations-api", "payload": "POST /api/admin/staff { name, email, employmentDetails }", "protocol": "HTTPS POST" },
+        { "from": "operations-api", "to": "bigquery",       "payload": "INSERT INTO staff",                                         "protocol": "BigQuery SQL" },
+        { "from": "admin-view",     "to": "operations-api", "payload": "POST /api/admin/onboarding-checklist { staffId, items }",  "protocol": "HTTPS POST" },
+        { "from": "operations-api", "to": "bigquery",       "payload": "INSERT INTO onboarding_checklist",                          "protocol": "BigQuery SQL" }
+      ]
+    },
+    {
+      "id": "staff-offboarding",
+      "name": "Staff Offboarding",
+      "category": "Admin",
+      "trigger": "Super-admin marks staff as inactive",
+      "steps": [
+        { "from": "admin-view",     "to": "operations-api", "payload": "PUT /api/admin/staff/:id { isActive: false }",          "protocol": "HTTPS PUT" },
+        { "from": "operations-api", "to": "bigquery",       "payload": "UPDATE staff SET isActive = false",                      "protocol": "BigQuery SQL" },
+        { "from": "admin-view",     "to": "operations-api", "payload": "POST /api/admin/offboarding-checklist (revoke access)",  "protocol": "HTTPS POST" }
+      ]
+    },
+    {
+      "id": "training-compliance-report",
+      "name": "View Training Compliance Report",
+      "category": "Reports",
+      "trigger": "User opens Reports → Training Compliance",
+      "steps": [
+        { "from": "reports-view",   "to": "operations-api", "payload": "GET /api/health-safety/training-records (team-wide)", "protocol": "HTTPS GET" },
+        { "from": "operations-api", "to": "bigquery",       "payload": "SELECT records WHERE expiryDate < NOW() + INTERVAL 30 DAY", "protocol": "BigQuery SQL" },
+        { "from": "tanstack-query", "to": "reports-view",   "payload": "Cache + render expiry calendar + gap table",          "protocol": "Client-side" }
+      ]
+    },
+    {
+      "id": "deploy-fly",
+      "name": "Deploy Service to Fly.io",
+      "category": "Deploy",
+      "trigger": "Developer runs ./infrastructure/scripts/deploy-production.sh <service>",
+      "steps": [
+        { "from": "browser",   "to": "fly-io",          "payload": "flyctl deploy --app blick-<service> --config fly.toml", "protocol": "Fly CLI", "note": "Local dev machine pushes — no GitHub Actions" },
+        { "from": "fly-io",    "to": "fly-io",          "payload": "Build OCI image → push to Fly registry → deploy",        "protocol": "Container build" },
+        { "from": "fly-io",    "to": "operations-api",  "payload": "Health check /healthz on new release",                    "protocol": "HTTPS GET",  "note": "Same path for rig-api, compass-api" }
+      ]
+    },
+    {
+      "id": "deploy-cloud-run",
+      "name": "Deploy copper-api to Cloud Run",
+      "category": "Deploy",
+      "trigger": "Cloud Build pipeline triggered",
+      "steps": [
+        { "from": "browser",        "to": "gcp-cloud-run", "payload": "gcloud builds submit / Cloud Build trigger",  "protocol": "GCP API" },
+        { "from": "gcp-cloud-run",  "to": "gcp-cloud-run", "payload": "Build image, deploy revision",                  "protocol": "Container build" },
+        { "from": "gcp-cloud-run",  "to": "copper-api",    "payload": "New revision serves traffic",                   "protocol": "HTTPS" },
+        { "from": "copper-api",     "to": "copper-crm",    "payload": "Smoke test: GET /tasks (auth check)",           "protocol": "Copper REST" }
+      ]
+    },
+    {
+      "id": "n8n-reminder",
+      "name": "n8n Scheduled Follow-Up Reminder",
+      "category": "Background Jobs",
+      "trigger": "n8n cron (weekday 09:00)",
+      "steps": [
+        { "from": "n8n",            "to": "operations-api", "payload": "GET /api/health-safety/follow-ups?status=open&dueSoon=true", "protocol": "HTTPS GET" },
+        { "from": "operations-api", "to": "bigquery",       "payload": "SELECT follow_ups WHERE status='open' AND dueDate < TOMORROW", "protocol": "BigQuery SQL" },
+        { "from": "n8n",            "to": "copper-crm",     "payload": "Send reminder via Copper task comments / email",             "protocol": "Copper REST" }
+      ]
+    },
+    {
+      "id": "sentry-error",
+      "name": "Frontend Error → Sentry Alert",
+      "category": "Monitoring",
+      "trigger": "Uncaught error in frontend caught by Error Boundary",
+      "steps": [
+        { "from": "error-boundary", "to": "sentry", "payload": "POST exception + stacktrace + breadcrumbs + user context", "protocol": "HTTPS POST" },
+        { "from": "sentry",         "to": "sentry", "payload": "Group by fingerprint, alert if rate > threshold",          "protocol": "Internal" }
+      ]
+    },
+    {
+      "id": "action-register-triage",
+      "name": "Action Register Triage",
+      "category": "Actions",
+      "trigger": "Nexus emits an action item; user reviews queue",
+      "steps": [
+        { "from": "n8n",            "to": "operations-api", "payload": "POST /api/actions { domain, title, priority, source }",  "protocol": "HTTPS POST", "note": "Nexus → n8n → Hub" },
+        { "from": "operations-api", "to": "bigquery",       "payload": "INSERT INTO action_items (status: new)",                  "protocol": "BigQuery SQL" },
+        { "from": "actions-view",   "to": "operations-api", "payload": "GET /api/actions?status=new",                              "protocol": "HTTPS GET" },
+        { "from": "actions-view",   "to": "operations-api", "payload": "PUT /api/actions/:id { status: active|parked|dismissed }", "protocol": "HTTPS PUT" },
+        { "from": "operations-api", "to": "bigquery",       "payload": "UPDATE action_items SET status, reasonCode",               "protocol": "BigQuery SQL" }
+      ]
+    },
+    {
+      "id": "list-view-query",
+      "name": "List View Data Flow (generic)",
+      "category": "Data Flow",
+      "trigger": "User opens any list view (rigs, incidents, follow-ups…)",
+      "steps": [
+        { "from": "rig-mgmt-view",  "to": "fetch-with-auth", "payload": "useQuery → API call with auth header", "protocol": "Internal" },
+        { "from": "fetch-with-auth", "to": "rig-api",        "payload": "GET /api/<entity>?filters",            "protocol": "HTTPS GET", "note": "rig-api shown — same shape for all services" },
+        { "from": "rig-api",        "to": "bigquery",        "payload": "SELECT * FROM dataset.table WHERE filters", "protocol": "BigQuery SQL" },
+        { "from": "rig-api",        "to": "tanstack-query",  "payload": "{ success, data: [...], meta }",            "protocol": "HTTPS JSON" },
+        { "from": "tanstack-query", "to": "rig-mgmt-view",   "payload": "Render rows from cache",                     "protocol": "React re-render" }
+      ]
+    },
+    {
+      "id": "erp-customer-sync",
+      "name": "ERP Customer Sync → BigQuery",
+      "category": "Background Jobs",
+      "trigger": "Scheduled ETL (Unleashed → BigQuery)",
+      "steps": [
+        { "from": "unleashed-erp", "to": "bigquery", "payload": "Sync customer master data into customers_view", "protocol": "ETL pipeline", "note": "rig-api reads from this view; never calls Unleashed directly" }
+      ]
+    }
+  ]
+}
+  </script>
+
+  <!-- ═══ APP ═══ -->
+  <script>
+  (function() {
+    'use strict';
+
+    const NODE_W = 140;
+    const NODE_H = 64;
+
+    const componentsData = JSON.parse(document.getElementById('components-data').textContent);
+    const flowsData      = JSON.parse(document.getElementById('flows-data').textContent);
+
+    const { layers, components } = componentsData;
+    const { flows } = flowsData;
+
+    const componentById = Object.fromEntries(components.map(c => [c.id, c]));
+
+    const svg     = document.getElementById('canvas');
+    const layersG = document.getElementById('layers');
+    const edgesG  = document.getElementById('edges');
+    const nodesG  = document.getElementById('nodes');
+    const badgesG = document.getElementById('badges');
+    const panel   = document.getElementById('panel');
+    const tooltip = document.getElementById('tooltip');
+    const clearBtn = document.getElementById('clearBtn');
+
+    let activeFlowId = null;
+
+    // ── Render layer bands ──
+    layers.forEach(l => {
+      const rect = createSVG('rect', { x: 20, y: l.y, width: 1600, height: l.height, class: 'layer-band' });
+      layersG.appendChild(rect);
+      const lbl = createSVG('text', { x: 30, y: l.y + 16, class: 'layer-label' });
+      lbl.textContent = l.label;
+      layersG.appendChild(lbl);
+    });
+
+    // ── Render nodes ──
+    components.forEach(c => {
+      const g = createSVG('g', { class: `node-group kind-${c.kind}`, 'data-id': c.id });
+      g.appendChild(createSVG('rect', { x: c.pos.x, y: c.pos.y, width: NODE_W, height: NODE_H, class: 'node-rect' }));
+      const icon = createSVG('text', { x: c.pos.x + 16, y: c.pos.y + NODE_H/2, class: 'node-icon' });
+      icon.textContent = c.icon || '•';
+      icon.setAttribute('text-anchor', 'middle');
+      g.appendChild(icon);
+      const label = createSVG('text', { x: c.pos.x + NODE_W/2 + 6, y: c.pos.y + 26, class: 'node-label' });
+      label.textContent = c.name;
+      g.appendChild(label);
+      const sub = createSVG('text', { x: c.pos.x + NODE_W/2 + 6, y: c.pos.y + 44, class: 'node-sub' });
+      sub.textContent = truncate(c.tech, 22);
+      g.appendChild(sub);
+
+      g.addEventListener('mouseenter', e => showTooltip(c, e));
+      g.addEventListener('mousemove', moveTooltip);
+      g.addEventListener('mouseleave', hideTooltip);
+      nodesG.appendChild(g);
+    });
+
+    // ── Build flow sidebar ──
+    const flowList = document.getElementById('flowList');
+    const categories = [...new Set(flows.map(f => f.category))];
+
+    function renderFlowList(filter = '') {
+      flowList.innerHTML = '';
+      const q = filter.toLowerCase().trim();
+      categories.forEach(cat => {
+        const matched = flows.filter(f => f.category === cat && (!q || f.name.toLowerCase().includes(q) || f.category.toLowerCase().includes(q)));
+        if (matched.length === 0) return;
+        const group = document.createElement('div');
+        group.className = 'category-group';
+        const lbl = document.createElement('div');
+        lbl.className = 'category-label';
+        lbl.textContent = cat;
+        group.appendChild(lbl);
+        matched.forEach(f => {
+          const item = document.createElement('div');
+          item.className = 'flow-item' + (f.id === activeFlowId ? ' active' : '');
+          item.dataset.id = f.id;
+          item.innerHTML = `<span>${f.name}</span><span class="flow-item-step-count">${f.steps.length}</span>`;
+          item.addEventListener('click', () => selectFlow(f.id));
+          group.appendChild(item);
+        });
+        flowList.appendChild(group);
+      });
+    }
+    renderFlowList();
+
+    document.getElementById('searchInput').addEventListener('input', e => renderFlowList(e.target.value));
+
+    // ── Flow selection ──
+    function selectFlow(id) {
+      activeFlowId = id;
+      const flow = flows.find(f => f.id === id);
+      if (!flow) return;
+      renderFlowList(document.getElementById('searchInput').value);
+      renderActiveFlow(flow);
+      renderPanel(flow);
+      clearBtn.disabled = false;
+    }
+
+    function clearFlow() {
+      activeFlowId = null;
+      edgesG.innerHTML = '';
+      badgesG.innerHTML = '';
+      [...nodesG.querySelectorAll('.node-group')].forEach(n => n.classList.remove('dim', 'active'));
+      panel.innerHTML = `
+        <div class="panel-empty">
+          <div class="icon">⟶</div>
+          <div>Select a flow on the left to trace its path through the system.</div>
+        </div>`;
+      clearBtn.disabled = true;
+      renderFlowList(document.getElementById('searchInput').value);
+    }
+    clearBtn.addEventListener('click', clearFlow);
+    document.addEventListener('keydown', e => { if (e.key === 'Escape') clearFlow(); });
+
+    function renderActiveFlow(flow) {
+      edgesG.innerHTML = '';
+      badgesG.innerHTML = '';
+      const participating = new Set();
+      flow.steps.forEach(s => { participating.add(s.from); participating.add(s.to); });
+
+      [...nodesG.querySelectorAll('.node-group')].forEach(n => {
+        const id = n.dataset.id;
+        n.classList.toggle('dim', !participating.has(id));
+        n.classList.toggle('active', participating.has(id));
+      });
+
+      flow.steps.forEach((step, idx) => {
+        const from = componentById[step.from];
+        const to   = componentById[step.to];
+        if (!from || !to) {
+          console.warn('Missing node:', step.from, '→', step.to);
+          return;
+        }
+        const path = drawEdge(from, to, true, idx);
+        edgesG.appendChild(path);
+
+        // Animate stroke draw-on
+        const len = path.getTotalLength();
+        path.style.strokeDasharray = len;
+        path.style.strokeDashoffset = len;
+        path.style.transition = 'stroke-dashoffset 0.55s ease';
+        setTimeout(() => { path.style.strokeDashoffset = 0; }, 100 + idx * 180);
+
+        // Step badge at midpoint
+        const mid = midpointOnPath(path);
+        const badge = createSVG('g', { class: 'step-badge-group', 'data-step': idx });
+        badge.appendChild(createSVG('circle', { cx: mid.x, cy: mid.y, r: 9, class: 'step-badge-circle' }));
+        const t = createSVG('text', { x: mid.x, y: mid.y, class: 'step-badge-text' });
+        t.textContent = idx + 1;
+        badge.appendChild(t);
+        badge.style.opacity = 0;
+        badge.style.transition = 'opacity 0.3s';
+        setTimeout(() => { badge.style.opacity = 1; }, 100 + idx * 180 + 300);
+        badge.addEventListener('click', () => scrollPanelToStep(idx));
+        badgesG.appendChild(badge);
+      });
+    }
+
+    function drawEdge(from, to, isActive, idx) {
+      const fx = from.pos.x + NODE_W / 2;
+      const fy = from.pos.y + NODE_H / 2;
+      const tx = to.pos.x   + NODE_W / 2;
+      const ty = to.pos.y   + NODE_H / 2;
+      const dx = tx - fx;
+      const dy = ty - fy;
+      // Edge starts at bottom/top/side of source rect — use simple approach: shorten by half rect
+      const sourceEdge = clampToRect(from, tx, ty);
+      const targetEdge = clampToRect(to, fx, fy);
+
+      const sx = sourceEdge.x;
+      const sy = sourceEdge.y;
+      const ex = targetEdge.x;
+      const ey = targetEdge.y;
+
+      // Cubic bezier with vertical bias when crossing layers, horizontal when same layer
+      const sameY = Math.abs(sy - ey) < 30;
+      let c1x, c1y, c2x, c2y;
+      if (sameY) {
+        const arc = (ex - sx) * 0.2;
+        c1x = sx + (ex - sx) * 0.35;
+        c1y = sy - 30 - Math.abs(arc);
+        c2x = sx + (ex - sx) * 0.65;
+        c2y = ey - 30 - Math.abs(arc);
+      } else {
+        c1x = sx;
+        c1y = sy + (ey - sy) * 0.5;
+        c2x = ex;
+        c2y = sy + (ey - sy) * 0.5;
+      }
+
+      const d = `M ${sx} ${sy} C ${c1x} ${c1y}, ${c2x} ${c2y}, ${ex} ${ey}`;
+      const path = createSVG('path', { d, class: 'edge' + (isActive ? ' active' : ''), 'marker-end': isActive ? 'url(#arrow-active)' : 'url(#arrow-default)' });
+      return path;
+    }
+
+    function clampToRect(node, tx, ty) {
+      // Find intersection of line from rect center to (tx,ty) with the rect's edge
+      const cx = node.pos.x + NODE_W / 2;
+      const cy = node.pos.y + NODE_H / 2;
+      const dx = tx - cx;
+      const dy = ty - cy;
+      if (dx === 0 && dy === 0) return { x: cx, y: cy };
+      const halfW = NODE_W / 2;
+      const halfH = NODE_H / 2;
+      const scaleX = halfW / Math.abs(dx || 0.0001);
+      const scaleY = halfH / Math.abs(dy || 0.0001);
+      const scale = Math.min(scaleX, scaleY);
+      return { x: cx + dx * scale, y: cy + dy * scale };
+    }
+
+    function midpointOnPath(path) {
+      const len = path.getTotalLength();
+      const p = path.getPointAtLength(len / 2);
+      return { x: p.x, y: p.y };
+    }
+
+    function renderPanel(flow) {
+      panel.innerHTML = `
+        <div class="panel-header">
+          <div class="panel-cat">${escapeHTML(flow.category)}</div>
+          <div class="panel-title">${escapeHTML(flow.name)}</div>
+          <div class="panel-trigger">
+            <span class="label">Trigger</span>
+            ${escapeHTML(flow.trigger || '—')}
+          </div>
+        </div>
+        <div class="panel-steps" id="panel-steps">
+          ${flow.steps.map((s, i) => {
+            const from = componentById[s.from]?.name || s.from;
+            const to   = componentById[s.to]?.name   || s.to;
+            return `
+              <div class="panel-step" data-step="${i}">
+                <div class="panel-step-num">${i + 1}</div>
+                <div class="panel-step-body">
+                  <div class="panel-step-route">${escapeHTML(from)} <span class="arrow">→</span> ${escapeHTML(to)}</div>
+                  <div class="panel-step-protocol">${escapeHTML(s.protocol || '')}</div>
+                  <div class="panel-step-payload">${escapeHTML(s.payload || '')}</div>
+                  ${s.note ? `<div class="panel-step-note">${escapeHTML(s.note)}</div>` : ''}
+                </div>
+              </div>`;
+          }).join('')}
+        </div>
+      `;
+      panel.scrollTop = 0;
+      panel.querySelectorAll('.panel-step').forEach(el => {
+        el.addEventListener('click', () => pulseStep(parseInt(el.dataset.step, 10)));
+      });
+    }
+
+    function pulseStep(stepIdx) {
+      const badge = badgesG.querySelector(`[data-step="${stepIdx}"]`);
+      if (!badge) return;
+      const circle = badge.querySelector('.step-badge-circle');
+      circle.setAttribute('r', 14);
+      setTimeout(() => circle.setAttribute('r', 9), 250);
+    }
+
+    function scrollPanelToStep(idx) {
+      const el = panel.querySelector(`.panel-step[data-step="${idx}"]`);
+      if (el) {
+        el.scrollIntoView({ behavior: 'smooth', block: 'center' });
+        el.style.background = 'var(--orange-soft)';
+        setTimeout(() => el.style.background = '', 700);
+      }
+    }
+
+    // ── Tooltip ──
+    function showTooltip(c, evt) {
+      const flowsForNode = flows.filter(f => f.steps.some(s => s.from === c.id || s.to === c.id));
+      tooltip.innerHTML = `
+        <div class="tooltip-title">${escapeHTML(c.name)}</div>
+        <div class="tooltip-meta">${escapeHTML(c.kind.replace(/-/g, ' '))}</div>
+        <div>${escapeHTML(c.tech || '')}</div>
+        <div class="tooltip-tech">${flowsForNode.length} flows touch this</div>
+      `;
+      tooltip.classList.add('show');
+      moveTooltip(evt);
+    }
+    function moveTooltip(evt) {
+      tooltip.style.left = (evt.clientX + 14) + 'px';
+      tooltip.style.top  = (evt.clientY + 14) + 'px';
+    }
+    function hideTooltip() { tooltip.classList.remove('show'); }
+
+    // ── Helpers ──
+    function createSVG(tag, attrs) {
+      const el = document.createElementNS('http://www.w3.org/2000/svg', tag);
+      for (const k in attrs) el.setAttribute(k, attrs[k]);
+      return el;
+    }
+    function truncate(s, n) { return (s && s.length > n) ? s.slice(0, n - 1) + '…' : (s || ''); }
+    function escapeHTML(s) {
+      return String(s).replace(/[&<>"']/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]));
+    }
+
+    // Compute canvas width based on rightmost node
+    const maxX = Math.max(...components.map(c => c.pos.x + NODE_W));
+    const maxY = Math.max(...components.map(c => c.pos.y + NODE_H));
+    svg.setAttribute('viewBox', `0 0 ${Math.max(maxX + 60, 1640)} ${Math.max(maxY + 60, 1080)}`);
+
+  })();
+  </script>
+</body>
+</html>
