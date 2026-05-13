@@ -1,0 +1,254 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Wednesday + Friday — V5 teaser split (Wed mechanism only, Fri full payoff)</title>
+<!--
+  V3 brand-alignment changes over v2:
+  1. Real Blick logo PNG (orange icon + wordmark) replaces the inline SVG fake circle-B
+     - Wednesday card (white bg): orange-black logo
+     - Friday card (dark bg):     orange-white logo
+     - Source: nexus/config/drive-access.json → logo_variants
+  2. Typography: Proxima Nova via Adobe Fonts (with system-stack fallback)
+     - Bold = headlines/sub-heads; Medium = intro/feature text; Regular = body/CTA
+     - JetBrains Mono kept ONLY for technical numerics (dosage, code-like clarity)
+  3. Sentence case throughout. ALL CAPS removed from day-badge / kicker / chip / dose label.
+  4. Single orange accent rule: badge OR kicker, never both screaming. Day-badge softened on Friday.
+  5. Brand-spec colours: #f05323 orange, #58595b dark grey, #000 black, #fff white. No other accents.
+-->
+<link rel="stylesheet" href="https://use.typekit.net/your-kit-id.css"><!-- Proxima Nova via Adobe; falls back to system stack until kit ID added -->
+<link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet">
+<style>
+:root {
+  --brand-orange: #f05323;
+  --brand-dark-grey: #58595b;
+  --brand-light-grey: #bcbec0;
+  --brand-black: #000000;
+  --brand-white: #ffffff;
+  /* Proxima Nova primary; system-stack fallback so the design still reads correctly before Typekit kit is wired */
+  --font-brand: "proxima-nova", "Proxima Nova", -apple-system, BlinkMacSystemFont, "Helvetica Neue", Arial, sans-serif;
+  --font-mono: "JetBrains Mono", ui-monospace, SFMono-Regular, Menlo, monospace;
+}
+* { box-sizing: border-box; margin: 0; padding: 0; }
+body { background: #f3f2ef; font-family: var(--font-brand); padding: 32px; color: var(--brand-black); }
+.page { max-width: 980px; margin: 0 auto; }
+.page-header { margin-bottom: 24px; }
+.page-header h1 { font-size: 17px; font-weight: 700; }
+.page-header p { font-size: 13px; color: var(--brand-dark-grey); margin-top: 4px; line-height: 1.5; }
+.page-header .note { font-size: 11px; color: #888; margin-top: 8px; font-family: var(--font-mono); }
+
+.pair-row { display: flex; gap: 28px; align-items: flex-start; }
+.pair-label { font-family: var(--font-mono); font-size: 10px; color: #888; letter-spacing: 0.06em; text-align: center; margin-top: 8px; }
+
+/* 1080x1350 portrait preview at 360x450 (33%) */
+.card { width: 360px; height: 450px; display: flex; flex-direction: column; box-shadow: 0 6px 24px rgba(0,0,0,0.14); overflow: hidden; position: relative; }
+.card--wed { background: var(--brand-white); }
+.card--fri { background: var(--brand-black); }
+
+/* Top zone */
+.top-zone { flex-shrink: 0; height: 210px; position: relative; overflow: hidden; }
+.card--wed .top-zone { background: var(--brand-black); }
+.card--fri .top-zone { background: #1a0d0d; }
+.top-zone img { width: 100%; height: 100%; object-fit: contain; background: #f8f2f2; }
+
+/* Day badge — sentence case, not ALL CAPS (brand voice rule) */
+.day-badge {
+  position: absolute; top: 11px; left: 13px;
+  font-family: var(--font-brand); font-size: 10px; font-weight: 600;
+  letter-spacing: 0.02em; padding: 4px 10px; border-radius: 2px;
+}
+.card--wed .day-badge { background: var(--brand-orange); color: var(--brand-white); }
+.card--fri .day-badge { background: rgba(255,255,255,0.12); color: var(--brand-white); border: 1px solid rgba(255,255,255,0.25); }
+
+/* Orange divider — sole accent rule per card */
+.divider { height: 3px; flex-shrink: 0; background: var(--brand-orange); }
+
+/* Text zone */
+.text-zone { flex: 1; display: flex; flex-direction: column; padding: 14px 16px 12px; min-height: 0; }
+
+/* Product label — title case, Proxima Bold (no ALL CAPS) */
+.product-label {
+  font-family: var(--font-brand); font-size: 11px; font-weight: 700;
+  letter-spacing: 0.02em; margin-bottom: 5px;
+  color: var(--brand-orange);
+}
+
+.hook { font-family: var(--font-brand); font-size: 17px; font-weight: 700; line-height: 1.18; letter-spacing: -0.01em; flex: 1; }
+.card--wed .hook { color: var(--brand-black); }
+.card--fri .hook { color: var(--brand-white); }
+
+.rule { width: 32px; height: 2px; margin: 8px 0; flex-shrink: 0; }
+.card--wed .rule { background: var(--brand-orange); }
+.card--fri .rule { background: rgba(255,255,255,0.2); }
+
+/* Body — Proxima Regular */
+.body-text { font-family: var(--font-brand); font-size: 10.5px; font-weight: 400; line-height: 1.55; margin-bottom: 8px; }
+.card--wed .body-text { color: var(--brand-dark-grey); }
+.card--fri .body-text { color: rgba(255,255,255,0.7); }
+
+/* Stat row — mono ONLY for the numeric. Label is Proxima Medium, sentence case. */
+.stat-row { display: flex; align-items: baseline; gap: 6px; margin-bottom: 7px; }
+.stat-num { font-family: var(--font-mono); font-size: 24px; font-weight: 700; color: var(--brand-orange); line-height: 1; }
+.stat-label { font-family: var(--font-brand); font-size: 10px; font-weight: 500; color: rgba(255,255,255,0.55); }
+
+/* Discipline chips — sentence case, max 3 (brand spec) */
+.chips { display: flex; flex-wrap: wrap; gap: 4px; margin-bottom: 8px; }
+.chip { font-family: var(--font-brand); font-size: 10px; font-weight: 500; padding: 3px 9px; border-radius: 999px; }
+.card--wed .chip { border: 1px solid rgba(240,83,35,0.35); color: var(--brand-orange); }
+.card--fri .chip { border: 1px solid rgba(255,255,255,0.22); color: rgba(255,255,255,0.7); }
+
+/* Footer — real Blick logo, no fake SVG */
+.footer { display: flex; align-items: center; justify-content: space-between; flex-shrink: 0; padding-top: 8px; border-top: 1px solid; margin-top: auto; }
+.card--wed .footer { border-color: rgba(0,0,0,0.08); }
+.card--fri .footer { border-color: rgba(255,255,255,0.08); }
+
+/* Proportional logo: ~36px at 360px-preview scale = ~108px on final 1080px card.
+   Clears Blick brand spec minimum (10mm ≈ 38px at 96dpi) with headroom. */
+.brand-logo { height: 36px; width: auto; display: block; }
+.url { font-family: var(--font-mono); font-size: 9px; color: var(--brand-dark-grey); }
+.card--fri .url { color: rgba(255,255,255,0.4); }
+
+/* Friday colour block top zone — sentence case headline */
+.top-zone--block {
+  display: flex; flex-direction: column;
+  align-items: flex-start; justify-content: flex-end;
+  padding: 16px 18px 16px; background: var(--brand-black);
+}
+.block-kicker {
+  font-family: var(--font-brand);
+  font-size: 11px; font-weight: 700;
+  letter-spacing: 0.02em;
+  color: var(--brand-orange); margin-bottom: 10px;
+}
+.block-headline {
+  font-family: var(--font-brand);
+  font-size: 28px; font-weight: 700;
+  line-height: 1.12; letter-spacing: -0.02em; color: var(--brand-white);
+}
+
+/* CTA pill — Proxima Bold, sentence case */
+.cta-pill {
+  display: inline-block;
+  background: var(--brand-orange); color: var(--brand-white);
+  font-family: var(--font-brand);
+  font-size: 11px; font-weight: 700; letter-spacing: 0;
+  padding: 6px 14px; border-radius: 999px;
+  margin-bottom: 8px;
+}
+</style>
+</head>
+<body>
+<div class="page">
+  <div class="page-header">
+    <h1>V3 — brand-aligned (real logo + Proxima Nova + sentence case)</h1>
+    <p>Wednesday: borehole mechanism diagram teaches the friction problem. Friday: outcome-led colour block with product spotlight. Both cards now use the real Blick logo PNG (sourced from Drive via nexus-drive), Proxima Nova as primary typeface, and sentence case throughout — per Blick Brand Guidelines 2025 and linkedin-templates-spec.</p>
+    <p class="note">Logo source: Drive folder 19qCMk2EWE9zMvEAWvLCNG9yfRzQ1JMoO → orange white@2x.png (dark bg) / orange black@2x.png (light bg). Variant map: nexus/config/drive-access.json.</p>
+  </div>
+
+  <div class="pair-row">
+
+    <!-- WEDNESDAY: mechanism diagram, white card -->
+    <div>
+      <div class="card card--wed">
+        <div class="top-zone">
+          <svg width="360" height="210" viewBox="0 0 360 210" xmlns="http://www.w3.org/2000/svg">
+            <rect x="0" y="0" width="360" height="52" fill="#1a130a"/>
+            <rect x="0" y="52" width="360" height="50" fill="#221809"/>
+            <rect x="0" y="102" width="360" height="60" fill="#2a1c0c"/>
+            <rect x="0" y="162" width="360" height="48" fill="#1a130a"/>
+            <text x="14" y="28" fill="rgba(255,255,255,0.32)" font-family="proxima-nova, sans-serif" font-weight="500" font-size="9">Clay</text>
+            <text x="14" y="80" fill="rgba(255,255,255,0.32)" font-family="proxima-nova, sans-serif" font-weight="500" font-size="9">Sand</text>
+            <text x="14" y="136" fill="rgba(255,255,255,0.32)" font-family="proxima-nova, sans-serif" font-weight="500" font-size="9">Rock</text>
+            <text x="14" y="186" fill="rgba(255,255,255,0.32)" font-family="proxima-nova, sans-serif" font-weight="500" font-size="9">Shale</text>
+            <rect x="140" y="0" width="3" height="210" fill="#f05323" opacity="0.6"/>
+            <rect x="217" y="0" width="3" height="210" fill="#f05323" opacity="0.6"/>
+            <text x="145" y="11" fill="rgba(240,83,35,0.75)" font-family="proxima-nova, sans-serif" font-weight="600" font-size="8">Bore wall</text>
+            <rect x="163" y="0" width="34" height="210" fill="#2a2a2a" rx="2"/>
+            <rect x="166" y="0" width="28" height="210" fill="#3a3a3a" rx="1"/>
+            <rect x="168" y="0" width="7" height="210" fill="rgba(255,255,255,0.06)" rx="1"/>
+            <text x="157" y="108" fill="rgba(255,255,255,0.4)" font-family="proxima-nova, sans-serif" font-weight="500" font-size="8" text-anchor="middle" transform="rotate(-90 157 108)">Drill pipe</text>
+            <line x1="143" y1="58" x2="165" y2="58" stroke="#f05323" stroke-width="1.5"/>
+            <polygon points="165,58 159,54.5 159,61.5" fill="#f05323"/>
+            <line x1="143" y1="110" x2="165" y2="110" stroke="#f05323" stroke-width="1.5"/>
+            <polygon points="165,110 159,106.5 159,113.5" fill="#f05323"/>
+            <line x1="143" y1="162" x2="165" y2="162" stroke="#f05323" stroke-width="1.5"/>
+            <polygon points="165,162 159,158.5 159,165.5" fill="#f05323"/>
+            <text x="96" y="55" fill="#f05323" font-family="proxima-nova, sans-serif" font-weight="700" font-size="10" text-anchor="middle">Friction</text>
+            <text x="96" y="68" fill="rgba(255,255,255,0.45)" font-family="proxima-nova, sans-serif" font-weight="400" font-size="8" text-anchor="middle">drag + torque</text>
+            <rect x="143" y="0" width="6" height="210" fill="url(#filmL)" opacity="0.55"/>
+            <rect x="220" y="0" width="6" height="210" fill="url(#filmR)" opacity="0.55"/>
+            <line x1="226" y1="72" x2="280" y2="72" stroke="rgba(240,83,35,0.45)" stroke-width="0.75"/>
+            <text x="282" y="70" fill="rgba(240,83,35,0.8)" font-family="proxima-nova, sans-serif" font-weight="600" font-size="9">Lubricant film</text>
+            <text x="282" y="82" fill="rgba(255,255,255,0.5)" font-family="proxima-nova, sans-serif" font-weight="400" font-size="8">cuts drag + torque</text>
+            <defs>
+              <linearGradient id="filmL" x1="0" y1="0" x2="1" y2="0">
+                <stop offset="0%" stop-color="#f05323" stop-opacity="0.05"/>
+                <stop offset="100%" stop-color="#f05323" stop-opacity="0.5"/>
+              </linearGradient>
+              <linearGradient id="filmR" x1="1" y1="0" x2="0" y2="0">
+                <stop offset="0%" stop-color="#f05323" stop-opacity="0.05"/>
+                <stop offset="100%" stop-color="#f05323" stop-opacity="0.5"/>
+              </linearGradient>
+            </defs>
+          </svg>
+        </div>
+        <div class="divider"></div>
+        <div class="text-zone">
+          <div class="product-label">Drilling mechanics</div>
+          <div class="hook">Why torque climbs the longer your bore gets.</div>
+          <div class="rule"></div>
+          <div class="body-text">More pipe in the hole means more wall contact. More contact means more friction. The fluid you run can either fight that or feed it.</div>
+          <div class="body-text" style="color: var(--brand-orange); font-weight: 600;">Friday: the product we run to keep it down.</div>
+          <div class="chips">
+            <span class="chip">HDD</span>
+            <span class="chip">Water well</span>
+            <span class="chip">Coring</span>
+          </div>
+          <div class="footer">
+            <img class="brand-logo" src="assets/blick-logo-orange-black.png" alt="Blick">
+            <span class="url">blick.group</span>
+          </div>
+        </div>
+      </div>
+      <div class="pair-label">Wed · Mechanism only · Friday teaser</div>
+    </div>
+
+    <!-- FRIDAY: colour block, outcome hook, CTA pill — dark card -->
+    <div>
+      <div class="card card--fri">
+        <div class="top-zone top-zone--block">
+          <div class="block-kicker">Torque Down</div>
+          <div class="block-headline">Reduces torque<br>and drag.<br>Keeps you running.</div>
+        </div>
+        <div class="divider"></div>
+        <div class="text-zone">
+          <div class="product-label">Torque Down</div>
+          <div class="hook">Less drag. Longer runs. Lower wear on your tooling.</div>
+          <div class="rule"></div>
+          <div class="stat-row">
+            <span class="stat-num">2 L/m³</span>
+            <span class="stat-label">Standard dose · add at mix</span>
+          </div>
+          <div class="body-text">HDD, waterwell, diamond coring. Works with bentonite and polymer systems. Long shots, large diameter, deep strings. Anywhere bore length or ground conditions are working against you.</div>
+          <div class="chips">
+            <span class="chip">HDD</span>
+            <span class="chip">Water well</span>
+            <span class="chip">Coring</span>
+          </div>
+          <div class="cta-pill">Talk to us about your next job</div>
+          <div class="footer">
+            <img class="brand-logo" src="assets/blick-logo-orange-white.png" alt="Blick">
+            <span class="url">blick.group</span>
+          </div>
+        </div>
+      </div>
+      <div class="pair-label">Fri · Colour block + outcome</div>
+    </div>
+
+  </div>
+
+</div>
+
+</body>
+</html>
