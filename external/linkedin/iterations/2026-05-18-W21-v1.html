@@ -1,0 +1,284 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>LinkedIn Preview — **Post 1 — Monday Insight (~140 words)**</title>
+<style>
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body { background: #f3f2ef; font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif; padding: 20px; }
+  .container { max-width: 680px; margin: 0 auto; }
+
+  /* Header */
+  .page-header { background: #fff; border-radius: 8px; padding: 16px 20px; margin-bottom: 16px; border-left: 4px solid #ea580c; }
+  .page-header h1 { font-size: 16px; font-weight: 700; color: #000000e6; }
+  .page-header .meta { font-size: 12px; color: #00000099; margin-top: 4px; }
+  .status-badge { display: inline-block; padding: 2px 8px; border-radius: 12px; font-size: 11px; font-weight: 600; text-transform: uppercase; background: #94a3b8; color: #fff; margin-left: 8px; }
+
+  /* Tabs */
+  .tabs { display: flex; gap: 8px; margin-bottom: 12px; }
+  .tab-btn { padding: 8px 16px; border: none; border-radius: 20px; cursor: pointer; font-size: 13px; font-weight: 500; background: #e2e8f0; color: #00000099; transition: all 0.15s; }
+  .tab-btn.active { background: #0a66c2; color: #fff; }
+
+  /* Tab panels */
+  .tab-panel { display: none; }
+  .tab-panel.active { display: block; }
+
+  /* LinkedIn card */
+  .li-card { background: #ffffff; border-radius: 8px; border: 1px solid #e2e8f0; overflow: hidden; margin-bottom: 12px; }
+  .li-header { display: flex; align-items: center; gap: 10px; padding: 12px 16px 8px; }
+  .li-avatar { width: 40px; height: 40px; border-radius: 50%; background: #ea580c; color: #fff; font-size: 13px; font-weight: 700; display: flex; align-items: center; justify-content: center; flex-shrink: 0; }
+  .li-meta { flex: 1; }
+  .li-name { font-size: 14px; font-weight: 600; color: #000000e6; }
+  .li-sub { font-size: 12px; color: #00000099; }
+  .li-follow { font-size: 14px; font-weight: 600; color: #0a66c2; cursor: pointer; }
+  .li-body { padding: 8px 16px 12px; font-size: 14px; line-height: 1.55; color: #000000e6; }
+  .li-hook { font-weight: 600; margin-bottom: 10px; }
+  .li-text { margin-bottom: 10px; }
+  .li-cta { color: #00000099; margin-bottom: 8px; font-style: italic; }
+  .li-hashtags { color: #0a66c2; font-size: 13px; }
+  .li-footer { display: flex; gap: 20px; padding: 8px 16px; border-top: 1px solid #f1f5f9; font-size: 13px; color: #00000099; }
+  .li-footer span { cursor: pointer; }
+
+  /* Char bar */
+  .char-bar { height: 4px; background: #e2e8f0; border-radius: 2px; margin-bottom: 4px; }
+  .char-fill { height: 100%; border-radius: 2px; transition: width 0.3s; }
+  .char-label { font-size: 12px; margin-bottom: 12px; }
+
+  /* Notes */
+  .notes-box { background: #fefce8; border: 1px solid #fde68a; border-radius: 6px; padding: 12px; margin-bottom: 12px; font-size: 13px; }
+  .notes-label { font-weight: 600; margin-bottom: 4px; color: #92400e; }
+  .notes-text { color: #78350f; line-height: 1.5; }
+
+  /* Warnings */
+  .warnings-box { background: #fff7ed; border: 1px solid #fed7aa; border-radius: 6px; padding: 12px; margin-bottom: 16px; font-size: 13px; }
+  .warnings-box.ok { background: #f0fdf4; border-color: #bbf7d0; }
+  .warnings-label { font-weight: 600; margin-bottom: 4px; color: #b45309; }
+  .warnings-box.ok .warnings-label { color: #15803d; }
+  .warnings-box ul { padding-left: 16px; color: #7c2d12; }
+  .warnings-box ul li { margin-top: 2px; }
+
+  /* Buttons */
+  .action-row { display: flex; gap: 10px; margin-top: 8px; }
+  .btn-approve { flex: 1; padding: 12px; border: none; border-radius: 6px; font-size: 14px; font-weight: 600; cursor: pointer; background: #15803d; color: #fff; transition: opacity 0.15s; }
+  .btn-approve:hover { opacity: 0.9; }
+  .btn-reject { flex: 1; padding: 12px; border: none; border-radius: 6px; font-size: 14px; font-weight: 600; cursor: pointer; background: #dc2626; color: #fff; transition: opacity 0.15s; }
+  .btn-reject:hover { opacity: 0.9; }
+
+  /* Result message */
+  .result-msg { display: none; padding: 12px; border-radius: 6px; text-align: center; font-weight: 600; font-size: 14px; margin-top: 12px; }
+  .result-msg.ok { background: #f0fdf4; color: #15803d; border: 1px solid #bbf7d0; }
+  .result-msg.err { background: #fef2f2; color: #dc2626; border: 1px solid #fecaca; }
+</style>
+</head>
+<body>
+<div class="container">
+
+  <div class="page-header">
+    <h1>**Post 1 — Monday Insight (~140 words)** <span class="status-badge">draft</span></h1>
+    <div class="meta">
+      Blick Group (company page) · text · Created 2026-05-18 · 3 posts drafted
+    </div>
+  </div>
+
+  
+    <div class="warnings-box ok">
+      <div class="warnings-label">✓ Brand voice checks passed</div>
+    </div>
+
+  <div class="tabs">
+    <button class="tab-btn active" onclick="showTab(0)" id="tab-0">
+      Monday Insight
+    </button>
+    <button class="tab-btn " onclick="showTab(1)" id="tab-1">
+      Wednesday Educational
+    </button>
+    <button class="tab-btn " onclick="showTab(2)" id="tab-2">
+      Friday Product Spotlight
+    </button></div>
+
+  
+    <div class="tab-panel active" id="panel-0">
+      <!-- LinkedIn post card -->
+      <div class="li-card">
+        <div class="li-header">
+          <div class="li-avatar">BG</div>
+          <div class="li-meta">
+            <div class="li-name">Blick Group</div>
+            <div class="li-sub">Drilling Fluids · Australia &amp; New Zealand · Just now</div>
+          </div>
+          <div class="li-follow">+ Follow</div>
+        </div>
+        <div class="li-body">
+          <div class="li-hook">Another big gas project just cleared the line in Victoria.</div>
+          <div class="li-text">Last week the federal and Victorian governments approved Amplitude Energy's Annie gasfield in the Otway basin. Production is expected by 2028. Up to 65 petajoules of gas. That's more than a third of Victoria's annual use.<br><br>Approvals like this move slowly. Then suddenly they don't. And when they go, the work flows downhill fast. Pre-lay surveys. Onshore tie-ins. Pipeline crossings. Bores everywhere.<br><br>For the crews lining up to work the supporting infrastructure, the fluid program isn't an afterthought. It's the difference between a clean bore and a stuck rod.<br><br>If you're scoping work tied to projects like this, now's the time to plan the fluid side. Not week one on site.</div>
+          <div class="li-cta">Are you seeing more enquiries off the back of these approvals? What's the fluid program looking like?</div>
+          <div class="li-hashtags"><span style="color:#0a66c2">#DrillingAustralia</span> <span style="color:#0a66c2">#HDD</span> <span style="color:#0a66c2">#DrillingFluids</span> <span style="color:#0a66c2">#BlickFluids</span> <span style="color:#0a66c2">#Geothermal</span> <span style="color:#0a66c2">#TrenchlessTechnology</span> <span style="color:#0a66c2">#DrillingIndustry</span></div>
+        </div>
+        <div class="li-footer">
+          <span>👍 Like</span><span>💬 Comment</span><span>🔁 Repost</span><span>📤 Send</span>
+        </div>
+      </div>
+
+      <!-- Char count bar -->
+      <div class="char-bar">
+        <div class="char-fill" style="width:31.533333333333335%; background:#0a66c2"></div>
+      </div>
+      <div class="char-label" style="color:#00000099">
+        946 / 3,000 characters
+      </div>
+
+      
+      <div class="notes-box">
+        <div class="notes-label">Notes from Nexus</div>
+        <div class="notes-text">Source: https://www.theguardian.com/australia-news/2026/may/07/otway-basin-gasfield-project-approved-near-twelve-apostles (7 May 2026, within 14 days). Angle is operational — approvals create downstream HDD work for the tie-in and pipeline crossing crews. Kept it observational, no fabricated claims about Blick winning work.</div>
+      </div>
+
+      <!-- Approve/reject for this specific post -->
+      <div class="action-row">
+        <button class="btn-approve" onclick="approvePost(1, '2026-05-18-W21-v1', '/Volumes/NewmanDrive/development/BlickVault/Channels/content/2026-05-18-linkedin-post-1-monday-insight-140-words.md')">
+          ✓ Approve Post 1
+        </button>
+        <button class="btn-reject" onclick="rejectPost(1, '2026-05-18-W21-v1', '/Volumes/NewmanDrive/development/BlickVault/Channels/content/2026-05-18-linkedin-post-1-monday-insight-140-words.md')">
+          ✕ Reject Post 1
+        </button>
+      </div>
+    </div>
+    <div class="tab-panel " id="panel-1">
+      <!-- LinkedIn post card -->
+      <div class="li-card">
+        <div class="li-header">
+          <div class="li-avatar">BG</div>
+          <div class="li-meta">
+            <div class="li-name">Blick Group</div>
+            <div class="li-sub">Drilling Fluids · Australia &amp; New Zealand · Just now</div>
+          </div>
+          <div class="li-follow">+ Follow</div>
+        </div>
+        <div class="li-body">
+          <div class="li-hook">The bore's done. Now what do you do with two tonnes of wet mud?</div>
+          <div class="li-text">Disposal is the bit of the job nobody talks about until it's a problem. Wet spoil sloshing in a vac truck. A council inspector taking photos. A landfill that won't take it. A driveway that's now a mud bath.<br><br>Here's what's happening on a chemistry level, in plain English. Wet drilling spoil is mostly water held in a slurry of fines. You can't stack it. You can't truck it efficiently. You can't dispose of it without it being classed as liquid waste in a lot of jurisdictions.<br><br>This is what **Eco Dry** is for. Mix it through the spoil and the water locks into the solids. What was a slurry becomes a stackable, shovelable solid in minutes. Pallet it. Truck it. Walk on it.<br><br>Fewer truck movements. Lower disposal cost. Cleaner site. Less drama with the client and the council.<br><br>Friday we'll go deeper on when to use it and where it earns its keep.</div>
+          <div class="li-cta">What's your current disposal cost per cubic metre? Is it creeping up?</div>
+          <div class="li-hashtags"><span style="color:#0a66c2">#EcoDry</span> <span style="color:#0a66c2">#DrillingFluids</span> <span style="color:#0a66c2">#HDD</span> <span style="color:#0a66c2">#WasteManagement</span> <span style="color:#0a66c2">#UrbanDrilling</span> <span style="color:#0a66c2">#DrillingAustralia</span> <span style="color:#0a66c2">#DrillingNZ</span> <span style="color:#0a66c2">#BlickFluids</span></div>
+        </div>
+        <div class="li-footer">
+          <span>👍 Like</span><span>💬 Comment</span><span>🔁 Repost</span><span>📤 Send</span>
+        </div>
+      </div>
+
+      <!-- Char count bar -->
+      <div class="char-bar">
+        <div class="char-fill" style="width:36.333333333333336%; background:#0a66c2"></div>
+      </div>
+      <div class="char-label" style="color:#00000099">
+        1090 / 3,000 characters
+      </div>
+
+      
+      <div class="notes-box">
+        <div class="notes-label">Notes from Nexus</div>
+        <div class="notes-text">Week 5 = Eco Dry per the rotation. Pure mechanism teaching, hypothetical framing only, no fabricated job stories. Held off on dosage figures because the indexer context didn't surface a current Eco Dry PDS in this run — flagging for you to verify if you want me to add a "typical dose" line in a follow-up draft. Plants Friday's deeper hook.</div>
+      </div>
+
+      <!-- Approve/reject for this specific post -->
+      <div class="action-row">
+        <button class="btn-approve" onclick="approvePost(2, '2026-05-18-W21-v1', '/Volumes/NewmanDrive/development/BlickVault/Channels/content/2026-05-18-linkedin-post-1-monday-insight-140-words.md')">
+          ✓ Approve Post 2
+        </button>
+        <button class="btn-reject" onclick="rejectPost(2, '2026-05-18-W21-v1', '/Volumes/NewmanDrive/development/BlickVault/Channels/content/2026-05-18-linkedin-post-1-monday-insight-140-words.md')">
+          ✕ Reject Post 2
+        </button>
+      </div>
+    </div>
+    <div class="tab-panel " id="panel-2">
+      <!-- LinkedIn post card -->
+      <div class="li-card">
+        <div class="li-header">
+          <div class="li-avatar">BG</div>
+          <div class="li-meta">
+            <div class="li-name">Blick Group</div>
+            <div class="li-sub">Drilling Fluids · Australia &amp; New Zealand · Just now</div>
+          </div>
+          <div class="li-follow">+ Follow</div>
+        </div>
+        <div class="li-body">
+          <div class="li-hook">Eco Dry isn't for every job. But on the right job, it pays for itself before the truck leaves site.</div>
+          <div class="li-text">Where Eco Dry earns its keep:<br><br>Urban work. You're in a suburban street, neighbours watching, council inspector around the corner. Wet spoil in the gutter is a complaint waiting to happen. Solidify it on site. Stack it. Done.<br><br>Infrastructure jobs with strict waste handling. Big projects where the principal contractor is auditing your environmental compliance. A documented dry-waste process is a tick in the right box.<br><br>Disposal-limited sites. When the nearest tip that takes liquid waste is two hours away and charging by the cubic metre, every truck run you save is real money.<br><br>It pairs naturally with the rest of the fluid program. **Carry Flow** keeps the cuttings moving while you drill. **Filter Low** keeps the wall stable. Eco Dry handles the back end, after the bore's complete.<br><br>For tougher ground or unusual spoil, give one of our team a call. We'll dial in the right program for the job.</div>
+          <div class="li-cta">What's the worst disposal job you've had this year? Reckon Eco Dry would have changed it?</div>
+          <div class="li-hashtags"><span style="color:#0a66c2">#EcoDry</span> <span style="color:#0a66c2">#BlickFluids</span> <span style="color:#0a66c2">#DrillingFluids</span> <span style="color:#0a66c2">#HDD</span> <span style="color:#0a66c2">#CarryFlow</span> <span style="color:#0a66c2">#FilterLow</span> <span style="color:#0a66c2">#DrillingAustralia</span> <span style="color:#0a66c2">#UrbanDrilling</span></div>
+        </div>
+        <div class="li-footer">
+          <span>👍 Like</span><span>💬 Comment</span><span>🔁 Repost</span><span>📤 Send</span>
+        </div>
+      </div>
+
+      <!-- Char count bar -->
+      <div class="char-bar">
+        <div class="char-fill" style="width:39.733333333333334%; background:#0a66c2"></div>
+      </div>
+      <div class="char-label" style="color:#00000099">
+        1192 / 3,000 characters
+      </div>
+
+      
+      <div class="notes-box">
+        <div class="notes-label">Notes from Nexus</div>
+        <div class="notes-text">Week 5 Friday — depth on Eco Dry. Three "where it earns its keep" scenarios written as hypotheticals (audience framing), no fabricated case studies. Mentions Carry Flow + Filter Low as paired products in the fluid program (Tier 1, allowed). Followed the "call us for tougher conditions" guidance instead of inventing dosage. Strategic growth product, plays well into ESG/infrastructure positioning.<br><br>---<br><br>## SELF-REVIEW<br><br>- Word counts: P1 ~145, P2 ~175, P3 ~180 — within target band.<br>- No em dashes, no en dashes in prose, no fabricated jobs/customers/dosages, no banned vocabulary (thixotropic etc.).<br>- Monday cites a real research-feed item dated within 14 days, with URL in Notes for Shaun.<br>- Wednesday + Friday both feature Eco Dry per Week 5 rotation; the two posts build on each other rather than repeat.<br>- Hashtag count 7–8 per post, spans HDD + Australia/NZ + waste/urban + product hashtags.<br>- Voice check: short sentences, plain English, teammate tone. Would read as a text from a mate.<br><br>FINAL = drafts above.<br><br>---<br>## Preview<br>&gt; This section shows what will be sent to LinkedIn. Review before approving.<br><br>**Target:** Blick Group company page<br>**Format:** text<br>**Character count:**  ⚠️ 4812/3000 chars — near limit<br>**Preview URL:** https://blickgroup.github.io/designs/designs/linkedin/2026-05-18-W21-v1.html<br><br>To approve: change `status: draft` → `status: approved` in the frontmatter above.<br>To schedule: also set `publish_at: YYYY-MM-DDTHH:MM:SS+10:00`<br><br><br>---<br>## Generation Metadata<br>- Line: linkedin<br>- Research queries: 1<br>- Indexer context: 424 chars<br>- Memory context: 275 chars<br>- Generation time: 88.0s</div>
+      </div>
+
+      <!-- Approve/reject for this specific post -->
+      <div class="action-row">
+        <button class="btn-approve" onclick="approvePost(3, '2026-05-18-W21-v1', '/Volumes/NewmanDrive/development/BlickVault/Channels/content/2026-05-18-linkedin-post-1-monday-insight-140-words.md')">
+          ✓ Approve Post 3
+        </button>
+        <button class="btn-reject" onclick="rejectPost(3, '2026-05-18-W21-v1', '/Volumes/NewmanDrive/development/BlickVault/Channels/content/2026-05-18-linkedin-post-1-monday-insight-140-words.md')">
+          ✕ Reject Post 3
+        </button>
+      </div>
+    </div>
+
+  <div class="result-msg" id="result-msg"></div>
+
+</div>
+
+<script>
+function showTab(i) {
+  document.querySelectorAll('.tab-btn').forEach((b,j) => b.classList.toggle('active', i===j));
+  document.querySelectorAll('.tab-panel').forEach((p,j) => p.classList.toggle('active', i===j));
+}
+
+async function approvePost(postNum, slug, draftPath) {
+  await sendAction('approve', postNum, slug, draftPath);
+}
+
+async function rejectPost(postNum, slug, draftPath) {
+  await sendAction('reject', postNum, slug, draftPath);
+}
+
+async function sendAction(action, postNum, slug, draftPath) {
+  const msg = document.getElementById('result-msg');
+  msg.className = 'result-msg';
+  msg.style.display = 'none';
+  try {
+    const res = await fetch('https://blick-n8n.fly.dev/webhook/linkedin-' + action, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ slug, postNum, draftPath, action })
+    });
+    if (res.ok) {
+      msg.textContent = action === 'approve'
+        ? '✓ Post ' + postNum + ' approved — n8n will publish on schedule'
+        : '✕ Post ' + postNum + ' rejected — runner will avoid this angle';
+      msg.className = 'result-msg ok';
+    } else {
+      throw new Error('HTTP ' + res.status);
+    }
+  } catch(e) {
+    msg.textContent = 'Could not reach n8n (' + e.message + '). Edit status manually in Obsidian.';
+    msg.className = 'result-msg err';
+  }
+  msg.style.display = 'block';
+}
+</script>
+</body>
+</html>
