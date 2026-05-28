@@ -231,6 +231,80 @@
       gap: 5px;
     }
 
+    /* ── FULLCREAM BANNER ──────────────────────────── */
+    .fullcream-banner {
+      background: linear-gradient(135deg, #1a1a2e 0%, #16213e 100%);
+      border-radius: 16px;
+      padding: 24px 28px;
+      margin-bottom: 36px;
+      display: flex;
+      align-items: flex-start;
+      gap: 32px;
+      flex-wrap: wrap;
+    }
+
+    .fullcream-left {
+      flex: 1;
+      min-width: 260px;
+    }
+
+    .fullcream-name {
+      font-size: 22px;
+      font-weight: 800;
+      color: #fff;
+      letter-spacing: -0.5px;
+      margin-bottom: 8px;
+    }
+
+    .fullcream-desc {
+      font-size: 14px;
+      color: #b0b8cc;
+      line-height: 1.6;
+      margin-bottom: 10px;
+    }
+
+    .fullcream-example {
+      font-size: 12px;
+      color: #7080a0;
+    }
+
+    .fullcream-example code {
+      background: rgba(255,255,255,0.08);
+      color: #a8bbd4;
+      padding: 3px 8px;
+      border-radius: 6px;
+      font-family: 'SF Mono', 'Menlo', monospace;
+      font-size: 11px;
+    }
+
+    .fullcream-right {
+      flex-shrink: 0;
+    }
+
+    .fullcream-stop-label {
+      font-size: 11px;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+      color: #4a5568;
+      margin-bottom: 8px;
+    }
+
+    .fullcream-stops {
+      display: flex;
+      flex-direction: column;
+      gap: 6px;
+    }
+
+    .fullcream-stops span {
+      font-size: 13px;
+      color: #9aa5b4;
+      padding: 6px 12px;
+      background: rgba(255,255,255,0.05);
+      border-radius: 8px;
+      border: 1px solid rgba(255,255,255,0.08);
+    }
+
     /* ── CONFUSION BOX ──────────────────────────────── */
     .confusion-box {
       background: #fffbf0;
@@ -354,18 +428,30 @@
 
   <h1>Team Skills Reference</h1>
   <p class="subtitle">Every /team-* skill — what it does, what it doesn't, and when to use it</p>
-  <p class="pipeline-label">Read top to bottom — this is the order skills run in a full feature lifecycle</p>
+  <p class="pipeline-label">Run each skill individually, or use <strong>/team-fullcream</strong> to run the whole pipeline automatically</p>
+
+  <!-- ── FULLCREAM BANNER ──────────────────────────────── -->
+  <div class="fullcream-banner">
+    <div class="fullcream-left">
+      <div class="fullcream-name">/team-fullcream</div>
+      <div class="fullcream-desc">Runs the entire pipeline below — design → build → review → release → UAT — automatically, in sequence. Stops only on a blocker. One notification at the end.</div>
+      <div class="fullcream-example">e.g. <code>/team-fullcream Add a "mark all read" button to the notifications panel</code></div>
+    </div>
+    <div class="fullcream-right">
+      <div class="fullcream-stop-label">Only stops for</div>
+      <div class="fullcream-stops">
+        <span>⏸ You merge the PR</span>
+        <span>⏸ You deploy to production</span>
+        <span>🛑 A blocker it can't resolve</span>
+      </div>
+    </div>
+  </div>
 
   <!-- ── PIPELINE FLOW ───────────────────────────────── -->
   <div class="pipeline">
     <div class="pipe-step">
       <div class="pipe-badge pipe-design">/team-design-studio</div>
       <div class="pipe-label">Propose the UX</div>
-    </div>
-    <div class="pipe-arrow">→</div>
-    <div class="pipe-gate">
-      <div class="pipe-gate-icon">⏸</div>
-      <div class="pipe-gate-text">You approve spec</div>
     </div>
     <div class="pipe-arrow">→</div>
     <div class="pipe-step">
@@ -380,7 +466,7 @@
     <div class="pipe-arrow">→</div>
     <div class="pipe-gate">
       <div class="pipe-gate-icon">⏸</div>
-      <div class="pipe-gate-text">You approve merge</div>
+      <div class="pipe-gate-text">You merge + deploy</div>
     </div>
     <div class="pipe-arrow">→</div>
     <div class="pipe-step">
@@ -388,9 +474,9 @@
       <div class="pipe-label">Readiness check</div>
     </div>
     <div class="pipe-arrow">→</div>
-    <div class="pipe-gate">
-      <div class="pipe-gate-icon">⏸</div>
-      <div class="pipe-gate-text">You deploy</div>
+    <div class="pipe-step">
+      <div class="pipe-badge pipe-design" style="opacity:0.7">/team-design-studio</div>
+      <div class="pipe-label">Review vs spec</div>
     </div>
     <div class="pipe-arrow">→</div>
     <div class="pipe-step">
@@ -418,6 +504,48 @@
       <div class="confusion-item">
         <div class="confusion-skills">/team-review vs /team-uat</div>
         <div class="confusion-desc"><strong>Review = code audit. UAT = live browser.</strong> Review reads files and checks the PR. UAT drives a real browser against production. Both are needed — review before merge, UAT after deploy.</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ── FULLCREAM CARD ──────────────────────────────── -->
+  <div class="section-title">Pipeline orchestrator — runs everything</div>
+  <div class="cards">
+    <div class="card" style="border-color: #2a3550; background: #1a1a2e;">
+      <div style="position:absolute;top:0;left:0;right:0;height:4px;background:linear-gradient(90deg,#7c4dce,#3d9970,#2980b9,#e07b39);"></div>
+      <div class="card-header">
+        <div class="card-name" style="color:#fff;">/team-fullcream</div>
+        <div class="card-badge" style="background:rgba(255,255,255,0.1);color:#a8bbd4;">Full pipeline</div>
+      </div>
+      <div class="card-trigger" style="color:#7080a0;">One command runs design-studio → build → review → release → design-review → UAT. Auto-advances between phases. Stops on blockers. Single summary at the end.</div>
+      <div class="card-cols">
+        <div>
+          <div class="col-label" style="color:#7c4dce;">Phases</div>
+          <div class="pill-list">
+            <span class="pill agent">1 · Design studio</span>
+            <span class="pill agent">2 · Build</span>
+            <span class="pill agent">3 · Review</span>
+            <span class="pill agent">4 · Release check</span>
+            <span class="pill agent">5 · Design review</span>
+            <span class="pill agent">6 · UAT</span>
+          </div>
+        </div>
+        <div>
+          <div class="col-label outputs">You do</div>
+          <div class="pill-list">
+            <span class="pill output">Merge the PR</span>
+            <span class="pill output">Run deploy-production.sh</span>
+            <span class="pill output">Read the final summary</span>
+          </div>
+        </div>
+      </div>
+      <hr class="card-divider" style="border-color:#2a3550;">
+      <div class="col-label cannot">Cannot do</div>
+      <div class="cannot-row">
+        <span class="pill cannot">Not for regulated features — use /team-design-heavy first</span>
+        <span class="pill cannot">Does not merge PRs</span>
+        <span class="pill cannot">Does not deploy</span>
+        <span class="pill cannot">Max one UAT fix attempt</span>
       </div>
     </div>
   </div>
