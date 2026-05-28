@@ -1,0 +1,854 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Team Skills Reference — Blick</title>
+  <style>
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+      background: #f5f4f0;
+      color: #1a1a1a;
+      padding: 48px 24px;
+    }
+
+    h1 {
+      text-align: center;
+      font-size: 28px;
+      font-weight: 700;
+      margin-bottom: 8px;
+      letter-spacing: -0.5px;
+    }
+
+    .subtitle {
+      text-align: center;
+      color: #666;
+      font-size: 15px;
+      margin-bottom: 12px;
+    }
+
+    .pipeline-label {
+      text-align: center;
+      font-size: 13px;
+      color: #888;
+      margin-bottom: 48px;
+      font-style: italic;
+    }
+
+    /* ── PIPELINE FLOW ─────────────────────────────────── */
+    .pipeline {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 0;
+      margin-bottom: 64px;
+      flex-wrap: wrap;
+      gap: 4px;
+    }
+
+    .pipe-step {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 6px;
+    }
+
+    .pipe-badge {
+      padding: 8px 16px;
+      border-radius: 20px;
+      font-size: 13px;
+      font-weight: 600;
+      white-space: nowrap;
+      border: 2px solid transparent;
+    }
+
+    .pipe-arrow {
+      font-size: 20px;
+      color: #aaa;
+      margin: 0 4px;
+      align-self: center;
+      padding-bottom: 20px;
+    }
+
+    .pipe-label {
+      font-size: 11px;
+      color: #888;
+      text-align: center;
+    }
+
+    .pipe-gate {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 4px;
+      margin: 0 4px;
+      padding-bottom: 20px;
+    }
+
+    .pipe-gate-icon {
+      font-size: 22px;
+    }
+
+    .pipe-gate-text {
+      font-size: 10px;
+      color: #e07b39;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+    }
+
+    /* ── SKILL CARDS ──────────────────────────────────── */
+    .section-title {
+      font-size: 12px;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 1.5px;
+      color: #999;
+      margin-bottom: 20px;
+      margin-top: 48px;
+      padding-left: 2px;
+    }
+
+    .cards {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(340px, 1fr));
+      gap: 20px;
+      margin-bottom: 16px;
+    }
+
+    .card {
+      background: white;
+      border-radius: 16px;
+      padding: 24px;
+      border: 1.5px solid #e8e8e8;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .card::before {
+      content: '';
+      position: absolute;
+      top: 0; left: 0; right: 0;
+      height: 4px;
+    }
+
+    .card.design::before   { background: #9b7dea; }
+    .card.build::before    { background: #3d9970; }
+    .card.verify::before   { background: #e07b39; }
+    .card.debug::before    { background: #e74c3c; }
+    .card.release::before  { background: #2980b9; }
+    .card.deploy::before   { background: #1a252f; }
+
+    .card-header {
+      display: flex;
+      align-items: flex-start;
+      justify-content: space-between;
+      margin-bottom: 4px;
+    }
+
+    .card-name {
+      font-size: 17px;
+      font-weight: 700;
+      letter-spacing: -0.3px;
+    }
+
+    .card-badge {
+      font-size: 11px;
+      font-weight: 600;
+      padding: 3px 10px;
+      border-radius: 12px;
+      white-space: nowrap;
+      margin-left: 8px;
+      flex-shrink: 0;
+    }
+
+    .badge-design   { background: #f0ebff; color: #7c4dce; }
+    .badge-build    { background: #e8f5f0; color: #2d7a57; }
+    .badge-verify   { background: #fff3ec; color: #c05e1f; }
+    .badge-debug    { background: #fdf0ef; color: #c0392b; }
+    .badge-release  { background: #eaf4fb; color: #1f6fa0; }
+    .badge-deploy   { background: #eaeaea; color: #444; }
+
+    .card-trigger {
+      font-size: 13px;
+      color: #555;
+      margin-bottom: 16px;
+      margin-top: 2px;
+      line-height: 1.5;
+      font-style: italic;
+    }
+
+    .card-cols {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 12px;
+      margin-bottom: 14px;
+    }
+
+    .col-label {
+      font-size: 11px;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+      margin-bottom: 6px;
+    }
+
+    .col-label.builds  { color: #3d9970; }
+    .col-label.agents  { color: #7c4dce; }
+    .col-label.outputs { color: #2980b9; }
+    .col-label.cannot  { color: #e74c3c; }
+
+    .pill-list {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 5px;
+    }
+
+    .pill {
+      font-size: 11px;
+      padding: 3px 9px;
+      border-radius: 10px;
+      font-weight: 500;
+      line-height: 1.4;
+    }
+
+    .pill.agent   { background: #f0ebff; color: #6b3fcf; }
+    .pill.output  { background: #e8f5f0; color: #256b48; }
+    .pill.cannot  { background: #fdf0ef; color: #b03030; }
+    .pill.builds  { background: #f0f4ff; color: #2c5fb3; }
+
+    .card-divider {
+      border: none;
+      border-top: 1px solid #f0f0f0;
+      margin: 14px 0;
+    }
+
+    .cannot-row {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 5px;
+    }
+
+    /* ── CONFUSION BOX ──────────────────────────────── */
+    .confusion-box {
+      background: #fffbf0;
+      border: 1.5px solid #f5c842;
+      border-radius: 14px;
+      padding: 20px 24px;
+      margin-bottom: 48px;
+    }
+
+    .confusion-title {
+      font-size: 14px;
+      font-weight: 700;
+      color: #a07800;
+      margin-bottom: 12px;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .confusion-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+      gap: 12px;
+    }
+
+    .confusion-item {
+      background: white;
+      border-radius: 10px;
+      padding: 14px 16px;
+      border: 1px solid #f0e0a0;
+    }
+
+    .confusion-skills {
+      font-size: 13px;
+      font-weight: 700;
+      color: #7c5500;
+      margin-bottom: 4px;
+    }
+
+    .confusion-desc {
+      font-size: 12px;
+      color: #666;
+      line-height: 1.5;
+    }
+
+    /* ── GATE LEGEND ──────────────────────────────── */
+    .gate-legend {
+      background: white;
+      border-radius: 14px;
+      border: 1.5px solid #e8e8e8;
+      padding: 20px 24px;
+      margin-top: 40px;
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+      gap: 16px;
+    }
+
+    .legend-item {
+      display: flex;
+      align-items: flex-start;
+      gap: 10px;
+    }
+
+    .legend-icon {
+      font-size: 20px;
+      flex-shrink: 0;
+      margin-top: 1px;
+    }
+
+    .legend-text strong {
+      display: block;
+      font-size: 13px;
+      margin-bottom: 2px;
+    }
+
+    .legend-text span {
+      font-size: 12px;
+      color: #666;
+    }
+
+    /* ── COLOUR KEY ──────────────────────────────── */
+    .colour-key {
+      display: flex;
+      gap: 20px;
+      flex-wrap: wrap;
+      justify-content: center;
+      margin-bottom: 40px;
+    }
+
+    .key-item {
+      display: flex;
+      align-items: center;
+      gap: 7px;
+      font-size: 13px;
+      color: #444;
+    }
+
+    .key-dot {
+      width: 12px;
+      height: 12px;
+      border-radius: 3px;
+    }
+
+    /* ── PIPE COLOURS ────────────────────────────── */
+    .pipe-design  { background: #f0ebff; color: #7c4dce; border-color: #c9a8f5; }
+    .pipe-build   { background: #e8f5f0; color: #2d7a57; border-color: #8ecfb0; }
+    .pipe-verify  { background: #fff3ec; color: #c05e1f; border-color: #f5b88c; }
+    .pipe-review  { background: #eaf4fb; color: #1f6fa0; border-color: #8cc8ee; }
+    .pipe-release { background: #eaeaea; color: #444;    border-color: #ccc; }
+    .pipe-gate-b  { background: #fff8ec; color: #a07800; border-color: #f5c842; }
+
+    footer {
+      text-align: center;
+      font-size: 12px;
+      color: #aaa;
+      margin-top: 56px;
+    }
+  </style>
+</head>
+<body>
+
+  <h1>Team Skills Reference</h1>
+  <p class="subtitle">Every /team-* skill — what it does, what it doesn't, and when to use it</p>
+  <p class="pipeline-label">Read top to bottom — this is the order skills run in a full feature lifecycle</p>
+
+  <!-- ── PIPELINE FLOW ───────────────────────────────── -->
+  <div class="pipeline">
+    <div class="pipe-step">
+      <div class="pipe-badge pipe-design">/team-design-studio</div>
+      <div class="pipe-label">Propose the UX</div>
+    </div>
+    <div class="pipe-arrow">→</div>
+    <div class="pipe-gate">
+      <div class="pipe-gate-icon">⏸</div>
+      <div class="pipe-gate-text">You approve spec</div>
+    </div>
+    <div class="pipe-arrow">→</div>
+    <div class="pipe-step">
+      <div class="pipe-badge pipe-build">/team-build</div>
+      <div class="pipe-label">Build it</div>
+    </div>
+    <div class="pipe-arrow">→</div>
+    <div class="pipe-step">
+      <div class="pipe-badge pipe-review">/team-review</div>
+      <div class="pipe-label">Audit the PR</div>
+    </div>
+    <div class="pipe-arrow">→</div>
+    <div class="pipe-gate">
+      <div class="pipe-gate-icon">⏸</div>
+      <div class="pipe-gate-text">You approve merge</div>
+    </div>
+    <div class="pipe-arrow">→</div>
+    <div class="pipe-step">
+      <div class="pipe-badge pipe-release">/team-release</div>
+      <div class="pipe-label">Readiness check</div>
+    </div>
+    <div class="pipe-arrow">→</div>
+    <div class="pipe-gate">
+      <div class="pipe-gate-icon">⏸</div>
+      <div class="pipe-gate-text">You deploy</div>
+    </div>
+    <div class="pipe-arrow">→</div>
+    <div class="pipe-step">
+      <div class="pipe-badge pipe-verify">/team-uat</div>
+      <div class="pipe-label">Verify live</div>
+    </div>
+  </div>
+
+  <!-- ── CONFUSION NOTICE ───────────────────────────── -->
+  <div class="confusion-box">
+    <div class="confusion-title">⚠️ Commonly confused skills — read before choosing</div>
+    <div class="confusion-grid">
+      <div class="confusion-item">
+        <div class="confusion-skills">/team-design vs /team-design-studio vs /team-design-heavy</div>
+        <div class="confusion-desc"><strong>Use /team-design-studio.</strong> It proposes UX and produces the spec that build teams consume. /team-design and /team-design-heavy are superseded — studio replaced them for standard features. Heavy remains for regulated/auth/PII features only.</div>
+      </div>
+      <div class="confusion-item">
+        <div class="confusion-skills">/team-build vs /team-build-lite</div>
+        <div class="confusion-desc"><strong>Lite = frontend-only.</strong> If you need new API routes, DB changes, or background jobs → use /team-build. If the API is already stable and you're only changing UI → use /team-build-lite.</div>
+      </div>
+      <div class="confusion-item">
+        <div class="confusion-skills">/team-debug vs /team-fix</div>
+        <div class="confusion-desc"><strong>Debug first, fix second.</strong> /team-debug finds the root cause (read-only, no changes). /team-fix implements the solution. Always run debug before fix unless you already know the exact cause.</div>
+      </div>
+      <div class="confusion-item">
+        <div class="confusion-skills">/team-review vs /team-uat</div>
+        <div class="confusion-desc"><strong>Review = code audit. UAT = live browser.</strong> Review reads files and checks the PR. UAT drives a real browser against production. Both are needed — review before merge, UAT after deploy.</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ── DESIGN PHASE ───────────────────────────────── -->
+  <div class="section-title">Design phase — before any code is written</div>
+  <div class="cards">
+
+    <!-- team-design-studio -->
+    <div class="card design">
+      <div class="card-header">
+        <div class="card-name">/team-design-studio</div>
+        <div class="card-badge badge-design">Primary ✓</div>
+      </div>
+      <div class="card-trigger">Propose what a feature should look like, or verify a build matches its spec. Two modes: Propose and Review.</div>
+      <div class="card-cols">
+        <div>
+          <div class="col-label agents">Agents</div>
+          <div class="pill-list">
+            <span class="pill agent">ux-researcher</span>
+            <span class="pill agent">design-advisor</span>
+            <span class="pill agent">brand-guardian</span>
+            <span class="pill agent">scribe</span>
+          </div>
+        </div>
+        <div>
+          <div class="col-label outputs">Outputs</div>
+          <div class="pill-list">
+            <span class="pill output">docs/designs/{feature}-spec.md</span>
+            <span class="pill output">HTML preview</span>
+            <span class="pill output">Design review report (review mode)</span>
+          </div>
+        </div>
+      </div>
+      <hr class="card-divider">
+      <div class="col-label cannot">Cannot do</div>
+      <div class="cannot-row">
+        <span class="pill cannot">No WCAG/accessibility</span>
+        <span class="pill cannot">No code</span>
+        <span class="pill cannot">No deploy</span>
+        <span class="pill cannot">Needs your approval before build</span>
+      </div>
+    </div>
+
+    <!-- team-design-heavy -->
+    <div class="card design">
+      <div class="card-header">
+        <div class="card-name">/team-design-heavy</div>
+        <div class="card-badge badge-design">Regulated only</div>
+      </div>
+      <div class="card-trigger">Complex/regulated features — auth, payments, PII, multi-service, compliance. Use when /team-design-studio isn't enough.</div>
+      <div class="card-cols">
+        <div>
+          <div class="col-label agents">Agents</div>
+          <div class="pill-list">
+            <span class="pill agent">requirements-analyst (DRI)</span>
+            <span class="pill agent">3–4 specialists</span>
+            <span class="pill agent">security-reviewer</span>
+            <span class="pill agent">architect</span>
+            <span class="pill agent">accessibility-validator</span>
+            <span class="pill agent">scribe</span>
+          </div>
+        </div>
+        <div>
+          <div class="col-label outputs">Outputs</div>
+          <div class="pill-list">
+            <span class="pill output">docs/specs/{feature}/ directory</span>
+            <span class="pill output">All 6 phases complete</span>
+            <span class="pill output">HANDOFF.md</span>
+            <span class="pill output">All blockers resolved</span>
+          </div>
+        </div>
+      </div>
+      <hr class="card-divider">
+      <div class="col-label cannot">Cannot do</div>
+      <div class="cannot-row">
+        <span class="pill cannot">No code</span>
+        <span class="pill cannot">All gates mandatory</span>
+        <span class="pill cannot">Cannot skip any of 6 phases</span>
+        <span class="pill cannot">Needs your approval</span>
+      </div>
+    </div>
+
+    <!-- team-design (deprecated) -->
+    <div class="card design" style="opacity: 0.55; border-style: dashed;">
+      <div class="card-header">
+        <div class="card-name">/team-design</div>
+        <div class="card-badge badge-design">Superseded</div>
+      </div>
+      <div class="card-trigger">Superseded by /team-design-studio for standard features and /team-design-heavy for regulated features. Avoid — left in place for backward compatibility only.</div>
+      <div class="card-cols">
+        <div>
+          <div class="col-label agents">Was</div>
+          <div class="pill-list">
+            <span class="pill agent">Tier 1–3 auto-scaling</span>
+            <span class="pill agent">4–13 agents</span>
+          </div>
+        </div>
+        <div>
+          <div class="col-label outputs">Was</div>
+          <div class="pill-list">
+            <span class="pill output">spec.md or full docs/specs/ dir</span>
+          </div>
+        </div>
+      </div>
+      <hr class="card-divider">
+      <div class="col-label cannot">Use instead</div>
+      <div class="cannot-row">
+        <span class="pill cannot">→ /team-design-studio (standard)</span>
+        <span class="pill cannot">→ /team-design-heavy (regulated)</span>
+      </div>
+    </div>
+
+  </div>
+
+  <!-- ── BUILD PHASE ────────────────────────────────── -->
+  <div class="section-title">Build phase — implementing approved specs</div>
+  <div class="cards">
+
+    <!-- team-build -->
+    <div class="card build">
+      <div class="card-header">
+        <div class="card-name">/team-build</div>
+        <div class="card-badge badge-build">Full stack</div>
+      </div>
+      <div class="card-trigger">New feature spanning frontend + backend + tests. Requires an approved spec in docs/plans/ before running.</div>
+      <div class="card-cols">
+        <div>
+          <div class="col-label agents">Agents</div>
+          <div class="pill-list">
+            <span class="pill agent">frontend (Sonnet)</span>
+            <span class="pill agent">backend (Sonnet)</span>
+            <span class="pill agent">tester (Sonnet)</span>
+            <span class="pill agent">scribe (Haiku)</span>
+            <span class="pill agent">git-deployer (Haiku)</span>
+          </div>
+        </div>
+        <div>
+          <div class="col-label builds">Builds</div>
+          <div class="pill-list">
+            <span class="pill builds">React components + hooks</span>
+            <span class="pill builds">Express routes + services</span>
+            <span class="pill builds">DB migrations</span>
+            <span class="pill builds">Background jobs</span>
+            <span class="pill builds">Tests (≥50% coverage)</span>
+            <span class="pill builds">PR to main</span>
+          </div>
+        </div>
+      </div>
+      <hr class="card-divider">
+      <div class="col-label cannot">Cannot do</div>
+      <div class="cannot-row">
+        <span class="pill cannot">No deploy</span>
+        <span class="pill cannot">No merge</span>
+        <span class="pill cannot">No dev environment</span>
+        <span class="pill cannot">No develop branch</span>
+      </div>
+    </div>
+
+    <!-- team-build-lite -->
+    <div class="card build">
+      <div class="card-header">
+        <div class="card-name">/team-build-lite</div>
+        <div class="card-badge badge-build">Frontend only</div>
+      </div>
+      <div class="card-trigger">UI-only changes when the backend API is already stable. Requires approved spec in docs/designs/. Escalates automatically if backend gap found.</div>
+      <div class="card-cols">
+        <div>
+          <div class="col-label agents">Agents</div>
+          <div class="pill-list">
+            <span class="pill agent">frontend-dev (Sonnet)</span>
+            <span class="pill agent">quality-checker (Sonnet)</span>
+            <span class="pill agent">tester (Sonnet)</span>
+            <span class="pill agent">scribe (Haiku)</span>
+          </div>
+        </div>
+        <div>
+          <div class="col-label builds">Builds</div>
+          <div class="pill-list">
+            <span class="pill builds">React components + pages</span>
+            <span class="pill builds">Hooks + TanStack Query</span>
+            <span class="pill builds">Loading + error states</span>
+            <span class="pill builds">Component tests</span>
+          </div>
+        </div>
+      </div>
+      <hr class="card-divider">
+      <div class="col-label cannot">Cannot do</div>
+      <div class="cannot-row">
+        <span class="pill cannot">No backend files — ever</span>
+        <span class="pill cannot">No new API routes</span>
+        <span class="pill cannot">No DB changes</span>
+        <span class="pill cannot">No deploy</span>
+        <span class="pill cannot">Escalates to /team-build if backend gap found</span>
+      </div>
+    </div>
+
+  </div>
+
+  <!-- ── DEBUG / FIX ────────────────────────────────── -->
+  <div class="section-title">Debug &amp; fix — for bugs, not features</div>
+  <div class="cards">
+
+    <!-- team-debug -->
+    <div class="card debug">
+      <div class="card-header">
+        <div class="card-name">/team-debug</div>
+        <div class="card-badge badge-debug">Step 1 of 2</div>
+      </div>
+      <div class="card-trigger">Found a bug but don't know the root cause. Run this first — it investigates. Always runs before /team-fix.</div>
+      <div class="card-cols">
+        <div>
+          <div class="col-label agents">Agents</div>
+          <div class="pill-list">
+            <span class="pill agent">investigator-frontend (Sonnet)</span>
+            <span class="pill agent">investigator-backend (Sonnet)</span>
+            <span class="pill agent">scribe (Haiku)</span>
+          </div>
+        </div>
+        <div>
+          <div class="col-label outputs">Outputs</div>
+          <div class="pill-list">
+            <span class="pill output">Root cause identified</span>
+            <span class="pill output">CHANGELOG draft</span>
+            <span class="pill output">Memory updates</span>
+            <span class="pill output">Suggested fix approach</span>
+          </div>
+        </div>
+      </div>
+      <hr class="card-divider">
+      <div class="col-label cannot">Cannot do</div>
+      <div class="cannot-row">
+        <span class="pill cannot">No code changes — read only</span>
+        <span class="pill cannot">Does NOT fix the bug</span>
+      </div>
+    </div>
+
+    <!-- team-fix -->
+    <div class="card debug">
+      <div class="card-header">
+        <div class="card-name">/team-fix</div>
+        <div class="card-badge badge-debug">Step 2 of 2</div>
+      </div>
+      <div class="card-trigger">Root cause is known. Implements the fix, runs verify loop until tests pass, then commits and opens a PR. 8-iteration cap.</div>
+      <div class="card-cols">
+        <div>
+          <div class="col-label agents">Agents</div>
+          <div class="pill-list">
+            <span class="pill agent">backend-dev (Sonnet)</span>
+            <span class="pill agent">frontend-dev (Sonnet)</span>
+            <span class="pill agent">tester (Sonnet)</span>
+            <span class="pill agent">scribe (Haiku)</span>
+            <span class="pill agent">git-publisher (Haiku)</span>
+          </div>
+        </div>
+        <div>
+          <div class="col-label outputs">Outputs</div>
+          <div class="pill-list">
+            <span class="pill output">Bug fixed + tests passing</span>
+            <span class="pill output">Trace log (30 min cap)</span>
+            <span class="pill output">CHANGELOG updated</span>
+            <span class="pill output">PR to main (no merge)</span>
+          </div>
+        </div>
+      </div>
+      <hr class="card-divider">
+      <div class="col-label cannot">Cannot do</div>
+      <div class="cannot-row">
+        <span class="pill cannot">No merge</span>
+        <span class="pill cannot">No deploy</span>
+        <span class="pill cannot">Max 8 verify iterations</span>
+        <span class="pill cannot">Stops if same failure 3× in a row</span>
+      </div>
+    </div>
+
+  </div>
+
+  <!-- ── VERIFY / REVIEW / RELEASE ──────────────────── -->
+  <div class="section-title">Review, verify &amp; release — after code is written</div>
+  <div class="cards">
+
+    <!-- team-review -->
+    <div class="card release">
+      <div class="card-header">
+        <div class="card-name">/team-review</div>
+        <div class="card-badge badge-release">PR audit</div>
+      </div>
+      <div class="card-trigger">Code is ready for review. Audits a PR from 4 angles simultaneously. Run before you merge.</div>
+      <div class="card-cols">
+        <div>
+          <div class="col-label agents">Agents</div>
+          <div class="pill-list">
+            <span class="pill agent">security-reviewer (Sonnet)</span>
+            <span class="pill agent">quality-reviewer (Sonnet)</span>
+            <span class="pill agent">architecture-reviewer (Sonnet)</span>
+            <span class="pill agent">design-reviewer (Haiku)</span>
+            <span class="pill agent">scribe (Haiku)</span>
+          </div>
+        </div>
+        <div>
+          <div class="col-label outputs">Outputs</div>
+          <div class="pill-list">
+            <span class="pill output">Blockers (must fix)</span>
+            <span class="pill output">Actions (should fix)</span>
+            <span class="pill output">Info (noted)</span>
+            <span class="pill output">Each finding: file:line + fix</span>
+            <span class="pill output">Merge recommendation</span>
+          </div>
+        </div>
+      </div>
+      <hr class="card-divider">
+      <div class="col-label cannot">Cannot do</div>
+      <div class="cannot-row">
+        <span class="pill cannot">Read only — no code changes</span>
+        <span class="pill cannot">Does NOT approve merge</span>
+        <span class="pill cannot">Does NOT re-review after fixes</span>
+        <span class="pill cannot">Spawn fresh agents after fixes</span>
+      </div>
+    </div>
+
+    <!-- team-release -->
+    <div class="card release">
+      <div class="card-header">
+        <div class="card-name">/team-release</div>
+        <div class="card-badge badge-release">Readiness check</div>
+      </div>
+      <div class="card-trigger">Merged to main. Verify everything is safe to deploy — CI, env vars, migrations, watchman registration. You still push the button.</div>
+      <div class="card-cols">
+        <div>
+          <div class="col-label agents">Agents</div>
+          <div class="pill-list">
+            <span class="pill agent">ci-validator (Haiku)</span>
+            <span class="pill agent">change-auditor (Sonnet)</span>
+            <span class="pill agent">watchman-auditor (Haiku)</span>
+            <span class="pill agent">env-checker (Haiku)</span>
+            <span class="pill agent">scribe (Haiku)</span>
+          </div>
+        </div>
+        <div>
+          <div class="col-label outputs">Outputs</div>
+          <div class="pill-list">
+            <span class="pill output">GO / NO-GO verdict</span>
+            <span class="pill output">Pre-deploy actions list</span>
+            <span class="pill output">Env parity report</span>
+            <span class="pill output">Watchman audit</span>
+            <span class="pill output">Deployment checklist</span>
+          </div>
+        </div>
+      </div>
+      <hr class="card-divider">
+      <div class="col-label cannot">Cannot do</div>
+      <div class="cannot-row">
+        <span class="pill cannot">No deploy</span>
+        <span class="pill cannot">No merge</span>
+        <span class="pill cannot">No GitHub Actions — flyctl only</span>
+        <span class="pill cannot">Cannot GO if any blocker exists</span>
+      </div>
+    </div>
+
+    <!-- team-uat -->
+    <div class="card verify">
+      <div class="card-header">
+        <div class="card-name">/team-uat</div>
+        <div class="card-badge badge-verify">Live browser</div>
+      </div>
+      <div class="card-trigger">Feature is deployed. Drives a real browser against production across 3 test layers. Auto-spawns /team-fix if issues found.</div>
+      <div class="card-cols">
+        <div>
+          <div class="col-label agents">Agents</div>
+          <div class="pill-list">
+            <span class="pill agent">UAT agent (Sonnet)</span>
+            <span class="pill agent">→ auto-triggers /team-fix on failure</span>
+          </div>
+        </div>
+        <div>
+          <div class="col-label outputs">Outputs</div>
+          <div class="pill-list">
+            <span class="pill output">Layer 1: happy path</span>
+            <span class="pill output">Layer 2: edge inputs</span>
+            <span class="pill output">Layer 3: state boundaries</span>
+            <span class="pill output">CLEAR or ISSUES FOUND verdict</span>
+            <span class="pill output">Failure JSON with console + network</span>
+          </div>
+        </div>
+      </div>
+      <hr class="card-divider">
+      <div class="col-label cannot">Cannot do</div>
+      <div class="cannot-row">
+        <span class="pill cannot">No .spec.ts files</span>
+        <span class="pill cannot">No dev environment — production only</span>
+        <span class="pill cannot">Cannot loop on failure indefinitely</span>
+        <span class="pill cannot">Does not deploy</span>
+      </div>
+    </div>
+
+  </div>
+
+  <!-- ── GATE LEGEND ─────────────────────────────────── -->
+  <div class="section-title">Human gates — where you stay in control</div>
+  <div class="gate-legend">
+    <div class="legend-item">
+      <div class="legend-icon">⏸</div>
+      <div class="legend-text">
+        <strong>Approve the spec</strong>
+        <span>After /team-design-studio propose mode. Nothing gets built until you say yes.</span>
+      </div>
+    </div>
+    <div class="legend-item">
+      <div class="legend-icon">⏸</div>
+      <div class="legend-text">
+        <strong>Approve the PR</strong>
+        <span>After /team-review. No skill merges — that decision is always yours.</span>
+      </div>
+    </div>
+    <div class="legend-item">
+      <div class="legend-icon">⏸</div>
+      <div class="legend-text">
+        <strong>Approve the deploy</strong>
+        <span>After /team-release GO. You run deploy-production.sh. No skill deploys for you.</span>
+      </div>
+    </div>
+    <div class="legend-item">
+      <div class="legend-icon">🔄</div>
+      <div class="legend-text">
+        <strong>Auto-loop: UAT → fix</strong>
+        <span>/team-uat auto-spawns /team-fix on ISSUES FOUND, then re-runs UAT once to confirm.</span>
+      </div>
+    </div>
+  </div>
+
+  <footer>Blick Group · Auto-published · /team-skills-reference-v1</footer>
+
+</body>
+</html>
