@@ -350,6 +350,86 @@
       line-height: 1.5;
     }
 
+    /* ── SCENARIOS ───────────────────────────────── */
+    .scenario-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+      gap: 16px;
+      margin-bottom: 16px;
+    }
+
+    .scenario-card {
+      background: white;
+      border-radius: 14px;
+      border: 1.5px solid #e8e8e8;
+      padding: 20px;
+      position: relative;
+    }
+
+    .scenario-header {
+      display: flex;
+      align-items: flex-start;
+      gap: 10px;
+      margin-bottom: 10px;
+    }
+
+    .scenario-icon {
+      font-size: 22px;
+      flex-shrink: 0;
+      margin-top: 1px;
+    }
+
+    .scenario-title {
+      font-size: 14px;
+      font-weight: 700;
+      color: #1a1a1a;
+      line-height: 1.4;
+    }
+
+    .scenario-subtitle {
+      font-size: 12px;
+      color: #888;
+      margin-top: 2px;
+    }
+
+    .scenario-prompt {
+      font-family: 'SF Mono', 'Menlo', monospace;
+      font-size: 12px;
+      background: #f5f4f0;
+      border-radius: 8px;
+      padding: 10px 12px;
+      color: #333;
+      margin-bottom: 10px;
+      line-height: 1.5;
+      word-break: break-word;
+    }
+
+    .scenario-prompt .cmd {
+      color: #7c4dce;
+      font-weight: 700;
+    }
+
+    .scenario-route {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 5px;
+    }
+
+    .scenario-pill {
+      font-size: 11px;
+      padding: 3px 9px;
+      border-radius: 10px;
+      font-weight: 600;
+    }
+
+    .sp-design  { background: #f0ebff; color: #7c4dce; }
+    .sp-build   { background: #e8f5f0; color: #2d7a57; }
+    .sp-verify  { background: #fff3ec; color: #c05e1f; }
+    .sp-review  { background: #eaf4fb; color: #1f6fa0; }
+    .sp-debug   { background: #fdf0ef; color: #c0392b; }
+    .sp-full    { background: #1a1a2e; color: #a8bbd4; }
+    .sp-note    { background: #f5f5f5; color: #666; font-style: italic; font-weight: 400; }
+
     /* ── GATE LEGEND ──────────────────────────────── */
     .gate-legend {
       background: white;
@@ -943,6 +1023,193 @@
 
   </div>
 
+  <!-- ── SCENARIOS ────────────────────────────────────── -->
+  <div class="section-title">Scenarios — what to reach for and when</div>
+  <div class="scenario-grid">
+
+    <div class="scenario-card">
+      <div class="scenario-header">
+        <div class="scenario-icon">🚀</div>
+        <div>
+          <div class="scenario-title">Clear feature, just ship it</div>
+          <div class="scenario-subtitle">You know what you want. You'd approve the spec anyway.</div>
+        </div>
+      </div>
+      <div class="scenario-prompt"><span class="cmd">/team-fullcream</span> Add a "mark all read" button to the notifications panel</div>
+      <div class="scenario-route">
+        <span class="scenario-pill sp-full">/team-fullcream</span>
+        <span class="scenario-pill sp-note">runs all 6 phases, you merge + deploy</span>
+      </div>
+    </div>
+
+    <div class="scenario-card">
+      <div class="scenario-header">
+        <div class="scenario-icon">🎨</div>
+        <div>
+          <div class="scenario-title">Not sure what it should look like</div>
+          <div class="scenario-subtitle">You need to see options before committing to a build.</div>
+        </div>
+      </div>
+      <div class="scenario-prompt"><span class="cmd">/team-design-studio</span> The rig card feels cluttered — rethink the layout</div>
+      <div class="scenario-route">
+        <span class="scenario-pill sp-design">/team-design-studio</span>
+        <span class="scenario-pill sp-note">propose mode → you approve → then /team-build-lite</span>
+      </div>
+    </div>
+
+    <div class="scenario-card">
+      <div class="scenario-header">
+        <div class="scenario-icon">🏗️</div>
+        <div>
+          <div class="scenario-title">Spec approved, ready to build</div>
+          <div class="scenario-subtitle">Design doc exists in docs/designs/. API is stable, UI only.</div>
+        </div>
+      </div>
+      <div class="scenario-prompt"><span class="cmd">/team-build-lite</span> implement the approved Copper territory filter spec</div>
+      <div class="scenario-route">
+        <span class="scenario-pill sp-build">/team-build-lite</span>
+        <span class="scenario-pill sp-note">frontend only, escalates to /team-build if backend gap found</span>
+      </div>
+    </div>
+
+    <div class="scenario-card">
+      <div class="scenario-header">
+        <div class="scenario-icon">🔧</div>
+        <div>
+          <div class="scenario-title">New endpoint + UI together</div>
+          <div class="scenario-subtitle">Feature needs new API routes, DB changes, or background jobs.</div>
+        </div>
+      </div>
+      <div class="scenario-prompt"><span class="cmd">/team-build</span> Add rig induction status to the rig card — new endpoint + badge UI</div>
+      <div class="scenario-route">
+        <span class="scenario-pill sp-build">/team-build</span>
+        <span class="scenario-pill sp-note">full stack — frontend + backend + tests</span>
+      </div>
+    </div>
+
+    <div class="scenario-card">
+      <div class="scenario-header">
+        <div class="scenario-icon">🐛</div>
+        <div>
+          <div class="scenario-title">Something is broken</div>
+          <div class="scenario-subtitle">Don't know why. Always investigate before fixing.</div>
+        </div>
+      </div>
+      <div class="scenario-prompt"><span class="cmd">/team-debug</span> The close-out modal submits but the status doesn't update in the list</div>
+      <div class="scenario-route">
+        <span class="scenario-pill sp-debug">/team-debug</span>
+        <span class="scenario-pill sp-note">read-only investigation → then /team-fix with findings</span>
+      </div>
+    </div>
+
+    <div class="scenario-card">
+      <div class="scenario-header">
+        <div class="scenario-icon">🔍</div>
+        <div>
+          <div class="scenario-title">Root cause known, fix it</div>
+          <div class="scenario-subtitle">Debug already ran, findings doc exists, just implement the fix.</div>
+        </div>
+      </div>
+      <div class="scenario-prompt"><span class="cmd">/team-fix</span> uat-closeout-modal — see docs/debug/closeout-findings.md</div>
+      <div class="scenario-route">
+        <span class="scenario-pill sp-debug">/team-fix</span>
+        <span class="scenario-pill sp-note">verify loop up to 8 iterations → PR to main</span>
+      </div>
+    </div>
+
+    <div class="scenario-card">
+      <div class="scenario-header">
+        <div class="scenario-icon">👁️</div>
+        <div>
+          <div class="scenario-title">Audit the PR before merging</div>
+          <div class="scenario-subtitle">Code is done. 4 reviewers check security, quality, architecture, design in parallel.</div>
+        </div>
+      </div>
+      <div class="scenario-prompt"><span class="cmd">/team-review</span> feature/copper-territory-filter</div>
+      <div class="scenario-route">
+        <span class="scenario-pill sp-review">/team-review</span>
+        <span class="scenario-pill sp-note">blockers must fix, actions should fix, info noted</span>
+      </div>
+    </div>
+
+    <div class="scenario-card">
+      <div class="scenario-header">
+        <div class="scenario-icon">✅</div>
+        <div>
+          <div class="scenario-title">Safe to deploy?</div>
+          <div class="scenario-subtitle">Merged to main. Check CI, env vars, migrations, watchman before pushing the button.</div>
+        </div>
+      </div>
+      <div class="scenario-prompt"><span class="cmd">/team-release</span></div>
+      <div class="scenario-route">
+        <span class="scenario-pill sp-review">/team-release</span>
+        <span class="scenario-pill sp-note">GO / NO-GO verdict + pre-deploy checklist</span>
+      </div>
+    </div>
+
+    <div class="scenario-card">
+      <div class="scenario-header">
+        <div class="scenario-icon">🌐</div>
+        <div>
+          <div class="scenario-title">Verify the live feature</div>
+          <div class="scenario-subtitle">Deployed. Drive a real browser through happy path, edge cases, state boundaries.</div>
+        </div>
+      </div>
+      <div class="scenario-prompt"><span class="cmd">/team-uat</span> compass-closeout production full</div>
+      <div class="scenario-route">
+        <span class="scenario-pill sp-verify">/team-uat</span>
+        <span class="scenario-pill sp-note">CLEAR or ISSUES FOUND → auto-spawns /team-fix on failure</span>
+      </div>
+    </div>
+
+    <div class="scenario-card">
+      <div class="scenario-header">
+        <div class="scenario-icon">🔐</div>
+        <div>
+          <div class="scenario-title">Regulated feature (auth / PII / payments)</div>
+          <div class="scenario-subtitle">Do not use /team-fullcream. Design-heavy handles compliance gates first.</div>
+        </div>
+      </div>
+      <div class="scenario-prompt"><span class="cmd">/team-design-heavy</span> New staff permission model — managers can approve H&amp;S reports</div>
+      <div class="scenario-route">
+        <span class="scenario-pill sp-design">/team-design-heavy</span>
+        <span class="scenario-pill sp-note">6 mandatory phases → HANDOFF.md → then /team-build manually</span>
+      </div>
+    </div>
+
+    <div class="scenario-card">
+      <div class="scenario-header">
+        <div class="scenario-icon">🪞</div>
+        <div>
+          <div class="scenario-title">Does the build match the design?</div>
+          <div class="scenario-subtitle">Build team finished. Check implementation against the original spec.</div>
+        </div>
+      </div>
+      <div class="scenario-prompt"><span class="cmd">/team-design-studio</span> review — copper-territory-filter</div>
+      <div class="scenario-route">
+        <span class="scenario-pill sp-design">/team-design-studio</span>
+        <span class="scenario-pill sp-note">review mode → APPROVED / NEEDS FIXES / SIGNIFICANT REWORK</span>
+      </div>
+    </div>
+
+    <div class="scenario-card" style="border-color:#f0e8d0; background:#fffdf5;">
+      <div class="scenario-header">
+        <div class="scenario-icon">🚫</div>
+        <div>
+          <div class="scenario-title">Don't reach for fullcream when...</div>
+          <div class="scenario-subtitle">These are the wrong times to run the full pipeline.</div>
+        </div>
+      </div>
+      <div style="display:flex;flex-direction:column;gap:6px;margin-top:2px;">
+        <div style="font-size:12px;color:#666;padding:6px 10px;background:#f5f0e8;border-radius:7px;">🐛 It's a bug fix → <strong>/team-debug then /team-fix</strong></div>
+        <div style="font-size:12px;color:#666;padding:6px 10px;background:#f5f0e8;border-radius:7px;">🔐 Auth / PII / payments → <strong>/team-design-heavy first</strong></div>
+        <div style="font-size:12px;color:#666;padding:6px 10px;background:#f5f0e8;border-radius:7px;">🤔 Not sure what you want → <strong>/team-design-studio propose first</strong></div>
+        <div style="font-size:12px;color:#666;padding:6px 10px;background:#f5f0e8;border-radius:7px;">🏗️ Complex new backend from scratch → <strong>too much to leave unreviewed mid-flight</strong></div>
+      </div>
+    </div>
+
+  </div>
+
   <!-- ── GATE LEGEND ─────────────────────────────────── -->
   <div class="section-title">Human gates — where you stay in control</div>
   <div class="gate-legend">
@@ -976,7 +1243,7 @@
     </div>
   </div>
 
-  <footer>Blick Group · Auto-published · /team-skills-reference-v1</footer>
+  <footer>Blick Group · /team-skills-reference-v2</footer>
 
 </body>
 </html>
