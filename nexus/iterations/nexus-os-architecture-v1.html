@@ -5,6 +5,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Nexus OS v1.3 — Blick AI Operating System</title>
 <!-- v1.3 · 2026-05-09 — adds Governance (drift-watch + drift-gate), Production-Truth (runtime-sha + workspace-git-hygiene), Live-Notes loop, Modes (research-synthesizer shadow), Vault-Linker, LinkedIn preview pipeline -->
+<!-- v1.4 · 2026-05-29 — adds /team-fullcream orchestrator; marks /team-design superseded; adds /team-design-heavy; refreshes all team skill descriptions -->
 <!-- v1.2 · 2026-05-01 — adds Universal Learning Loop gate + Lineage Spine -->
 <!-- v1.0 base: 2026-04-29 nexus/scripts/generate-nexus-presentation.js -->
 <!-- Source data: nexus/launchd/ · ~/.claude/skills/ · nexus-vault.db -->
@@ -215,7 +216,7 @@ footer{padding:60px 0;border-top:1px solid var(--line);text-align:center}
         <span class="hero-stat-label">Graph Links</span>
       </div>
     </div>
-    <div class="generated-badge">v1.3 · 2026-05-09 · adds Governance + Production-Truth + Live-Notes + Modes + Vault-Linker + LinkedIn pipeline</div>
+    <div class="generated-badge">v1.4 · 2026-05-29 · adds /team-fullcream orchestrator + skills refresh</div>
   </div>
 </section>
 
@@ -590,7 +591,13 @@ footer{padding:60px 0;border-top:1px solid var(--line);text-align:center}
     <div class="skills-grid">
       
       <div class="skill-category">Agent Teams — Multi-Specialist Orchestration</div>
-      
+
+      <div class="skill-card" style="border-color:rgba(124,77,206,.35);background:linear-gradient(135deg,#1a1a2e,#16213e);grid-column:1/-1;">
+        <div class="skill-trigger" style="background:rgba(124,77,206,.15);border-color:rgba(124,77,206,.4);color:#c4a0f5;">/team-fullcream</div>
+        <div class="skill-name" style="color:#e8e0ff;">Full Pipeline Orchestrator</div>
+        <div class="skill-desc" style="color:#8899bb;">Runs the entire feature lifecycle automatically: design-studio → build → review → release → design-review → UAT. Stops only on a blocker. One summary at the end. Use when the brief is clear and you'd approve the spec anyway. <a href="https://blickgroup.github.io/designs/designs/nexus/team-skills-reference-v1.html" style="color:#c4a0f5;">→ Visual reference</a></div>
+      </div>
+
       <div class="skill-card">
         <div class="skill-trigger">/team-build</div>
         <div class="skill-name">Team Build</div>
@@ -599,42 +606,47 @@ footer{padding:60px 0;border-top:1px solid var(--line);text-align:center}
       <div class="skill-card">
         <div class="skill-trigger">/team-build-lite</div>
         <div class="skill-name">Team Build Lite</div>
-        <div class="skill-desc">Spawn a frontend-focused build team for UI changes that don't require new backend work. Implements, tests, quality-checks, and documents — hands off release-rea</div>
+        <div class="skill-desc">Spawn a frontend-focused build team for UI changes that don't require new backend work. Implements, tests, quality-checks, and documents — hands off release-ready code.</div>
       </div>
       <div class="skill-card">
         <div class="skill-trigger">/team-debug</div>
         <div class="skill-name">Team Debug</div>
-        <div class="skill-desc">Spawn competing investigators plus a scribe to debug an issue and document findings</div>
+        <div class="skill-desc">Spawn competing investigators plus a scribe to debug an issue and document findings. Read-only — run before /team-fix.</div>
       </div>
-      <div class="skill-card">
+      <div class="skill-card" style="opacity:.5;border-style:dashed;">
         <div class="skill-trigger">/team-design</div>
-        <div class="skill-name">Team Design</div>
-        <div class="skill-desc">Spawn a design audit team for UX quality, data contract alignment, environment parity, and production readiness</div>
+        <div class="skill-name">Team Design <span style="font-size:10px;color:#e07b39;">(superseded)</span></div>
+        <div class="skill-desc">Superseded by /team-design-studio (standard) and /team-design-heavy (regulated). Avoid.</div>
       </div>
       <div class="skill-card">
         <div class="skill-trigger">/team-design-studio</div>
         <div class="skill-name">Team Design Studio</div>
-        <div class="skill-desc">Spawn a creative design team to propose UX/UI for new features or redesigns (propose mode), or verify an implementation matches its approved spec (review mode).</div>
+        <div class="skill-desc">Propose UX/UI for new features (propose mode) or verify a build matches its approved spec (review mode). Primary design skill — use this, not /team-design.</div>
+      </div>
+      <div class="skill-card">
+        <div class="skill-trigger">/team-design-heavy</div>
+        <div class="skill-name">Team Design Heavy</div>
+        <div class="skill-desc">Regulated features only — auth, payments, PII, compliance. 6 mandatory phases with blocking security/architecture/accessibility reviewers before any code is written.</div>
       </div>
       <div class="skill-card">
         <div class="skill-trigger">/team-fix</div>
         <div class="skill-name">Team Fix</div>
-        <div class="skill-desc">Spawn a fix team to implement bug fixes, write tests, and update documentation</div>
+        <div class="skill-desc">Implement bug fixes with a deterministic verify loop (up to 8 iterations). Run after /team-debug has identified root cause.</div>
       </div>
       <div class="skill-card">
         <div class="skill-trigger">/team-release</div>
         <div class="skill-name">Team Release</div>
-        <div class="skill-desc">Spawn parallel checkers to validate release readiness before promoting dev to production</div>
+        <div class="skill-desc">GO / NO-GO deployment readiness check — CI, env vars, migrations, watchman registration. Does not deploy. You run deploy-production.sh.</div>
       </div>
       <div class="skill-card">
         <div class="skill-trigger">/team-review</div>
         <div class="skill-name">Team Review</div>
-        <div class="skill-desc">Spawn parallel reviewers plus a scribe to audit a PR from security, quality, architecture, and design angles</div>
+        <div class="skill-desc">Audit a PR in parallel from security, quality, architecture, and design angles. Read-only. Run before merge.</div>
       </div>
       <div class="skill-card">
         <div class="skill-trigger">/team-uat</div>
-        <div class="skill-name">Team Uat</div>
-        <div class="skill-desc">Agentic UAT runner — drives a real browser via Playwright MCP to verify feature flows, then layers adversarial edge cases, then auto-hands off to team-fix on fa</div>
+        <div class="skill-name">Team UAT</div>
+        <div class="skill-desc">Drive a real browser against production across 3 layers: happy path → edge inputs → state boundaries. Auto-spawns /team-fix on ISSUES FOUND.</div>
       </div>
       
       <div class="skill-category">Hub-App Engineering</div>
