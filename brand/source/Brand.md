@@ -64,30 +64,139 @@ Full-colour orange + black (Pantone Orange 021 C, `#f05323`) is default. Monochr
 
 ---
 
-## 3. Voice
+## 3. Voice — Foreman / Draper Frame
 
-Source of truth: [[brand-voice-guidelines]]. Summarised here so agents working on a single surface don't need to read both files.
+Confident, capable, practical and respected. Never corporate fluff.
 
-**The Expert Mate.** Technically brilliant, completely approachable. Picks up the phone, knows your name, solves the problem on the spot. Confident without being flashy, helpful without being pushy.
+Blick is **the experienced operator who knows the industry inside out, works hard beside the customer, and helps them win.** Not a trendy startup, not a technical lab, not a commodity seller.
 
-| We are | We are not |
+Anchor phrases from strategy:
+- "A team by your side"
+- "Helping me get a better result every time"
+- "Quality drilling fluids when you need them"
+- "Helping them deliver the job well"
+
+### 3.1 The Experienced Foreman, Not the Sales Rep
+
+Voice feels like a respected operator, a technical leader, someone who has been on-site, someone who understands pressure.
+
+| Sounds like | Doesn't sound like |
 |---|---|
-| Expert problem-solvers | Know-it-alls |
-| Dependable | Slow or bureaucratic |
-| In the field | Desk-bound |
-| Down-to-earth | Corporate or slick |
-| Quality-focused | The cheapest option |
-| Relationship-driven | Pushy salespeople |
-| Proactive | Passive order-takers |
-| Honest | Oversellers |
+| Direct | Polished corporate consultant |
+| Useful | Hype marketer |
+| Grounded | Loud "alpha" brand |
+| Calm under pressure | Cheap commodity seller |
+| Technically competent | |
+| Quietly confident | |
 
-**Rules every surface must obey:**
-1. **Plain English over jargon.** If there's a simpler way, use it. Pair every technical term with a plain-language explanation in the same sentence.
-2. **Customer is the hero.** Stories, case studies, and product copy frame the customer's win, not Blick's.
-3. **Specifics beat superlatives.** "We had stock on site in 48 hours" beats "world-class supply." Numbers, places, names.
-4. **Active voice, short sentences.** "We'll have it on your site tomorrow" not "Your order will be dispatched in due course."
-5. **Environmental claims are secondary.** Lead with performance; mention environmental benefit second, and only when product-specific.
-6. **No filler vocabulary.** Banned: *leverage, synergies, optimise, disruptive, world-class, game-changer, cheapest, one-stop-shop, solutions* (as a noun replacing the actual product/service name).
+Tone guide in one line, from a customer in the strategy doc: **"I can spot a salesman from a mile away."**
+
+### 3.2 The Draper Layer — What We're Actually Selling
+
+Not aesthetically Don Draper. **Strategically** Don Draper.
+
+Don Draper never sold products. He sold confidence, identity, belonging, self-image. Blick does the same.
+
+We are not selling bentonite, polymers, or drilling additives. We are selling **"a job done well."**
+
+The driller doesn't buy fluids. He buys:
+- Less risk
+- Reputation protection
+- Fewer breakdowns
+- Respect from his crew
+- Repeat contracts
+- Confidence under pressure
+
+**Use this language:** "keep drilling", "reduce downtime", "trusted on critical jobs", "when failure isn't an option", "helping crews deliver".
+
+**Never use this language:** "industry-leading rheology", "advanced fluid chemistry", "innovative solutions platform", or any sentence a consultant would write.
+
+Draper's version of our pitch: *"Nobody wants drilling fluids. They want to go home knowing the job went right."*
+
+### 3.3 The Flipped Prisoner's Dilemma
+
+Most drilling suppliers race to the bottom: cut margins, transactional, short-term, protect themselves first. Customers respond with distrust, price-checking, churn. Both sides lose.
+
+Blick flips the incentive. Not *"how do we maximise this order"* — *"how do we help this customer succeed long term."*
+
+From the strategy: **"We know our success is based on our customers' success."**
+
+Extraction → alignment. Supplier vs customer → shared outcome. Transaction → partnership.
+
+HDD customers remember **who answered the phone, who solved problems, who delivered fast, who stayed calm during failures.** That's where repeat business lives. That's how we beat commodity competitors.
+
+### 3.4 The Combined Philosophy
+
+**"Don Draper for industrial drilling."**
+
+- Emotionally: we help hard-working operators succeed
+- Strategically: we win by making the customer more successful
+- Tonally: capable, calm, respected, practical, intelligent. No fluff, no ego, no panic.
+- Commercially: premium but fair, quality-focused, trust-based, long-term, reputation-led
+
+### 3.5 The Three Restatements
+
+- **Internal:** "We help drillers deliver better jobs with less risk."
+- **Customer-facing:** "Quality drilling fluids when you need them, and a team by your side to get the job done well."
+- **Emotional core:** "We make operators look good."
+
+### 3.6 Voice Tests (apply to every piece of content)
+
+1. **Foreman test** — would a 50-year-old drilling foreman read this and think *"yeah, that's right"*, or scroll past thinking *"marketing fluff"*?
+2. **Phone test** — would I send this as a text to a mate on site? If not, cut until I would.
+3. **Salesman test** — does any sentence sound like it came from a sales pitch? Delete it.
+4. **Outcome test** — am I talking about the *job going right*, or about the *product*? Lead with the job.
+5. **Length test** — every word earns its place. The post that gets read beats the post that says everything.
+
+### 3.7 Plain Language Rule
+
+Down-to-earth language only. If a driller reads it on his phone between jobs, he should understand it without thinking.
+
+**Never use scientific or lab vocabulary:**
+- thixotropic, rheology, rheological, viscosity modifier
+- polymer viscosity, polymer chemistry, molecular structure
+- fluid dynamics, hydraulic conductivity, shear-thinning
+- chemical formulation, formulation chemistry, particulate suspension
+- "advanced chemistry", "proprietary blend", "engineered for…"
+
+**Say it the way a foreman would say it:**
+- not *"thixotropic suspension properties"* → *"holds cuttings in the fluid so they come out the hole"*
+- not *"low fluid loss characteristics"* → *"keeps the wall sealed so the bore doesn't leak"*
+- not *"reactive clay inhibition"* → *"stops the clay swelling and grabbing the rods"*
+- not *"optimised rheological profile"* → *"the right mud for the ground"*
+
+If the only way to say something is technical, you're talking to the wrong audience. Translate it or cut it.
+
+### 3.8 No Dash Fillers
+
+No dashes used as a thinking-pause or rhythm tool. This is the #1 AI-cadence giveaway.
+
+- **No em dashes (—) anywhere.** Not in body, not in hooks, not in CTAs.
+- **No en dashes (–) in prose.** Numeric ranges only (e.g. "6–12 mm" in product specs is fine).
+- **No hyphen-as-pause** ("we deliver - on time"). Use a full stop or comma.
+
+If you'd reach for a dash, write two short sentences instead. Foremen write in short sentences.
+
+### 3.9 Banned Patterns
+
+Cut on sight:
+- "Here's what's happening:"
+- "The bottom line is:"
+- "What this means for you:"
+- "Let us know your thoughts"
+- "We're proud to announce"
+- "Industry-leading", "cutting-edge", "innovative", "advanced"
+- Restating the hook in the body
+- Two sentences when one will do
+- Adjective stacks ("rugged, reliable, dependable")
+- Filler vocabulary: *leverage, synergies, optimise (as verb), disruptive, world-class, game-changer, cheapest, one-stop-shop, solutions (as a noun replacing the product/service name)*
+
+### 3.10 Universal Rules
+
+1. **Customer is the hero.** Stories, case studies, and product copy frame the customer's win, not Blick's.
+2. **Specifics beat superlatives.** "We had stock on site in 48 hours" beats "world-class supply." Numbers, places, names.
+3. **Active voice, short sentences.**
+4. **Environmental claims are secondary.** Lead with performance; mention environmental benefit second, and only when product-specific.
 
 ---
 
@@ -205,7 +314,7 @@ Colour-blind-accessible palette used on labels, product UI, and category tags. *
 
 **Never silently overwrite a conflict.** Per global rule: surface the disagreement, name the sources, ask the owner.
 
-**Review cadence:** quarterly review by owner. Last reviewed: 2026-05-01. Next review: 2026-08-01.
+**Review cadence:** quarterly review by owner. Last reviewed: 2026-05-18 (Voice §3 rewritten — Foreman/Draper frame, replaced Expert Mate summary, added plain-language rule and dash-filler ban). Next review: 2026-08-18.
 
 ---
 
