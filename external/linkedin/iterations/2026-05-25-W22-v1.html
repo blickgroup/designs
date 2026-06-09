@@ -1,0 +1,284 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>LinkedIn Preview — Week 6 = HDD Gel — the base bentonite of the Blick Fluids range</title>
+<style>
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body { background: #f3f2ef; font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif; padding: 20px; }
+  .container { max-width: 680px; margin: 0 auto; }
+
+  /* Header */
+  .page-header { background: #fff; border-radius: 8px; padding: 16px 20px; margin-bottom: 16px; border-left: 4px solid #ea580c; }
+  .page-header h1 { font-size: 16px; font-weight: 700; color: #000000e6; }
+  .page-header .meta { font-size: 12px; color: #00000099; margin-top: 4px; }
+  .status-badge { display: inline-block; padding: 2px 8px; border-radius: 12px; font-size: 11px; font-weight: 600; text-transform: uppercase; background: #94a3b8; color: #fff; margin-left: 8px; }
+
+  /* Tabs */
+  .tabs { display: flex; gap: 8px; margin-bottom: 12px; }
+  .tab-btn { padding: 8px 16px; border: none; border-radius: 20px; cursor: pointer; font-size: 13px; font-weight: 500; background: #e2e8f0; color: #00000099; transition: all 0.15s; }
+  .tab-btn.active { background: #0a66c2; color: #fff; }
+
+  /* Tab panels */
+  .tab-panel { display: none; }
+  .tab-panel.active { display: block; }
+
+  /* LinkedIn card */
+  .li-card { background: #ffffff; border-radius: 8px; border: 1px solid #e2e8f0; overflow: hidden; margin-bottom: 12px; }
+  .li-header { display: flex; align-items: center; gap: 10px; padding: 12px 16px 8px; }
+  .li-avatar { width: 40px; height: 40px; border-radius: 50%; background: #ea580c; color: #fff; font-size: 13px; font-weight: 700; display: flex; align-items: center; justify-content: center; flex-shrink: 0; }
+  .li-meta { flex: 1; }
+  .li-name { font-size: 14px; font-weight: 600; color: #000000e6; }
+  .li-sub { font-size: 12px; color: #00000099; }
+  .li-follow { font-size: 14px; font-weight: 600; color: #0a66c2; cursor: pointer; }
+  .li-body { padding: 8px 16px 12px; font-size: 14px; line-height: 1.55; color: #000000e6; }
+  .li-hook { font-weight: 600; margin-bottom: 10px; }
+  .li-text { margin-bottom: 10px; }
+  .li-cta { color: #00000099; margin-bottom: 8px; font-style: italic; }
+  .li-hashtags { color: #0a66c2; font-size: 13px; }
+  .li-footer { display: flex; gap: 20px; padding: 8px 16px; border-top: 1px solid #f1f5f9; font-size: 13px; color: #00000099; }
+  .li-footer span { cursor: pointer; }
+
+  /* Char bar */
+  .char-bar { height: 4px; background: #e2e8f0; border-radius: 2px; margin-bottom: 4px; }
+  .char-fill { height: 100%; border-radius: 2px; transition: width 0.3s; }
+  .char-label { font-size: 12px; margin-bottom: 12px; }
+
+  /* Notes */
+  .notes-box { background: #fefce8; border: 1px solid #fde68a; border-radius: 6px; padding: 12px; margin-bottom: 12px; font-size: 13px; }
+  .notes-label { font-weight: 600; margin-bottom: 4px; color: #92400e; }
+  .notes-text { color: #78350f; line-height: 1.5; }
+
+  /* Warnings */
+  .warnings-box { background: #fff7ed; border: 1px solid #fed7aa; border-radius: 6px; padding: 12px; margin-bottom: 16px; font-size: 13px; }
+  .warnings-box.ok { background: #f0fdf4; border-color: #bbf7d0; }
+  .warnings-label { font-weight: 600; margin-bottom: 4px; color: #b45309; }
+  .warnings-box.ok .warnings-label { color: #15803d; }
+  .warnings-box ul { padding-left: 16px; color: #7c2d12; }
+  .warnings-box ul li { margin-top: 2px; }
+
+  /* Buttons */
+  .action-row { display: flex; gap: 10px; margin-top: 8px; }
+  .btn-approve { flex: 1; padding: 12px; border: none; border-radius: 6px; font-size: 14px; font-weight: 600; cursor: pointer; background: #15803d; color: #fff; transition: opacity 0.15s; }
+  .btn-approve:hover { opacity: 0.9; }
+  .btn-reject { flex: 1; padding: 12px; border: none; border-radius: 6px; font-size: 14px; font-weight: 600; cursor: pointer; background: #dc2626; color: #fff; transition: opacity 0.15s; }
+  .btn-reject:hover { opacity: 0.9; }
+
+  /* Result message */
+  .result-msg { display: none; padding: 12px; border-radius: 6px; text-align: center; font-weight: 600; font-size: 14px; margin-top: 12px; }
+  .result-msg.ok { background: #f0fdf4; color: #15803d; border: 1px solid #bbf7d0; }
+  .result-msg.err { background: #fef2f2; color: #dc2626; border: 1px solid #fecaca; }
+</style>
+</head>
+<body>
+<div class="container">
+
+  <div class="page-header">
+    <h1>Week 6 = HDD Gel — the base bentonite of the Blick Fluids range <span class="status-badge">draft</span></h1>
+    <div class="meta">
+      Blick Group (company page) · text · Created 2026-05-25 · 3 posts drafted
+    </div>
+  </div>
+
+  
+    <div class="warnings-box ok">
+      <div class="warnings-label">✓ Brand voice checks passed</div>
+    </div>
+
+  <div class="tabs">
+    <button class="tab-btn active" onclick="showTab(0)" id="tab-0">
+      Monday Insight
+    </button>
+    <button class="tab-btn " onclick="showTab(1)" id="tab-1">
+      Wednesday Educational
+    </button>
+    <button class="tab-btn " onclick="showTab(2)" id="tab-2">
+      Friday Product Spotlight
+    </button></div>
+
+  
+    <div class="tab-panel active" id="panel-0">
+      <!-- LinkedIn post card -->
+      <div class="li-card">
+        <div class="li-header">
+          <div class="li-avatar">BG</div>
+          <div class="li-meta">
+            <div class="li-name">Blick Group</div>
+            <div class="li-sub">Drilling Fluids · Australia &amp; New Zealand · Just now</div>
+          </div>
+          <div class="li-follow">+ Follow</div>
+        </div>
+        <div class="li-body">
+          <div class="li-hook">Winter ground in AU and NZ doesn't drill like summer ground.</div>
+          <div class="li-text">Wetter months change what's happening down the hole. Softer formations, more water in the ground, clay that wants to swell and grab the string.&lt;br&gt;&lt;br&gt;None of it is new. But it's the season where a sloppy fluid program costs you a shift, and a tight one keeps you turning.&lt;br&gt;&lt;br&gt;Worth a look at your base bentonite before the cold sets in properly. The hole you keep open in May is cheaper than the one you fish out in July.</div>
+          <div class="li-cta">What's the ground throwing at your crews this winter?</div>
+          <div class="li-hashtags"><span style="color:#0a66c2">#DrillingAustralia</span> <span style="color:#0a66c2">#DrillingNZ</span> <span style="color:#0a66c2">#HDD</span> <span style="color:#0a66c2">#ExplorationDrilling</span> <span style="color:#0a66c2">#DrillingFluids</span> <span style="color:#0a66c2">#BlickFluids</span> <span style="color:#0a66c2">#BlickGroup</span></div>
+        </div>
+        <div class="li-footer">
+          <span>👍 Like</span><span>💬 Comment</span><span>🔁 Repost</span><span>📤 Send</span>
+        </div>
+      </div>
+
+      <!-- Char count bar -->
+      <div class="char-bar">
+        <div class="char-fill" style="width:21.366666666666667%; background:#0a66c2"></div>
+      </div>
+      <div class="char-label" style="color:#00000099">
+        641 / 3,000 characters
+      </div>
+
+      
+      <div class="notes-box">
+        <div class="notes-label">Notes from Nexus</div>
+        <div class="notes-text">Research feed had NO fresh news item inside the 14-day window for w/c 2026-05-25 — the autoresearch pipeline was down through 2026-05-26, so per the no-hallucination rule I did not cite a news item and wrote Monday as a seasonal/operational observation instead (winter wet ground in AU/NZ, which the rotation table itself ties to this season). No fabricated claims. Word count ~95.</div>
+      </div>
+
+      <!-- Approve/reject for this specific post -->
+      <div class="action-row">
+        <button class="btn-approve" onclick="approvePost(1, '2026-05-25-W22-v1', '/Volumes/NewmanDrive/development/BlickVault/Channels/content/2026-05-25-linkedin-week-6-hdd-gel.md')">
+          ✓ Approve Post 1
+        </button>
+        <button class="btn-reject" onclick="rejectPost(1, '2026-05-25-W22-v1', '/Volumes/NewmanDrive/development/BlickVault/Channels/content/2026-05-25-linkedin-week-6-hdd-gel.md')">
+          ✕ Reject Post 1
+        </button>
+      </div>
+    </div>
+    <div class="tab-panel " id="panel-1">
+      <!-- LinkedIn post card -->
+      <div class="li-card">
+        <div class="li-header">
+          <div class="li-avatar">BG</div>
+          <div class="li-meta">
+            <div class="li-name">Blick Group</div>
+            <div class="li-sub">Drilling Fluids · Australia &amp; New Zealand · Just now</div>
+          </div>
+          <div class="li-follow">+ Follow</div>
+        </div>
+        <div class="li-body">
+          <div class="li-hook">Cuttings dropping back down the hole the second you stop the pump?</div>
+          <div class="li-text">That's your bentonite not gelling up when it should.&lt;br&gt;&lt;br&gt;HDD Gel is high-yield sodium bentonite. While you're pumping it flows. The moment you stop, it gels and holds the cuttings in suspension instead of letting them settle out and pack the annulus.&lt;br&gt;&lt;br&gt;It does a second job too — coats and stabilises the bore wall so the hole doesn't cave in around your string.&lt;br&gt;&lt;br&gt;Dose to the PDS: 20 to 36 kg per cubic metre, added through the hopper into conditioned water. One thing that catches crews out — salty or hard water kills the yield. Above 5,000 mg/L chloride or 240 mg/L calcium and you need to condition the water with Soda Ash first, or prehydrate in fresh water.</div>
+          <div class="li-cta">Mixing into bore water you're not sure about? Phone the team and we'll sort the water conditioning with you.</div>
+          <div class="li-hashtags"><span style="color:#0a66c2">#HDDGel</span> <span style="color:#0a66c2">#DrillingFluids</span> <span style="color:#0a66c2">#Bentonite</span> <span style="color:#0a66c2">#HDD</span> <span style="color:#0a66c2">#Tunnelling</span> <span style="color:#0a66c2">#WaterWell</span> <span style="color:#0a66c2">#DrillingAustralia</span> <span style="color:#0a66c2">#DrillingNZ</span> <span style="color:#0a66c2">#BlickFluids</span></div>
+        </div>
+        <div class="li-footer">
+          <span>👍 Like</span><span>💬 Comment</span><span>🔁 Repost</span><span>📤 Send</span>
+        </div>
+      </div>
+
+      <!-- Char count bar -->
+      <div class="char-bar">
+        <div class="char-fill" style="width:32.1%; background:#0a66c2"></div>
+      </div>
+      <div class="char-label" style="color:#00000099">
+        963 / 3,000 characters
+      </div>
+
+      
+      <div class="notes-box">
+        <div class="notes-label">Notes from Nexus</div>
+        <div class="notes-text">Week 6 of rotation = HDD Gel (the base bentonite of the branded range). Wednesday explains the mechanism in plain English — gel-on-stop suspension + wall coating. Dosage 20–36 kg/m³ and the water-quality limits (&gt;5,000 mg/L Cl⁻ / &gt;240 mg/L Ca++ → condition with Soda Ash first) are taken straight from the HDD Gel PDS in the vault spec note — not invented. No rheology/thixotropic jargon. Plants the Soda Ash water-conditioning hook for Friday. Word count ~120.</div>
+      </div>
+
+      <!-- Approve/reject for this specific post -->
+      <div class="action-row">
+        <button class="btn-approve" onclick="approvePost(2, '2026-05-25-W22-v1', '/Volumes/NewmanDrive/development/BlickVault/Channels/content/2026-05-25-linkedin-week-6-hdd-gel.md')">
+          ✓ Approve Post 2
+        </button>
+        <button class="btn-reject" onclick="rejectPost(2, '2026-05-25-W22-v1', '/Volumes/NewmanDrive/development/BlickVault/Channels/content/2026-05-25-linkedin-week-6-hdd-gel.md')">
+          ✕ Reject Post 2
+        </button>
+      </div>
+    </div>
+    <div class="tab-panel " id="panel-2">
+      <!-- LinkedIn post card -->
+      <div class="li-card">
+        <div class="li-header">
+          <div class="li-avatar">BG</div>
+          <div class="li-meta">
+            <div class="li-name">Blick Group</div>
+            <div class="li-sub">Drilling Fluids · Australia &amp; New Zealand · Just now</div>
+          </div>
+          <div class="li-follow">+ Follow</div>
+        </div>
+        <div class="li-body">
+          <div class="li-hook">HDD Gel is the easy one to mix. That's the point.</div>
+          <div class="li-text">It's the simpler, quicker-to-mix bentonite in the Blick range. Gets into suspension fast, less mixing time, easy to handle on site. Standard HDD in clay or sand and gravel, tunnelling, large-diameter waterwell — that's its home ground, and it'll run up to maxi rig size with the right supporting chemicals.&lt;br&gt;&lt;br&gt;Where it isn't the answer: the long, difficult bores that need the highest gel strength. That's where Max Gel and Max Bore — the Wyoming products — earn their place.&lt;br&gt;&lt;br&gt;And one rule we don't bend: condition the water first. Soda Ash to bring hard or salty water into line before the bentonite goes in. Skip that step and you're fighting the fluid all shift.</div>
+          <div class="li-cta">Not sure whether your job wants HDD Gel or a Wyoming bentonite? Tell us the ground and the bore and we'll point you at the right one.</div>
+          <div class="li-hashtags"><span style="color:#0a66c2">#HDDGel</span> <span style="color:#0a66c2">#SodaAsh</span> <span style="color:#0a66c2">#Bentonite</span> <span style="color:#0a66c2">#DrillingFluids</span> <span style="color:#0a66c2">#HDD</span> <span style="color:#0a66c2">#Tunnelling</span> <span style="color:#0a66c2">#WaterWell</span> <span style="color:#0a66c2">#DrillingAustralia</span> <span style="color:#0a66c2">#BlickFluids</span></div>
+        </div>
+        <div class="li-footer">
+          <span>👍 Like</span><span>💬 Comment</span><span>🔁 Repost</span><span>📤 Send</span>
+        </div>
+      </div>
+
+      <!-- Char count bar -->
+      <div class="char-bar">
+        <div class="char-fill" style="width:32.2%; background:#0a66c2"></div>
+      </div>
+      <div class="char-label" style="color:#00000099">
+        966 / 3,000 characters
+      </div>
+
+      
+      <div class="notes-box">
+        <div class="notes-label">Notes from Nexus</div>
+        <div class="notes-text">Friday goes deeper on the same product — when to use HDD Gel (standard HDD/tunnelling/waterwell, up to maxi rig with support chemicals) and when NOT to (long difficult bores needing highest gel strength → Max Gel / Max Bore, Wyoming). Max Gel/Max Bore are legitimate higher-performance pairings per the spec note, mentioned as alternatives not headline. Soda Ash water-conditioning carried over from Wednesday as the operating rule. "Simpler/quicker to mix" positioning is per Tim's April 2026 review (flagged in the spec note as a positioning statement, not a PDS performance claim) — kept it as a handling characteristic, not a performance claim. No fabricated jobs or specs. Word count ~125.<br><br>---<br>## Preview<br>&gt; This section shows what will be sent to LinkedIn. Review before approving.<br><br>**Target:** Blick Group company page<br>**Format:** text<br>**Preview URL:** https://blickgroup.github.io/designs/designs/linkedin/2026-05-25-W22-v1.html<br><br>To approve: change `status: draft` → `status: approved` in the frontmatter above.<br>To schedule: also set `publish_at: YYYY-MM-DDTHH:MM:SS+10:00`<br><br>---<br>## Generation Metadata<br>- Line: linkedin<br>- Rotation week: 6 (HDD Gel)<br>- Source: manual backfill (W22 runner run failed 2026-05-25, claude -p ETIMEDOUT)<br>- Product figures: HDD Gel PDS/SDS via Products/specs/hdd-gel.md<br>- Research items: 0 fresh (autoresearch down through 2026-05-26)</div>
+      </div>
+
+      <!-- Approve/reject for this specific post -->
+      <div class="action-row">
+        <button class="btn-approve" onclick="approvePost(3, '2026-05-25-W22-v1', '/Volumes/NewmanDrive/development/BlickVault/Channels/content/2026-05-25-linkedin-week-6-hdd-gel.md')">
+          ✓ Approve Post 3
+        </button>
+        <button class="btn-reject" onclick="rejectPost(3, '2026-05-25-W22-v1', '/Volumes/NewmanDrive/development/BlickVault/Channels/content/2026-05-25-linkedin-week-6-hdd-gel.md')">
+          ✕ Reject Post 3
+        </button>
+      </div>
+    </div>
+
+  <div class="result-msg" id="result-msg"></div>
+
+</div>
+
+<script>
+function showTab(i) {
+  document.querySelectorAll('.tab-btn').forEach((b,j) => b.classList.toggle('active', i===j));
+  document.querySelectorAll('.tab-panel').forEach((p,j) => p.classList.toggle('active', i===j));
+}
+
+async function approvePost(postNum, slug, draftPath) {
+  await sendAction('approve', postNum, slug, draftPath);
+}
+
+async function rejectPost(postNum, slug, draftPath) {
+  await sendAction('reject', postNum, slug, draftPath);
+}
+
+async function sendAction(action, postNum, slug, draftPath) {
+  const msg = document.getElementById('result-msg');
+  msg.className = 'result-msg';
+  msg.style.display = 'none';
+  try {
+    const res = await fetch('https://blick-n8n.fly.dev/webhook/linkedin-' + action, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ slug, postNum, draftPath, action })
+    });
+    if (res.ok) {
+      msg.textContent = action === 'approve'
+        ? '✓ Post ' + postNum + ' approved — n8n will publish on schedule'
+        : '✕ Post ' + postNum + ' rejected — runner will avoid this angle';
+      msg.className = 'result-msg ok';
+    } else {
+      throw new Error('HTTP ' + res.status);
+    }
+  } catch(e) {
+    msg.textContent = 'Could not reach n8n (' + e.message + '). Edit status manually in Obsidian.';
+    msg.className = 'result-msg err';
+  }
+  msg.style.display = 'block';
+}
+</script>
+</body>
+</html>
