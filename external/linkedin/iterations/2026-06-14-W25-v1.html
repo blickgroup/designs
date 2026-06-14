@@ -1,0 +1,235 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>LinkedIn Preview — I have the Filter Low spec, the research context, and three previous Filter Low</title>
+<style>
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body { background: #f3f2ef; font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif; padding: 20px; }
+  .container { max-width: 680px; margin: 0 auto; }
+
+  /* Header */
+  .page-header { background: #fff; border-radius: 8px; padding: 16px 20px; margin-bottom: 16px; border-left: 4px solid #ea580c; }
+  .page-header h1 { font-size: 16px; font-weight: 700; color: #000000e6; }
+  .page-header .meta { font-size: 12px; color: #00000099; margin-top: 4px; }
+  .status-badge { display: inline-block; padding: 2px 8px; border-radius: 12px; font-size: 11px; font-weight: 600; text-transform: uppercase; background: #94a3b8; color: #fff; margin-left: 8px; }
+
+  /* Tabs */
+  .tabs { display: flex; gap: 8px; margin-bottom: 12px; }
+  .tab-btn { padding: 8px 16px; border: none; border-radius: 20px; cursor: pointer; font-size: 13px; font-weight: 500; background: #e2e8f0; color: #00000099; transition: all 0.15s; }
+  .tab-btn.active { background: #0a66c2; color: #fff; }
+
+  /* Tab panels */
+  .tab-panel { display: none; }
+  .tab-panel.active { display: block; }
+
+  /* LinkedIn card */
+  .li-card { background: #ffffff; border-radius: 8px; border: 1px solid #e2e8f0; overflow: hidden; margin-bottom: 12px; }
+  .li-header { display: flex; align-items: center; gap: 10px; padding: 12px 16px 8px; }
+  .li-avatar { width: 40px; height: 40px; border-radius: 50%; background: #ea580c; color: #fff; font-size: 13px; font-weight: 700; display: flex; align-items: center; justify-content: center; flex-shrink: 0; }
+  .li-meta { flex: 1; }
+  .li-name { font-size: 14px; font-weight: 600; color: #000000e6; }
+  .li-sub { font-size: 12px; color: #00000099; }
+  .li-follow { font-size: 14px; font-weight: 600; color: #0a66c2; cursor: pointer; }
+  .li-body { padding: 8px 16px 12px; font-size: 14px; line-height: 1.55; color: #000000e6; }
+  .li-hook { font-weight: 600; margin-bottom: 10px; }
+  .li-text { margin-bottom: 10px; }
+  .li-cta { color: #00000099; margin-bottom: 8px; font-style: italic; }
+  .li-hashtags { color: #0a66c2; font-size: 13px; }
+  .li-footer { display: flex; gap: 20px; padding: 8px 16px; border-top: 1px solid #f1f5f9; font-size: 13px; color: #00000099; }
+  .li-footer span { cursor: pointer; }
+
+  /* Char bar */
+  .char-bar { height: 4px; background: #e2e8f0; border-radius: 2px; margin-bottom: 4px; }
+  .char-fill { height: 100%; border-radius: 2px; transition: width 0.3s; }
+  .char-label { font-size: 12px; margin-bottom: 12px; }
+
+  /* Notes */
+  .notes-box { background: #fefce8; border: 1px solid #fde68a; border-radius: 6px; padding: 12px; margin-bottom: 12px; font-size: 13px; }
+  .notes-label { font-weight: 600; margin-bottom: 4px; color: #92400e; }
+  .notes-text { color: #78350f; line-height: 1.5; }
+
+  /* Warnings */
+  .warnings-box { background: #fff7ed; border: 1px solid #fed7aa; border-radius: 6px; padding: 12px; margin-bottom: 16px; font-size: 13px; }
+  .warnings-box.ok { background: #f0fdf4; border-color: #bbf7d0; }
+  .warnings-label { font-weight: 600; margin-bottom: 4px; color: #b45309; }
+  .warnings-box.ok .warnings-label { color: #15803d; }
+  .warnings-box ul { padding-left: 16px; color: #7c2d12; }
+  .warnings-box ul li { margin-top: 2px; }
+
+  /* Buttons */
+  .action-row { display: flex; gap: 10px; margin-top: 8px; }
+  .btn-approve { flex: 1; padding: 12px; border: none; border-radius: 6px; font-size: 14px; font-weight: 600; cursor: pointer; background: #15803d; color: #fff; transition: opacity 0.15s; }
+  .btn-approve:hover { opacity: 0.9; }
+  .btn-reject { flex: 1; padding: 12px; border: none; border-radius: 6px; font-size: 14px; font-weight: 600; cursor: pointer; background: #dc2626; color: #fff; transition: opacity 0.15s; }
+  .btn-reject:hover { opacity: 0.9; }
+
+  /* Result message */
+  .result-msg { display: none; padding: 12px; border-radius: 6px; text-align: center; font-weight: 600; font-size: 14px; margin-top: 12px; }
+  .result-msg.ok { background: #f0fdf4; color: #15803d; border: 1px solid #bbf7d0; }
+  .result-msg.err { background: #fef2f2; color: #dc2626; border: 1px solid #fecaca; }
+</style>
+</head>
+<body>
+<div class="container">
+
+  <div class="page-header">
+    <h1>I have the Filter Low spec, the research context, and three previous Filter Low <span class="status-badge">draft</span></h1>
+    <div class="meta">
+      Blick Group (company page) · text · Created 2026-06-14 · 2 posts drafted
+    </div>
+  </div>
+
+  
+    <div class="warnings-box ok">
+      <div class="warnings-label">✓ Brand voice checks passed</div>
+    </div>
+
+  <div class="tabs">
+    <button class="tab-btn active" onclick="showTab(0)" id="tab-0">
+      Wednesday Educational
+    </button>
+    <button class="tab-btn " onclick="showTab(1)" id="tab-1">
+      Friday Product Spotlight
+    </button></div>
+
+  
+    <div class="tab-panel active" id="panel-0">
+      <!-- LinkedIn post card -->
+      <div class="li-card">
+        <div class="li-header">
+          <div class="li-avatar">BG</div>
+          <div class="li-meta">
+            <div class="li-name">Blick Group</div>
+            <div class="li-sub">Drilling Fluids · Australia &amp; New Zealand · Just now</div>
+          </div>
+          <div class="li-follow">+ Follow</div>
+        </div>
+        <div class="li-body">
+          <div class="li-hook">Sand seeps. Rock cracks. Both steal your fluid.</div>
+          <div class="li-text">In sand, your mud pushes through millions of tiny pores. The wall softens and starts closing in.<br><br>In fractured rock, the losses come fast. Open cracks swallow fluid before you can top the tank.<br><br>Different ground, same fix. Build a thin, tough filter cake on the bore wall before the ground takes control.<br><br>That's the job Filter Low does. Seals the wall and keeps the fluid on your side of it.</div>
+          <div class="li-cta">Sand or rock, where do you lose the most fluid?</div>
+          <div class="li-hashtags"><span style="color:#0a66c2">#DrillingFluids</span> <span style="color:#0a66c2">#FilterLow</span> <span style="color:#0a66c2">#BlickFluids</span> <span style="color:#0a66c2">#FluidLoss</span> <span style="color:#0a66c2">#HDD</span> <span style="color:#0a66c2">#WaterWell</span> <span style="color:#0a66c2">#ExplorationDrilling</span> <span style="color:#0a66c2">#DrillingAustralia</span></div>
+        </div>
+        <div class="li-footer">
+          <span>👍 Like</span><span>💬 Comment</span><span>🔁 Repost</span><span>📤 Send</span>
+        </div>
+      </div>
+
+      <!-- Char count bar -->
+      <div class="char-bar">
+        <div class="char-fill" style="width:19.933333333333334%; background:#0a66c2"></div>
+      </div>
+      <div class="char-label" style="color:#00000099">
+        598 / 3,000 characters
+      </div>
+
+      
+      <div class="notes-box">
+        <div class="notes-label">Notes from Nexus</div>
+        <div class="notes-text">Week 8 rotation = Filter Low, third cycle. Previous cycles taught the pore-level physics (June 1, approved) and the tank-dropping symptom (June 13). This one picks up the "fractured rock vs sand" angle from the rotation plan. Teaches HOW the two ground types bleed differently, then converges on the same fix (filter cake). Filter Low named once in the final paragraph as the resolution. All mechanism description from vault spec filter-low.md (lines 95-101). No fabricated anecdotes, no dosage (deferred to Friday). Word count: ~89.</div>
+      </div>
+
+      <!-- Approve/reject for this specific post -->
+      <div class="action-row">
+        <button class="btn-approve" onclick="approvePost(1, '2026-06-14-W25-v1', '/Volumes/NewmanDrive/development/BlickVault/Channels/content/2026-06-14-linkedin-i-have-the-filter-low-spec-the-research-context-an.md')">
+          ✓ Approve Post 1
+        </button>
+        <button class="btn-reject" onclick="rejectPost(1, '2026-06-14-W25-v1', '/Volumes/NewmanDrive/development/BlickVault/Channels/content/2026-06-14-linkedin-i-have-the-filter-low-spec-the-research-context-an.md')">
+          ✕ Reject Post 1
+        </button>
+      </div>
+    </div>
+    <div class="tab-panel " id="panel-1">
+      <!-- LinkedIn post card -->
+      <div class="li-card">
+        <div class="li-header">
+          <div class="li-avatar">BG</div>
+          <div class="li-meta">
+            <div class="li-name">Blick Group</div>
+            <div class="li-sub">Drilling Fluids · Australia &amp; New Zealand · Just now</div>
+          </div>
+          <div class="li-follow">+ Follow</div>
+        </div>
+        <div class="li-body">
+          <div class="li-hook">Filter Low is in six of our fluid programs.</div>
+          <div class="li-text">HDD in sand, waterwell in reactive clay, bored piling before a concrete pour. Every one needs a sealed bore wall, and every one runs Filter Low.<br><br>It's a PAC polymer that seals the wall without thickening your mud. The pump runs easy, the fluid stays thin, and the bore holds.<br><br>Works in bentonite systems and polymer systems. Rated to 149 degrees for geothermal work.<br><br>For tougher ground or bigger losses, give one of our team a call. We'll dial in the right dose for the job.</div>
+          <div class="li-cta">Which discipline gives you the worst fluid loss?</div>
+          <div class="li-hashtags"><span style="color:#0a66c2">#FilterLow</span> <span style="color:#0a66c2">#BlickFluids</span> <span style="color:#0a66c2">#DrillingFluids</span> <span style="color:#0a66c2">#HDD</span> <span style="color:#0a66c2">#WaterBoreDrilling</span> <span style="color:#0a66c2">#GeotechnicalDrilling</span> <span style="color:#0a66c2">#Geothermal</span> <span style="color:#0a66c2">#DrillingAustralia</span></div>
+        </div>
+        <div class="li-footer">
+          <span>👍 Like</span><span>💬 Comment</span><span>🔁 Repost</span><span>📤 Send</span>
+        </div>
+      </div>
+
+      <!-- Char count bar -->
+      <div class="char-bar">
+        <div class="char-fill" style="width:22.933333333333334%; background:#0a66c2"></div>
+      </div>
+      <div class="char-label" style="color:#00000099">
+        688 / 3,000 characters
+      </div>
+
+      
+      <div class="notes-box">
+        <div class="notes-label">Notes from Nexus</div>
+        <div class="notes-text">Friday headlines Filter Low and goes deeper on its discipline range. The "6 fluid programs" stat is from vault spec (H9, H10, W1, W2, W5, P1). Piling angle (P1 program) not covered in previous cycles and broadens audience beyond HDD contractors. Temperature rating (149°C, effective up to) from PDS per vault spec line 137. "Seals without thickening" is the plain-English version of spec line 180 (low viscosity impact). NZ geothermal is relevant background: $55M GeoShot NZ funding released June 12 (source: thinkgeoenergy.com). "Give the team a call" follows the dosage guidance rule. No fabricated stories or specs. Word count: ~103.<br><br>---<br><br>## Phase 3: Self-Review<br><br>| Check | Wednesday | Friday |<br>|-------|-----------|--------|<br>| Word count (80–150) | ~89 | ~103 |<br>| Hook ≤12 words | 8 | 9 |<br>| Paragraphs ≤4 | 4 | 4 |<br>| Each para ≤30 words, ≤2 sentences | All pass | All pass (P1 = 27w) |<br>| No em/en dashes in prose | Clean | Clean |<br>| No ALL CAPS | Clean | Clean |<br>| No emoji | Clean | Clean |<br>| No fabricated stories/customers | Clean | Clean |<br>| No banned vocabulary | Clean | Clean |<br>| No banned patterns | Clean | Clean |<br>| No literal `&lt;br&gt;` | Clean | Clean |<br>| Dosage from PDS only | No dosage (deferred) | Implicit via "call the team" |<br>| "Call the team" for tough conditions | N/A | Yes |<br>| Wed = education first, product as resolution | Product named once, last para | N/A |<br>| Fri = product-led headline | N/A | Product in hook |<br>| Different angle from previous cycles | Ground-type distinction | Discipline breadth + piling |<br>| Foreman test | Pass | Pass |<br>| Hashtags 5–8 | 8 | 8 |<br>| Connected pair, not repetitive | Teaches why ground type matters | Shows where the product works |<br><br>**Verdict:** Both posts are within caps, mechanically grounded in vault specs, no fabrication, and cover angles not touched by the June 1 or June 13 Filter Low drafts. Wednesday teaches the difference between sand and rock fluid loss (the "why it matters" entry). Friday opens up the product's range across disciplines, introduces piling (new audience), and mentions the 149°C geothermal capability as a timely secondary point. Connected arc: Wednesday says "different ground, same fix," Friday proves it by naming the six programs. No revisions needed.<br><br>---<br>## Preview<br>&gt; This section shows what will be sent to LinkedIn. Review before approving.<br><br>**Target:** Blick Group company page<br>**Format:** text<br>**Character count:**  ⚠️ 4987/3000 chars — near limit<br>**Preview URL:** https://blickgroup.github.io/designs/designs/linkedin/2026-06-14-W25-v1.html<br><br>To approve: change `status: draft` → `status: approved` in the frontmatter above.<br>To schedule: also set `publish_at: YYYY-MM-DDTHH:MM:SS+10:00`<br><br><br>---<br>## Generation Metadata<br>- Line: linkedin<br>- Research queries: 1<br>- Indexer context: 524 chars<br>- Memory context: 275 chars<br>- Generation time: 254.8s</div>
+      </div>
+
+      <!-- Approve/reject for this specific post -->
+      <div class="action-row">
+        <button class="btn-approve" onclick="approvePost(2, '2026-06-14-W25-v1', '/Volumes/NewmanDrive/development/BlickVault/Channels/content/2026-06-14-linkedin-i-have-the-filter-low-spec-the-research-context-an.md')">
+          ✓ Approve Post 2
+        </button>
+        <button class="btn-reject" onclick="rejectPost(2, '2026-06-14-W25-v1', '/Volumes/NewmanDrive/development/BlickVault/Channels/content/2026-06-14-linkedin-i-have-the-filter-low-spec-the-research-context-an.md')">
+          ✕ Reject Post 2
+        </button>
+      </div>
+    </div>
+
+  <div class="result-msg" id="result-msg"></div>
+
+</div>
+
+<script>
+function showTab(i) {
+  document.querySelectorAll('.tab-btn').forEach((b,j) => b.classList.toggle('active', i===j));
+  document.querySelectorAll('.tab-panel').forEach((p,j) => p.classList.toggle('active', i===j));
+}
+
+async function approvePost(postNum, slug, draftPath) {
+  await sendAction('approve', postNum, slug, draftPath);
+}
+
+async function rejectPost(postNum, slug, draftPath) {
+  await sendAction('reject', postNum, slug, draftPath);
+}
+
+async function sendAction(action, postNum, slug, draftPath) {
+  const msg = document.getElementById('result-msg');
+  msg.className = 'result-msg';
+  msg.style.display = 'none';
+  try {
+    const res = await fetch('https://blick-n8n.fly.dev/webhook/linkedin-' + action, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ slug, postNum, draftPath, action })
+    });
+    if (res.ok) {
+      msg.textContent = action === 'approve'
+        ? '✓ Post ' + postNum + ' approved — n8n will publish on schedule'
+        : '✕ Post ' + postNum + ' rejected — runner will avoid this angle';
+      msg.className = 'result-msg ok';
+    } else {
+      throw new Error('HTTP ' + res.status);
+    }
+  } catch(e) {
+    msg.textContent = 'Could not reach n8n (' + e.message + '). Edit status manually in Obsidian.';
+    msg.className = 'result-msg err';
+  }
+  msg.style.display = 'block';
+}
+</script>
+</body>
+</html>
