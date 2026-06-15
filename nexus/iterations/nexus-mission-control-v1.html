@@ -1,0 +1,333 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>NEXUS // Mission Control — design preview v1</title>
+<style>
+  /* ---- Palette (maps to brand tokens later) ---- */
+  :root{
+    --bg:#04070d; --bg2:#070c16; --panel:rgba(13,22,38,.62); --panel-edge:rgba(80,200,235,.16);
+    --ink:#cfe8f2; --ink-dim:#6f8aa0; --ink-faint:#3d5468;
+    --cyan:#36e6ff; --cyan-soft:#1aa7c4; --green:#2bd576; --amber:#ffb43d; --red:#ff4d5e; --violet:#9b7dff;
+    --grid:rgba(54,230,255,.05); --glow:0 0 18px rgba(54,230,255,.35);
+    --mono:'SF Mono','JetBrains Mono','Fira Code',ui-monospace,Menlo,monospace;
+    --sans:'Inter',-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;
+  }
+  *{box-sizing:border-box}
+  html,body{margin:0;height:100%}
+  body{
+    background:
+      radial-gradient(1200px 700px at 78% -10%,rgba(54,230,255,.10),transparent 60%),
+      radial-gradient(900px 600px at 8% 110%,rgba(155,125,255,.08),transparent 55%),
+      linear-gradient(180deg,var(--bg),var(--bg2));
+    color:var(--ink);font-family:var(--sans);letter-spacing:.2px;
+    background-attachment:fixed;min-height:100vh;
+  }
+  /* faint HUD grid + scanline */
+  body::before{content:"";position:fixed;inset:0;pointer-events:none;z-index:0;
+    background-image:linear-gradient(var(--grid) 1px,transparent 1px),linear-gradient(90deg,var(--grid) 1px,transparent 1px);
+    background-size:46px 46px;mask:radial-gradient(120% 90% at 50% 0%,#000 55%,transparent);}
+  body::after{content:"";position:fixed;left:0;right:0;height:140px;z-index:0;pointer-events:none;
+    background:linear-gradient(180deg,rgba(54,230,255,.06),transparent);animation:scan 7s linear infinite;}
+  @keyframes scan{0%{top:-140px}100%{top:100%}}
+
+  .wrap{position:relative;z-index:1;max-width:1180px;margin:0 auto;padding:22px 22px 60px}
+
+  /* ---- Top bar ---- */
+  .topbar{display:flex;align-items:center;justify-content:space-between;gap:16px;padding-bottom:14px;border-bottom:1px solid var(--panel-edge)}
+  .brand{display:flex;align-items:center;gap:14px}
+  .reactor{width:34px;height:34px;border-radius:50%;position:relative;flex:none;
+    background:radial-gradient(circle,rgba(54,230,255,.9),rgba(54,230,255,.15) 60%,transparent 70%);
+    box-shadow:var(--glow);animation:pulse 3.2s ease-in-out infinite}
+  .reactor::after{content:"";position:absolute;inset:6px;border:1.5px solid rgba(4,7,13,.85);border-radius:50%}
+  @keyframes pulse{0%,100%{transform:scale(1);opacity:.95}50%{transform:scale(1.08);opacity:.7}}
+  .brand h1{font-family:var(--mono);font-size:15px;font-weight:600;letter-spacing:3px;margin:0;color:#eafaff}
+  .brand h1 b{color:var(--cyan)}
+  .brand .sub{font-family:var(--mono);font-size:9.5px;letter-spacing:3px;color:var(--ink-faint);margin-top:2px}
+  .clock{font-family:var(--mono);text-align:right;font-size:12px;color:var(--ink-dim)}
+  .clock .t{font-size:20px;color:#eafaff;letter-spacing:2px}
+
+  /* ---- Headline state ---- */
+  .headline{display:flex;align-items:center;gap:18px;margin:20px 0 8px;padding:16px 20px;border-radius:14px;
+    border:1px solid var(--panel-edge);background:var(--panel);position:relative;overflow:hidden;backdrop-filter:blur(3px)}
+  .headline .ring{width:46px;height:46px;border-radius:50%;flex:none;border:2px solid var(--green);
+    box-shadow:0 0 16px rgba(43,213,118,.5);position:relative}
+  .headline .ring::before{content:"";position:absolute;inset:7px;border-radius:50%;background:var(--green);opacity:.85;animation:pulse 2.6s infinite}
+  .headline.alert .ring{border-color:var(--amber);box-shadow:0 0 16px rgba(255,180,61,.55)}
+  .headline.alert .ring::before{background:var(--amber)}
+  .headline .state{font-family:var(--mono);font-size:22px;letter-spacing:3px;color:#eafaff}
+  .headline .meta{margin-left:auto;text-align:right;font-family:var(--mono);font-size:11px;color:var(--ink-dim)}
+  .headline .meta b{color:var(--cyan);font-size:13px}
+
+  /* ---- Attention feed ---- */
+  .section-label{font-family:var(--mono);font-size:10px;letter-spacing:3px;color:var(--ink-faint);margin:22px 2px 9px}
+  .feed{display:flex;flex-direction:column;gap:8px}
+  .feed .empty{font-family:var(--mono);font-size:12px;color:var(--ink-faint);padding:10px 14px;border:1px dashed var(--panel-edge);border-radius:10px}
+  .attn{display:flex;align-items:center;gap:14px;padding:12px 16px;border-radius:11px;background:rgba(255,180,61,.07);
+    border:1px solid rgba(255,180,61,.3);box-shadow:0 0 22px rgba(255,180,61,.08)}
+  .attn .sev{width:8px;height:8px;border-radius:50%;background:var(--amber);box-shadow:0 0 10px var(--amber);flex:none;animation:pulse 1.8s infinite}
+  .attn .txt b{color:#ffe7bd;font-weight:600}
+  .attn .txt span{display:block;font-size:11.5px;color:var(--ink-dim);margin-top:2px}
+  .attn .acts{margin-left:auto;display:flex;gap:7px}
+  .btn{font-family:var(--mono);font-size:10px;letter-spacing:1.5px;padding:6px 11px;border-radius:7px;cursor:pointer;
+    background:transparent;color:var(--ink-dim);border:1px solid var(--panel-edge);transition:.15s}
+  .btn:hover{color:#eafaff;border-color:var(--cyan);box-shadow:var(--glow)}
+  .btn.go{color:var(--cyan);border-color:rgba(54,230,255,.4)}
+
+  /* ---- Status grid ---- */
+  .grid{display:grid;grid-template-columns:repeat(4,1fr);gap:14px}
+  .tile{position:relative;padding:16px;border-radius:13px;background:var(--panel);border:1px solid var(--panel-edge);
+    cursor:pointer;transition:.18s;overflow:hidden;min-height:148px;backdrop-filter:blur(3px)}
+  .tile:hover{transform:translateY(-3px);border-color:rgba(54,230,255,.45);box-shadow:0 10px 34px rgba(0,0,0,.5),var(--glow)}
+  /* HUD corner brackets */
+  .tile .br{position:absolute;width:11px;height:11px;border:1.5px solid rgba(54,230,255,.4)}
+  .tile .br.tl{top:8px;left:8px;border-right:0;border-bottom:0}
+  .tile .br.tr{top:8px;right:8px;border-left:0;border-bottom:0}
+  .tile .br.bl{bottom:8px;left:8px;border-right:0;border-top:0}
+  .tile .br.brr{bottom:8px;right:8px;border-left:0;border-top:0}
+  .tile h3{font-family:var(--mono);font-size:10px;letter-spacing:2.5px;color:var(--ink-dim);margin:0 0 14px;display:flex;align-items:center;gap:8px}
+  .dot{width:8px;height:8px;border-radius:50%;flex:none}
+  .dot.ok{background:var(--green);box-shadow:0 0 9px var(--green)}
+  .dot.warn{background:var(--amber);box-shadow:0 0 9px var(--amber);animation:pulse 1.8s infinite}
+  .dot.crit{background:var(--red);box-shadow:0 0 9px var(--red);animation:pulse 1.2s infinite}
+  .tile .big{font-size:30px;font-weight:300;color:#eafaff;line-height:1;font-family:var(--sans)}
+  .tile .big small{font-size:13px;color:var(--ink-dim)}
+  .tile .rows{margin-top:12px;font-family:var(--mono);font-size:11px;color:var(--ink-dim);display:flex;flex-direction:column;gap:5px}
+  .tile .rows .r{display:flex;justify-content:space-between;gap:8px}
+  .tile .rows .r b{color:var(--ink)}
+  .spark{margin-top:12px;display:block}
+  .tile .tag{position:absolute;top:14px;right:26px;font-family:var(--mono);font-size:9px;letter-spacing:1px;color:var(--amber)}
+
+  /* ---- Roadmap + instrumentation strips ---- */
+  .strip{display:flex;align-items:center;gap:18px;margin-top:14px;padding:13px 18px;border-radius:11px;
+    background:rgba(13,22,38,.4);border:1px solid var(--panel-edge);font-family:var(--mono);font-size:11.5px;color:var(--ink-dim);cursor:pointer;transition:.15s}
+  .strip:hover{border-color:rgba(54,230,255,.4)}
+  .strip .lab{letter-spacing:2.5px;color:var(--ink-faint);font-size:10px}
+  .strip b{color:var(--ink)}
+  .strip .chip{padding:3px 9px;border-radius:20px;border:1px solid var(--panel-edge);font-size:10px;letter-spacing:1px}
+  .strip .chip.v{color:var(--violet);border-color:rgba(155,125,255,.35)}
+  .strip .arrow{margin-left:auto;color:var(--cyan)}
+  .strip.instr{background:rgba(255,77,94,.05);border-color:rgba(255,77,94,.22)}
+  .strip.instr .lab{color:rgba(255,160,170,.7)}
+
+  .note{margin-top:26px;font-family:var(--mono);font-size:10px;color:var(--ink-faint);letter-spacing:.5px;line-height:1.7;text-align:center}
+
+  /* ---- Drill panel (L1) ---- */
+  .scrim{position:fixed;inset:0;background:rgba(2,4,8,.74);backdrop-filter:blur(4px);z-index:20;opacity:0;pointer-events:none;transition:.22s}
+  .scrim.show{opacity:1;pointer-events:auto}
+  .drawer{position:fixed;top:0;right:0;height:100%;width:min(460px,92vw);z-index:21;transform:translateX(102%);transition:.28s cubic-bezier(.4,0,.2,1);
+    background:linear-gradient(180deg,#070d18,#05080f);border-left:1px solid rgba(54,230,255,.25);box-shadow:-20px 0 60px rgba(0,0,0,.6);padding:24px;overflow-y:auto}
+  .drawer.show{transform:translateX(0)}
+  .drawer h2{font-family:var(--mono);font-size:13px;letter-spacing:3px;color:#eafaff;margin:0 0 4px;display:flex;align-items:center;gap:10px}
+  .drawer .dsub{font-family:var(--mono);font-size:10px;letter-spacing:2px;color:var(--ink-faint);margin-bottom:20px}
+  .drawer .close{position:absolute;top:20px;right:20px;cursor:pointer;color:var(--ink-dim);font-family:var(--mono);font-size:18px}
+  .drawer .close:hover{color:var(--cyan)}
+  .lrow{display:flex;align-items:center;gap:12px;padding:12px 0;border-bottom:1px solid rgba(80,200,235,.08);font-family:var(--mono);font-size:12px}
+  .lrow .name{color:var(--ink);flex:1}
+  .lrow .when{color:var(--ink-faint);font-size:10.5px}
+  .lrow .dur{color:var(--cyan-soft);font-size:10.5px}
+  .l2hint{margin-top:16px;font-family:var(--mono);font-size:10px;color:var(--ink-faint);text-align:center;letter-spacing:1px}
+  .breadcrumb{font-family:var(--mono);font-size:9px;letter-spacing:2px;color:var(--cyan-soft);margin-bottom:14px}
+
+  /* demo toggle */
+  .demo{position:fixed;left:18px;bottom:16px;z-index:30;font-family:var(--mono);font-size:10px;letter-spacing:1.5px;
+    padding:9px 14px;border-radius:8px;background:rgba(13,22,38,.85);border:1px solid var(--panel-edge);color:var(--cyan);cursor:pointer}
+  .demo:hover{box-shadow:var(--glow)}
+
+  @media(max-width:820px){.grid{grid-template-columns:repeat(2,1fr)}.headline .state{font-size:18px}}
+  @media(max-width:520px){.grid{grid-template-columns:1fr}.brand .sub{display:none}}
+</style>
+</head>
+<body>
+<div class="wrap">
+
+  <div class="topbar">
+    <div class="brand">
+      <div class="reactor"></div>
+      <div>
+        <h1>NEXUS <b>//</b> MISSION CONTROL</h1>
+        <div class="sub">BLICK GROUP · AI OPERATIONS · LANE 1</div>
+      </div>
+    </div>
+    <div class="clock">
+      <div class="t" id="clk">--:--:--</div>
+      <div id="date">— · syd</div>
+    </div>
+  </div>
+
+  <!-- HEADLINE (worst-wins) -->
+  <div class="headline alert" id="headline">
+    <div class="ring"></div>
+    <div class="state" id="stateText">ATTENTION</div>
+    <div class="meta">
+      <div><b id="needCount">1</b> NEEDS YOU</div>
+      <div id="okSummary">7 / 8 SYSTEMS NOMINAL</div>
+    </div>
+  </div>
+
+  <!-- ATTENTION FEED -->
+  <div class="section-label">NEEDS YOU</div>
+  <div class="feed" id="feed">
+    <div class="attn">
+      <div class="sev"></div>
+      <div class="txt">
+        <b>Autoresearch — 0 items promoted in 4 days</b>
+        <span>Output heartbeat silent · likely VRAM fallback. Last full run 1.5 / 21 domains.</span>
+      </div>
+      <div class="acts">
+        <div class="btn go" onclick="openDrill('automation')">OPEN</div>
+        <div class="btn">ACK</div>
+        <div class="btn">SNOOZE</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- STATUS GRID -->
+  <div class="section-label">SYSTEMS</div>
+  <div class="grid">
+
+    <!-- Automation -->
+    <div class="tile" onclick="openDrill('automation')">
+      <span class="br tl"></span><span class="br tr"></span><span class="br bl"></span><span class="br brr"></span>
+      <div class="tag">1 LATE</div>
+      <h3><span class="dot warn"></span>AUTOMATION</h3>
+      <div class="big">7<small> / 8 ok</small></div>
+      <div class="rows">
+        <div class="r"><span>brief · coa</span><b>nominal</b></div>
+        <div class="r"><span>autoresearch</span><b style="color:var(--amber)">starved</b></div>
+      </div>
+    </div>
+
+    <!-- Cost -->
+    <div class="tile" onclick="openDrill('cost')">
+      <span class="br tl"></span><span class="br tr"></span><span class="br bl"></span><span class="br brr"></span>
+      <h3><span class="dot ok"></span>COST / BURN</h3>
+      <div class="big">$2.10<small> today</small></div>
+      <svg class="spark" width="100%" height="30" viewBox="0 0 160 30" preserveAspectRatio="none">
+        <polyline fill="none" stroke="#36e6ff" stroke-width="1.5" opacity=".8"
+          points="0,22 20,18 40,24 60,12 80,20 100,8 120,16 140,10 160,14"/>
+        <line x1="0" y1="6" x2="160" y2="6" stroke="#ff4d5e" stroke-width="1" stroke-dasharray="3 3" opacity=".4"/>
+      </svg>
+      <div class="rows"><div class="r"><span>paid fallback</span><b>8%</b></div></div>
+    </div>
+
+    <!-- Output -->
+    <div class="tile" onclick="openDrill('output')">
+      <span class="br tl"></span><span class="br tr"></span><span class="br bl"></span><span class="br brr"></span>
+      <h3><span class="dot ok"></span>OUTPUT</h3>
+      <div class="big">5<small> web leads / wk</small></div>
+      <div class="rows">
+        <div class="r"><span>brief today</span><b>✓ 06:00</b></div>
+        <div class="r"><span>vault promotions</span><b>+12</b></div>
+      </div>
+    </div>
+
+    <!-- Work & Release -->
+    <div class="tile" onclick="openDrill('work')">
+      <span class="br tl"></span><span class="br tr"></span><span class="br bl"></span><span class="br brr"></span>
+      <h3><span class="dot ok"></span>WORK &amp; RELEASE</h3>
+      <div class="big">2<small> worktrees</small></div>
+      <div class="rows">
+        <div class="r"><span>ready to land</span><b style="color:var(--cyan)">1</b></div>
+        <div class="r"><span>prod</span><b>a1f129f · clean</b></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ROADMAP -->
+  <div class="strip" onclick="openDrill('roadmap')">
+    <span class="lab">ROADMAP</span>
+    <span class="chip">3 in progress</span>
+    <span class="chip v">7 scoped</span>
+    <span class="arrow">→</span>
+  </div>
+
+  <!-- INSTRUMENTATION NEEDED -->
+  <div class="strip instr" onclick="openDrill('instr')">
+    <span class="lab">INSTRUMENTATION NEEDED · 3</span>
+    <span>heartbeats · Copper leads · COA zero-parse alarm</span>
+    <span class="arrow">→</span>
+  </div>
+
+  <div class="note">
+    DESIGN PREVIEW v1 · ILLUSTRATIVE DATA (not live) · structure per use-case-function-map.md<br>
+    healthy tiles stay quiet — only the abnormal one flags. tap any tile to drill (L1 → L2).
+  </div>
+</div>
+
+<!-- DRILL DRAWER (L1) -->
+<div class="scrim" id="scrim" onclick="closeDrill()"></div>
+<div class="drawer" id="drawer">
+  <div class="close" onclick="closeDrill()">✕</div>
+  <div class="breadcrumb" id="crumb">LANE 1 / —</div>
+  <h2 id="drawerTitle">—</h2>
+  <div class="dsub" id="drawerSub">—</div>
+  <div id="drawerBody"></div>
+  <div class="l2hint">↳ tap a run to open its log / trace (L2)</div>
+</div>
+
+<button class="demo" onclick="toggleState()">▮ TOGGLE: NOMINAL ⇄ ALERT</button>
+
+<script>
+  // live clock
+  function tick(){
+    var d=new Date();
+    var p=n=>String(n).padStart(2,'0');
+    document.getElementById('clk').textContent=p(d.getHours())+':'+p(d.getMinutes())+':'+p(d.getSeconds());
+    document.getElementById('date').textContent=d.toDateString().toUpperCase()+' · SYD';
+  }
+  setInterval(tick,1000);tick();
+
+  // drill-down content (L1) per tile
+  var DRILL={
+    automation:{title:'⬡ AUTOMATION',sub:'8 pipelines · RED metrics · last runs',crumb:'LANE 1 / AUTOMATION',
+      rows:[['● brief-pipeline','ran 06:00','4.2s'],['● coa-sync','ran 07:30','—'],['◐ autoresearch','starved 4d','watchdog-kill'],
+            ['● vault-writeback','ran 06:05','1.1s'],['● indexer','ran 06:02','9s'],['● nomic-embedder','ran 06:03','22s'],
+            ['● health-collector','12m ago','0.8s'],['● drive-sync','ran 06:10','3s']]},
+    cost:{title:'⬡ COST / BURN',sub:'today $2.10 · 8% paid fallback · $5 cap',crumb:'LANE 1 / COST',
+      rows:[['opus (synthesis)','$1.40','12 calls'],['sonnet (fallback)','$0.70','autoresearch'],['ollama 26b','$0.00','local · 340 calls'],['budget','42% of $5','nominal']]},
+    output:{title:'⬡ OUTPUT LEDGER',sub:'what Nexus produced',crumb:'LANE 1 / OUTPUT',
+      rows:[['daily brief','06:00 today','open →'],['web leads','5 this week','contact ×3, fluid ×2'],['vault promotions','+12','raw → curated'],['COAs reviewed','4','1 awaiting Chris']]},
+    work:{title:'⬡ WORK & RELEASE',sub:'sessions · worktrees · release safety',crumb:'LANE 1 / WORK',
+      rows:[['main','a1f129f · clean','live = origin'],['wt: gh-monitor-fix','ahead 2 · ready','tests ✓'],['wt: dashboard-spec','dirty · in progress','no prod files'],['release queue','1 ready to land','no conflicts']]},
+    roadmap:{title:'⬡ ROADMAP',sub:'future-development register',crumb:'LANE 1 / ROADMAP',
+      rows:[['Mission Control','in progress','this'],['Fluid Programme Recommender','scoped','—'],['Heartbeat monitor','scoped','top priority'],['+ 7 more','scoped / idea','open register →']]},
+    instr:{title:'⬡ INSTRUMENTATION NEEDED',sub:'undeveloped — graduates to Lane 1 when built',crumb:'LANE 1 / GAPS',
+      rows:[['Heartbeats (dead-man switch)','🔴 not built','fixes #1 failure class'],['Copper leads funnel','🔴 uninstrumented','action-register empty'],['COA zero-parse alarm','🔴 not built','email sends on 0 parse'],['Spend-anomaly detector','🔴 not built','Z-score on burn']]}
+  };
+  function openDrill(k){
+    var d=DRILL[k];if(!d)return;
+    document.getElementById('crumb').textContent=d.crumb;
+    document.getElementById('drawerTitle').textContent=d.title;
+    document.getElementById('drawerSub').textContent=d.sub;
+    document.getElementById('drawerBody').innerHTML=d.rows.map(r=>
+      '<div class="lrow"><span class="name">'+r[0]+'</span><span class="when">'+r[1]+'</span><span class="dur">'+r[2]+'</span></div>').join('');
+    document.getElementById('scrim').classList.add('show');
+    document.getElementById('drawer').classList.add('show');
+  }
+  function closeDrill(){document.getElementById('scrim').classList.remove('show');document.getElementById('drawer').classList.remove('show');}
+  document.addEventListener('keydown',e=>{if(e.key==='Escape')closeDrill();});
+
+  // demo: nominal <-> alert to show calm-at-rest
+  var alert=true;
+  function toggleState(){
+    alert=!alert;
+    var h=document.getElementById('headline'),feed=document.getElementById('feed');
+    var autoDot=document.querySelectorAll('.tile .dot')[0];
+    var autoTag=document.querySelector('.tile .tag');
+    if(alert){
+      h.classList.add('alert');document.getElementById('stateText').textContent='ATTENTION';
+      document.getElementById('needCount').textContent='1';document.getElementById('okSummary').textContent='7 / 8 SYSTEMS NOMINAL';
+      autoDot.className='dot warn';if(autoTag)autoTag.style.display='';
+      feed.innerHTML='<div class="attn"><div class="sev"></div><div class="txt"><b>Autoresearch — 0 items promoted in 4 days</b><span>Output heartbeat silent · likely VRAM fallback. Last full run 1.5 / 21 domains.</span></div><div class="acts"><div class="btn go" onclick="openDrill(\'automation\')">OPEN</div><div class="btn">ACK</div><div class="btn">SNOOZE</div></div></div>';
+    }else{
+      h.classList.remove('alert');document.getElementById('stateText').textContent='ALL NOMINAL';
+      document.getElementById('needCount').textContent='0';document.getElementById('okSummary').textContent='8 / 8 SYSTEMS NOMINAL';
+      autoDot.className='dot ok';if(autoTag)autoTag.style.display='none';
+      feed.innerHTML='<div class="empty">nothing needs you — you\'re clear. (this is calm-at-rest: the screen goes quiet)</div>';
+    }
+  }
+</script>
+</body>
+</html>
