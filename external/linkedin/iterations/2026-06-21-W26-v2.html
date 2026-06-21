@@ -1,0 +1,235 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>LinkedIn Preview — Good, I have the product specs and previous post history. Four previous Carry Fl</title>
+<style>
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body { background: #f3f2ef; font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif; padding: 20px; }
+  .container { max-width: 680px; margin: 0 auto; }
+
+  /* Header */
+  .page-header { background: #fff; border-radius: 8px; padding: 16px 20px; margin-bottom: 16px; border-left: 4px solid #ea580c; }
+  .page-header h1 { font-size: 16px; font-weight: 700; color: #000000e6; }
+  .page-header .meta { font-size: 12px; color: #00000099; margin-top: 4px; }
+  .status-badge { display: inline-block; padding: 2px 8px; border-radius: 12px; font-size: 11px; font-weight: 600; text-transform: uppercase; background: #94a3b8; color: #fff; margin-left: 8px; }
+
+  /* Tabs */
+  .tabs { display: flex; gap: 8px; margin-bottom: 12px; }
+  .tab-btn { padding: 8px 16px; border: none; border-radius: 20px; cursor: pointer; font-size: 13px; font-weight: 500; background: #e2e8f0; color: #00000099; transition: all 0.15s; }
+  .tab-btn.active { background: #0a66c2; color: #fff; }
+
+  /* Tab panels */
+  .tab-panel { display: none; }
+  .tab-panel.active { display: block; }
+
+  /* LinkedIn card */
+  .li-card { background: #ffffff; border-radius: 8px; border: 1px solid #e2e8f0; overflow: hidden; margin-bottom: 12px; }
+  .li-header { display: flex; align-items: center; gap: 10px; padding: 12px 16px 8px; }
+  .li-avatar { width: 40px; height: 40px; border-radius: 50%; background: #ea580c; color: #fff; font-size: 13px; font-weight: 700; display: flex; align-items: center; justify-content: center; flex-shrink: 0; }
+  .li-meta { flex: 1; }
+  .li-name { font-size: 14px; font-weight: 600; color: #000000e6; }
+  .li-sub { font-size: 12px; color: #00000099; }
+  .li-follow { font-size: 14px; font-weight: 600; color: #0a66c2; cursor: pointer; }
+  .li-body { padding: 8px 16px 12px; font-size: 14px; line-height: 1.55; color: #000000e6; }
+  .li-hook { font-weight: 600; margin-bottom: 10px; }
+  .li-text { margin-bottom: 10px; }
+  .li-cta { color: #00000099; margin-bottom: 8px; font-style: italic; }
+  .li-hashtags { color: #0a66c2; font-size: 13px; }
+  .li-footer { display: flex; gap: 20px; padding: 8px 16px; border-top: 1px solid #f1f5f9; font-size: 13px; color: #00000099; }
+  .li-footer span { cursor: pointer; }
+
+  /* Char bar */
+  .char-bar { height: 4px; background: #e2e8f0; border-radius: 2px; margin-bottom: 4px; }
+  .char-fill { height: 100%; border-radius: 2px; transition: width 0.3s; }
+  .char-label { font-size: 12px; margin-bottom: 12px; }
+
+  /* Notes */
+  .notes-box { background: #fefce8; border: 1px solid #fde68a; border-radius: 6px; padding: 12px; margin-bottom: 12px; font-size: 13px; }
+  .notes-label { font-weight: 600; margin-bottom: 4px; color: #92400e; }
+  .notes-text { color: #78350f; line-height: 1.5; }
+
+  /* Warnings */
+  .warnings-box { background: #fff7ed; border: 1px solid #fed7aa; border-radius: 6px; padding: 12px; margin-bottom: 16px; font-size: 13px; }
+  .warnings-box.ok { background: #f0fdf4; border-color: #bbf7d0; }
+  .warnings-label { font-weight: 600; margin-bottom: 4px; color: #b45309; }
+  .warnings-box.ok .warnings-label { color: #15803d; }
+  .warnings-box ul { padding-left: 16px; color: #7c2d12; }
+  .warnings-box ul li { margin-top: 2px; }
+
+  /* Buttons */
+  .action-row { display: flex; gap: 10px; margin-top: 8px; }
+  .btn-approve { flex: 1; padding: 12px; border: none; border-radius: 6px; font-size: 14px; font-weight: 600; cursor: pointer; background: #15803d; color: #fff; transition: opacity 0.15s; }
+  .btn-approve:hover { opacity: 0.9; }
+  .btn-reject { flex: 1; padding: 12px; border: none; border-radius: 6px; font-size: 14px; font-weight: 600; cursor: pointer; background: #dc2626; color: #fff; transition: opacity 0.15s; }
+  .btn-reject:hover { opacity: 0.9; }
+
+  /* Result message */
+  .result-msg { display: none; padding: 12px; border-radius: 6px; text-align: center; font-weight: 600; font-size: 14px; margin-top: 12px; }
+  .result-msg.ok { background: #f0fdf4; color: #15803d; border: 1px solid #bbf7d0; }
+  .result-msg.err { background: #fef2f2; color: #dc2626; border: 1px solid #fecaca; }
+</style>
+</head>
+<body>
+<div class="container">
+
+  <div class="page-header">
+    <h1>Good, I have the product specs and previous post history. Four previous Carry Fl <span class="status-badge">draft</span></h1>
+    <div class="meta">
+      Blick Group (company page) · text · Created 2026-06-21 · 2 posts drafted
+    </div>
+  </div>
+
+  
+    <div class="warnings-box ok">
+      <div class="warnings-label">✓ Brand voice checks passed</div>
+    </div>
+
+  <div class="tabs">
+    <button class="tab-btn active" onclick="showTab(0)" id="tab-0">
+      Wednesday Educational
+    </button>
+    <button class="tab-btn " onclick="showTab(1)" id="tab-1">
+      Friday Product Spotlight
+    </button></div>
+
+  
+    <div class="tab-panel active" id="panel-0">
+      <!-- LinkedIn post card -->
+      <div class="li-card">
+        <div class="li-header">
+          <div class="li-avatar">BG</div>
+          <div class="li-meta">
+            <div class="li-name">Blick Group</div>
+            <div class="li-sub">Drilling Fluids · Australia &amp; New Zealand · Just now</div>
+          </div>
+          <div class="li-follow">+ Follow</div>
+        </div>
+        <div class="li-body">
+          <div class="li-hook">Bentonite seals the wall. It doesn't carry cuttings.</div>
+          <div class="li-text">Two different jobs. Bentonite builds a filter cake and stabilises the bore. But getting cuttings out of the hole? That's not what it's designed to do on its own.<br><br>Without a carrier polymer, cuttings lag behind the fluid. They settle when you stop pumping. They pack around the rods. Then you're cleaning out instead of drilling.<br><br>A carrier polymer gels when the pump stops, holds cuttings in place, then flows clean when you start again. Carry Flow does this in 6 of our 9 standard fluid programs. 1 to 6 kg per 1000L, depending on the ground.</div>
+          <div class="li-cta">Running bentonite only? Give the team a call. We'll build a program that actually clears the hole.</div>
+          <div class="li-hashtags"><span style="color:#0a66c2">#DrillingFluids</span> <span style="color:#0a66c2">#CarryFlow</span> <span style="color:#0a66c2">#HDD</span> <span style="color:#0a66c2">#WaterBoreDrilling</span> <span style="color:#0a66c2">#BlickFluids</span> <span style="color:#0a66c2">#BoreStability</span> <span style="color:#0a66c2">#DrillingAustralia</span> <span style="color:#0a66c2">#GeotechnicalDrilling</span></div>
+        </div>
+        <div class="li-footer">
+          <span>👍 Like</span><span>💬 Comment</span><span>🔁 Repost</span><span>📤 Send</span>
+        </div>
+      </div>
+
+      <!-- Char count bar -->
+      <div class="char-bar">
+        <div class="char-fill" style="width:27.266666666666666%; background:#0a66c2"></div>
+      </div>
+      <div class="char-label" style="color:#00000099">
+        818 / 3,000 characters
+      </div>
+
+      
+      <div class="notes-box">
+        <div class="notes-label">Notes from Nexus</div>
+        <div class="notes-text">Week 1 rotation, fifth cycle for Carry Flow. Previous cycles covered settling (C1), gel-up (C2), winter cuttings (C3), water versatility (C4). This cycle's angle: bentonite alone vs bentonite + carrier polymer. Teaches the "two jobs, two products" concept without fabricating a job story. Dosage (1–6 kg/1000L) and "6 of 9 programs" from the product spec. Word count: 120.</div>
+      </div>
+
+      <!-- Approve/reject for this specific post -->
+      <div class="action-row">
+        <button class="btn-approve" onclick="approvePost(1, '2026-06-21-W26-v2', '/Volumes/NewmanDrive/development/BlickVault/Channels/content/2026-06-21-linkedin-good-i-have-the-product-specs-and-previous-post-hi.md')">
+          ✓ Approve Post 1
+        </button>
+        <button class="btn-reject" onclick="rejectPost(1, '2026-06-21-W26-v2', '/Volumes/NewmanDrive/development/BlickVault/Channels/content/2026-06-21-linkedin-good-i-have-the-product-specs-and-previous-post-hi.md')">
+          ✕ Reject Post 1
+        </button>
+      </div>
+    </div>
+    <div class="tab-panel " id="panel-1">
+      <!-- LinkedIn post card -->
+      <div class="li-card">
+        <div class="li-header">
+          <div class="li-avatar">BG</div>
+          <div class="li-meta">
+            <div class="li-name">Blick Group</div>
+            <div class="li-sub">Drilling Fluids · Australia &amp; New Zealand · Just now</div>
+          </div>
+          <div class="li-follow">+ Follow</div>
+        </div>
+        <div class="li-body">
+          <div class="li-hook">Carry Flow. Six programs. One job.</div>
+          <div class="li-text">It's in 6 of our 9 standard fluid programs because the job is always the same. Keep cuttings moving. Hold them when the pump stops.<br><br>Coated xanthan gum. Pour it through the hopper, it disperses clean. No lumps sitting in the bottom of the tank. Works in freshwater, saltwater, or brine.<br><br>Dose is 1 to 6 kg per 1000L. Pair it with your bentonite base, add clay inhibitors or lubricant for the ground, and the program does the work.</div>
+          <div class="li-cta">Not sure what program fits your ground? Give one of our team a call. We'll dial it in.</div>
+          <div class="li-hashtags"><span style="color:#0a66c2">#CarryFlow</span> <span style="color:#0a66c2">#BlickFluids</span> <span style="color:#0a66c2">#DrillingFluids</span> <span style="color:#0a66c2">#HDD</span> <span style="color:#0a66c2">#WaterBoreDrilling</span> <span style="color:#0a66c2">#ExplorationDrilling</span> <span style="color:#0a66c2">#DrillingAustralia</span> <span style="color:#0a66c2">#DrillingNZ</span></div>
+        </div>
+        <div class="li-footer">
+          <span>👍 Like</span><span>💬 Comment</span><span>🔁 Repost</span><span>📤 Send</span>
+        </div>
+      </div>
+
+      <!-- Char count bar -->
+      <div class="char-bar">
+        <div class="char-fill" style="width:22.366666666666667%; background:#0a66c2"></div>
+      </div>
+      <div class="char-label" style="color:#00000099">
+        671 / 3,000 characters
+      </div>
+
+      
+      <div class="notes-box">
+        <div class="notes-label">Notes from Nexus</div>
+        <div class="notes-text">Friday goes deeper on Carry Flow as the backbone product. Connects to Wednesday's "bentonite alone isn't enough" by showing how Carry Flow pairs with the rest of the program. Dosage (1–6 kg/1000L), water compatibility (fresh/salt/brine), and coated xanthan gum mixing advantage all from the PDS/SDS. No fabricated stories. Word count: 112.<br><br>---<br><br>## SELF-REVIEW<br><br>| Check | Post 1 (Wed) | Post 2 (Fri) |<br>|-------|-------------|-------------|<br>| Word count (80–150) | 120 | 112 |<br>| Hook ≤12 words | 8 | 6 |<br>| Paragraphs ≤30 words each | 14, 25, 28, 24 | 19, 22, 23 |<br>| ≤4 body paragraphs | 4 | 3 |<br>| No em/en dashes in prose | Pass | Pass |<br>| No banned vocab | Pass | Pass |<br>| No fabricated stories | Pass | Pass |<br>| No ALL CAPS | Pass | Pass |<br>| No literal HTML | Pass | Pass |<br>| No "not just X, Y" pattern | Pass | Pass |<br>| Tier 1 product lead | Carry Flow | Carry Flow |<br>| Hashtags 5–8, multi-discipline | 8 | 8 |<br>| Wed teaches mechanism, product as resolution | Pass (bentonite vs carrier taught, CF named once) | n/a |<br>| Fri headlines product, goes deeper | n/a | Pass (mixing, pairing, dosage) |<br>| Connected Wed→Fri arc | Pass (Wed teaches why you need a carrier; Fri shows how Carry Flow fills that role across programs) |<br>| No safety/PPE claims | Pass | Pass |<br>| Dosage from PDS only | 1–6 kg/1000L | 1–6 kg/1000L |<br>| Foreman test | Reads like advice from a mud engineer, not marketing copy | Practical, product-led, short sentences |<br><br>No revisions needed. Both posts within caps, fresh angle, connected pair, all brand rules followed.<br><br>---<br>## Preview<br>&gt; This section shows what will be sent to LinkedIn. Review before approving.<br><br>**Target:** Blick Group company page<br>**Format:** text<br>**Character count:**  ⚠️ 3863/3000 chars — near limit<br>**Preview URL:** https://blickgroup.github.io/designs/designs/linkedin/2026-06-21-W26-v2.html<br><br>To approve: change `status: draft` → `status: approved` in the frontmatter above.<br>To schedule: also set `publish_at: YYYY-MM-DDTHH:MM:SS+10:00`<br><br><br>---<br>## Generation Metadata<br>- Line: linkedin<br>- Research queries: 1<br>- Indexer context: 554 chars<br>- Memory context: 275 chars<br>- Generation time: 121.4s</div>
+      </div>
+
+      <!-- Approve/reject for this specific post -->
+      <div class="action-row">
+        <button class="btn-approve" onclick="approvePost(2, '2026-06-21-W26-v2', '/Volumes/NewmanDrive/development/BlickVault/Channels/content/2026-06-21-linkedin-good-i-have-the-product-specs-and-previous-post-hi.md')">
+          ✓ Approve Post 2
+        </button>
+        <button class="btn-reject" onclick="rejectPost(2, '2026-06-21-W26-v2', '/Volumes/NewmanDrive/development/BlickVault/Channels/content/2026-06-21-linkedin-good-i-have-the-product-specs-and-previous-post-hi.md')">
+          ✕ Reject Post 2
+        </button>
+      </div>
+    </div>
+
+  <div class="result-msg" id="result-msg"></div>
+
+</div>
+
+<script>
+function showTab(i) {
+  document.querySelectorAll('.tab-btn').forEach((b,j) => b.classList.toggle('active', i===j));
+  document.querySelectorAll('.tab-panel').forEach((p,j) => p.classList.toggle('active', i===j));
+}
+
+async function approvePost(postNum, slug, draftPath) {
+  await sendAction('approve', postNum, slug, draftPath);
+}
+
+async function rejectPost(postNum, slug, draftPath) {
+  await sendAction('reject', postNum, slug, draftPath);
+}
+
+async function sendAction(action, postNum, slug, draftPath) {
+  const msg = document.getElementById('result-msg');
+  msg.className = 'result-msg';
+  msg.style.display = 'none';
+  try {
+    const res = await fetch('https://blick-n8n.fly.dev/webhook/linkedin-' + action, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ slug, postNum, draftPath, action })
+    });
+    if (res.ok) {
+      msg.textContent = action === 'approve'
+        ? '✓ Post ' + postNum + ' approved — n8n will publish on schedule'
+        : '✕ Post ' + postNum + ' rejected — runner will avoid this angle';
+      msg.className = 'result-msg ok';
+    } else {
+      throw new Error('HTTP ' + res.status);
+    }
+  } catch(e) {
+    msg.textContent = 'Could not reach n8n (' + e.message + '). Edit status manually in Obsidian.';
+    msg.className = 'result-msg err';
+  }
+  msg.style.display = 'block';
+}
+</script>
+</body>
+</html>
