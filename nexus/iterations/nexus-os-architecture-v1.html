@@ -260,8 +260,8 @@ footer{padding:60px 0;border-top:1px solid var(--line);text-align:center}
         <div class="sched-time">Daily 04:27</div>
         <div class="sched-agent">autoresearch-daily</div>
         <div>
-          <div class="sched-desc">Autonomous web research: Brave Search + Firecrawl + XAI Grok. Gemma e4b filters relevance. Action register dedup. Sonnet advisor QA. Writes research notes to vault Inbox.</div>
-          <div class="sched-out">→ BlickVault/Inbox/autoresearch/ (source_type: raw)</div>
+          <div class="sched-desc">Autonomous web research: Brave Search + Firecrawl + XAI Grok. Gemma e4b filters relevance. Self-paces inside the launchd window, then autoresearch-watchman repairs VRAM residency and continues remaining domains with a 3-strike circuit breaker.</div>
+          <div class="sched-out">→ BlickVault/Inbox/autoresearch/ (source_type: raw) · data/autoresearch-requeue.json when time-boxed</div>
         </div>
       </div>
       <div class="sched-row">
@@ -284,7 +284,7 @@ footer{padding:60px 0;border-top:1px solid var(--line);text-align:center}
         <div class="sched-time">Every 30 min (7am–7pm)</div>
         <div class="sched-agent">health-collector</div>
         <div>
-          <div class="sched-desc">Watches 9 sources: GitHub CI, Fly.io apps, healthz endpoints, Cloud Run, n8n workflows, Sentry error rates. Auto-resolves n8n deactivation and missed scheduled runs. 18h cooldown per issue.</div>
+          <div class="sched-desc">Watches operational sources: GitHub CI, Fly.io apps, healthz endpoints, n8n workflows, Sentry error rates, autoresearch completion state, and vault schema drift. Auto-resolves n8n deactivation and missed scheduled runs. 18h cooldown per issue.</div>
           <div class="sched-out">→ health-collector-state.json · vault health reports</div>
         </div>
       </div>
@@ -292,7 +292,7 @@ footer{padding:60px 0;border-top:1px solid var(--line);text-align:center}
         <div class="sched-time">Daily 08:15</div>
         <div class="sched-agent">health-collector-daily</div>
         <div>
-          <div class="sched-desc">Slow sources (once/day): BigQuery freshness, BigQuery duplication ratios, launchd job logs, n8n workflow deep audit. Triggers candidate-extractor on completion.</div>
+          <div class="sched-desc">Slow sources (once/day): BigQuery freshness, BigQuery duplication ratios, launchd job logs, n8n workflow deep audit, autoresearch status, and strict vault lint with JSON summary parsing. Triggers candidate-extractor on completion.</div>
           <div class="sched-out">→ health-collector-state.json · action register (via candidate-extractor)</div>
         </div>
       </div>
@@ -1096,7 +1096,7 @@ footer{padding:60px 0;border-top:1px solid var(--line);text-align:center}
       <div><h2>Three layers.<br>Detects. Escalates. Fixes.</h2></div>
       <div><p style="margin-bottom:16px;">The self-healing stack is a 3-layer pipeline. Layer 1 detects and auto-resolves simple issues. Layer 2 promotes complex issues to the Action Register. Layer 3 drafts code fixes.</p><p>Real wins: 56-day silent failure · 98% duplicate inventory · 17 GB n8n disk-fill · U+FFFD burst · Compass sort bug caught by AI.</p></div>
     </div>
-    <div class="heal-row" style="margin-bottom:12px;"><div class="heal-layer-num" style="color:rgba(255,69,58,.2);">1</div><div class="heal-card" style="border-color:rgba(255,69,58,.2);"><div class="heal-title" style="color:var(--red);">Night Watchman</div><div class="heal-file">health-collector.js · FAST every 30 min (7am–7pm) + DAILY 08:15</div><div class="heal-body">Watches 9 sources. Auto-resolves n8n workflow deactivation and missed scheduled runs. 18h cooldown per issue prevents alert fatigue. State: <code>nexus/data/health-collector-state.json</code></div></div></div>
+    <div class="heal-row" style="margin-bottom:12px;"><div class="heal-layer-num" style="color:rgba(255,69,58,.2);">1</div><div class="heal-card" style="border-color:rgba(255,69,58,.2);"><div class="heal-title" style="color:var(--red);">Night Watchman</div><div class="heal-file">health-collector.js · FAST every 30 min (7am–7pm) + DAILY 08:15</div><div class="heal-body">Watches operational sources, including autoresearch completion state and vault schema drift. Auto-resolves n8n workflow deactivation and missed scheduled runs. Strict vault lint is a daily health source so schema drift surfaces before it blocks unrelated commits. State: <code>nexus/data/health-collector-state.json</code></div></div></div>
     <div class="heal-row" style="margin-bottom:12px;"><div class="heal-layer-num" style="color:rgba(255,214,10,.2);">2</div><div class="heal-card" style="border-color:rgba(255,214,10,.2);"><div class="heal-title" style="color:var(--yellow);">Candidate Extractor</div><div class="heal-file">candidate-extractor.js · Triggered at end of daily health-collector</div><div class="heal-body">Promotes warning/critical findings to the Action Register as structured action items. Deduplication via entity fingerprints. Output: <code>action_register</code> entries with <code>domain: infrastructure</code>.</div></div></div>
     <div class="heal-row"><div class="heal-layer-num" style="color:rgba(48,209,88,.2);">3</div><div class="heal-card" style="border-color:rgba(48,209,88,.2);"><div class="heal-title" style="color:var(--green);">Fix Drafter</div><div class="heal-file">fix-drafter.js · Triggered manually on action register items</div><div class="heal-body">Gemma 26b drafts minimal code fixes for Sentry/CI-shaped action register items. Confidence-gated. <strong style="color:var(--text);">Option B (LIVE):</strong> Writes draft fix to working copy for human review. <strong style="color:var(--text);">Option A:</strong> Auto-PR (deferred).</div></div></div>
   </div>
