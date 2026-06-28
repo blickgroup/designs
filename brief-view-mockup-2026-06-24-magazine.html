@@ -1,0 +1,297 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Nexus Overview — Issue 2026-06-24</title>
+<style>
+  :root{
+    --orange:#f05323; --ink:#1c1a17; --muted:#736d63; --faint:#a39c90;
+    --paper:#f7f3ec; --card:#fffdf9; --line:#e4ddd0; --rule:#1c1a17;
+    --ok:#0f8a5f; --danger:#c63d20; --info:#2f6fb0;
+    --serif:"Iowan Old Style","Source Serif Pro",Charter,Georgia,"Times New Roman",serif;
+    --sans:Inter,-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,sans-serif;
+  }
+  *{box-sizing:border-box;}
+  body{margin:0; background:var(--paper); color:var(--ink); font-family:var(--serif);
+       -webkit-font-smoothing:antialiased; line-height:1.62;}
+  .wrap{max-width:820px; margin:0 auto; padding:0 28px 90px;}
+
+  /* ---- Masthead ---- */
+  .mast{padding:34px 0 14px; text-align:center;}
+  .mast .kicker{font-family:var(--sans); font-size:11px; letter-spacing:.42em; text-transform:uppercase; color:var(--orange); font-weight:700;}
+  .mast .word{font-size:58px; font-weight:800; letter-spacing:-.03em; margin:6px 0 2px; line-height:1;}
+  .mast .word span{color:var(--orange);}
+  .mast .strap{font-family:var(--sans); font-size:12.5px; letter-spacing:.06em; color:var(--muted); text-transform:uppercase;}
+  .rule2{border:0; border-top:3px double var(--rule); margin:14px 0 6px;}
+  .issue{display:flex; justify-content:space-between; font-family:var(--sans); font-size:12px;
+         text-transform:uppercase; letter-spacing:.1em; color:var(--muted); padding-bottom:14px; border-bottom:1px solid var(--line);}
+
+  /* ---- Lede ---- */
+  .lede{font-size:21px; line-height:1.5; margin:30px 0 8px; color:#28251f;}
+  .lede::first-letter{float:left; font-size:74px; line-height:.78; font-weight:700; padding:6px 12px 0 0; color:var(--orange);}
+  .lede b{font-weight:700;}
+  .byline{font-family:var(--sans); font-size:11.5px; letter-spacing:.08em; text-transform:uppercase; color:var(--faint); margin-bottom:8px;}
+
+  /* ---- Section kickers ---- */
+  .kick{font-family:var(--sans); font-size:11px; font-weight:700; letter-spacing:.28em; text-transform:uppercase;
+        color:var(--orange); margin:46px 0 2px;}
+  .kick .n{color:var(--faint); margin-right:8px;}
+  .secline{border:0; border-top:1px solid var(--rule); margin:8px 0 22px;}
+
+  /* ---- Feature (decision/action) ---- */
+  .feat{margin-bottom:30px;}
+  .feat h2{font-size:27px; line-height:1.18; letter-spacing:-.015em; margin:0 0 8px; font-weight:700;}
+  .feat .deck{font-size:17px; color:#34302a; margin:0 0 14px;}
+  .feat .deck b{font-weight:700;}
+
+  .tags{font-family:var(--sans); display:flex; flex-wrap:wrap; gap:14px; font-size:11.5px;
+        color:var(--muted); letter-spacing:.04em; margin-bottom:14px; padding:8px 0; border-top:1px solid var(--line); border-bottom:1px solid var(--line);}
+  .tags .t b{color:var(--ink); font-weight:700;}
+  .tags .warnflag{color:var(--danger); font-weight:700;}
+
+  .stat{float:right; width:190px; margin:2px 0 14px 26px; padding:16px 18px; background:#fff; border:1px solid var(--line); border-left:4px solid var(--orange);}
+  .stat .num{font-size:34px; font-weight:800; letter-spacing:-.02em; line-height:1; color:var(--orange);}
+  .stat .cap{font-family:var(--sans); font-size:11.5px; color:var(--muted); margin-top:7px; line-height:1.4;}
+
+  .next{font-family:var(--sans); font-size:14.5px; background:#fff6f1; border:1px solid #f3d3c4;
+        border-radius:3px; padding:11px 14px; margin:0 0 8px; color:#8a3014; line-height:1.5;}
+  .next b{color:var(--orange); text-transform:uppercase; font-size:11px; letter-spacing:.12em;}
+  .src{font-family:var(--sans); font-size:11px; color:var(--faint); letter-spacing:.03em; clear:both;}
+
+  /* ---- Your call ---- */
+  .yourcall{font-family:var(--sans); margin-top:16px; padding-top:14px; border-top:1px dotted var(--line);}
+  .yourcall .q{font-size:11px; letter-spacing:.18em; text-transform:uppercase; color:var(--faint); margin-bottom:9px;}
+  .yc-btns{display:flex; gap:9px; flex-wrap:wrap;}
+  .yc-btns button{font:inherit; font-size:13.5px; font-weight:600; cursor:pointer; border-radius:24px;
+      padding:8px 18px; border:1.5px solid var(--ink); background:transparent; color:var(--ink); transition:.14s;}
+  .yc-btns button:hover{background:var(--ink); color:#fff;}
+  .yc-btns .good:hover{background:var(--ok); border-color:var(--ok);}
+  .yc-btns .no:hover{background:var(--danger); border-color:var(--danger);}
+  .yc-done{margin-top:11px; font-size:13.5px; padding:10px 14px; border-radius:4px; display:none; line-height:1.5;}
+  .yc-done.show{display:block;}
+  .yc-done.good{background:#eaf7f0; color:#0c6e4c; border:1px solid #b7e2cd;}
+  .yc-done.no{background:#fbeae5; color:#9c2f17; border:1px solid #f0c6b8;}
+  .yc-done.info{background:#eaf1f9; color:#274f7a; border:1px solid #c2d6ec;}
+
+  /* ---- watch / tiles ---- */
+  p.body{font-size:17px; margin:0 0 12px; color:#2c2924;}
+  .grid{display:grid; grid-template-columns:1fr 1fr; gap:1px; background:var(--line); border:1px solid var(--line);}
+  @media(max-width:640px){.grid{grid-template-columns:1fr;}}
+  .tile{background:var(--card); padding:16px 18px;}
+  .tile h3{font-family:var(--sans); font-size:12px; font-weight:700; letter-spacing:.08em; text-transform:uppercase; margin:0 0 6px;}
+  .tile p{font-size:15px; margin:0; color:#332f29;}
+  .tile .nil{color:var(--faint); font-style:italic;}
+  .xref{font-family:var(--sans); color:var(--info); font-size:12px; font-weight:600; white-space:nowrap;}
+
+  .banner{background:#fff8ec; border:1px solid #f0dcae; border-left:4px solid var(--orange); padding:16px 20px; margin-bottom:18px;}
+  .banner h2{font-size:22px; margin:0 0 8px;}
+
+  table.sys{width:100%; border-collapse:collapse; font-family:var(--sans); font-size:13.5px; margin-top:8px;}
+  table.sys td{padding:9px 4px; border-bottom:1px solid var(--line);}
+  table.sys td:last-child{text-align:right; font-variant-numeric:tabular-nums; color:var(--muted); font-weight:600;}
+  .status-line{font-size:16px; margin:6px 0;} .status-line b{font-weight:700;}
+  .dot{display:inline-block; width:9px; height:9px; border-radius:50%; margin-right:8px;}
+  .dot.r{background:var(--danger);} .dot.a{background:var(--orange);}
+  .stale{font-family:var(--sans); font-size:13.5px; color:var(--muted);}
+  .stale ul{margin:8px 0 0; padding-left:18px;}
+  .colophon{margin-top:54px; padding-top:18px; border-top:3px double var(--rule); text-align:center;
+            font-family:var(--sans); font-size:11.5px; color:var(--faint); line-height:1.6;}
+</style>
+</head>
+<body>
+<div class="wrap">
+
+  <header class="mast">
+    <div class="kicker">Blick Group · Intelligence</div>
+    <div class="word">NE<span>X</span>US</div>
+    <div class="strap">The Daily Overview</div>
+    <hr class="rule2">
+    <div class="issue">
+      <span>Operations &amp; Overdue</span>
+      <span>Wednesday · 24 June 2026</span>
+      <span>2 decisions · 1 action</span>
+    </div>
+  </header>
+
+  <div class="byline">The Brief in Brief</div>
+  <p class="lede">Three overdue intelligence items need promoting from the raw inbox — <b>Polpure's distribution move</b>, <b>2026 raw-materials pricing</b>, and a <b>CETCO competitor profile</b>. Autoresearch was killed by the watchdog overnight for the second day running, and is the top operational fix. No same-day decisions are forced — but AICIS renewal, which closes 31 August, still has no owner.</p>
+
+  <!-- READY FOR DECISION -->
+  <div class="kick"><span class="n">01</span>Ready for Decision</div>
+  <hr class="secline">
+
+  <article class="feat">
+    <h2>Promote Polpure to the competitor register — and check for channel conflicts</h2>
+    <p class="deck">Brisbane-based <b>Polpure</b> has partnered with MetaFLO Technologies and Ditch Witch and positioned itself as a key Australian HDD distributor for drilling-fluid and waste products. Its MetaFLO solidifier competes directly with <b>Eco Dry</b>.</p>
+    <div class="tags">
+      <span class="t warnflag">Unverified</span>
+      <span class="t">Confidence <b>0.90</b></span>
+      <span class="t">In inbox <b>78 days</b></span>
+      <span class="t">Business development</span>
+    </div>
+    <p class="next"><b>Next →</b> on promotion, cross-check Polpure's stated partners against Blick's current and prospective channels for conflicts, and flag to sales.</p>
+    <p class="src">Source: Overview_of_Polpure_s_Distribution_and_Partnership</p>
+    <div class="yourcall">
+      <div class="q">Your call</div>
+      <div class="yc-btns">
+        <button class="good" onclick="yc(this,'good','Logged as good intel. Promoted to the competitor register; autoresearch will keep surfacing distribution-move signals like this.')">Right call</button>
+        <button class="no" onclick="yc(this,'no','Logged as not-pursuing. This drops out of future briefs, and autoresearch learns to down-rank similar competitor-distributor signals.')">Not pursuing</button>
+        <button class="done" onclick="yc(this,'info','Marked done. It won\'t resurface unless something materially changes.')">Already done</button>
+      </div>
+      <div class="yc-done"></div>
+    </div>
+  </article>
+
+  <article class="feat">
+    <h2>Route 2026 raw-materials pricing to procurement before the next reorder</h2>
+    <div class="stat"><div class="num">+10–15%</div><div class="cap">AU drilling-grade bentonite vs 2025, now AUD 250–350/t. Forecast +5–8% more by year-end.</div></div>
+    <p class="deck">Energy costs and Red Sea shipping are driving the rise; the source note recommends considering hedging. The intelligence is 78 days unreviewed and <b>hasn't reached procurement</b> — H2 buying is happening without it.</p>
+    <div class="tags">
+      <span class="t warnflag">Unverified</span>
+      <span class="t">Confidence <b>0.90</b></span>
+      <span class="t">Unreviewed <b>78 days</b></span>
+      <span class="t">Operations</span>
+    </div>
+    <p class="next"><b>Next →</b> promote to Intelligence/market and forward to procurement to compare against current supplier quotes.</p>
+    <p class="src">Source: Current_and_Forecasted_Prices_2026</p>
+    <div class="yourcall">
+      <div class="q">Your call</div>
+      <div class="yc-btns">
+        <button class="good" onclick="yc(this,'good','Logged as good intel and routed to procurement.')">Right call</button>
+        <button class="no" onclick="yc(this,'no','Logged as not-pursuing. Autoresearch will weight raw-material pricing notes lower.')">Not pursuing</button>
+        <button class="done" onclick="yc(this,'info','Marked done — procurement already has it.')">Already done</button>
+      </div>
+      <div class="yc-done"></div>
+    </div>
+  </article>
+
+  <!-- ACTION REQUIRED -->
+  <div class="kick"><span class="n">02</span>Action Required · a person must do this</div>
+  <hr class="secline">
+
+  <article class="feat">
+    <h2>Confirm AICIS renewal is lodged for all relevant products before 31 August</h2>
+    <div class="stat"><div class="num">67</div><div class="cap">days until the AICIS cycle closes. Miss it and you lose authority to operate.</div></div>
+    <p class="deck">A 16 April system note flagged that <b>Eco Dry</b>'s AICIS notification has no owner assigned. The cycle closes 31 August every year.</p>
+    <div class="tags">
+      <span class="t warnflag">Unverified</span>
+      <span class="t">Confidence <b>0.70</b></span>
+      <span class="t">Compliance</span>
+    </div>
+    <p class="next"><b>Next →</b> assign an owner this month to check the AICIS registrant portal for every Blick product containing an introduced industrial chemical, confirm the cycle is lodged, and move the action-register item to active.</p>
+    <p class="src">Source: The_AICIS_registration_cycle_runs_from_September_1</p>
+    <div class="yourcall">
+      <div class="q">Your call</div>
+      <div class="yc-btns">
+        <button class="good" onclick="yc(this,'good','Assigned to you and activated in the register.')">On it — assign me</button>
+        <button class="no" onclick="yc(this,'no','Logged as not-relevant.')">Not relevant</button>
+        <button class="done" onclick="yc(this,'info','Marked done — already lodged.')">Already lodged</button>
+      </div>
+      <div class="yc-done"></div>
+    </div>
+  </article>
+
+  <!-- WATCH LIST -->
+  <div class="kick"><span class="n">03</span>Watch List</div>
+  <hr class="secline">
+  <article class="feat">
+    <h2>CETCO is a USD 2bn shadow over Eco Dry — and still 65 days in draft</h2>
+    <p class="deck"><b>CETCO</b>, the construction-technologies subsidiary of <b>Minerals Technologies</b> (~USD 2bn annual revenue in bentonite drilling, construction and environmental products), overlaps directly with Blick's core range — yet its profile is still absent from the curated competitor register.</p>
+    <div class="tags"><span class="t warnflag">Unverified</span><span class="t">Confidence <b>0.90</b></span><span class="t">In draft <b>65 days</b></span></div>
+    <p class="next"><b>Next →</b> at the next vault triage, promote to Intelligence/competitors and add the revenue and scale figures to the sales comparison matrix.</p>
+    <p class="src">Source: CETCO_MTI_Revenue_and_Scale</p>
+  </article>
+
+  <!-- SALES -->
+  <div class="kick"><span class="n">04</span>Sales Intelligence</div>
+  <hr class="secline">
+  <div class="grid">
+    <div class="tile"><h3>Australia — National</h3><p>No new national signals — no scans completed overnight. The only national-reach signal is Polpure's distribution move. <span class="xref">→ §01</span></p></div>
+    <div class="tile"><h3>AU — Western Australia</h3><p class="nil">Nothing to report.</p></div>
+    <div class="tile"><h3>AU — East Coast</h3><p>Polpure (Brisbane) competes with Eco Dry in waste solidification. <span class="xref">→ §01</span></p></div>
+    <div class="tile"><h3>New Zealand</h3><p class="nil">Nothing to report.</p></div>
+  </div>
+
+  <!-- PRODUCT -->
+  <div class="kick"><span class="n">05</span>Product</div>
+  <hr class="secline">
+  <p class="body"><b>Internal alignment.</b> Polpure <span class="xref">(§01)</span> and CETCO <span class="xref">(§03)</span> both bear on <b>Eco Dry</b>'s positioning in drilling-waste solidification; neither is in the curated register yet, so current sales and product docs may not reflect the live competitive landscape. <b>Next →</b> promote both at the next triage and cross-reference against Eco Dry positioning.</p>
+  <p class="body" style="color:var(--faint); font-style:italic; font-size:15px;">External signals: nothing to report.</p>
+
+  <!-- OPERATIONS -->
+  <div class="kick"><span class="n">06</span>Operations</div>
+  <hr class="secline">
+  <div class="banner">
+    <h2>Autoresearch is down for a second straight day</h2>
+    <p class="body" style="margin-bottom:8px;">The engine was killed by the time-limit watchdog before any of the six scheduled domain scans completed — <b>0 of 6 domains, 0 items promoted</b>. Until it's fixed, every section above draws only on the existing vault and action register.</p>
+    <p class="next" style="margin:0;"><b>Next →</b> check the autoresearch daily log and confirm Gemma is resident in VRAM before the next scheduled run.</p>
+  </div>
+  <article class="feat" style="margin-bottom:0;">
+    <h2 style="font-size:22px;">Seven repositories need a human decision</h2>
+    <p class="deck">Most material: <b>hub-app</b> (40 local changes, 3 behind remote), <b>nexus</b> (12 local changes, diverged), <b>website-test</b> (34 local changes, untracked) — a restoreability risk if checkouts diverge further.</p>
+    <p class="next"><b>Next →</b> decide per repo whether local changes are intentional work-in-progress or should be reconciled. Full detail in the GitHub Hygiene Review.</p>
+  </article>
+
+  <!-- QUIET DESK -->
+  <div class="kick"><span class="n">07</span>The Quiet Desk · nothing material today</div>
+  <hr class="secline">
+  <div class="grid">
+    <div class="tile"><h3>Industry</h3><p class="nil">No scans overnight.</p></div>
+    <div class="tile"><h3>Technology Watch</h3><p class="nil">Nothing to report.</p></div>
+    <div class="tile"><h3>Innovation</h3><p class="nil">Nothing to report.</p></div>
+    <div class="tile"><h3>AI Radar</h3><p class="nil">Nothing material this week.</p></div>
+    <div class="tile"><h3>H&amp;S &amp; Compliance</h3><p>AICIS renewal, 31 Aug. <span class="xref">→ §02</span></p></div>
+    <div class="tile"><h3>NZ &amp; WA Sales</h3><p>Quiet. <span class="xref">→ §04</span></p></div>
+  </div>
+
+  <!-- NEEDS YOU -->
+  <div class="kick"><span class="n">08</span>Needs You</div>
+  <hr class="secline">
+  <article class="feat" style="margin-bottom:0;">
+    <h2 style="font-size:22px;">This week's LinkedIn post is ready — but its preview isn't live to approve</h2>
+    <p class="deck">The post generated, but its preview page isn't reachable on GitHub Pages — most likely the background publisher couldn't reach the NewmanDrive volume (Full Disk Access).</p>
+    <p class="next"><b>Next →</b> run the publisher from a terminal on the Mac Mini, then refresh the preview.</p>
+  </article>
+
+  <!-- STATUS + SYSTEM -->
+  <div class="kick"><span class="n">09</span>Status &amp; System</div>
+  <hr class="secline">
+  <p class="status-line"><span class="dot r"></span><b>Market intelligence —</b> stale; autoresearch killed by the watchdog for a second day.</p>
+  <p class="status-line"><span class="dot a"></span><b>Business development —</b> one active signal: Polpure AU distribution.</p>
+  <p class="status-line"><span class="dot a"></span><b>Operations —</b> autoresearch unresolved; AICIS unconfirmed; pricing not with procurement; 7 repos to reconcile.</p>
+  <table class="sys">
+    <tr><td>Local inference calls</td><td>132</td></tr>
+    <tr><td>Cloud calls</td><td>16</td></tr>
+    <tr><td>Fallback events</td><td>9</td></tr>
+    <tr><td>Estimated cloud cost</td><td>USD 3.65</td></tr>
+    <tr><td>Estimated local savings</td><td>USD 0.23</td></tr>
+  </table>
+  <p class="stale" style="margin-top:18px;"><b>Stale — needs triage:</b> 155 items at status new for ≥7 days (63 operations · 47 innovation · 45 product-development). Oldest five:
+    <ul>
+      <li>AICIS registration requirements for Blick — 71d</li>
+      <li>Strategic expansion into eco-friendly fluids — 71d</li>
+      <li>Liquid waste management in drilling operations — 71d</li>
+      <li>Regulated waste management in Queensland — 71d</li>
+      <li>Australian Industrial Chemicals Introduction Scheme — 71d</li>
+    </ul>
+  </p>
+
+  <div class="colophon">
+    NEXUS · The Daily Overview · Issue 2026-06-24<br>
+    A rendered view of <code>BlickVault/Intelligence/briefings/daily-overview/2026-06-24-daily-overview.md</code> — the vault markdown remains the version of truth.
+  </div>
+
+</div>
+
+<script>
+  function yc(btn, kind, msg){
+    var box = btn.closest('.yourcall').querySelector('.yc-done');
+    box.className = 'yc-done show ' + kind;
+    box.textContent = '✓ ' + msg + '  (demo — the live version posts this to autoresearch)';
+    var btns = btn.closest('.yc-btns').querySelectorAll('button');
+    btns.forEach(function(b){ b.style.opacity = (b===btn)?'1':'.4'; b.disabled = true; b.style.cursor='default'; });
+  }
+</script>
+</body>
+</html>

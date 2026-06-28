@@ -1,0 +1,455 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>NEXUS &mdash; The Daily Overview &middot; 24 June 2026</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --bg:#0a0b10; --bg2:#0e1017;
+    --glass:rgba(255,255,255,.045); --glass-line:rgba(255,255,255,.10);
+    --txt:#f3f5fa; --txt2:#b4bcce; --txt3:#6f7891;
+    --orange:#ff6a35; --orange-2:#ffb24d;
+    --red:#ff4d6a; --amber:#ffb020; --blue:#4d9bff; --cyan:#34e0d0; --violet:#9b8cff;
+    --ok:#2ee6a0;
+    --display:"Space Grotesk",-apple-system,system-ui,sans-serif;
+    --sans:"Inter",-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;
+  }
+  *{box-sizing:border-box;}
+  html{scroll-behavior:smooth;}
+  body{margin:0; background:var(--bg); color:var(--txt); font-family:var(--sans);
+       font-size:17px; line-height:1.6; -webkit-font-smoothing:antialiased;
+       background-image:
+         radial-gradient(900px 600px at 85% -5%, rgba(255,106,53,.16), transparent 60%),
+         radial-gradient(800px 600px at -10% 30%, rgba(155,140,255,.10), transparent 55%),
+         radial-gradient(700px 500px at 110% 80%, rgba(52,224,208,.07), transparent 55%);
+       background-attachment:fixed;}
+  .inner{max-width:900px; margin:0 auto; padding:0 30px;}
+  @media(max-width:640px){.inner{padding:0 18px;} body{font-size:16px;}}
+  a{color:inherit;}
+
+  /* ===== COVER ===== */
+  .cover{position:relative; overflow:hidden; border-bottom:1px solid var(--glass-line);}
+  .cover .mesh{position:absolute; inset:0; background:
+      radial-gradient(600px 400px at 78% 8%, rgba(255,106,53,.42), transparent 60%),
+      radial-gradient(520px 420px at 12% 90%, rgba(155,140,255,.30), transparent 60%);
+      filter:blur(8px); opacity:.9;}
+  .cover .grid-tex{position:absolute; inset:0; background-image:linear-gradient(rgba(255,255,255,.04) 1px,transparent 1px),linear-gradient(90deg,rgba(255,255,255,.04) 1px,transparent 1px); background-size:46px 46px; mask-image:radial-gradient(80% 70% at 50% 30%,#000,transparent 80%); opacity:.5;}
+  .cover .inner{position:relative; padding:42px 30px 46px;}
+  .toprow{display:flex; justify-content:space-between; align-items:center; font-family:var(--sans);
+      font-size:11px; letter-spacing:.32em; text-transform:uppercase; color:var(--txt3);}
+  .toprow .live{display:flex; align-items:center; gap:8px; color:var(--txt2);}
+  .pulse{width:8px; height:8px; border-radius:50%; background:var(--orange); box-shadow:0 0 12px 2px var(--orange); animation:pulse 2.2s infinite;}
+  @keyframes pulse{0%{box-shadow:0 0 0 0 rgba(255,106,53,.6);}70%{box-shadow:0 0 0 10px rgba(255,106,53,0);}100%{box-shadow:0 0 0 0 rgba(255,106,53,0);}}
+  .wordmark{font-family:var(--display); font-weight:700; font-size:104px; line-height:.9; letter-spacing:-.05em; margin:34px 0 6px;
+      background:linear-gradient(92deg,#fff 18%, #ffd9c5 50%, var(--orange) 88%); -webkit-background-clip:text; background-clip:text; -webkit-text-fill-color:transparent;}
+  @media(max-width:640px){.wordmark{font-size:64px;}}
+  .strap{font-family:var(--sans); font-weight:500; font-size:13px; letter-spacing:.46em; text-transform:uppercase; color:#e7b79b; margin-bottom:30px;}
+  .headline{font-family:var(--display); font-weight:500; font-size:27px; line-height:1.34; max-width:660px; color:#eef1f7;}
+  .headline b{color:#fff; font-weight:600;} .headline .hot{color:var(--orange);}
+  .glance{display:flex; gap:14px; margin-top:36px; flex-wrap:wrap;}
+  .gchip{flex:1; min-width:130px; background:var(--glass); border:1px solid var(--glass-line); border-radius:16px; padding:16px 18px; backdrop-filter:blur(8px); position:relative; overflow:hidden;}
+  .gchip::before{content:""; position:absolute; left:0; top:0; bottom:0; width:3px;}
+  .gchip.c1::before{background:var(--orange);} .gchip.c2::before{background:var(--red);} .gchip.c3::before{background:var(--blue);} .gchip.c4::before{background:var(--violet);}
+  .gchip .num{font-family:var(--display); font-weight:700; font-size:38px; line-height:1; color:#fff;}
+  .gchip.c1 .num{color:var(--orange);}
+  .gchip .lbl{font-size:10.5px; letter-spacing:.14em; text-transform:uppercase; color:var(--txt3); margin-top:8px;}
+
+  /* ===== LEDE ===== */
+  .lede-band .inner{padding:46px 30px 8px;}
+  .lede{font-size:21px; line-height:1.55; color:var(--txt2); max-width:740px;}
+  .lede b{color:#fff; font-weight:600;}
+
+  /* ===== SECTIONS ===== */
+  .section{padding:40px 0; position:relative;}
+  .section .inner{position:relative;}
+  .kick{font-family:var(--sans); font-size:11.5px; font-weight:700; letter-spacing:.24em; text-transform:uppercase; display:flex; align-items:center; gap:13px; margin:0 0 4px;}
+  .kick .num{font-family:var(--display); font-size:14px; color:var(--txt3); letter-spacing:0;}
+  .kick .tick{flex:1; height:1px;}
+  .sub{font-family:var(--sans); font-size:12.5px; color:var(--txt3); margin:0 0 22px;}
+  .a-orange .kick{color:var(--orange);} .a-orange .kick .tick{background:linear-gradient(90deg,rgba(255,106,53,.5),transparent);}
+  .a-red .kick{color:var(--red);} .a-red .kick .tick{background:linear-gradient(90deg,rgba(255,77,106,.5),transparent);}
+  .a-amber .kick{color:var(--amber);} .a-amber .kick .tick{background:linear-gradient(90deg,rgba(255,176,32,.5),transparent);}
+  .a-blue .kick{color:var(--blue);} .a-blue .kick .tick{background:linear-gradient(90deg,rgba(77,155,255,.5),transparent);}
+  .a-cyan .kick{color:var(--cyan);} .a-cyan .kick .tick{background:linear-gradient(90deg,rgba(52,224,208,.45),transparent);}
+  .a-violet .kick{color:var(--violet);} .a-violet .kick .tick{background:linear-gradient(90deg,rgba(155,140,255,.5),transparent);}
+  .glow{position:absolute; width:520px; height:300px; border-radius:50%; filter:blur(80px); opacity:.10; pointer-events:none; z-index:0;}
+  .glow.g-orange{background:var(--orange); right:-120px; top:0;}
+  .glow.g-red{background:var(--red); left:-140px; top:20px;}
+  .glow.g-blue{background:var(--blue); right:-120px; top:0;}
+  .glow.g-amber{background:var(--amber); left:-120px; top:0;}
+
+  /* ===== CARD ===== */
+  .card{position:relative; z-index:1; background:linear-gradient(180deg, rgba(255,255,255,.06), rgba(255,255,255,.025));
+        border:1px solid var(--glass-line); border-radius:20px; padding:26px 28px 22px; margin-bottom:20px;
+        backdrop-filter:blur(10px); box-shadow:0 30px 60px -30px rgba(0,0,0,.8); overflow:hidden; transition:transform .28s ease, border-color .28s ease, box-shadow .28s ease;}
+  .card::before{content:""; position:absolute; top:0; left:0; right:0; height:3px;}
+  .card.decide::before{background:linear-gradient(90deg,var(--orange),var(--orange-2));}
+  .card.action::before{background:linear-gradient(90deg,var(--red),#ff8a6a);}
+  .card.needs::before{background:linear-gradient(90deg,var(--blue),var(--cyan));}
+  .card.ops::before{background:linear-gradient(90deg,var(--amber),#ffd27a);}
+  .card:hover{transform:translateY(-5px); border-color:rgba(255,255,255,.2); box-shadow:0 40px 80px -28px rgba(0,0,0,.9);}
+  .card h2{font-family:var(--display); font-weight:600; font-size:25px; line-height:1.22; letter-spacing:-.01em; margin:0 0 11px; color:#fff;}
+  .card .deck{font-size:16.5px; line-height:1.55; color:var(--txt2); margin:0 0 16px;}
+  .card .deck b{color:#fff; font-weight:600;}
+
+  .meta{display:flex; flex-wrap:wrap; gap:8px; margin-bottom:15px;}
+  .pill{font-family:var(--sans); font-size:11px; font-weight:600; padding:4px 11px; border-radius:30px; letter-spacing:.02em; border:1px solid var(--glass-line);}
+  .pill.unv{background:rgba(255,176,32,.10); color:#ffca6e; border-color:rgba(255,176,32,.25);}
+  .pill.conf{background:rgba(46,230,160,.10); color:#6ff0c0; border-color:rgba(46,230,160,.22);}
+  .pill.age{background:rgba(255,106,53,.10); color:#ff9a6e; border-color:rgba(255,106,53,.22);}
+  .pill.dom{background:rgba(77,155,255,.10); color:#8cc0ff; border-color:rgba(77,155,255,.22);}
+  .next{font-family:var(--sans); font-size:14.5px; line-height:1.5; background:rgba(255,106,53,.08); border:1px solid rgba(255,106,53,.22); border-radius:11px; padding:12px 15px; margin:0 0 6px; color:#ffc1a3;}
+  .next b{color:var(--orange); text-transform:uppercase; font-size:10.5px; letter-spacing:.14em; margin-right:5px;}
+  .src{font-family:var(--sans); font-size:10.5px; color:var(--txt3); letter-spacing:.03em; clear:both; padding-top:4px;}
+
+  /* ===== YOUR CALL (Phase 2 — active) ===== */
+  .yc{font-family:var(--sans); margin-top:16px; padding-top:15px; border-top:1px solid var(--glass-line); display:flex; align-items:center; gap:10px; flex-wrap:wrap;}
+  .yc .q{font-size:10.5px; letter-spacing:.18em; text-transform:uppercase; color:var(--txt3);}
+  .yc button{font:inherit; font-size:13px; font-weight:600; border-radius:30px; padding:8px 17px; border:1px solid var(--glass-line); background:rgba(255,255,255,.04); color:var(--txt); cursor:pointer; transition:background .18s, border-color .18s, opacity .18s;}
+  .yc button:hover{background:rgba(255,255,255,.10); border-color:rgba(255,255,255,.22);}
+  .yc button.good:hover{background:rgba(46,230,160,.14); border-color:rgba(46,230,160,.4); color:#6ff0c0;}
+  .yc button.act:hover{background:rgba(77,155,255,.14); border-color:rgba(77,155,255,.4); color:#8cc0ff;}
+  .yc button.no:hover{background:rgba(255,77,106,.10); border-color:rgba(255,77,106,.35); color:#ff9ab0;}
+  .yc button.later:hover{background:rgba(255,176,32,.10); border-color:rgba(255,176,32,.35); color:#ffca6e;}
+  .yc button[disabled]{pointer-events:none; opacity:.35; cursor:not-allowed;}
+  .yc[data-yc-state="pending"] button{pointer-events:none; opacity:.45;}
+  .yc[data-yc-state="done"] button{pointer-events:none; opacity:.25;}
+  .yc .yc-confirm{margin-left:auto; font-size:12px; color:var(--ok); letter-spacing:.02em;}
+  .yc .yc-error{margin-left:auto; font-size:12px; color:var(--red); letter-spacing:.02em;}
+
+  /* ===== WATCH / FLAT / GRID ===== */
+  .watch{position:relative; z-index:1; border-left:3px solid var(--amber); padding:2px 0 2px 22px; margin-bottom:20px;}
+  .watch.warnish{border-color:var(--amber);}
+  .watch h2{font-family:var(--display); font-weight:600; font-size:23px; line-height:1.22; margin:0 0 10px; color:#fff;}
+  .watch .deck{font-size:16.5px; color:var(--txt2); margin:0 0 13px;}
+  .grid{position:relative; z-index:1; display:grid; grid-template-columns:1fr 1fr; gap:12px;}
+  @media(max-width:600px){.grid{grid-template-columns:1fr;}}
+  .tile{background:var(--glass); border:1px solid var(--glass-line); border-radius:14px; padding:15px 17px;}
+  .tile h3{font-family:var(--sans); font-size:11px; font-weight:700; letter-spacing:.08em; text-transform:uppercase; margin:0 0 6px; color:var(--txt2);}
+  .tile p{font-size:15px; margin:0; color:var(--txt2);}
+  .prose{position:relative; z-index:1; font-size:16.5px; color:var(--txt2); max-width:740px; margin-bottom:14px;} .prose b{color:#fff; font-weight:600;}
+
+  /* ===== CLOSING ===== */
+  .close{border-top:1px solid var(--glass-line); margin-top:8px; background:rgba(0,0,0,.25);}
+  .close .inner{padding:42px 30px 48px;}
+  .colophon{margin-top:30px; padding-top:18px; border-top:1px solid var(--glass-line); font-family:var(--sans); font-size:11px; color:var(--txt3); letter-spacing:.04em; text-align:center; line-height:1.7;}
+  .colophon code{color:#9aa3b8;}
+  .reveal{opacity:0; transform:translateY(18px); transition:opacity .6s ease, transform .6s ease;}
+  .reveal.in{opacity:1; transform:none;}
+</style>
+</head>
+<body>
+
+<!-- COVER -->
+<section class="cover">
+  <div class="mesh"></div><div class="grid-tex"></div>
+  <div class="inner">
+    <div class="toprow">
+      <span class="live"><span class="pulse"></span> Blick Group &middot; Intelligence</span>
+      <span>Issue &middot; 24 June 2026</span>
+    </div>
+    <div class="wordmark">NEXUS</div>
+    <div class="strap">The Daily Overview</div>
+    <div class="headline">Operations &amp; Overdue</div>
+    
+    <div class="glance">
+      <div class="gchip c1"><div class="num">2</div><div class="lbl">Decisions ready</div></div>
+      <div class="gchip c2"><div class="num">1</div><div class="lbl">Action required</div></div>
+      <div class="gchip c3"><div class="num">0</div><div class="lbl">Needs you</div></div>
+      <div class="gchip c4"><div class="num">0</div><div class="lbl">In triage</div></div>
+    </div>
+  </div>
+</section>
+
+<!-- LEDE -->
+<section class="lede-band"><div class="inner">
+  <p class="lede">Three overdue intelligence items surfaced from the operations backlog today: a competitor distribution move by Polpure in Australia, 2026 raw materials pricing that has not reached procurement, and a CETCO competitor profile 65 days in draft. The autoresearch engine failed overnight for the second consecutive day — killed by the time-limit watchdog before completing any domain scans — and remains the top operational fix before intelligence quality degrades further. No urgent decisions are needed today, but the AICIS renewal window closes 31 August and needs a confirmed owner before the end of the month.</p>
+</div></section>
+
+<!-- SECTIONS -->
+
+<section class="section a-orange">
+  <div class="glow g-orange"></div>
+  <div class="inner">
+    <div class="kick"><span class="num">01</span> Ready for Decision <span class="tick"></span></div>
+    
+  <article class="card decide reveal">
+    <h2>Polpure AU distribution activity — promote to competitor register and check for channel conflicts</h2>
+    <div class="meta"><span class="pill conf">Confidence 0.90</span><span class="pill unv">Unverified</span></div>
+    <p class="deck">According to an autoresearch capture from April 2026 (confidence 0.90, unverified), Polpure Pty Ltd of Brisbane has established distribution partnerships with MetaFLO Technologies (Toronto) and Ditch Witch (The Toro Company) and positioned itself as a key distributor for drilling fluid and waste management products in the Australian HDD segment. Polpure&#039;s MetaFLO solidification product competes directly with Eco Dry. This note has been in the raw inbox for 78 days; on promotion, the next step is to cross-check Polpure&#039;s stated partners against Blick&#039;s current and prospective distribution channels to identify any conflicts and flag to the sales team. .</p>
+    <p class="next"><b>Next</b> is to cross-check Polpure&#039;s stated partners against Blick&#039;s current and prospective distribution channels to identify any conflicts and flag to the sales team</p>
+    <p class="src">Source: 2026-04-07-Overview_of_Polpure_s_Distribution_and_Partnership</p>
+    
+    <div class="yc" data-yc-state="no-id">
+      <span class="q">Your call</span>
+      <button class="good" disabled>Like it</button>
+      <button class="act"  disabled>Act on it</button>
+      <button class="no"   disabled>Not pursuing</button>
+      <button class="later" disabled>Later</button>
+    </div>
+  </article>
+
+  <article class="card decide reveal">
+    <h2>2026 raw materials pricing forecasts — route to procurement before next reorder</h2>
+    <div class="meta"><span class="pill conf">Confidence 0.90</span><span class="pill age">78 days</span><span class="pill unv">Unverified</span></div>
+    <p class="deck">An April 2026 autoresearch note (confidence 0.90, unverified) reports Australian sodium bentonite (drilling-grade) at AUD 250–350 per tonne in Q1 2026, up 10–15% on 2025, with a forecast further rise of 5–8% by year-end driven by energy costs and Red Sea shipping disruptions. The note recommends considering hedging contracts before further increases. This intelligence is 78 days old, has not been promoted from the raw inbox, and has not reached the procurement team. H2 purchasing decisions are being made without it. On promotion: forward the pricing summary to procurement for comparison against current supplier quotes before the next reorder cycle. .</p>
+    
+    <p class="src">Source: 2026-04-07-Current_and_Forecasted_Prices_2026</p>
+    
+    <div class="yc" data-yc-state="no-id">
+      <span class="q">Your call</span>
+      <button class="good" disabled>Like it</button>
+      <button class="act"  disabled>Act on it</button>
+      <button class="no"   disabled>Not pursuing</button>
+      <button class="later" disabled>Later</button>
+    </div>
+  </article>
+  </div>
+</section>
+
+<section class="section a-red">
+  <div class="glow g-red"></div>
+  <div class="inner">
+    <div class="kick"><span class="num">02</span> Action Required <span class="tick"></span></div>
+    
+  <article class="card action reveal">
+    <h2>Confirm AICIS renewal is lodged for all relevant Blick products before 31 August</h2>
+    <div class="meta"><span class="pill conf">Confidence 0.70</span><span class="pill unv">Unverified</span></div>
+    <p class="deck">According to an autoresearch finding (unverified, confidence 0.70), the AICIS annual registration cycle closes 31 August each year; businesses manufacturing or importing industrial chemicals must renew by that date or lose authority to operate. A system note from 16 April flagged that Eco Dry&#039;s AICIS Industrial Chemicals Notification registration had no owner assigned. At 67 days from closing, a person needs to check the AICIS registrant portal for every Blick product that contains an introduced industrial chemical and confirm renewal is lodged for the current cycle. .</p>
+    
+    <p class="src">Source: 2026-04-05-The_AICIS_registration_cycle_runs_from_September_1</p>
+    
+    <div class="yc" data-yc-state="no-id">
+      <span class="q">Your call</span>
+      <button class="good" disabled>Like it</button>
+      <button class="act"  disabled>Act on it</button>
+      <button class="no"   disabled>Not pursuing</button>
+      <button class="later" disabled>Later</button>
+    </div>
+  </article>
+  </div>
+</section>
+
+<section class="section a-amber">
+  <div class="glow g-amber"></div>
+  <div class="inner">
+    <div class="kick"><span class="num">03</span> Watch List <span class="tick"></span></div>
+    
+  <div class="watch warnish reveal">
+    <h2>CETCO (Minerals Technologies Inc.) competitor profile — 65 days in draft:</h2>
+    <div class="meta"><span class="pill conf">Confidence 0.90</span><span class="pill unv">Unverified</span></div>
+    <p class="deck">According to an April 2026 autoresearch capture (confidence 0.90, unverified), CETCO is the construction technologies subsidiary of Minerals Technologies Inc., which generates nearly USD 2 billion in annual revenue in bentonite-based drilling, construction, and environmental products — a direct overlap with Blick&#039;s core range. The profile has been in the raw inbox for 65 days and is absent from the curated competitor register; no action today, but the next vault triage session should promote it to Intelligence/competitors and add the revenue and scale data to the competitor comparison matrix used in sales briefs. .
+
+---</p>
+    
+    <p class="src">Source: 2026-04-20-CETCO_MTI_Revenue_and_Scale</p>
+  </div>
+  </div>
+</section>
+
+<section class="section a-blue">
+  <div class="glow g-blue"></div>
+  <div class="inner">
+    <div class="kick"><span class="num">04</span> Sales Intelligence <span class="tick"></span></div>
+    <div class="grid reveal">
+    <div class="tile">
+      <h3>Australia — National</h3>
+      <p>The autoresearch engine did not complete any domain scans overnight, for the second consecutive day. No fresh national market signals were generated today. Polpure&#039;s distribution activity (detailed in Ready for Decision) is the only commercial signal with national reach in today&#039;s data — the company is headquartered in Brisbane but its MetaFLO Technologies and Ditch Witch partnerships indicate intent to serve the broader Australian HDD market.</p>
+    </div>
+    <div class="tile">
+      <h3>Sales AU — East Coast</h3>
+      <p>Polpure Pty Ltd, Brisbane, is active in the Australian HDD market as a distributor for drilling fluid and waste management products, with confirmed partnerships involving MetaFLO Technologies and Ditch Witch as of April 2026 (unverified). The MetaFLO solidification product competes with Eco Dry in waste management applications. No other East Coast signals today. .</p>
+    </div></div>
+  </div>
+</section>
+
+<section class="section a-cyan">
+  
+  <div class="inner">
+    <div class="kick"><span class="num">05</span> Product <span class="tick"></span></div>
+    <p class="prose reveal"><b>Internal alignment:</b> Both the CETCO competitor profile and the Polpure distribution note bear directly on Eco Dry&#039;s competitive positioning in the drilling waste solidification segment. Neither has been promoted to the curated register, meaning the competitive landscape in current sales and product documents may not reflect the current market. Next step on vault triage: promote both notes and cross-reference against Eco Dry product positioning documentation.
+
+---</p>
+  </div>
+</section>
+
+<section class="section a-amber">
+  <div class="glow g-amber"></div>
+  <div class="inner">
+    <div class="kick"><span class="num">06</span> H&amp;S &amp; Compliance <span class="tick"></span></div>
+    <p class="prose reveal"><b>AICIS annual renewal — 31 August deadline, 67 days remaining</b> According to an autoresearch finding (unverified, confidence 0.70), AICIS registration runs on a fixed annual cycle closing 31 August. A prior system note (16 April 2026) flagged that Eco Dry&#039;s AICIS Industrial Chemicals Notification registration had no owner assigned. At 67 days from the deadline, the compliance action needs to be assigned and confirmed this month to avoid a lapse. The action register item should be transitioned from untriaged to active with a named owner. .
+
+---</p>
+  </div>
+</section>
+
+<section class="section a-amber">
+  <div class="glow g-amber"></div>
+  <div class="inner">
+    <div class="kick"><span class="num">07</span> Operations <span class="tick"></span></div>
+    
+  <article class="card ops reveal">
+    <h2>Raw materials pricing intelligence not reaching procurement</h2>
+    <div class="meta"><span class="pill conf">Confidence 0.90</span><span class="pill age">78 days</span><span class="pill unv">Unverified</span></div>
+    <p class="deck">Australian drilling-grade bentonite is up 10–15% on 2025 prices and forecast to rise a further 5–8% by year-end, with Red Sea shipping disruption cited as a contributing factor, according to an April 2026 autoresearch note (confidence 0.90, unverified). A recommendation to consider hedging contracts sits in the raw inbox, 78 days unreviewed, with no indication it has reached procurement. H2 purchasing decisions are being made without this input. Next step: promote to Intelligence/market and route to procurement for a comparison against current supplier quotes. .</p>
+    <p class="next"><b>Next</b> promote to Intelligence/market and route to procurement for a comparison against current supplier quotes</p>
+    <p class="src">Source: 2026-04-07-Current_and_Forecasted_Prices_2026</p>
+    
+  </article>
+
+  <article class="card ops reveal">
+    <h2>Autoresearch engine down — second consecutive day</h2>
+    
+    <p class="deck">The autoresearch engine was killed by the time-limit watchdog before completing any of the six scheduled domain scans overnight, for the second day running. 0 of 6 domains completed; 0 items promoted. Diagnostic: check logs/scheduled/autoresearch-daily.log and confirm Gemma is resident in VRAM before the next scheduled run. Until resolved, all intelligence sections draw only from the existing vault and action register.</p>
+    
+    
+    
+  </article>
+
+  <article class="card ops reveal">
+    <h2>Seven repositories require human decisions — restoreability risk</h2>
+    
+    <p class="deck">A workspace hygiene scan identified 7 repositories with restoreability concerns. The most material: hub-app (40 local changes, 3 commits behind remote), nexus (12 local changes, diverged — 1 ahead and 3 behind remote), and website-test (34 local changes, untracked). Each requires a decision on whether local changes are intentional work in progress or should be reconciled with the remote before the checkout diverges further. Full detail: GitHub Hygiene Review - 2026-06-24.
+
+---</p>
+    
+    
+    
+  </article>
+  </div>
+</section>
+
+<section class="section a-violet">
+  
+  <div class="inner">
+    <div class="kick"><span class="num">08</span> Status <span class="tick"></span></div>
+    <p class="prose reveal">- Market intelligence: stale — autoresearch engine killed by watchdog for second consecutive day; no new scans completed
+- Business development: one competitor signal active (Polpure AU distribution partnerships, unverified, April 2026 capture)
+- Operations: autoresearch watchdog issue unresolved; AICIS renewal unconfirmed; raw materials pricing not yet in procurement hands; 7 repos need human reconciliation
+
+---</p>
+  </div>
+</section>
+
+<section class="section a-violet">
+  
+  <div class="inner">
+    <div class="kick"><span class="num">09</span> System <span class="tick"></span></div>
+    <p class="prose reveal">Nexus local inference: operational. 132 local calls processed; 16 cloud calls with 9 fallback events. Contact data frontmatter coverage is 0% across 237 company notes — likely a frontmatter-backfill lag rather than a true data gap; no action required unless a spot check confirms otherwise.
+
+| Metric | Value |
+|---|---|
+| Local calls | 132 |
+| Cloud calls | 16 |
+| Fallback events | 9 |
+| Estimated cloud cost | USD 3.65 |
+| Estimated local savings | USD 0.23 |</p>
+  </div>
+</section>
+
+<!-- CLOSING -->
+<section class="close"><div class="inner">
+  <div class="colophon">NEXUS &middot; THE DAILY OVERVIEW &middot; 2026-06-24<br>
+    A rendered view of <code>BlickVault/Intelligence/briefings/daily-overview/2026-06-24-daily-overview.md</code>
+    &mdash; the vault markdown remains the version of truth.</div>
+</div></section>
+
+<script>
+  // Scroll-reveal
+  var io = new IntersectionObserver(function(es){
+    es.forEach(function(e){
+      if(e.isIntersecting){ e.target.classList.add('in'); io.unobserve(e.target); }
+    });
+  }, {threshold:.12});
+  document.querySelectorAll('.reveal').forEach(function(el){ io.observe(el); });
+
+  // ── Phase 2: "Your call" postMessage bridge ──────────────────────────────
+  // Button clicks → postMessage({type:'brief-verdict',...}) to parent.
+  // Parent (Hub shell) calls the verdict API, postMessages the result back.
+  // We validate origin on the inbound result message.
+
+  var CONFIRM_COPY = {
+    like:    'Saved as good intel.',
+    act:     'Actioned.',
+    dismiss: 'Dismissed.',
+    later:   'Parked for later.',
+  };
+
+  function getParentOrigin() {
+    try { return window.parent !== window ? document.referrer ? new URL(document.referrer).origin : '*' : null; }
+    catch(e) { return '*'; }
+  }
+
+  document.addEventListener('click', function(e) {
+    var btn = e.target.closest('button[data-verb]');
+    if (!btn) return;
+    var yc = btn.closest('.yc');
+    if (!yc) return;
+    if (yc.dataset.ycState === 'pending' || yc.dataset.ycState === 'done') return;
+
+    var verb     = btn.dataset.verb;
+    var rid      = yc.dataset.registerId   || null;
+    var rslug    = yc.dataset.registerSlug || null;
+    var itemKind = yc.dataset.itemKind     || 'decision';
+    var title    = yc.dataset.itemTitle    || '';
+
+    if (!rid && !rslug) return; // no-id guard
+
+    yc.dataset.ycState = 'pending';
+
+    var msg = {
+      type:        'brief-verdict',
+      register_id:   rid   ? Number(rid) : undefined,
+      register_slug: rslug ? rslug       : undefined,
+      verb:          verb,
+      item_kind:     itemKind,
+      item_title:    title,
+    };
+
+    // Remove undefined keys to keep payload clean
+    Object.keys(msg).forEach(function(k){ if(msg[k] === undefined) delete msg[k]; });
+
+    var parentOrigin = getParentOrigin();
+    window.parent.postMessage(msg, parentOrigin || '*');
+  });
+
+  // Handle result messages posted back from the Hub parent
+  window.addEventListener('message', function(e) {
+    // Accept any same-scheme/host parent; '*' wildcard is safe here because
+    // we only act on our own message shape and never return secrets outbound.
+    var data = e.data;
+    if (!data || data.type !== 'brief-verdict-result') return;
+
+    // Find the matching .yc row by register_id or register_slug
+    var yc = null;
+    if (data.register_id != null) {
+      yc = document.querySelector('.yc[data-register-id="' + data.register_id + '"]');
+    }
+    if (!yc && data.register_slug) {
+      yc = document.querySelector('.yc[data-register-slug="' + data.register_slug + '"]');
+    }
+    if (!yc) return;
+
+    if (data.success) {
+      yc.dataset.ycState = 'done';
+      var span = document.createElement('span');
+      span.className = 'yc-confirm';
+      span.textContent = CONFIRM_COPY[data.verb] || 'Done.';
+      yc.appendChild(span);
+    } else {
+      yc.dataset.ycState = 'idle'; // allow retry
+      var errSpan = document.createElement('span');
+      errSpan.className = 'yc-error';
+      errSpan.textContent = data.error || 'Something went wrong. Try again.';
+      yc.appendChild(errSpan);
+      // Remove error after 4 s so user can retry
+      setTimeout(function(){ if(errSpan.parentNode) errSpan.parentNode.removeChild(errSpan); }, 4000);
+    }
+  });
+</script>
+</body>
+</html>

@@ -1,0 +1,1092 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>NEXUS — The Daily Overview · 24 June 2026</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Source+Serif+4:ital,opsz,wght@0,8..60,300;0,8..60,400;0,8..60,500;0,8..60,600;1,8..60,300;1,8..60,400&display=swap" rel="stylesheet">
+<style>
+
+/* ─── Reset ─────────────────────────────────────────────────────────── */
+
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+/* ─── Design tokens ─────────────────────────────────────────────────── */
+
+:root {
+  /* Paper */
+  --paper:        #faf8f4;
+  --paper-warm:   #f3f0ea;
+  --paper-rule:   #e0dbd2;
+  --paper-rule-lt:#ece9e2;
+
+  /* Ink */
+  --ink:          #1c1a17;
+  --ink-mid:      #58595b;
+  --ink-soft:     #7c7b79;
+  --ink-muted:    #a4a2a0;
+
+  /* Brand */
+  --orange:       #f05323;
+  --orange-lt:    #fdf0eb;
+  --blick-dark:   #58595b;
+
+  /* Semantic */
+  --danger:       #ef4444;
+  --danger-lt:    #fef2f2;
+  --warning:      #f59e0b;
+  --warning-lt:   #fffbeb;
+  --success:      #10b981;
+  --success-lt:   #ecfdf5;
+  --info:         #2f6fb0;
+  --info-lt:      #eff6ff;
+
+  /* Card */
+  --card-bg:      #ffffff;
+  --card-shadow:  0 2px 12px rgba(28,26,23,0.07), 0 1px 3px rgba(28,26,23,0.05);
+
+  /* Type */
+  --sans: 'Inter', system-ui, -apple-system, sans-serif;
+  --serif: 'Source Serif 4', Charter, Georgia, serif;
+
+  /* Layout */
+  --col: 760px;
+  --gutter: clamp(1.25rem, 4vw, 3rem);
+}
+
+/* ─── Base ──────────────────────────────────────────────────────────── */
+
+html { font-size: 16px; -webkit-font-smoothing: antialiased; }
+
+body {
+  background: var(--paper);
+  color: var(--ink);
+  font-family: var(--serif);
+  font-size: 1rem;
+  line-height: 1.7;
+  padding: 0 var(--gutter) 5rem;
+  min-height: 100vh;
+}
+
+/* ─── Layout shell ──────────────────────────────────────────────────── */
+
+.page {
+  max-width: var(--col);
+  margin: 0 auto;
+}
+
+/* ─── Masthead ──────────────────────────────────────────────────────── */
+
+.masthead {
+  padding: 2.75rem 0 1.5rem;
+  border-bottom: 2px solid var(--ink);
+}
+
+.masthead-eyebrow {
+  font-family: var(--sans);
+  font-size: 0.6875rem;
+  font-weight: 600;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: var(--orange);
+  margin-bottom: 0.375rem;
+}
+
+.masthead-title {
+  font-family: var(--sans);
+  font-size: clamp(1.75rem, 5vw, 2.5rem);
+  font-weight: 700;
+  letter-spacing: -0.03em;
+  color: var(--ink);
+  line-height: 1.1;
+  margin-bottom: 0.75rem;
+}
+
+.masthead-meta {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  gap: 0 1.5rem;
+}
+
+.masthead-date {
+  font-family: var(--sans);
+  font-size: 0.8125rem;
+  color: var(--ink-mid);
+  font-weight: 400;
+}
+
+.masthead-glance {
+  font-family: var(--sans);
+  font-size: 0.8125rem;
+  color: var(--ink-soft);
+}
+
+.masthead-glance strong {
+  color: var(--orange);
+  font-weight: 600;
+}
+
+/* ─── Lede ──────────────────────────────────────────────────────────── */
+
+.lede {
+  padding: 1.75rem 0 0;
+  border-bottom: 1px solid var(--paper-rule);
+  margin-bottom: 2.5rem;
+}
+
+.lede p {
+  font-size: 1.0625rem;
+  line-height: 1.75;
+  color: var(--ink);
+  max-width: 66ch;
+  margin-bottom: 1.5rem;
+}
+
+/* ─── Section label ─────────────────────────────────────────────────── */
+
+.section-label {
+  font-family: var(--sans);
+  font-size: 0.625rem;
+  font-weight: 700;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: var(--ink-muted);
+  margin-bottom: 1.125rem;
+  display: flex;
+  align-items: center;
+  gap: 0.625rem;
+}
+
+.section-label::after {
+  content: '';
+  flex: 1;
+  height: 1px;
+  background: var(--paper-rule);
+  display: block;
+}
+
+.section-label--orange {
+  color: var(--orange);
+}
+
+.section-label--danger {
+  color: var(--danger);
+}
+
+.section-label--warning {
+  color: var(--warning);
+}
+
+/* ─── PRIORITY CARDS ────────────────────────────────────────────────── */
+/* The floating objects — draw the eye. Everything else is flat text.  */
+
+.card-stack {
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+  margin-bottom: 3rem;
+}
+
+.card {
+  background: var(--card-bg);
+  border-radius: 6px;
+  box-shadow: var(--card-shadow);
+  padding: 1.625rem 1.75rem 1.5rem;
+  position: relative;
+  overflow: hidden;
+  transition: box-shadow 0.15s ease;
+}
+
+.card:hover {
+  box-shadow: 0 4px 20px rgba(28,26,23,0.1), 0 1px 4px rgba(28,26,23,0.06);
+}
+
+/* Slim coloured top edge — the type signal */
+.card::before {
+  content: '';
+  position: absolute;
+  top: 0; left: 0; right: 0;
+  height: 3px;
+}
+
+.card--decision::before  { background: var(--info); }
+.card--action::before    { background: var(--danger); }
+.card--watch::before     { background: var(--warning); }
+.card--ops::before       { background: var(--warning); }
+.card--needs-you::before { background: var(--orange); }
+
+/* Card type pill */
+.card-type {
+  font-family: var(--sans);
+  font-size: 0.5875rem;
+  font-weight: 700;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  padding: 0.2em 0.6em;
+  border-radius: 2px;
+  display: inline-block;
+  margin-bottom: 0.875rem;
+}
+
+.card-type--decision {
+  background: var(--info-lt);
+  color: var(--info);
+}
+
+.card-type--action {
+  background: var(--danger-lt);
+  color: var(--danger);
+}
+
+.card-type--watch {
+  background: var(--warning-lt);
+  color: #92400e;
+}
+
+.card-type--ops {
+  background: var(--warning-lt);
+  color: #92400e;
+}
+
+.card-type--needs-you {
+  background: var(--orange-lt);
+  color: var(--orange);
+}
+
+/* Card headline */
+.card-headline {
+  font-family: var(--sans);
+  font-size: clamp(1rem, 2.5vw, 1.125rem);
+  font-weight: 600;
+  letter-spacing: -0.02em;
+  line-height: 1.3;
+  color: var(--ink);
+  margin-bottom: 0.75rem;
+}
+
+/* Card deck / body */
+.card-deck {
+  font-family: var(--serif);
+  font-size: 0.9375rem;
+  line-height: 1.72;
+  color: var(--ink-mid);
+  margin-bottom: 1rem;
+}
+
+/* Stat pull-out */
+.card-stat {
+  display: inline-block;
+  border-left: 3px solid var(--orange);
+  padding: 0.3em 0 0.3em 0.875rem;
+  margin: 0.375rem 0 1rem;
+}
+
+.card-stat-figure {
+  font-family: var(--sans);
+  font-size: 1.375rem;
+  font-weight: 700;
+  color: var(--ink);
+  line-height: 1.1;
+  display: block;
+  letter-spacing: -0.03em;
+}
+
+.card-stat-label {
+  font-family: var(--sans);
+  font-size: 0.75rem;
+  color: var(--ink-soft);
+  display: block;
+  margin-top: 0.125rem;
+}
+
+/* Card meta row */
+.card-meta {
+  font-family: var(--sans);
+  font-size: 0.6875rem;
+  color: var(--ink-muted);
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0 1rem;
+  margin-bottom: 0.875rem;
+}
+
+.card-meta span {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.25em;
+}
+
+/* Next step */
+.card-next {
+  font-family: var(--sans);
+  font-size: 0.8125rem;
+  line-height: 1.55;
+  color: var(--ink-mid);
+  padding: 0.625rem 0.875rem;
+  background: var(--paper-warm);
+  border-radius: 4px;
+  margin-bottom: 0.875rem;
+}
+
+.card-next-label {
+  font-weight: 600;
+  color: var(--ink);
+  margin-right: 0.35em;
+  font-size: 0.6875rem;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+}
+
+/* Source attribution */
+.card-source {
+  font-family: var(--sans);
+  font-size: 0.6875rem;
+  color: var(--ink-muted);
+  margin-bottom: 1rem;
+}
+
+.card-source-label {
+  font-weight: 600;
+  color: var(--ink-soft);
+}
+
+/* ─── FEEDBACK CONTROL ──────────────────────────────────────────────── */
+
+.feedback-row {
+  padding-top: 0.875rem;
+  border-top: 1px solid var(--paper-rule-lt);
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  flex-wrap: wrap;
+}
+
+.feedback-label {
+  font-family: var(--sans);
+  font-size: 0.6875rem;
+  color: var(--ink-muted);
+  font-weight: 500;
+  margin-right: 0.125rem;
+  flex-shrink: 0;
+}
+
+.feedback-btn {
+  font-family: var(--sans);
+  font-size: 0.75rem;
+  font-weight: 500;
+  padding: 0.3em 0.875em;
+  border-radius: 20px;
+  border: 1px solid var(--paper-rule);
+  background: transparent;
+  color: var(--ink-mid);
+  cursor: pointer;
+  transition: background 0.12s, border-color 0.12s, color 0.12s;
+  white-space: nowrap;
+}
+
+.feedback-btn:hover {
+  background: var(--paper-warm);
+  border-color: var(--ink-muted);
+  color: var(--ink);
+}
+
+.feedback-btn--yes:hover  { border-color: var(--success); color: var(--success); background: var(--success-lt); }
+.feedback-btn--no:hover   { border-color: var(--danger);  color: var(--danger);  background: var(--danger-lt);  }
+.feedback-btn--done:hover { border-color: var(--info);    color: var(--info);    background: var(--info-lt);    }
+
+.feedback-confirm {
+  display: none;
+  font-family: var(--sans);
+  font-size: 0.6875rem;
+  color: var(--ink-soft);
+  font-style: italic;
+}
+
+.feedback-row.is-logged .feedback-btn   { display: none; }
+.feedback-row.is-logged .feedback-label { display: none; }
+.feedback-row.is-logged .feedback-confirm { display: block; }
+
+/* ─── WATCH CARD (secondary / lighter) ──────────────────────────────── */
+
+.card--watch {
+  box-shadow: 0 1px 6px rgba(28,26,23,0.05);
+  border: 1px solid var(--paper-rule);
+}
+
+.card--watch .card-deck { font-size: 0.9rem; }
+
+/* ─── FLAT EDITORIAL SECTIONS ───────────────────────────────────────── */
+/* These deliberately do NOT float — the contrast is the hierarchy.    */
+
+.flat-section {
+  margin-bottom: 2.75rem;
+}
+
+.flat-section .section-label {
+  margin-bottom: 1rem;
+}
+
+/* Subsection within a flat section */
+.flat-sub {
+  margin-bottom: 1.125rem;
+  padding-bottom: 1.125rem;
+  border-bottom: 1px solid var(--paper-rule-lt);
+}
+
+.flat-sub:last-child {
+  border-bottom: none;
+  padding-bottom: 0;
+  margin-bottom: 0;
+}
+
+.flat-sub-label {
+  font-family: var(--sans);
+  font-size: 0.6875rem;
+  font-weight: 600;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--orange);
+  margin-bottom: 0.3rem;
+}
+
+.flat-sub-body {
+  font-size: 0.9rem;
+  color: var(--ink-mid);
+  line-height: 1.68;
+}
+
+/* Internal cross-link style */
+.xref {
+  font-family: var(--sans);
+  font-size: 0.8em;
+  font-weight: 500;
+  color: var(--info);
+  white-space: nowrap;
+}
+
+/* Nothing-to-report row — intentional and composed */
+.nothing {
+  font-family: var(--sans);
+  font-size: 0.8125rem;
+  color: var(--ink-muted);
+  font-style: italic;
+  padding: 0.35rem 0;
+}
+
+/* ─── QUIET DESK — single tidy row ──────────────────────────────────── */
+
+.quiet-row {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.25rem 0;
+  margin-bottom: 2.75rem;
+}
+
+.quiet-item {
+  display: flex;
+  align-items: baseline;
+  gap: 0;
+  padding: 0.35rem 0;
+  border-bottom: 1px solid var(--paper-rule-lt);
+  width: 100%;
+}
+
+.quiet-item:last-child {
+  border-bottom: none;
+}
+
+.quiet-item-domain {
+  font-family: var(--sans);
+  font-size: 0.6875rem;
+  font-weight: 600;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--ink-soft);
+  width: 9.5rem;
+  flex-shrink: 0;
+  padding-right: 1rem;
+}
+
+.quiet-item-text {
+  font-family: var(--sans);
+  font-size: 0.8125rem;
+  color: var(--ink-muted);
+}
+
+.quiet-item-text .xref { font-size: inherit; }
+
+/* ─── STATUS BAR ────────────────────────────────────────────────────── */
+
+.status-section {
+  margin-bottom: 2.75rem;
+}
+
+.status-row {
+  display: flex;
+  align-items: baseline;
+  gap: 0.75rem;
+  padding: 0.5rem 0;
+  border-bottom: 1px solid var(--paper-rule-lt);
+  flex-wrap: wrap;
+}
+
+.status-row:last-child { border-bottom: none; }
+
+.status-domain {
+  font-family: var(--sans);
+  font-size: 0.6875rem;
+  font-weight: 600;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--ink-soft);
+  width: 11rem;
+  flex-shrink: 0;
+}
+
+.status-text {
+  font-family: var(--sans);
+  font-size: 0.8125rem;
+  color: var(--ink-mid);
+  flex: 1;
+}
+
+.badge {
+  font-family: var(--sans);
+  font-size: 0.625rem;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  padding: 0.2em 0.55em;
+  border-radius: 2px;
+  white-space: nowrap;
+  flex-shrink: 0;
+}
+
+.badge--danger  { background: var(--danger-lt);  color: var(--danger);  }
+.badge--warning { background: var(--warning-lt); color: #92400e;        }
+.badge--ok      { background: var(--success-lt); color: var(--success); }
+
+/* ─── SYSTEM TABLE ──────────────────────────────────────────────────── */
+
+.system-section {
+  margin-bottom: 2.75rem;
+}
+
+.sys-table {
+  width: 100%;
+  border-collapse: collapse;
+  font-family: var(--sans);
+  font-size: 0.8125rem;
+  margin-bottom: 0.75rem;
+}
+
+.sys-table td {
+  padding: 0.45rem 0.75rem 0.45rem 0;
+  border-bottom: 1px solid var(--paper-rule-lt);
+  color: var(--ink-mid);
+  vertical-align: top;
+}
+
+.sys-table td:first-child {
+  color: var(--ink-soft);
+  font-size: 0.75rem;
+  width: 15rem;
+}
+
+.sys-table td:last-child {
+  font-weight: 500;
+  color: var(--ink);
+  text-align: right;
+  padding-right: 0;
+}
+
+.sys-table tr:last-child td {
+  border-bottom: none;
+}
+
+.sys-footnote {
+  font-family: var(--sans);
+  font-size: 0.75rem;
+  color: var(--ink-muted);
+  line-height: 1.55;
+  padding-top: 0.5rem;
+  border-top: 1px solid var(--paper-rule-lt);
+}
+
+/* ─── STALE / TRIAGE ────────────────────────────────────────────────── */
+
+.stale-section {
+  margin-bottom: 2.75rem;
+}
+
+.stale-intro {
+  font-family: var(--sans);
+  font-size: 0.8125rem;
+  color: var(--ink-mid);
+  margin-bottom: 1rem;
+}
+
+.stale-list {
+  list-style: none;
+  counter-reset: stale-counter;
+}
+
+.stale-list li {
+  counter-increment: stale-counter;
+  display: flex;
+  align-items: baseline;
+  gap: 0.875rem;
+  padding: 0.5rem 0;
+  border-bottom: 1px solid var(--paper-rule-lt);
+  font-family: var(--sans);
+  font-size: 0.8125rem;
+  color: var(--ink-mid);
+}
+
+.stale-list li:last-child { border-bottom: none; }
+
+.stale-list li::before {
+  content: counter(stale-counter);
+  font-family: var(--sans);
+  font-size: 0.6875rem;
+  font-weight: 600;
+  color: var(--ink-muted);
+  width: 1.25rem;
+  flex-shrink: 0;
+  text-align: right;
+}
+
+.stale-age {
+  font-family: var(--sans);
+  font-size: 0.6875rem;
+  color: var(--danger);
+  margin-left: auto;
+  white-space: nowrap;
+  flex-shrink: 0;
+}
+
+/* ─── COLOPHON ──────────────────────────────────────────────────────── */
+
+.colophon {
+  padding: 1.5rem 0 0;
+  border-top: 1px solid var(--paper-rule);
+  margin-top: 1rem;
+}
+
+.colophon p {
+  font-family: var(--sans);
+  font-size: 0.6875rem;
+  color: var(--ink-muted);
+  line-height: 1.6;
+}
+
+.colophon strong {
+  color: var(--ink-soft);
+  font-weight: 600;
+}
+
+/* ─── CAUTION OPS CARD ──────────────────────────────────────────────── */
+
+.card--ops-caution {
+  border-left: 3px solid var(--warning);
+  border-radius: 4px;
+  padding-left: calc(1.75rem - 3px);
+}
+
+/* ─── DIVIDER ───────────────────────────────────────────────────────── */
+
+.section-gap {
+  margin-bottom: 2.75rem;
+}
+
+/* ─── Mobile ────────────────────────────────────────────────────────── */
+
+@media (max-width: 540px) {
+  body { padding: 0 1rem 3rem; }
+  .card { padding: 1.25rem 1.125rem 1.125rem; }
+  .feedback-row { gap: 0.4rem; }
+  .feedback-btn { font-size: 0.7rem; padding: 0.3em 0.7em; }
+  .status-domain, .quiet-item-domain { width: 7.5rem; }
+  .sys-table td:first-child { width: 10rem; }
+}
+
+</style>
+</head>
+<body>
+<article class="page">
+
+  <!-- ═══════════════════════════════════════════════ MASTHEAD ════════ -->
+
+  <header class="masthead">
+    <div class="masthead-eyebrow">Nexus Intelligence</div>
+    <h1 class="masthead-title">NEXUS — The Daily Overview</h1>
+    <div class="masthead-meta">
+      <span class="masthead-date">Wednesday &middot; 24 June 2026 &middot; Operations &amp; Overdue</span>
+      <span class="masthead-glance"><strong>2 decisions ready</strong> &middot; 1 action &middot; 1 needs you</span>
+    </div>
+  </header>
+
+  <!-- ═══════════════════════════════════════════════ LEDE ═══════════ -->
+
+  <section class="lede">
+    <p>Three overdue intelligence items need promoting from the raw inbox &mdash; Polpure&rsquo;s distribution move, 2026 raw-materials pricing, and a CETCO competitor profile. Autoresearch was killed by the watchdog overnight for the second day running, and is the top operational fix. No same-day decisions are forced &mdash; but AICIS renewal, which closes 31 August, still has no owner.</p>
+  </section>
+
+  <!-- ═══════════════════════════════════════════ READY FOR DECISION ═ -->
+
+  <div class="section-gap">
+    <div class="section-label section-label--orange">Ready for Decision</div>
+
+    <div class="card-stack">
+
+      <!-- Card 1 — Polpure -->
+      <div class="card card--decision" id="card-polpure">
+        <div class="card-type card-type--decision">Ready for Decision</div>
+        <h2 class="card-headline">Promote Polpure to the competitor register &mdash; and check for channel conflicts</h2>
+        <p class="card-deck">Brisbane-based Polpure has partnered with MetaFLO Technologies and Ditch Witch and positioned itself as a key Australian HDD distributor for drilling-fluid and waste products; its MetaFLO solidifier competes directly with Eco Dry.</p>
+        <div class="card-meta">
+          <span>Unverified</span>
+          <span>Confidence 0.90</span>
+          <span>78 days in inbox</span>
+          <span>Business development</span>
+        </div>
+        <div class="card-next">
+          <span class="card-next-label">Next:</span>
+          On promotion, cross-check Polpure&rsquo;s stated partners against Blick&rsquo;s current and prospective channels for conflicts and flag to sales.
+        </div>
+        <div class="card-source">
+          <span class="card-source-label">Source: </span>Overview_of_Polpure_s_Distribution_and_Partnership
+        </div>
+        <div class="feedback-row" id="fb-polpure">
+          <span class="feedback-label">Your call:</span>
+          <button class="feedback-btn feedback-btn--yes"  onclick="logFeedback('fb-polpure','Right call')">Right call</button>
+          <button class="feedback-btn feedback-btn--no"   onclick="logFeedback('fb-polpure','Not pursuing')">Not pursuing</button>
+          <button class="feedback-btn feedback-btn--done" onclick="logFeedback('fb-polpure','Already done')">Already done</button>
+          <span class="feedback-confirm">Response logged &mdash; will post to autoresearch on next run. (Demo)</span>
+        </div>
+      </div>
+
+      <!-- Card 2 — Raw materials pricing -->
+      <div class="card card--decision" id="card-pricing">
+        <div class="card-type card-type--decision">Ready for Decision</div>
+        <h2 class="card-headline">Route 2026 raw-materials pricing to procurement before the next reorder</h2>
+        <p class="card-deck">AU drilling-grade sodium bentonite is AUD 250&ndash;350/t in Q1 2026, up 10&ndash;15% on 2025, forecast +5&ndash;8% more by year-end (energy costs and Red Sea shipping); the note recommends considering hedging. It is 78 days unreviewed and has not reached procurement &mdash; H2 buying is happening without it.</p>
+
+        <div class="card-stat">
+          <span class="card-stat-figure">+10&ndash;15%</span>
+          <span class="card-stat-label">Bentonite vs 2025, now AUD 250&ndash;350/t</span>
+        </div>
+
+        <div class="card-meta">
+          <span>Unverified</span>
+          <span>0.90</span>
+          <span>78 days unreviewed</span>
+          <span>Operations</span>
+        </div>
+        <div class="card-next">
+          <span class="card-next-label">Next:</span>
+          Promote to Intelligence/market and forward to procurement to compare against current supplier quotes.
+        </div>
+        <div class="card-source">
+          <span class="card-source-label">Source: </span>Current_and_Forecasted_Prices_2026
+        </div>
+        <div class="feedback-row" id="fb-pricing">
+          <span class="feedback-label">Your call:</span>
+          <button class="feedback-btn feedback-btn--yes"  onclick="logFeedback('fb-pricing','Right call')">Right call</button>
+          <button class="feedback-btn feedback-btn--no"   onclick="logFeedback('fb-pricing','Not pursuing')">Not pursuing</button>
+          <button class="feedback-btn feedback-btn--done" onclick="logFeedback('fb-pricing','Already done')">Already done</button>
+          <span class="feedback-confirm">Response logged &mdash; will post to autoresearch on next run. (Demo)</span>
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- ═══════════════════════════════════════════ ACTION REQUIRED ════ -->
+
+  <div class="section-gap">
+    <div class="section-label section-label--danger">Action Required</div>
+
+    <div class="card-stack">
+      <div class="card card--action" id="card-aicis">
+        <div class="card-type card-type--action">Action Required &mdash; A person must do this</div>
+        <h2 class="card-headline">Confirm AICIS renewal is lodged for all relevant products before 31 August</h2>
+        <p class="card-deck">A 16 April system note flagged that Eco Dry&rsquo;s AICIS notification has no owner assigned. The cycle closes 31 August every year; miss it and you lose authority to operate.</p>
+
+        <div class="card-stat">
+          <span class="card-stat-figure">67</span>
+          <span class="card-stat-label">Days until the AICIS cycle closes</span>
+        </div>
+
+        <div class="card-meta">
+          <span>Unverified</span>
+          <span>0.70</span>
+          <span>Compliance</span>
+        </div>
+        <div class="card-next">
+          <span class="card-next-label">Next:</span>
+          Assign an owner this month to check the AICIS registrant portal for every Blick product containing an introduced industrial chemical, confirm the cycle is lodged, and move the action-register item to active.
+        </div>
+        <div class="card-source">
+          <span class="card-source-label">Source: </span>The_AICIS_registration_cycle_runs_from_September_1
+        </div>
+        <div class="feedback-row" id="fb-aicis">
+          <span class="feedback-label">Your call:</span>
+          <button class="feedback-btn feedback-btn--yes"  onclick="logFeedback('fb-aicis','On it — assign me')">On it &mdash; assign me</button>
+          <button class="feedback-btn feedback-btn--no"   onclick="logFeedback('fb-aicis','Not relevant')">Not relevant</button>
+          <button class="feedback-btn feedback-btn--done" onclick="logFeedback('fb-aicis','Already lodged')">Already lodged</button>
+          <span class="feedback-confirm">Response logged &mdash; will post to autoresearch on next run. (Demo)</span>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ═══════════════════════════════════════════════ WATCH LIST ═════ -->
+
+  <div class="section-gap">
+    <div class="section-label section-label--warning">Watch List</div>
+
+    <div class="card-stack">
+      <div class="card card--watch" id="card-cetco">
+        <div class="card-type card-type--watch">Watch List</div>
+        <h2 class="card-headline">CETCO is a USD 2bn shadow over Eco Dry &mdash; and still 65 days in draft</h2>
+        <p class="card-deck">CETCO, the construction-technologies subsidiary of Minerals Technologies (~USD 2bn annual revenue in bentonite drilling, construction and environmental products), overlaps directly with Blick&rsquo;s core range &mdash; yet its profile is still absent from the curated competitor register.</p>
+        <div class="card-meta">
+          <span>Unverified</span>
+          <span>0.90</span>
+          <span>65 days in draft</span>
+        </div>
+        <div class="card-next">
+          <span class="card-next-label">Next:</span>
+          At the next vault triage, promote to Intelligence/competitors and add the revenue and scale figures to the sales comparison matrix.
+        </div>
+        <div class="card-source">
+          <span class="card-source-label">Source: </span>CETCO_MTI_Revenue_and_Scale
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ══════════════════════════════════════════ SALES INTELLIGENCE ══ -->
+
+  <section class="flat-section">
+    <div class="section-label">Sales Intelligence</div>
+
+    <div class="flat-sub">
+      <div class="flat-sub-label">Australia &mdash; National</div>
+      <p class="flat-sub-body">No new national signals &mdash; no scans completed overnight. The only national-reach signal is Polpure&rsquo;s distribution move <span class="xref">(see Ready for Decision)</span>.</p>
+    </div>
+
+    <div class="flat-sub">
+      <div class="flat-sub-label">AU &mdash; WA</div>
+      <p class="nothing">Nothing to report.</p>
+    </div>
+
+    <div class="flat-sub">
+      <div class="flat-sub-label">AU &mdash; East Coast</div>
+      <p class="flat-sub-body">Polpure (Brisbane) competes with Eco Dry in waste solidification <span class="xref">(see Ready for Decision)</span>.</p>
+    </div>
+
+    <div class="flat-sub">
+      <div class="flat-sub-label">NZ</div>
+      <p class="nothing">Nothing to report.</p>
+    </div>
+  </section>
+
+  <!-- ════════════════════════════════════════════════ PRODUCT ═══════ -->
+
+  <section class="flat-section">
+    <div class="section-label">Product</div>
+
+    <div class="flat-sub">
+      <div class="flat-sub-label">Internal Alignment</div>
+      <p class="flat-sub-body">Polpure <span class="xref">(see Ready for Decision)</span> and CETCO <span class="xref">(see Watch List)</span> both bear on Eco Dry&rsquo;s positioning in drilling-waste solidification; neither is in the curated register yet, so current sales and product docs may not reflect the live competitive landscape. Next: promote both at the next triage and cross-reference against Eco Dry positioning.</p>
+    </div>
+
+    <div class="flat-sub">
+      <div class="flat-sub-label">External Signals</div>
+      <p class="nothing">Nothing to report.</p>
+    </div>
+  </section>
+
+  <!-- ════════════════════════════════════════════ OPERATIONS ═══════ -->
+
+  <div class="section-gap">
+    <div class="section-label section-label--warning">Operations</div>
+
+    <div class="card-stack">
+
+      <!-- Autoresearch down — caution card -->
+      <div class="card card--ops" id="card-autoresearch">
+        <div class="card-type card-type--ops">Operations Alert</div>
+        <h2 class="card-headline">Autoresearch is down for a second straight day</h2>
+        <p class="card-deck">Killed by the time-limit watchdog before any of the six scheduled domain scans completed &mdash; 0 of 6 domains, 0 items promoted. Until it&rsquo;s fixed, every section above draws only on the existing vault and action register.</p>
+        <div class="card-next">
+          <span class="card-next-label">Next:</span>
+          Check the autoresearch daily log and confirm Gemma is resident in VRAM before the next scheduled run.
+        </div>
+      </div>
+
+    </div>
+
+    <!-- Repo hygiene — flat, below the card -->
+    <div style="margin-top:1.125rem;">
+      <div class="flat-sub">
+        <div class="flat-sub-label">Repository Hygiene</div>
+        <p class="flat-sub-body">Seven repositories need a human decision. Most material: hub-app (40 local changes, 3 behind remote), nexus (12 local changes, diverged), website-test (34 local changes, untracked) &mdash; a restoreability risk. Next: decide per repo whether local changes are intentional WIP or should be reconciled. Full detail in the GitHub Hygiene Review.</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- ════════════════════════════════════════════ QUIET DESK ════════ -->
+
+  <section class="section-gap">
+    <div class="section-label">Quiet Desk</div>
+    <div class="quiet-row">
+      <div class="quiet-item">
+        <span class="quiet-item-domain">Industry</span>
+        <span class="quiet-item-text">No scans overnight.</span>
+      </div>
+      <div class="quiet-item">
+        <span class="quiet-item-domain">Technology Watch</span>
+        <span class="quiet-item-text">Nothing to report.</span>
+      </div>
+      <div class="quiet-item">
+        <span class="quiet-item-domain">Innovation</span>
+        <span class="quiet-item-text">Nothing to report.</span>
+      </div>
+      <div class="quiet-item">
+        <span class="quiet-item-domain">AI Radar</span>
+        <span class="quiet-item-text">Nothing material this week.</span>
+      </div>
+      <div class="quiet-item">
+        <span class="quiet-item-domain">H&amp;S &amp; Compliance</span>
+        <span class="quiet-item-text">AICIS renewal, 31 August &mdash; <span class="xref">see Action Required</span>.</span>
+      </div>
+    </div>
+  </section>
+
+  <!-- ═══════════════════════════════════════════ NEEDS YOU ══════════ -->
+
+  <div class="section-gap">
+    <div class="section-label section-label--orange">Needs You</div>
+
+    <div class="card-stack">
+      <div class="card card--needs-you" id="card-linkedin">
+        <div class="card-type card-type--needs-you">Needs You</div>
+        <h2 class="card-headline">This week&rsquo;s LinkedIn post is ready &mdash; but its preview isn&rsquo;t live to approve</h2>
+        <p class="card-deck">The post generated, but its preview page isn&rsquo;t reachable on GitHub Pages &mdash; most likely the background publisher couldn&rsquo;t reach the NewmanDrive volume (Full Disk Access). Next: run the publisher from a terminal on the Mac Mini, then refresh the preview.</p>
+        <div class="feedback-row" id="fb-linkedin">
+          <span class="feedback-label">Your call:</span>
+          <button class="feedback-btn feedback-btn--yes"  onclick="logFeedback('fb-linkedin','On it — will publish')">On it &mdash; will publish</button>
+          <button class="feedback-btn feedback-btn--no"   onclick="logFeedback('fb-linkedin','Not this week')">Not this week</button>
+          <button class="feedback-btn feedback-btn--done" onclick="logFeedback('fb-linkedin','Already done')">Already done</button>
+          <span class="feedback-confirm">Response logged &mdash; will post to autoresearch on next run. (Demo)</span>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ═══════════════════════════════════════════════ STATUS ═════════ -->
+
+  <section class="status-section">
+    <div class="section-label">Status</div>
+    <div class="status-row">
+      <span class="status-domain">Market Intelligence</span>
+      <span class="status-text">Stale; autoresearch killed by the watchdog for a second day.</span>
+      <span class="badge badge--danger">Danger</span>
+    </div>
+    <div class="status-row">
+      <span class="status-domain">Business Development</span>
+      <span class="status-text">One active signal: Polpure AU distribution.</span>
+      <span class="badge badge--warning">Warning</span>
+    </div>
+    <div class="status-row">
+      <span class="status-domain">Operations</span>
+      <span class="status-text">Autoresearch unresolved; AICIS unconfirmed; pricing not with procurement; 7 repos to reconcile.</span>
+      <span class="badge badge--warning">Warning</span>
+    </div>
+  </section>
+
+  <!-- ═══════════════════════════════════════════════ SYSTEM ═════════ -->
+
+  <section class="system-section">
+    <div class="section-label">System</div>
+    <table class="sys-table">
+      <tr>
+        <td>Local calls</td>
+        <td>132</td>
+      </tr>
+      <tr>
+        <td>Cloud calls</td>
+        <td>16</td>
+      </tr>
+      <tr>
+        <td>Fallback events</td>
+        <td>9</td>
+      </tr>
+      <tr>
+        <td>Est. cloud cost</td>
+        <td>USD 3.65</td>
+      </tr>
+      <tr>
+        <td>Est. local savings</td>
+        <td>USD 0.23</td>
+      </tr>
+    </table>
+    <p class="sys-footnote">Contact-data frontmatter 0% across 237 company notes &mdash; assessed as backfill lag. Governance: 2 conflicts to resolve (oldest 4d), 0 open queries.</p>
+  </section>
+
+  <!-- ══════════════════════════════════════ STALE — NEEDS TRIAGE ════ -->
+
+  <section class="stale-section">
+    <div class="section-label">Stale &mdash; Needs Triage</div>
+    <p class="stale-intro">155 items at status <em>new</em> for 7+ days &mdash; 63 operations &middot; 47 innovation &middot; 45 product-development. Oldest five:</p>
+    <ol class="stale-list">
+      <li>
+        AICIS registration requirements for Blick
+        <span class="stale-age">71d</span>
+      </li>
+      <li>
+        Strategic expansion into eco-friendly fluids
+        <span class="stale-age">71d</span>
+      </li>
+      <li>
+        Liquid waste management in drilling operations
+        <span class="stale-age">71d</span>
+      </li>
+      <li>
+        Regulated waste management in Queensland
+        <span class="stale-age">71d</span>
+      </li>
+      <li>
+        Australian Industrial Chemicals Introduction Scheme
+        <span class="stale-age">71d</span>
+      </li>
+    </ol>
+  </section>
+
+  <!-- ═══════════════════════════════════════════ COLOPHON ═══════════ -->
+
+  <footer class="colophon">
+    <p><strong>NEXUS &middot; The Daily Overview &middot; Issue 2026-06-24</strong> &mdash; A rendered view of the canonical vault markdown; the markdown remains the version of truth.</p>
+  </footer>
+
+</article>
+
+<script>
+function logFeedback(rowId, choice) {
+  var row = document.getElementById(rowId);
+  if (!row) return;
+  row.classList.add('is-logged');
+  var confirm = row.querySelector('.feedback-confirm');
+  if (confirm) {
+    confirm.textContent = 'Logged: "' + choice + '" — will post to autoresearch on next run. (Demo)';
+  }
+}
+</script>
+</body>
+</html>

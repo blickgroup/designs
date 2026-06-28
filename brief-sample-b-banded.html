@@ -1,0 +1,984 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>NEXUS — The Daily Overview · 24 June 2026</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Source+Serif+4:ital,opsz,wght@0,8..60,300;0,8..60,400;0,8..60,600;1,8..60,400&display=swap" rel="stylesheet">
+<style>
+  /* ── Reset & base ──────────────────────────────────────── */
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  :root {
+    --orange:   #f05323;
+    --dark:     #58595b;
+    --mid:      #8a8b8d;
+    --light:    #bcbec0;
+    --faint:    #e8e9ea;
+
+    --success:  #10b981;
+    --warning:  #f59e0b;
+    --danger:   #ef4444;
+    --info:     #2f6fb0;
+
+    /* Band colours — subtle tints */
+    --band-decision:  #fff5ef;   /* warm pale orange */
+    --band-action:    #fff8ed;   /* slightly stronger amber tint */
+    --band-watch:     #f7f7f5;   /* pale neutral warm */
+    --band-sales:     #ffffff;   /* clean white */
+    --band-ops:       #fdf8ed;   /* pale amber / caution */
+    --band-quiet:     #f4f5f6;   /* cool pale grey */
+    --band-needs:     #f0f4fa;   /* pale blue-grey */
+    --band-status:    #1e2228;   /* deep ink — closing zone */
+    --band-stale:     #f7f6f4;   /* warm off-white */
+
+    --measure: 720px;
+    --band-v: 3.5rem;
+    --band-v-lg: 4.5rem;
+
+    --serif: "Source Serif 4", Charter, Georgia, serif;
+    --sans:  "Inter", system-ui, -apple-system, sans-serif;
+  }
+
+  html { font-size: 16px; scroll-behavior: smooth; }
+
+  body {
+    font-family: var(--serif);
+    color: var(--dark);
+    background: #fff;
+    line-height: 1.65;
+    -webkit-font-smoothing: antialiased;
+  }
+
+  /* ── Layout utility ────────────────────────────────────── */
+  .band {
+    width: 100%;
+    padding: var(--band-v-lg) 1.5rem;
+  }
+  .inner {
+    max-width: var(--measure);
+    margin: 0 auto;
+  }
+
+  /* ── Typography ────────────────────────────────────────── */
+  .band-label {
+    font-family: var(--sans);
+    font-size: 0.65rem;
+    font-weight: 700;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: var(--mid);
+    margin-bottom: 1.6rem;
+    display: flex;
+    align-items: center;
+    gap: 0.6rem;
+  }
+  .band-label::after {
+    content: "";
+    display: block;
+    flex: 1;
+    height: 1px;
+    background: currentColor;
+    opacity: 0.3;
+  }
+
+  h1, h2, h3 {
+    font-family: var(--sans);
+    line-height: 1.2;
+  }
+
+  p { margin-bottom: 0.9rem; }
+  p:last-child { margin-bottom: 0; }
+
+  /* ── Masthead ──────────────────────────────────────────── */
+  .masthead {
+    background: var(--dark);
+    color: #fff;
+    padding: 2.8rem 1.5rem 2.4rem;
+    border-bottom: 3px solid var(--orange);
+  }
+  .masthead .inner {
+    display: flex;
+    flex-direction: column;
+    gap: 0.6rem;
+  }
+  .masthead-wordmark {
+    font-family: var(--sans);
+    font-size: 0.7rem;
+    font-weight: 700;
+    letter-spacing: 0.22em;
+    text-transform: uppercase;
+    color: var(--orange);
+  }
+  .masthead-title {
+    font-family: var(--sans);
+    font-size: clamp(1.8rem, 4vw, 2.6rem);
+    font-weight: 700;
+    color: #fff;
+    letter-spacing: -0.02em;
+    line-height: 1.1;
+  }
+  .masthead-issue {
+    font-family: var(--sans);
+    font-size: 0.8rem;
+    color: var(--light);
+    letter-spacing: 0.04em;
+    margin-top: 0.2rem;
+  }
+  .masthead-glance {
+    font-family: var(--sans);
+    font-size: 0.8rem;
+    color: rgba(255,255,255,0.55);
+    margin-top: 0.6rem;
+    padding-top: 0.8rem;
+    border-top: 1px solid rgba(255,255,255,0.12);
+  }
+  .glance-dot {
+    display: inline-block;
+    width: 5px;
+    height: 5px;
+    border-radius: 50%;
+    background: var(--orange);
+    margin-right: 0.35em;
+    vertical-align: middle;
+    position: relative;
+    top: -1px;
+  }
+
+  /* ── Lede ──────────────────────────────────────────────── */
+  .lede-band {
+    background: #fff;
+    padding: 2.4rem 1.5rem;
+    border-bottom: 1px solid var(--faint);
+  }
+  .lede-text {
+    font-size: clamp(1rem, 2.2vw, 1.15rem);
+    color: var(--dark);
+    max-width: var(--measure);
+    margin: 0 auto;
+    font-style: italic;
+    line-height: 1.7;
+  }
+
+  /* ── Band accent stripe ────────────────────────────────── */
+  .band--decision { background: var(--band-decision); border-top: 3px solid rgba(240,83,35,0.2); }
+  .band--action   { background: var(--band-action);   border-top: 2px solid rgba(245,158,11,0.35); }
+  .band--watch    { background: var(--band-watch);    border-top: 1px solid var(--faint); }
+  .band--sales    { background: var(--band-sales);    border-top: 1px solid var(--faint); }
+  .band--ops      { background: var(--band-ops);      border-top: 2px solid rgba(245,158,11,0.2); }
+  .band--quiet    { background: var(--band-quiet);    border-top: 1px solid var(--faint); }
+  .band--needs    { background: var(--band-needs);    border-top: 2px solid rgba(47,111,176,0.2); }
+  .band--status   { background: var(--band-status);   border-top: 3px solid rgba(255,255,255,0.06); }
+  .band--stale    { background: var(--band-stale);    border-top: 1px solid var(--faint); }
+
+  /* ── Decision items ────────────────────────────────────── */
+  .decision-item {
+    padding: 1.6rem 0;
+    border-top: 1px solid rgba(240,83,35,0.12);
+  }
+  .decision-item:first-of-type { border-top: none; padding-top: 0; }
+
+  .item-hed {
+    font-family: var(--sans);
+    font-size: clamp(1rem, 2vw, 1.2rem);
+    font-weight: 600;
+    color: #2a2a2a;
+    letter-spacing: -0.01em;
+    margin-bottom: 0.7rem;
+    line-height: 1.3;
+  }
+  .item-body {
+    font-size: 0.95rem;
+    color: var(--dark);
+    margin-bottom: 0.9rem;
+  }
+
+  /* Stat pull-out */
+  .stat-pull {
+    display: inline-block;
+    border-left: 3px solid var(--orange);
+    padding: 0.45rem 0.9rem;
+    margin: 0.5rem 0 1rem;
+    background: rgba(240,83,35,0.05);
+    font-family: var(--sans);
+  }
+  .stat-number {
+    font-size: 1.3rem;
+    font-weight: 700;
+    color: var(--orange);
+    letter-spacing: -0.02em;
+    display: block;
+    line-height: 1.1;
+  }
+  .stat-label {
+    font-size: 0.75rem;
+    color: var(--mid);
+  }
+
+  /* Meta row */
+  .item-meta {
+    font-family: var(--sans);
+    font-size: 0.7rem;
+    color: var(--mid);
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.4rem 1rem;
+    margin-bottom: 0.8rem;
+    letter-spacing: 0.02em;
+  }
+  .meta-tag {
+    background: rgba(0,0,0,0.05);
+    padding: 0.15rem 0.5rem;
+    border-radius: 2px;
+    font-weight: 500;
+  }
+  .meta-tag--unverified { background: rgba(245,158,11,0.12); color: #9a6800; }
+  .meta-tag--compliance  { background: rgba(239,68,68,0.1);  color: #b91c1c; }
+
+  /* Next step */
+  .item-next {
+    font-family: var(--sans);
+    font-size: 0.8rem;
+    color: var(--info);
+    padding-left: 0.9rem;
+    border-left: 2px solid var(--info);
+    margin-bottom: 0.9rem;
+    line-height: 1.5;
+  }
+  .item-next strong {
+    font-weight: 600;
+    font-size: 0.68rem;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    display: block;
+    margin-bottom: 0.2rem;
+    color: var(--mid);
+  }
+
+  /* Source */
+  .item-source {
+    font-family: var(--sans);
+    font-size: 0.68rem;
+    color: var(--mid);
+    letter-spacing: 0.01em;
+  }
+  .item-source span { font-weight: 500; }
+
+  /* ── Feedback controls ─────────────────────────────────── */
+  .your-call {
+    margin-top: 1.1rem;
+    padding-top: 1rem;
+    border-top: 1px solid rgba(0,0,0,0.07);
+  }
+  .your-call-label {
+    font-family: var(--sans);
+    font-size: 0.63rem;
+    font-weight: 600;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--mid);
+    margin-bottom: 0.55rem;
+  }
+  .call-btns {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.45rem;
+  }
+  .call-btn {
+    font-family: var(--sans);
+    font-size: 0.75rem;
+    font-weight: 500;
+    color: var(--dark);
+    background: none;
+    border: 1px solid rgba(0,0,0,0.18);
+    border-radius: 2px;
+    padding: 0.3rem 0.75rem;
+    cursor: pointer;
+    transition: background 0.12s, color 0.12s, border-color 0.12s;
+    letter-spacing: 0.01em;
+  }
+  .call-btn:hover {
+    background: rgba(0,0,0,0.05);
+    border-color: rgba(0,0,0,0.3);
+  }
+  .call-btn--primary {
+    border-color: var(--orange);
+    color: var(--orange);
+  }
+  .call-btn--primary:hover {
+    background: rgba(240,83,35,0.06);
+  }
+  .call-logged {
+    font-family: var(--sans);
+    font-size: 0.75rem;
+    color: var(--success);
+    margin-top: 0.45rem;
+    display: none;
+    align-items: center;
+    gap: 0.35rem;
+  }
+  .call-logged::before {
+    content: "";
+    display: inline-block;
+    width: 6px; height: 6px;
+    background: var(--success);
+    border-radius: 50%;
+    flex-shrink: 0;
+  }
+  .call-row.logged .call-btns { opacity: 0.35; pointer-events: none; }
+  .call-row.logged .call-logged { display: flex; }
+
+  /* ── Action band specifics ─────────────────────────────── */
+  .action-badge {
+    font-family: var(--sans);
+    font-size: 0.62rem;
+    font-weight: 700;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    background: var(--warning);
+    color: #fff;
+    padding: 0.15rem 0.5rem;
+    border-radius: 2px;
+    display: inline-block;
+    margin-bottom: 0.8rem;
+  }
+  .stat-pull--action { border-left-color: var(--warning); background: rgba(245,158,11,0.07); }
+  .stat-pull--action .stat-number { color: var(--warning); }
+
+  /* ── Watch List ────────────────────────────────────────── */
+  .watch-item {
+    padding: 1.4rem 0;
+    border-top: 1px solid rgba(0,0,0,0.07);
+  }
+  .watch-item:first-of-type { border-top: none; padding-top: 0; }
+
+  /* ── Sales grid ────────────────────────────────────────── */
+  .sales-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: 1.4rem 2rem;
+    margin-top: 0.5rem;
+  }
+  .sales-region {}
+  .sales-region-name {
+    font-family: var(--sans);
+    font-size: 0.68rem;
+    font-weight: 700;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--orange);
+    margin-bottom: 0.4rem;
+    padding-bottom: 0.35rem;
+    border-bottom: 1px solid rgba(240,83,35,0.2);
+  }
+  .sales-body {
+    font-size: 0.88rem;
+    color: var(--dark);
+    line-height: 1.55;
+  }
+  .nothing {
+    font-size: 0.85rem;
+    color: var(--light);
+    font-style: italic;
+  }
+
+  /* ── Product section ───────────────────────────────────── */
+  .product-cols {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 2rem;
+  }
+  @media (max-width: 600px) { .product-cols { grid-template-columns: 1fr; } }
+  .product-col-label {
+    font-family: var(--sans);
+    font-size: 0.65rem;
+    font-weight: 700;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--mid);
+    margin-bottom: 0.6rem;
+  }
+
+  /* ── Operations ────────────────────────────────────────── */
+  .ops-item {
+    padding: 1.4rem 0;
+    border-top: 1px solid rgba(245,158,11,0.15);
+  }
+  .ops-item:first-of-type { border-top: none; padding-top: 0; }
+  .ops-status {
+    font-family: var(--sans);
+    font-size: 0.62rem;
+    font-weight: 700;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    padding: 0.15rem 0.5rem;
+    border-radius: 2px;
+    display: inline-block;
+    margin-bottom: 0.6rem;
+  }
+  .ops-status--danger  { background: rgba(239,68,68,0.1);  color: var(--danger); }
+  .ops-status--warning { background: rgba(245,158,11,0.1); color: #92640a; }
+
+  /* ── Quiet Desk ────────────────────────────────────────── */
+  .quiet-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
+    gap: 1.2rem 2rem;
+  }
+  .quiet-topic {}
+  .quiet-topic-name {
+    font-family: var(--sans);
+    font-size: 0.65rem;
+    font-weight: 700;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--mid);
+    margin-bottom: 0.35rem;
+  }
+
+  /* ── Needs You ─────────────────────────────────────────── */
+  .needs-item {
+    padding-left: 1rem;
+    border-left: 3px solid var(--info);
+  }
+  .needs-item .item-hed { color: var(--info); }
+
+  /* ── Status band (dark) ────────────────────────────────── */
+  .band--status .band-label { color: rgba(255,255,255,0.35); }
+  .band--status .band-label::after { opacity: 0.1; }
+
+  .status-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
+    gap: 1.2rem 2rem;
+    margin-bottom: 2rem;
+  }
+  .status-item {}
+  .status-item-name {
+    font-family: var(--sans);
+    font-size: 0.65rem;
+    font-weight: 700;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: rgba(255,255,255,0.45);
+    margin-bottom: 0.3rem;
+  }
+  .status-item-body {
+    font-family: var(--sans);
+    font-size: 0.83rem;
+    color: rgba(255,255,255,0.75);
+    line-height: 1.5;
+  }
+  .status-pill {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.35rem;
+    font-family: var(--sans);
+    font-size: 0.68rem;
+    font-weight: 600;
+    padding: 0.15rem 0.55rem;
+    border-radius: 2px;
+    margin-bottom: 0.3rem;
+  }
+  .status-pill::before {
+    content: "";
+    display: block;
+    width: 5px; height: 5px;
+    border-radius: 50%;
+    background: currentColor;
+    flex-shrink: 0;
+  }
+  .status-pill--danger  { background: rgba(239,68,68,0.15);  color: #f87171; }
+  .status-pill--warning { background: rgba(245,158,11,0.15); color: #fbbf24; }
+  .status-pill--success { background: rgba(16,185,129,0.15); color: #34d399; }
+
+  /* System table */
+  .sys-table {
+    width: 100%;
+    border-collapse: collapse;
+    font-family: var(--sans);
+    font-size: 0.8rem;
+    margin-top: 1.4rem;
+    color: rgba(255,255,255,0.6);
+  }
+  .sys-table td {
+    padding: 0.5rem 0.8rem;
+    border-bottom: 1px solid rgba(255,255,255,0.06);
+  }
+  .sys-table td:first-child { color: rgba(255,255,255,0.4); font-size: 0.7rem; letter-spacing: 0.04em; }
+  .sys-table td:last-child { text-align: right; color: rgba(255,255,255,0.75); font-weight: 500; }
+  .sys-table-label {
+    font-family: var(--sans);
+    font-size: 0.63rem;
+    font-weight: 700;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: rgba(255,255,255,0.25);
+    margin-top: 2rem;
+    margin-bottom: 0.5rem;
+  }
+  .sys-footnote {
+    font-family: var(--sans);
+    font-size: 0.7rem;
+    color: rgba(255,255,255,0.3);
+    margin-top: 1rem;
+    line-height: 1.6;
+  }
+
+  /* ── Stale band ────────────────────────────────────────── */
+  .stale-count {
+    font-family: var(--sans);
+    font-size: 2rem;
+    font-weight: 700;
+    color: var(--warning);
+    letter-spacing: -0.03em;
+    line-height: 1;
+  }
+  .stale-sub {
+    font-family: var(--sans);
+    font-size: 0.78rem;
+    color: var(--mid);
+    margin-top: 0.2rem;
+    margin-bottom: 1.4rem;
+  }
+  .stale-cats {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.6rem;
+    margin-bottom: 1.4rem;
+  }
+  .stale-cat {
+    font-family: var(--sans);
+    font-size: 0.72rem;
+    padding: 0.2rem 0.6rem;
+    border-radius: 2px;
+    font-weight: 600;
+  }
+  .stale-cat--ops  { background: rgba(245,158,11,0.1); color: #92640a; }
+  .stale-cat--inn  { background: rgba(47,111,176,0.1); color: #1e5b9c; }
+  .stale-cat--prod { background: rgba(16,185,129,0.1); color: #065f46; }
+
+  .stale-list {
+    list-style: none;
+    border-top: 1px solid var(--faint);
+  }
+  .stale-list li {
+    padding: 0.7rem 0;
+    border-bottom: 1px solid var(--faint);
+    font-family: var(--sans);
+    font-size: 0.83rem;
+    color: var(--dark);
+    display: flex;
+    justify-content: space-between;
+    align-items: baseline;
+    gap: 1rem;
+  }
+  .stale-age {
+    font-size: 0.68rem;
+    color: var(--warning);
+    font-weight: 600;
+    white-space: nowrap;
+    flex-shrink: 0;
+  }
+
+  /* ── Colophon ──────────────────────────────────────────── */
+  .colophon {
+    background: #111416;
+    padding: 1.6rem 1.5rem;
+    text-align: center;
+  }
+  .colophon p {
+    font-family: var(--sans);
+    font-size: 0.68rem;
+    color: rgba(255,255,255,0.2);
+    letter-spacing: 0.04em;
+    line-height: 1.7;
+    margin: 0;
+  }
+
+  /* ── Divider ───────────────────────────────────────────── */
+  .rule {
+    border: none;
+    border-top: 1px solid rgba(0,0,0,0.08);
+    margin: 1.4rem 0;
+  }
+
+  /* ── Cross-ref link style ──────────────────────────────── */
+  .xref {
+    font-family: var(--sans);
+    font-size: 0.7rem;
+    color: var(--orange);
+    font-weight: 500;
+    white-space: nowrap;
+  }
+
+  /* ── Responsive ────────────────────────────────────────── */
+  @media (max-width: 540px) {
+    .band { padding: 2.2rem 1rem; }
+    .masthead { padding: 2rem 1rem 1.8rem; }
+    .lede-band { padding: 1.8rem 1rem; }
+    .product-cols { grid-template-columns: 1fr; }
+    .status-grid { grid-template-columns: 1fr 1fr; }
+  }
+</style>
+</head>
+<body>
+
+<!-- ═══════════════════════════════════════════════════════ MASTHEAD -->
+<header class="masthead">
+  <div class="inner">
+    <div class="masthead-wordmark">Nexus</div>
+    <h1 class="masthead-title">The Daily Overview</h1>
+    <div class="masthead-issue">Wednesday &middot; 24 June 2026 &middot; Operations &amp; Overdue</div>
+    <div class="masthead-glance">
+      <span class="glance-dot"></span>2 decisions ready &nbsp;&middot;&nbsp;
+      <span class="glance-dot"></span>1 action &nbsp;&middot;&nbsp;
+      <span class="glance-dot"></span>1 needs you
+    </div>
+  </div>
+</header>
+
+<!-- ═══════════════════════════════════════════════════════ LEDE -->
+<section class="lede-band">
+  <p class="lede-text">Three overdue intelligence items need promoting from the raw inbox — Polpure's distribution move, 2026 raw-materials pricing, and a CETCO competitor profile. Autoresearch was killed by the watchdog overnight for the second day running, and is the top operational fix. No same-day decisions are forced — but AICIS renewal, which closes 31 August, still has no owner.</p>
+</section>
+
+<!-- ═══════════════════════════════════════════════════════ READY FOR DECISION -->
+<section class="band band--decision">
+  <div class="inner">
+    <div class="band-label">Ready for Decision</div>
+
+    <!-- Decision 1 -->
+    <div class="decision-item">
+      <h2 class="item-hed">Promote Polpure to the competitor register — and check for channel conflicts</h2>
+      <p class="item-body">Brisbane-based Polpure has partnered with MetaFLO Technologies and Ditch Witch and positioned itself as a key Australian HDD distributor for drilling-fluid and waste products; its MetaFLO solidifier competes directly with Eco Dry.</p>
+      <div class="item-meta">
+        <span class="meta-tag meta-tag--unverified">Unverified</span>
+        <span class="meta-tag">Confidence 0.90</span>
+        <span class="meta-tag">78 days in inbox</span>
+        <span class="meta-tag">Business development</span>
+      </div>
+      <div class="item-next">
+        <strong>Next step</strong>
+        On promotion, cross-check Polpure's stated partners against Blick's current and prospective channels for conflicts and flag to sales.
+      </div>
+      <div class="item-source">Source: <span>Overview_of_Polpure_s_Distribution_and_Partnership</span></div>
+      <div class="your-call">
+        <div class="your-call-label">Your call</div>
+        <div class="call-row" id="call-1">
+          <div class="call-btns">
+            <button class="call-btn call-btn--primary" onclick="logCall('call-1','Right call')">Right call</button>
+            <button class="call-btn" onclick="logCall('call-1','Not pursuing')">Not pursuing</button>
+            <button class="call-btn" onclick="logCall('call-1','Already done')">Already done</button>
+          </div>
+          <div class="call-logged">Logged — will post to autoresearch (demo)</div>
+        </div>
+      </div>
+    </div>
+
+    <hr class="rule">
+
+    <!-- Decision 2 -->
+    <div class="decision-item">
+      <h2 class="item-hed">Route 2026 raw-materials pricing to procurement before the next reorder</h2>
+      <p class="item-body">AU drilling-grade sodium bentonite is AUD 250–350/t in Q1 2026, up 10–15% on 2025, forecast +5–8% more by year-end (energy costs and Red Sea shipping); the note recommends considering hedging. It is 78 days unreviewed and has not reached procurement — H2 buying is happening without it.</p>
+
+      <div class="stat-pull">
+        <span class="stat-number">+10–15%</span>
+        <span class="stat-label">Bentonite vs 2025 &mdash; now AUD 250&ndash;350/t</span>
+      </div>
+
+      <div class="item-meta">
+        <span class="meta-tag meta-tag--unverified">Unverified</span>
+        <span class="meta-tag">Confidence 0.90</span>
+        <span class="meta-tag">78 days unreviewed</span>
+        <span class="meta-tag">Operations</span>
+      </div>
+      <div class="item-next">
+        <strong>Next step</strong>
+        Promote to Intelligence/market and forward to procurement to compare against current supplier quotes.
+      </div>
+      <div class="item-source">Source: <span>Current_and_Forecasted_Prices_2026</span></div>
+      <div class="your-call">
+        <div class="your-call-label">Your call</div>
+        <div class="call-row" id="call-2">
+          <div class="call-btns">
+            <button class="call-btn call-btn--primary" onclick="logCall('call-2','Right call')">Right call</button>
+            <button class="call-btn" onclick="logCall('call-2','Not pursuing')">Not pursuing</button>
+            <button class="call-btn" onclick="logCall('call-2','Already done')">Already done</button>
+          </div>
+          <div class="call-logged">Logged — will post to autoresearch (demo)</div>
+        </div>
+      </div>
+    </div>
+
+  </div>
+</section>
+
+<!-- ═══════════════════════════════════════════════════════ ACTION REQUIRED -->
+<section class="band band--action">
+  <div class="inner">
+    <div class="band-label">Action Required</div>
+
+    <div class="action-badge">A person must do this</div>
+
+    <h2 class="item-hed">Confirm AICIS renewal is lodged for all relevant products before 31 August</h2>
+    <p class="item-body">A 16 April system note flagged that Eco Dry's AICIS notification has no owner assigned. The cycle closes 31 August every year; miss it and you lose authority to operate.</p>
+
+    <div class="stat-pull stat-pull--action">
+      <span class="stat-number">67</span>
+      <span class="stat-label">Days until the AICIS cycle closes</span>
+    </div>
+
+    <div class="item-meta">
+      <span class="meta-tag meta-tag--unverified">Unverified</span>
+      <span class="meta-tag">Confidence 0.70</span>
+      <span class="meta-tag meta-tag--compliance">Compliance</span>
+    </div>
+    <div class="item-next">
+      <strong>Next step</strong>
+      Assign an owner this month to check the AICIS registrant portal for every Blick product containing an introduced industrial chemical, confirm the cycle is lodged, and move the action-register item to active.
+    </div>
+    <div class="item-source" style="margin-bottom:1rem;">Source: <span>The_AICIS_registration_cycle_runs_from_September_1</span></div>
+
+    <div class="your-call">
+      <div class="your-call-label">Your call</div>
+      <div class="call-row" id="call-3">
+        <div class="call-btns">
+          <button class="call-btn call-btn--primary" onclick="logCall('call-3','On it — assign me')">On it &mdash; assign me</button>
+          <button class="call-btn" onclick="logCall('call-3','Not relevant')">Not relevant</button>
+          <button class="call-btn" onclick="logCall('call-3','Already lodged')">Already lodged</button>
+        </div>
+        <div class="call-logged">Logged — will post to autoresearch (demo)</div>
+      </div>
+    </div>
+
+  </div>
+</section>
+
+<!-- ═══════════════════════════════════════════════════════ WATCH LIST -->
+<section class="band band--watch">
+  <div class="inner">
+    <div class="band-label">Watch List</div>
+
+    <div class="watch-item">
+      <h2 class="item-hed">CETCO is a USD 2bn shadow over Eco Dry — and still 65 days in draft</h2>
+      <p class="item-body">CETCO, the construction-technologies subsidiary of Minerals Technologies (~USD 2bn annual revenue in bentonite drilling, construction and environmental products), overlaps directly with Blick's core range — yet its profile is still absent from the curated competitor register.</p>
+      <div class="item-meta">
+        <span class="meta-tag meta-tag--unverified">Unverified</span>
+        <span class="meta-tag">Confidence 0.90</span>
+        <span class="meta-tag">65 days in draft</span>
+      </div>
+      <div class="item-next">
+        <strong>Next step</strong>
+        At the next vault triage, promote to Intelligence/competitors and add the revenue and scale figures to the sales comparison matrix.
+      </div>
+      <div class="item-source">Source: <span>CETCO_MTI_Revenue_and_Scale</span></div>
+    </div>
+
+  </div>
+</section>
+
+<!-- ═══════════════════════════════════════════════════════ SALES INTELLIGENCE -->
+<section class="band band--sales">
+  <div class="inner">
+    <div class="band-label">Sales Intelligence</div>
+
+    <div class="sales-grid">
+      <div class="sales-region">
+        <div class="sales-region-name">Australia — National</div>
+        <div class="sales-body">No new national signals — no scans completed overnight. The only national-reach signal is Polpure's distribution move <span class="xref">(see: Ready for Decision)</span>.</div>
+      </div>
+      <div class="sales-region">
+        <div class="sales-region-name">AU — WA</div>
+        <div class="sales-body nothing">Nothing to report.</div>
+      </div>
+      <div class="sales-region">
+        <div class="sales-region-name">AU — East Coast</div>
+        <div class="sales-body">Polpure (Brisbane) competes with Eco Dry in waste solidification <span class="xref">(see: Ready for Decision)</span>.</div>
+      </div>
+      <div class="sales-region">
+        <div class="sales-region-name">NZ</div>
+        <div class="sales-body nothing">Nothing to report.</div>
+      </div>
+    </div>
+
+  </div>
+</section>
+
+<!-- ═══════════════════════════════════════════════════════ PRODUCT -->
+<section class="band band--sales" style="border-top:1px solid var(--faint); padding-top:2.8rem;">
+  <div class="inner">
+    <div class="band-label">Product</div>
+    <div class="product-cols">
+      <div>
+        <div class="product-col-label">Internal alignment</div>
+        <p class="item-body" style="font-size:0.9rem;">Polpure <span class="xref">(Ready for Decision)</span> and CETCO <span class="xref">(Watch List)</span> both bear on Eco Dry's positioning in drilling-waste solidification; neither is in the curated register yet, so current sales and product docs may not reflect the live competitive landscape.</p>
+        <div class="item-next">
+          <strong>Next step</strong>
+          Promote both at the next triage and cross-reference against Eco Dry positioning.
+        </div>
+      </div>
+      <div>
+        <div class="product-col-label">External signals</div>
+        <p class="nothing" style="font-size:0.9rem;">Nothing to report.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══════════════════════════════════════════════════════ OPERATIONS -->
+<section class="band band--ops">
+  <div class="inner">
+    <div class="band-label">Operations</div>
+
+    <div class="ops-item">
+      <span class="ops-status ops-status--danger">Down &mdash; 2nd day</span>
+      <h2 class="item-hed">Autoresearch is down for a second straight day</h2>
+      <p class="item-body">Killed by the time-limit watchdog before any of the six scheduled domain scans completed — 0 of 6 domains, 0 items promoted. Until it's fixed, every section above draws only on the existing vault and action register.</p>
+      <div class="item-next">
+        <strong>Next step</strong>
+        Check the autoresearch daily log and confirm Gemma is resident in VRAM before the next scheduled run.
+      </div>
+    </div>
+
+    <div class="ops-item">
+      <span class="ops-status ops-status--warning">Needs Decision</span>
+      <h2 class="item-hed">Seven repositories need a human decision</h2>
+      <p class="item-body">Most material: hub-app (40 local changes, 3 behind remote), nexus (12 local changes, diverged), website-test (34 local changes, untracked) — a restoreability risk.</p>
+      <div class="item-next">
+        <strong>Next step</strong>
+        Decide per repo whether local changes are intentional WIP or should be reconciled. Full detail in the GitHub Hygiene Review.
+      </div>
+    </div>
+
+  </div>
+</section>
+
+<!-- ═══════════════════════════════════════════════════════ QUIET DESK -->
+<section class="band band--quiet">
+  <div class="inner">
+    <div class="band-label">Quiet Desk</div>
+    <div class="quiet-grid">
+      <div class="quiet-topic">
+        <div class="quiet-topic-name">Industry</div>
+        <p class="nothing" style="font-size:0.85rem;">No scans overnight.</p>
+      </div>
+      <div class="quiet-topic">
+        <div class="quiet-topic-name">Technology Watch</div>
+        <p class="nothing" style="font-size:0.85rem;">Nothing to report.</p>
+      </div>
+      <div class="quiet-topic">
+        <div class="quiet-topic-name">Innovation</div>
+        <p class="nothing" style="font-size:0.85rem;">Nothing to report.</p>
+      </div>
+      <div class="quiet-topic">
+        <div class="quiet-topic-name">AI Radar</div>
+        <p class="nothing" style="font-size:0.85rem;">Nothing material this week.</p>
+      </div>
+      <div class="quiet-topic">
+        <div class="quiet-topic-name">H&amp;S &amp; Compliance</div>
+        <p class="item-body" style="font-size:0.85rem;">AICIS renewal, 31 August <span class="xref">(see: Action Required)</span>.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══════════════════════════════════════════════════════ NEEDS YOU -->
+<section class="band band--needs">
+  <div class="inner">
+    <div class="band-label">Needs You</div>
+    <div class="needs-item">
+      <h2 class="item-hed">This week's LinkedIn post is ready — but its preview isn't live to approve</h2>
+      <p class="item-body" style="font-size:0.93rem;">The post generated, but its preview page isn't reachable on GitHub Pages — most likely the background publisher couldn't reach the NewmanDrive volume (Full Disk Access).</p>
+      <div class="item-next">
+        <strong>Next step</strong>
+        Run the publisher from a terminal on the Mac Mini, then refresh the preview.
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══════════════════════════════════════════════════════ STATUS + SYSTEM -->
+<section class="band band--status">
+  <div class="inner">
+    <div class="band-label">Status</div>
+
+    <div class="status-grid">
+      <div class="status-item">
+        <div class="status-item-name">Market Intelligence</div>
+        <span class="status-pill status-pill--danger">Stale</span>
+        <div class="status-item-body">Autoresearch killed by the watchdog for a second day.</div>
+      </div>
+      <div class="status-item">
+        <div class="status-item-name">Business Development</div>
+        <span class="status-pill status-pill--warning">1 signal</span>
+        <div class="status-item-body">Polpure AU distribution — active.</div>
+      </div>
+      <div class="status-item">
+        <div class="status-item-name">Operations</div>
+        <span class="status-pill status-pill--warning">3 open</span>
+        <div class="status-item-body">Autoresearch unresolved; AICIS unconfirmed; pricing not with procurement; 7 repos to reconcile.</div>
+      </div>
+    </div>
+
+    <div class="sys-table-label">System</div>
+    <table class="sys-table">
+      <tbody>
+        <tr><td>Local calls</td><td>132</td></tr>
+        <tr><td>Cloud calls</td><td>16</td></tr>
+        <tr><td>Fallback events</td><td>9</td></tr>
+        <tr><td>Est. cloud cost</td><td>USD 3.65</td></tr>
+        <tr><td>Est. local savings</td><td>USD 0.23</td></tr>
+      </tbody>
+    </table>
+    <div class="sys-footnote">Contact-data frontmatter 0% across 237 company notes — assessed as backfill lag. Governance: 2 conflicts to resolve (oldest 4d), 0 open queries.</div>
+
+  </div>
+</section>
+
+<!-- ═══════════════════════════════════════════════════════ STALE / TRIAGE -->
+<section class="band band--stale">
+  <div class="inner">
+    <div class="band-label">Stale — Needs Triage</div>
+
+    <div class="stale-count">155</div>
+    <div class="stale-sub">items at status new for 7 days or more</div>
+
+    <div class="stale-cats">
+      <span class="stale-cat stale-cat--ops">63 operations</span>
+      <span class="stale-cat stale-cat--inn">47 innovation</span>
+      <span class="stale-cat stale-cat--prod">45 product-development</span>
+    </div>
+
+    <p style="font-family:var(--sans);font-size:0.75rem;color:var(--mid);margin-bottom:0.8rem;letter-spacing:0.04em;text-transform:uppercase;font-weight:600;">Oldest five</p>
+    <ul class="stale-list">
+      <li><span>AICIS registration requirements for Blick</span><span class="stale-age">71d</span></li>
+      <li><span>Strategic expansion into eco-friendly fluids</span><span class="stale-age">71d</span></li>
+      <li><span>Liquid waste management in drilling operations</span><span class="stale-age">71d</span></li>
+      <li><span>Regulated waste management in Queensland</span><span class="stale-age">71d</span></li>
+      <li><span>Australian Industrial Chemicals Introduction Scheme</span><span class="stale-age">71d</span></li>
+    </ul>
+  </div>
+</section>
+
+<!-- ═══════════════════════════════════════════════════════ COLOPHON -->
+<footer class="colophon">
+  <p>NEXUS &middot; The Daily Overview &middot; Issue 2026-06-24<br>
+  A rendered view of the canonical vault markdown; the markdown remains the version of truth.</p>
+</footer>
+
+<!-- ═══════════════════════════════════════════════════════ JS -->
+<script>
+  function logCall(rowId, choice) {
+    var row = document.getElementById(rowId);
+    if (!row) return;
+    row.classList.add('logged');
+    var msg = row.querySelector('.call-logged');
+    if (msg) msg.textContent = '"' + choice + '" logged — will post to autoresearch (demo)';
+  }
+</script>
+</body>
+</html>

@@ -1,0 +1,1091 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>NEXUS — The Daily Overview · 24 June 2026</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&family=Source+Serif+4:ital,opsz,wght@0,8..60,300;0,8..60,400;0,8..60,600;1,8..60,300;1,8..60,400&display=swap" rel="stylesheet">
+<style>
+
+/* ─── Reset & Base ─────────────────────────────────────────────────── */
+
+*, *::before, *::after {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+:root {
+  --cream:       #faf8f4;
+  --cream-dark:  #f3f0ea;
+  --ink:         #1c1a17;
+  --ink-mid:     #58595b;
+  --ink-light:   #8a8a8a;
+  --rule:        #d4cfc6;
+  --rule-light:  #e8e4dc;
+  --orange:      #f05323;
+  --grey:        #bcbec0;
+  --success:     #10b981;
+  --warning:     #f59e0b;
+  --danger:      #ef4444;
+  --info:        #2f6fb0;
+
+  --serif:       "Source Serif 4", Charter, Georgia, serif;
+  --sans:        "Inter", -apple-system, system-ui, BlinkMacSystemFont, "Helvetica Neue", sans-serif;
+
+  --measure:     720px;
+  --gutter:      clamp(1.5rem, 5vw, 4rem);
+
+  --step--1:     0.8125rem;
+  --step-0:      1rem;
+  --step-1:      1.1875rem;
+  --step-2:      1.4375rem;
+  --step-3:      1.875rem;
+  --step-4:      2.5rem;
+  --step-5:      3.25rem;
+}
+
+html {
+  font-size: 16px;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  scroll-behavior: smooth;
+}
+
+body {
+  background-color: var(--cream);
+  color: var(--ink);
+  font-family: var(--serif);
+  font-size: var(--step-0);
+  line-height: 1.65;
+  min-height: 100vh;
+}
+
+/* ─── Layout ────────────────────────────────────────────────────────── */
+
+.page {
+  max-width: var(--measure);
+  margin: 0 auto;
+  padding: 0 var(--gutter);
+}
+
+/* ─── Masthead ──────────────────────────────────────────────────────── */
+
+.masthead {
+  padding-top: clamp(3rem, 8vw, 5.5rem);
+  padding-bottom: 2.5rem;
+  border-bottom: 2px solid var(--ink);
+}
+
+.masthead__pub {
+  font-family: var(--sans);
+  font-size: 0.6875rem;
+  font-weight: 600;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: var(--ink-mid);
+  margin-bottom: 1.5rem;
+}
+
+.masthead__title {
+  font-family: var(--serif);
+  font-size: var(--step-5);
+  font-weight: 300;
+  line-height: 1.05;
+  letter-spacing: -0.025em;
+  color: var(--ink);
+  margin-bottom: 0.75rem;
+}
+
+.masthead__title strong {
+  font-weight: 600;
+}
+
+.masthead__issue {
+  font-family: var(--sans);
+  font-size: var(--step--1);
+  font-weight: 400;
+  color: var(--ink-mid);
+  letter-spacing: 0.02em;
+  margin-bottom: 2rem;
+}
+
+.masthead__glance {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.25rem 1.5rem;
+  font-family: var(--sans);
+  font-size: var(--step--1);
+  font-weight: 500;
+  color: var(--ink-light);
+  letter-spacing: 0.04em;
+}
+
+.masthead__glance-item {
+  display: flex;
+  align-items: center;
+  gap: 0.4rem;
+}
+
+.masthead__glance-item::before {
+  content: '';
+  display: inline-block;
+  width: 5px;
+  height: 5px;
+  border-radius: 50%;
+  background-color: var(--orange);
+  flex-shrink: 0;
+}
+
+/* ─── Lede ──────────────────────────────────────────────────────────── */
+
+.lede {
+  padding: 3rem 0 2.5rem;
+  border-bottom: 1px solid var(--rule);
+}
+
+.lede__body {
+  font-size: var(--step-2);
+  font-weight: 300;
+  line-height: 1.5;
+  color: var(--ink);
+  max-width: 64ch;
+}
+
+/* ─── Section Architecture ──────────────────────────────────────────── */
+
+.section {
+  padding-top: 3.5rem;
+  padding-bottom: 1.5rem;
+}
+
+.section + .section {
+  border-top: 1px solid var(--rule);
+}
+
+.section__header {
+  display: flex;
+  align-items: baseline;
+  gap: 1.25rem;
+  margin-bottom: 2.25rem;
+}
+
+.section__numeral {
+  font-family: var(--sans);
+  font-size: 0.6875rem;
+  font-weight: 600;
+  color: var(--orange);
+  letter-spacing: 0.08em;
+  flex-shrink: 0;
+  line-height: 1;
+  padding-top: 0.15em;
+}
+
+.section__kicker {
+  font-family: var(--sans);
+  font-size: 0.6875rem;
+  font-weight: 600;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: var(--ink-mid);
+}
+
+/* ─── Items ─────────────────────────────────────────────────────────── */
+
+.item {
+  margin-bottom: 3rem;
+}
+
+.item:last-child {
+  margin-bottom: 0;
+}
+
+.item + .item {
+  padding-top: 2.5rem;
+  border-top: 1px solid var(--rule-light);
+}
+
+.item__headline {
+  font-family: var(--serif);
+  font-size: var(--step-3);
+  font-weight: 400;
+  line-height: 1.2;
+  letter-spacing: -0.015em;
+  color: var(--ink);
+  margin-bottom: 1rem;
+}
+
+.item__body {
+  font-size: var(--step-1);
+  font-weight: 300;
+  line-height: 1.65;
+  color: var(--ink-mid);
+  margin-bottom: 1.25rem;
+  max-width: 62ch;
+}
+
+.item__stat {
+  margin: 1.5rem 0;
+  padding-left: 1.25rem;
+  border-left: 2px solid var(--orange);
+}
+
+.item__stat-figure {
+  font-family: var(--serif);
+  font-size: var(--step-4);
+  font-weight: 300;
+  line-height: 1.1;
+  color: var(--ink);
+  letter-spacing: -0.03em;
+  display: block;
+  margin-bottom: 0.2rem;
+}
+
+.item__stat-label {
+  font-family: var(--sans);
+  font-size: var(--step--1);
+  font-weight: 400;
+  color: var(--ink-light);
+  letter-spacing: 0.02em;
+}
+
+.item__meta {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.35rem;
+  margin-bottom: 1rem;
+}
+
+.badge {
+  font-family: var(--sans);
+  font-size: 0.6875rem;
+  font-weight: 500;
+  letter-spacing: 0.06em;
+  padding: 0.2em 0.55em;
+  border: 1px solid currentColor;
+  border-radius: 2px;
+}
+
+.badge--neutral  { color: var(--ink-light); }
+.badge--ops      { color: var(--info); }
+.badge--biz      { color: var(--info); }
+.badge--unverif  { color: var(--warning); }
+.badge--compliance { color: var(--danger); }
+.badge--watch    { color: var(--ink-mid); }
+
+.item__next {
+  font-family: var(--sans);
+  font-size: var(--step--1);
+  font-weight: 400;
+  color: var(--ink-mid);
+  line-height: 1.55;
+  margin-bottom: 0.75rem;
+}
+
+.item__next::before {
+  content: 'Next  ';
+  font-weight: 600;
+  letter-spacing: 0.04em;
+  color: var(--ink);
+  white-space: pre;
+}
+
+.item__source {
+  font-family: var(--sans);
+  font-size: 0.6875rem;
+  color: var(--ink-light);
+  letter-spacing: 0.03em;
+  margin-bottom: 1.25rem;
+}
+
+.item__source::before {
+  content: 'Source  ';
+  font-weight: 600;
+  color: var(--grey);
+  white-space: pre;
+}
+
+/* ─── Feedback Controls ─────────────────────────────────────────────── */
+
+.feedback {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+  margin-top: 1.25rem;
+  align-items: center;
+}
+
+.feedback__btn {
+  font-family: var(--sans);
+  font-size: 0.75rem;
+  font-weight: 500;
+  letter-spacing: 0.05em;
+  color: var(--ink-mid);
+  background: transparent;
+  border: 1px solid var(--rule);
+  border-radius: 2px;
+  padding: 0.4em 0.85em;
+  cursor: pointer;
+  transition: border-color 0.15s, color 0.15s, background 0.15s;
+  line-height: 1.4;
+}
+
+.feedback__btn:hover:not(:disabled) {
+  border-color: var(--ink-mid);
+  color: var(--ink);
+}
+
+.feedback__btn:disabled {
+  opacity: 0.35;
+  cursor: default;
+}
+
+.feedback__confirmation {
+  font-family: var(--sans);
+  font-size: 0.6875rem;
+  font-style: italic;
+  color: var(--success);
+  letter-spacing: 0.01em;
+  margin-left: 0.25rem;
+  display: none;
+}
+
+.feedback__confirmation.visible {
+  display: inline;
+}
+
+/* ─── Watch List ─────────────────────────────────────────────────────── */
+
+.watchlist-item {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 0.75rem;
+}
+
+/* ─── Status Banner ──────────────────────────────────────────────────── */
+
+.status-item {
+  margin-bottom: 1.5rem;
+}
+
+.status-item:last-child {
+  margin-bottom: 0;
+}
+
+.status-item__label {
+  font-family: var(--sans);
+  font-size: var(--step--1);
+  font-weight: 600;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: var(--ink-light);
+  margin-bottom: 0.35rem;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.status-dot {
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  flex-shrink: 0;
+}
+
+.status-dot--danger  { background-color: var(--danger); }
+.status-dot--warning { background-color: var(--warning); }
+.status-dot--ok      { background-color: var(--success); }
+
+.status-item__body {
+  font-family: var(--sans);
+  font-size: var(--step--1);
+  color: var(--ink-mid);
+  line-height: 1.55;
+}
+
+/* ─── Regional Grid ──────────────────────────────────────────────────── */
+
+.regions {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(min(100%, 280px), 1fr));
+  gap: 1.75rem 3rem;
+  margin-top: 0.5rem;
+}
+
+.region__label {
+  font-family: var(--sans);
+  font-size: 0.6875rem;
+  font-weight: 600;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--orange);
+  margin-bottom: 0.5rem;
+}
+
+.region__body {
+  font-family: var(--sans);
+  font-size: var(--step--1);
+  color: var(--ink-mid);
+  line-height: 1.6;
+}
+
+/* ─── Quiet Sections ─────────────────────────────────────────────────── */
+
+.quiet-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(min(100%, 200px), 1fr));
+  gap: 1.5rem 3rem;
+}
+
+.quiet-item__label {
+  font-family: var(--sans);
+  font-size: 0.6875rem;
+  font-weight: 600;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--ink-light);
+  margin-bottom: 0.4rem;
+}
+
+.quiet-item__body {
+  font-family: var(--sans);
+  font-size: var(--step--1);
+  color: var(--grey);
+  font-style: italic;
+}
+
+/* ─── Needs You ──────────────────────────────────────────────────────── */
+
+.needs-you {
+  background-color: var(--cream-dark);
+  border-left: 3px solid var(--orange);
+  padding: 1.75rem 2rem;
+  margin-top: 1rem;
+}
+
+.needs-you__headline {
+  font-family: var(--serif);
+  font-size: var(--step-2);
+  font-weight: 400;
+  line-height: 1.3;
+  color: var(--ink);
+  margin-bottom: 0.75rem;
+}
+
+.needs-you__body {
+  font-family: var(--sans);
+  font-size: var(--step--1);
+  color: var(--ink-mid);
+  line-height: 1.6;
+  max-width: 60ch;
+}
+
+/* ─── System Table ───────────────────────────────────────────────────── */
+
+.system-table {
+  width: 100%;
+  border-collapse: collapse;
+  font-family: var(--sans);
+  font-size: var(--step--1);
+}
+
+.system-table td {
+  padding: 0.5rem 0;
+  border-bottom: 1px solid var(--rule-light);
+  vertical-align: top;
+}
+
+.system-table td:first-child {
+  color: var(--ink-mid);
+  font-weight: 400;
+  width: 60%;
+}
+
+.system-table td:last-child {
+  color: var(--ink);
+  font-weight: 500;
+  text-align: right;
+}
+
+.system-table tr:last-child td {
+  border-bottom: none;
+}
+
+.system-footnote {
+  font-family: var(--sans);
+  font-size: 0.6875rem;
+  color: var(--ink-light);
+  margin-top: 1.25rem;
+  line-height: 1.55;
+}
+
+/* ─── Stale Triage ───────────────────────────────────────────────────── */
+
+.stale-list {
+  list-style: none;
+  margin-top: 1.25rem;
+}
+
+.stale-list li {
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+  gap: 1rem;
+  padding: 0.55rem 0;
+  border-bottom: 1px solid var(--rule-light);
+  font-family: var(--sans);
+  font-size: var(--step--1);
+  color: var(--ink-mid);
+}
+
+.stale-list li:last-child {
+  border-bottom: none;
+}
+
+.stale-list__age {
+  font-weight: 600;
+  color: var(--danger);
+  white-space: nowrap;
+  flex-shrink: 0;
+}
+
+.stale-intro {
+  font-family: var(--sans);
+  font-size: var(--step--1);
+  color: var(--ink-mid);
+  margin-bottom: 0.25rem;
+}
+
+/* ─── Operations Items ───────────────────────────────────────────────── */
+
+.ops-item {
+  margin-bottom: 2.25rem;
+}
+
+.ops-item:last-child {
+  margin-bottom: 0;
+}
+
+.ops-item + .ops-item {
+  padding-top: 2rem;
+  border-top: 1px solid var(--rule-light);
+}
+
+.ops-item__kicker {
+  font-family: var(--sans);
+  font-size: 0.6875rem;
+  font-weight: 600;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--danger);
+  margin-bottom: 0.5rem;
+}
+
+.ops-item__kicker--warn {
+  color: var(--warning);
+}
+
+.ops-item__headline {
+  font-family: var(--serif);
+  font-size: var(--step-2);
+  font-weight: 400;
+  line-height: 1.25;
+  color: var(--ink);
+  margin-bottom: 0.75rem;
+}
+
+.ops-item__body {
+  font-family: var(--sans);
+  font-size: var(--step--1);
+  color: var(--ink-mid);
+  line-height: 1.65;
+  max-width: 62ch;
+  margin-bottom: 0.65rem;
+}
+
+.ops-item__next {
+  font-family: var(--sans);
+  font-size: var(--step--1);
+  color: var(--ink-mid);
+  line-height: 1.55;
+}
+
+.ops-item__next::before {
+  content: 'Next  ';
+  font-weight: 600;
+  color: var(--ink);
+  white-space: pre;
+}
+
+/* ─── Action Required ────────────────────────────────────────────────── */
+
+.action-item {
+  background-color: #fdf5f4;
+  border-top: 2px solid var(--danger);
+  padding: 2rem;
+  margin-top: 0.5rem;
+}
+
+.action-item__kicker {
+  font-family: var(--sans);
+  font-size: 0.6875rem;
+  font-weight: 600;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: var(--danger);
+  margin-bottom: 1rem;
+}
+
+.action-item__headline {
+  font-family: var(--serif);
+  font-size: var(--step-3);
+  font-weight: 400;
+  line-height: 1.2;
+  letter-spacing: -0.015em;
+  color: var(--ink);
+  margin-bottom: 1rem;
+}
+
+.action-item__body {
+  font-size: var(--step-1);
+  font-weight: 300;
+  line-height: 1.65;
+  color: var(--ink-mid);
+  margin-bottom: 1.25rem;
+  max-width: 62ch;
+}
+
+/* ─── Footer / Colophon ──────────────────────────────────────────────── */
+
+.colophon {
+  padding: 3.5rem 0 4rem;
+  border-top: 2px solid var(--ink);
+  margin-top: 1.5rem;
+}
+
+.colophon__pub {
+  font-family: var(--sans);
+  font-size: 0.6875rem;
+  font-weight: 600;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--ink-mid);
+  margin-bottom: 0.5rem;
+}
+
+.colophon__note {
+  font-family: var(--sans);
+  font-size: var(--step--1);
+  color: var(--ink-light);
+  line-height: 1.55;
+  max-width: 52ch;
+}
+
+/* ─── Inline cross-reference ─────────────────────────────────────────── */
+
+.xref {
+  font-family: var(--sans);
+  font-size: 0.6875rem;
+  font-style: normal;
+  color: var(--info);
+  letter-spacing: 0.02em;
+}
+
+/* ─── Responsive ─────────────────────────────────────────────────────── */
+
+@media (max-width: 600px) {
+  :root {
+    --step-5: 2.25rem;
+    --step-4: 1.875rem;
+    --step-3: 1.5rem;
+    --step-2: 1.25rem;
+  }
+
+  .masthead {
+    padding-top: 2.5rem;
+  }
+
+  .feedback {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+
+  .action-item {
+    padding: 1.25rem;
+  }
+
+  .needs-you {
+    padding: 1.25rem 1.25rem;
+  }
+
+  .section__header {
+    flex-direction: column;
+    gap: 0.35rem;
+  }
+}
+
+</style>
+</head>
+<body>
+
+<article class="page">
+
+  <!-- ── MASTHEAD ──────────────────────────────────────────────── -->
+  <header class="masthead">
+    <p class="masthead__pub">Blick Group &nbsp;&mdash;&nbsp; Internal Intelligence</p>
+    <h1 class="masthead__title"><strong>Nexus</strong><br>The Daily Overview</h1>
+    <p class="masthead__issue">Wednesday &middot; 24 June 2026 &middot; Operations &amp; Overdue</p>
+    <div class="masthead__glance">
+      <span class="masthead__glance-item">2 decisions ready</span>
+      <span class="masthead__glance-item">1 action</span>
+      <span class="masthead__glance-item">1 needs you</span>
+    </div>
+  </header>
+
+  <!-- ── LEDE ──────────────────────────────────────────────────── -->
+  <section class="lede">
+    <p class="lede__body">Three overdue intelligence items need promoting from the raw inbox &mdash; Polpure&rsquo;s distribution move, 2026 raw-materials pricing, and a CETCO competitor profile. Autoresearch was killed by the watchdog overnight for the second day running, and is the top operational fix. No same-day decisions are forced &mdash; but AICIS renewal, which closes 31 August, still has no owner.</p>
+  </section>
+
+  <!-- ── 01. READY FOR DECISION ──────────────────────────────── -->
+  <section class="section">
+    <div class="section__header">
+      <span class="section__numeral">01</span>
+      <span class="section__kicker">Ready for Decision</span>
+    </div>
+
+    <!-- Item 1 -->
+    <div class="item">
+      <h2 class="item__headline">Promote Polpure to the competitor register &mdash; and check for channel conflicts</h2>
+      <p class="item__body">Brisbane-based Polpure has partnered with MetaFLO Technologies and Ditch Witch and positioned itself as a key Australian HDD distributor for drilling-fluid and waste products; its MetaFLO solidifier competes directly with Eco Dry.</p>
+      <div class="item__meta">
+        <span class="badge badge--unverif">Unverified</span>
+        <span class="badge badge--neutral">Confidence 0.90</span>
+        <span class="badge badge--neutral">78 days in inbox</span>
+        <span class="badge badge--biz">Business development</span>
+      </div>
+      <p class="item__next">on promotion, cross-check Polpure&rsquo;s stated partners against Blick&rsquo;s current and prospective channels for conflicts and flag to sales.</p>
+      <p class="item__source">Overview_of_Polpure_s_Distribution_and_Partnership</p>
+      <div class="feedback" id="fb-1">
+        <button class="feedback__btn" onclick="logFeedback('fb-1', 'right-call', this)">Right call</button>
+        <button class="feedback__btn" onclick="logFeedback('fb-1', 'not-pursuing', this)">Not pursuing</button>
+        <button class="feedback__btn" onclick="logFeedback('fb-1', 'already-done', this)">Already done</button>
+        <span class="feedback__confirmation" id="fb-1-confirm"></span>
+      </div>
+    </div>
+
+    <!-- Item 2 -->
+    <div class="item">
+      <h2 class="item__headline">Route 2026 raw-materials pricing to procurement before the next reorder</h2>
+      <p class="item__body">AU drilling-grade sodium bentonite is AUD 250&ndash;350/t in Q1 2026, up 10&ndash;15% on 2025, forecast +5&ndash;8% more by year-end (energy costs and Red Sea shipping); the note recommends considering hedging. It is 78 days unreviewed and has not reached procurement &mdash; H2 buying is happening without it.</p>
+
+      <div class="item__stat">
+        <span class="item__stat-figure">+10&ndash;15%</span>
+        <span class="item__stat-label">bentonite vs 2025, now AUD 250&ndash;350/t</span>
+      </div>
+
+      <div class="item__meta">
+        <span class="badge badge--unverif">Unverified</span>
+        <span class="badge badge--neutral">Confidence 0.90</span>
+        <span class="badge badge--neutral">78 days unreviewed</span>
+        <span class="badge badge--ops">Operations</span>
+      </div>
+      <p class="item__next">promote to Intelligence/market and forward to procurement to compare against current supplier quotes.</p>
+      <p class="item__source">Current_and_Forecasted_Prices_2026</p>
+      <div class="feedback" id="fb-2">
+        <button class="feedback__btn" onclick="logFeedback('fb-2', 'right-call', this)">Right call</button>
+        <button class="feedback__btn" onclick="logFeedback('fb-2', 'not-pursuing', this)">Not pursuing</button>
+        <button class="feedback__btn" onclick="logFeedback('fb-2', 'already-done', this)">Already done</button>
+        <span class="feedback__confirmation" id="fb-2-confirm"></span>
+      </div>
+    </div>
+  </section>
+
+  <!-- ── 02. ACTION REQUIRED ──────────────────────────────────── -->
+  <section class="section">
+    <div class="section__header">
+      <span class="section__numeral">02</span>
+      <span class="section__kicker">Action Required &mdash; A Person Must Do This</span>
+    </div>
+
+    <div class="action-item">
+      <p class="action-item__kicker">Compliance &nbsp;&middot;&nbsp; Deadline 31 August 2026</p>
+      <h2 class="action-item__headline">Confirm AICIS renewal is lodged for all relevant products before 31 August</h2>
+      <p class="action-item__body">A 16 April system note flagged that Eco Dry&rsquo;s AICIS notification has no owner assigned. The cycle closes 31 August every year; miss it and you lose authority to operate.</p>
+
+      <div class="item__stat">
+        <span class="item__stat-figure">67</span>
+        <span class="item__stat-label">days until the AICIS cycle closes</span>
+      </div>
+
+      <div class="item__meta">
+        <span class="badge badge--unverif">Unverified</span>
+        <span class="badge badge--neutral">Confidence 0.70</span>
+        <span class="badge badge--compliance">Compliance</span>
+      </div>
+      <p class="item__next">assign an owner this month to check the AICIS registrant portal for every Blick product containing an introduced industrial chemical, confirm the cycle is lodged, and move the action-register item to active.</p>
+      <p class="item__source">The_AICIS_registration_cycle_runs_from_September_1</p>
+      <div class="feedback" id="fb-action">
+        <button class="feedback__btn" onclick="logFeedback('fb-action', 'on-it', this)">On it &mdash; assign me</button>
+        <button class="feedback__btn" onclick="logFeedback('fb-action', 'not-relevant', this)">Not relevant</button>
+        <button class="feedback__btn" onclick="logFeedback('fb-action', 'already-lodged', this)">Already lodged</button>
+        <span class="feedback__confirmation" id="fb-action-confirm"></span>
+      </div>
+    </div>
+  </section>
+
+  <!-- ── 03. WATCH LIST ───────────────────────────────────────── -->
+  <section class="section">
+    <div class="section__header">
+      <span class="section__numeral">03</span>
+      <span class="section__kicker">Watch List</span>
+    </div>
+
+    <div class="item">
+      <h2 class="item__headline">CETCO is a USD 2bn shadow over Eco Dry &mdash; and still 65 days in draft</h2>
+      <p class="item__body">CETCO, the construction-technologies subsidiary of Minerals Technologies (~USD 2bn annual revenue in bentonite drilling, construction and environmental products), overlaps directly with Blick&rsquo;s core range &mdash; yet its profile is still absent from the curated competitor register.</p>
+      <div class="item__meta">
+        <span class="badge badge--unverif">Unverified</span>
+        <span class="badge badge--neutral">Confidence 0.90</span>
+        <span class="badge badge--neutral">65 days in draft</span>
+      </div>
+      <p class="item__next">at the next vault triage, promote to Intelligence/competitors and add the revenue and scale figures to the sales comparison matrix.</p>
+      <p class="item__source">CETCO_MTI_Revenue_and_Scale</p>
+    </div>
+  </section>
+
+  <!-- ── 04. SALES INTELLIGENCE ──────────────────────────────── -->
+  <section class="section">
+    <div class="section__header">
+      <span class="section__numeral">04</span>
+      <span class="section__kicker">Sales Intelligence</span>
+    </div>
+
+    <div class="regions">
+      <div>
+        <p class="region__label">Australia &mdash; National</p>
+        <p class="region__body">No new national signals &mdash; no scans completed overnight. The only national-reach signal is Polpure&rsquo;s distribution move <span class="xref">(&#8594; Ready for Decision)</span>.</p>
+      </div>
+      <div>
+        <p class="region__label">AU &mdash; Western Australia</p>
+        <p class="region__body" style="color: var(--grey); font-style: italic;">Nothing to report.</p>
+      </div>
+      <div>
+        <p class="region__label">AU &mdash; East Coast</p>
+        <p class="region__body">Polpure (Brisbane) competes with Eco Dry in waste solidification <span class="xref">(&#8594; Ready for Decision)</span>.</p>
+      </div>
+      <div>
+        <p class="region__label">New Zealand</p>
+        <p class="region__body" style="color: var(--grey); font-style: italic;">Nothing to report.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- ── 05. PRODUCT ──────────────────────────────────────────── -->
+  <section class="section">
+    <div class="section__header">
+      <span class="section__numeral">05</span>
+      <span class="section__kicker">Product</span>
+    </div>
+
+    <div class="ops-item">
+      <p class="ops-item__kicker ops-item__kicker--warn">Internal alignment</p>
+      <p class="ops-item__body">Polpure <span class="xref">(&#8594; Ready for Decision)</span> and CETCO <span class="xref">(&#8594; Watch List)</span> both bear on Eco Dry&rsquo;s positioning in drilling-waste solidification; neither is in the curated register yet, so current sales and product docs may not reflect the live competitive landscape.</p>
+      <p class="ops-item__next">promote both at the next triage and cross-reference against Eco Dry positioning.</p>
+    </div>
+
+    <div class="ops-item">
+      <p class="ops-item__kicker" style="color: var(--grey);">External signals</p>
+      <p class="ops-item__body" style="color: var(--grey); font-style: italic;">Nothing to report.</p>
+    </div>
+  </section>
+
+  <!-- ── 06. OPERATIONS ──────────────────────────────────────── -->
+  <section class="section">
+    <div class="section__header">
+      <span class="section__numeral">06</span>
+      <span class="section__kicker">Operations</span>
+    </div>
+
+    <div class="ops-item">
+      <p class="ops-item__kicker">Autoresearch is down for a second straight day</p>
+      <p class="ops-item__body">The engine was killed by the time-limit watchdog before any of the six scheduled domain scans completed &mdash; 0 of 6 domains, 0 items promoted. Until it&rsquo;s fixed, every section above draws only on the existing vault and action register.</p>
+      <p class="ops-item__next">check the autoresearch daily log and confirm Gemma is resident in VRAM before the next scheduled run.</p>
+    </div>
+
+    <div class="ops-item">
+      <p class="ops-item__kicker ops-item__kicker--warn">Seven repositories need a human decision</p>
+      <p class="ops-item__body">Most material: hub-app (40 local changes, 3 behind remote), nexus (12 local changes, diverged), website-test (34 local changes, untracked) &mdash; a restoreability risk.</p>
+      <p class="ops-item__next">decide per repo whether local changes are intentional work-in-progress or should be reconciled. Full detail in the GitHub Hygiene Review.</p>
+    </div>
+  </section>
+
+  <!-- ── 07. QUIET DESK ──────────────────────────────────────── -->
+  <section class="section">
+    <div class="section__header">
+      <span class="section__numeral">07</span>
+      <span class="section__kicker">Quiet Desk</span>
+    </div>
+
+    <div class="quiet-grid">
+      <div>
+        <p class="quiet-item__label">Industry</p>
+        <p class="quiet-item__body">No scans overnight.</p>
+      </div>
+      <div>
+        <p class="quiet-item__label">Technology Watch</p>
+        <p class="quiet-item__body">Nothing to report.</p>
+      </div>
+      <div>
+        <p class="quiet-item__label">Innovation</p>
+        <p class="quiet-item__body">Nothing to report.</p>
+      </div>
+      <div>
+        <p class="quiet-item__label">AI Radar</p>
+        <p class="quiet-item__body">Nothing material this week.</p>
+      </div>
+      <div>
+        <p class="quiet-item__label">H&amp;S &amp; Compliance</p>
+        <p class="quiet-item__body">AICIS renewal, 31 August <span class="xref">(&#8594; Action Required)</span>.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- ── 08. NEEDS YOU ───────────────────────────────────────── -->
+  <section class="section">
+    <div class="section__header">
+      <span class="section__numeral">08</span>
+      <span class="section__kicker">Needs You</span>
+    </div>
+
+    <div class="needs-you">
+      <p class="needs-you__headline">This week&rsquo;s LinkedIn post is ready &mdash; but its preview isn&rsquo;t live to approve</p>
+      <p class="needs-you__body">The post generated, but its preview page isn&rsquo;t reachable on GitHub Pages &mdash; most likely the background publisher couldn&rsquo;t reach the NewmanDrive volume (Full Disk Access). Next: run the publisher from a terminal on the Mac Mini, then refresh the preview.</p>
+    </div>
+  </section>
+
+  <!-- ── 09. STATUS ──────────────────────────────────────────── -->
+  <section class="section">
+    <div class="section__header">
+      <span class="section__numeral">09</span>
+      <span class="section__kicker">Status</span>
+    </div>
+
+    <div class="status-item">
+      <p class="status-item__label">
+        <span class="status-dot status-dot--danger"></span>
+        Market Intelligence
+      </p>
+      <p class="status-item__body">Stale &mdash; autoresearch killed by the watchdog for a second day.</p>
+    </div>
+
+    <div class="status-item">
+      <p class="status-item__label">
+        <span class="status-dot status-dot--warning"></span>
+        Business Development
+      </p>
+      <p class="status-item__body">One active signal: Polpure AU distribution.</p>
+    </div>
+
+    <div class="status-item">
+      <p class="status-item__label">
+        <span class="status-dot status-dot--warning"></span>
+        Operations
+      </p>
+      <p class="status-item__body">Autoresearch unresolved; AICIS unconfirmed; pricing not with procurement; 7 repos to reconcile.</p>
+    </div>
+  </section>
+
+  <!-- ── 10. SYSTEM ──────────────────────────────────────────── -->
+  <section class="section">
+    <div class="section__header">
+      <span class="section__numeral">10</span>
+      <span class="section__kicker">System</span>
+    </div>
+
+    <table class="system-table">
+      <tbody>
+        <tr><td>Local calls</td><td>132</td></tr>
+        <tr><td>Cloud calls</td><td>16</td></tr>
+        <tr><td>Fallback events</td><td>9</td></tr>
+        <tr><td>Estimated cloud cost</td><td>USD 3.65</td></tr>
+        <tr><td>Estimated local savings</td><td>USD 0.23</td></tr>
+      </tbody>
+    </table>
+    <p class="system-footnote">Contact-data frontmatter 0% across 237 company notes &mdash; assessed as backfill lag. Governance: 2 conflicts to resolve (oldest 4d), 0 open queries.</p>
+  </section>
+
+  <!-- ── 11. STALE &mdash; NEEDS TRIAGE ──────────────────────────── -->
+  <section class="section">
+    <div class="section__header">
+      <span class="section__numeral">11</span>
+      <span class="section__kicker">Stale &mdash; Needs Triage</span>
+    </div>
+
+    <p class="stale-intro">155 items at status <em>new</em> for 7+ days &mdash; 63 operations, 47 innovation, 45 product-development. Oldest five:</p>
+    <ul class="stale-list">
+      <li>
+        <span>AICIS registration requirements for Blick</span>
+        <span class="stale-list__age">71d</span>
+      </li>
+      <li>
+        <span>Strategic expansion into eco-friendly fluids</span>
+        <span class="stale-list__age">71d</span>
+      </li>
+      <li>
+        <span>Liquid waste management in drilling operations</span>
+        <span class="stale-list__age">71d</span>
+      </li>
+      <li>
+        <span>Regulated waste management in Queensland</span>
+        <span class="stale-list__age">71d</span>
+      </li>
+      <li>
+        <span>Australian Industrial Chemicals Introduction Scheme</span>
+        <span class="stale-list__age">71d</span>
+      </li>
+    </ul>
+  </section>
+
+  <!-- ── COLOPHON ───────────────────────────────────────────── -->
+  <footer class="colophon">
+    <p class="colophon__pub">Nexus &nbsp;&middot;&nbsp; The Daily Overview &nbsp;&middot;&nbsp; Issue 2026-06-24</p>
+    <p class="colophon__note">A rendered view of the canonical vault markdown; the markdown remains the version of truth.</p>
+  </footer>
+
+</article>
+
+<script>
+// Feedback control — demo mode, no live API call
+
+var feedbackLabels = {
+  'right-call':    'Logged as "Right call" — will post to autoresearch on next sync.',
+  'not-pursuing':  'Logged as "Not pursuing" — autoresearch will deprioritise this signal.',
+  'already-done':  'Logged as "Already done" — action register will be updated on next sync.',
+  'on-it':         'Logged: owner assigned to you — action register will update on next sync.',
+  'not-relevant':  'Logged as "Not relevant" — autoresearch will suppress this signal.',
+  'already-lodged':'Logged as "Already lodged" — compliance item will close on next sync.'
+};
+
+function logFeedback(groupId, choice, btn) {
+  var group   = document.getElementById(groupId);
+  var confirm = document.getElementById(groupId + '-confirm');
+
+  // Disable all buttons in this group
+  var buttons = group.querySelectorAll('.feedback__btn');
+  buttons.forEach(function(b) { b.disabled = true; });
+
+  // Mark chosen button with subtle style
+  btn.style.borderColor   = 'var(--ink-mid)';
+  btn.style.color         = 'var(--ink)';
+
+  // Show confirmation — DEMO note
+  confirm.textContent = feedbackLabels[choice] + ' (Demo — no live write.)';
+  confirm.classList.add('visible');
+}
+</script>
+
+</body>
+</html>

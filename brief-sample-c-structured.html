@@ -1,0 +1,1278 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>NEXUS — The Daily Overview · 24 June 2026</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Source+Serif+4:ital,wght@0,300;0,400;0,600;1,300;1,400&display=swap" rel="stylesheet">
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  :root {
+    --orange:    #f05323;
+    --dark:      #58595b;
+    --mid:       #7a7c7f;
+    --light:     #bcbec0;
+    --faint:     #e8e9ea;
+    --page-bg:   #f7f6f4;
+    --white:     #ffffff;
+    --success:   #10b981;
+    --warning:   #f59e0b;
+    --danger:    #ef4444;
+    --info:      #2f6fb0;
+
+    --serif:     "Source Serif 4", Charter, Georgia, serif;
+    --sans:      "Inter", system-ui, sans-serif;
+
+    --col-gutter: 2rem;
+    --rail-w:    140px;
+    --max-w:     960px;
+  }
+
+  html { font-size: 16px; background: var(--page-bg); color: var(--dark); }
+  body { font-family: var(--serif); line-height: 1.65; }
+
+  /* ─── LAYOUT ──────────────────────────────────── */
+
+  .page-wrap {
+    max-width: var(--max-w);
+    margin: 0 auto;
+    padding: 0 1.5rem 4rem;
+  }
+
+  /* Two-column: narrow left rail + main body */
+  .two-col {
+    display: grid;
+    grid-template-columns: var(--rail-w) 1fr;
+    column-gap: var(--col-gutter);
+    align-items: start;
+  }
+
+  .rail {
+    padding-top: 0.25rem;
+    text-align: right;
+    position: sticky;
+    top: 1rem;
+  }
+
+  .rail-num {
+    font-family: var(--sans);
+    font-size: 0.68rem;
+    font-weight: 700;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: var(--orange);
+    line-height: 1.2;
+    margin-bottom: 0.2rem;
+  }
+
+  .rail-kicker {
+    font-family: var(--sans);
+    font-size: 0.62rem;
+    font-weight: 500;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    color: var(--light);
+    line-height: 1.3;
+    display: block;
+  }
+
+  .main-col { min-width: 0; }
+
+  @media (max-width: 620px) {
+    .two-col {
+      grid-template-columns: 1fr;
+    }
+    .rail {
+      text-align: left;
+      position: static;
+      display: flex;
+      align-items: baseline;
+      gap: 0.6rem;
+      padding-top: 0;
+      margin-bottom: 0.35rem;
+    }
+    .rail-num { font-size: 0.7rem; }
+    .rail-kicker { display: inline; }
+  }
+
+  /* ─── HAIRLINE RULES ────────────────────────────── */
+
+  .section-rule {
+    border: none;
+    border-top: 1px solid var(--faint);
+    margin: 2.5rem 0;
+  }
+
+  .rule-heavy {
+    border-top-color: var(--light);
+  }
+
+  /* ─── MASTHEAD ──────────────────────────────────── */
+
+  .masthead {
+    padding: 2.5rem 0 0;
+    margin-bottom: 0;
+  }
+
+  .masthead-mark {
+    display: inline-block;
+    width: 28px;
+    height: 4px;
+    background: var(--orange);
+    margin-bottom: 1rem;
+  }
+
+  .masthead-title {
+    font-family: var(--sans);
+    font-size: clamp(1.6rem, 4vw, 2.4rem);
+    font-weight: 700;
+    letter-spacing: -0.03em;
+    color: var(--dark);
+    line-height: 1.05;
+    margin-bottom: 0.4rem;
+  }
+
+  .masthead-title span {
+    color: var(--orange);
+  }
+
+  .masthead-meta {
+    font-family: var(--sans);
+    font-size: 0.75rem;
+    font-weight: 500;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--mid);
+  }
+
+  .masthead-meta .sep {
+    margin: 0 0.5em;
+    color: var(--light);
+  }
+
+  .masthead-meta .focus {
+    color: var(--orange);
+  }
+
+  /* ─── AT-A-GLANCE STRIP ─────────────────────────── */
+
+  .glance-strip {
+    background: var(--dark);
+    color: var(--white);
+    border-radius: 2px;
+    padding: 1.4rem 1.8rem;
+    margin: 1.6rem 0;
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr 1fr;
+    gap: 1rem 1.5rem;
+    align-items: start;
+  }
+
+  .glance-item {
+    display: flex;
+    flex-direction: column;
+    gap: 0.15rem;
+  }
+
+  .glance-num {
+    font-family: var(--sans);
+    font-size: 1.7rem;
+    font-weight: 700;
+    color: var(--orange);
+    line-height: 1;
+  }
+
+  .glance-label {
+    font-family: var(--sans);
+    font-size: 0.65rem;
+    font-weight: 500;
+    letter-spacing: 0.07em;
+    text-transform: uppercase;
+    color: rgba(255,255,255,0.55);
+  }
+
+  .glance-headline {
+    grid-column: 1 / -1;
+    border-top: 1px solid rgba(255,255,255,0.12);
+    padding-top: 0.9rem;
+    margin-top: 0.3rem;
+  }
+
+  .glance-headline p {
+    font-family: var(--serif);
+    font-style: italic;
+    font-size: 0.95rem;
+    color: rgba(255,255,255,0.85);
+    line-height: 1.45;
+  }
+
+  .contents-list {
+    grid-column: 1 / -1;
+    border-top: 1px solid rgba(255,255,255,0.12);
+    padding-top: 0.8rem;
+    margin-top: 0.1rem;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.3rem 1.2rem;
+  }
+
+  .contents-list a {
+    font-family: var(--sans);
+    font-size: 0.65rem;
+    font-weight: 500;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    color: rgba(255,255,255,0.45);
+    text-decoration: none;
+    transition: color 0.15s;
+  }
+
+  .contents-list a:hover { color: var(--orange); }
+
+  .contents-list .cnum {
+    color: var(--orange);
+    margin-right: 0.25em;
+  }
+
+  @media (max-width: 620px) {
+    .glance-strip {
+      grid-template-columns: 1fr 1fr;
+      padding: 1.1rem 1.2rem;
+    }
+    .glance-headline { grid-column: 1 / -1; }
+    .contents-list { grid-column: 1 / -1; }
+  }
+
+  /* ─── LEDE ──────────────────────────────────────── */
+
+  .lede {
+    font-size: 1.1rem;
+    font-weight: 300;
+    line-height: 1.7;
+    color: var(--dark);
+    max-width: 680px;
+  }
+
+  /* ─── SECTION HEADERS ──────────────────────────── */
+
+  .section-head {
+    font-family: var(--sans);
+    font-size: 0.68rem;
+    font-weight: 700;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--orange);
+    margin-bottom: 1.1rem;
+    padding-bottom: 0.4rem;
+    border-bottom: 1px solid var(--faint);
+  }
+
+  .section-head.dark {
+    color: var(--mid);
+  }
+
+  /* ─── ITEM CARDS ─────────────────────────────────── */
+
+  .item-card {
+    padding: 0 0 1.5rem;
+    margin-bottom: 1.5rem;
+    border-bottom: 1px solid var(--faint);
+  }
+
+  .item-card:last-child {
+    border-bottom: none;
+    margin-bottom: 0;
+    padding-bottom: 0;
+  }
+
+  .item-title {
+    font-family: var(--sans);
+    font-size: 1.0rem;
+    font-weight: 600;
+    letter-spacing: -0.015em;
+    color: var(--dark);
+    line-height: 1.3;
+    margin-bottom: 0.55rem;
+  }
+
+  .item-body {
+    font-family: var(--serif);
+    font-size: 0.95rem;
+    line-height: 1.65;
+    color: var(--dark);
+    margin-bottom: 0.75rem;
+  }
+
+  .item-next {
+    font-family: var(--sans);
+    font-size: 0.78rem;
+    color: var(--mid);
+    line-height: 1.5;
+    padding-left: 0.9rem;
+    border-left: 2px solid var(--faint);
+    margin-bottom: 0.75rem;
+  }
+
+  .item-next strong {
+    font-weight: 600;
+    color: var(--dark);
+  }
+
+  .item-source {
+    font-family: var(--sans);
+    font-size: 0.63rem;
+    letter-spacing: 0.04em;
+    text-transform: uppercase;
+    color: var(--light);
+  }
+
+  /* ─── META ROW ───────────────────────────────────── */
+
+  .meta-row {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.3rem 0.75rem;
+    margin-bottom: 0.7rem;
+    align-items: center;
+  }
+
+  .badge {
+    font-family: var(--sans);
+    font-size: 0.6rem;
+    font-weight: 600;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    padding: 0.18em 0.55em;
+    border-radius: 2px;
+    line-height: 1.4;
+  }
+
+  .badge-unverified { background: var(--faint); color: var(--mid); }
+  .badge-ops        { background: #fef3c7; color: #92400e; }
+  .badge-bizdev     { background: #dbeafe; color: #1e40af; }
+  .badge-compliance { background: #fce7f3; color: #9d174d; }
+  .badge-conf       { background: var(--faint); color: var(--dark); }
+  .badge-days       { background: var(--faint); color: var(--orange); font-weight: 700; }
+
+  /* ─── STAT CALLOUT ───────────────────────────────── */
+
+  .stat-callout {
+    display: inline-flex;
+    flex-direction: column;
+    border-left: 3px solid var(--orange);
+    padding: 0.5rem 1rem;
+    margin: 0.75rem 0 0.9rem;
+    background: #fdf2ed;
+  }
+
+  .stat-num {
+    font-family: var(--sans);
+    font-size: 2rem;
+    font-weight: 700;
+    color: var(--orange);
+    line-height: 1;
+  }
+
+  .stat-label {
+    font-family: var(--sans);
+    font-size: 0.7rem;
+    font-weight: 500;
+    color: var(--mid);
+    margin-top: 0.2rem;
+    letter-spacing: 0.03em;
+  }
+
+  /* ─── YOUR CALL BUTTONS ──────────────────────────── */
+
+  .your-call {
+    margin-top: 0.9rem;
+  }
+
+  .your-call-label {
+    font-family: var(--sans);
+    font-size: 0.6rem;
+    font-weight: 700;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--light);
+    margin-bottom: 0.45rem;
+  }
+
+  .call-buttons {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.4rem;
+  }
+
+  .call-btn {
+    font-family: var(--sans);
+    font-size: 0.72rem;
+    font-weight: 500;
+    letter-spacing: 0.02em;
+    color: var(--mid);
+    background: transparent;
+    border: 1px solid var(--light);
+    border-radius: 2px;
+    padding: 0.3em 0.75em;
+    cursor: pointer;
+    transition: border-color 0.12s, color 0.12s, background 0.12s;
+    line-height: 1.4;
+  }
+
+  .call-btn:hover {
+    border-color: var(--dark);
+    color: var(--dark);
+  }
+
+  .call-btn.primary:hover {
+    border-color: var(--orange);
+    color: var(--orange);
+  }
+
+  .call-confirm {
+    font-family: var(--sans);
+    font-size: 0.72rem;
+    color: var(--success);
+    margin-top: 0.4rem;
+    display: none;
+    align-items: center;
+    gap: 0.35rem;
+  }
+
+  .call-confirm.show { display: flex; }
+
+  .call-confirm-dot {
+    width: 5px;
+    height: 5px;
+    border-radius: 50%;
+    background: var(--success);
+    flex-shrink: 0;
+  }
+
+  .call-row.locked .call-buttons { opacity: 0.35; pointer-events: none; }
+
+  /* ─── WATCH PILL ─────────────────────────────────── */
+
+  .watch-badge {
+    font-family: var(--sans);
+    font-size: 0.6rem;
+    font-weight: 700;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: var(--warning);
+    background: #fffbeb;
+    border: 1px solid #fde68a;
+    border-radius: 2px;
+    padding: 0.2em 0.6em;
+    display: inline-block;
+    margin-bottom: 0.5rem;
+  }
+
+  .action-badge {
+    font-family: var(--sans);
+    font-size: 0.6rem;
+    font-weight: 700;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: var(--danger);
+    background: #fef2f2;
+    border: 1px solid #fecaca;
+    border-radius: 2px;
+    padding: 0.2em 0.6em;
+    display: inline-block;
+    margin-bottom: 0.5rem;
+  }
+
+  /* ─── SALES GEOGRAPHY ────────────────────────────── */
+
+  .geo-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 1rem 1.5rem;
+  }
+
+  .geo-item {
+    padding: 0.8rem 1rem;
+    border: 1px solid var(--faint);
+    border-radius: 2px;
+  }
+
+  .geo-label {
+    font-family: var(--sans);
+    font-size: 0.62rem;
+    font-weight: 700;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--mid);
+    margin-bottom: 0.4rem;
+  }
+
+  .geo-body {
+    font-family: var(--serif);
+    font-size: 0.88rem;
+    line-height: 1.55;
+    color: var(--dark);
+  }
+
+  .geo-nil {
+    font-family: var(--sans);
+    font-size: 0.78rem;
+    color: var(--light);
+    font-style: italic;
+  }
+
+  @media (max-width: 480px) {
+    .geo-grid { grid-template-columns: 1fr; }
+  }
+
+  /* ─── QUIET SECTIONS ─────────────────────────────── */
+
+  .quiet-row {
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+    margin-bottom: 0.6rem;
+  }
+
+  .quiet-item {
+    display: flex;
+    align-items: baseline;
+    gap: 0.9rem;
+    padding: 0.5rem 0;
+    border-bottom: 1px solid var(--faint);
+  }
+
+  .quiet-item:last-child { border-bottom: none; }
+
+  .quiet-topic {
+    font-family: var(--sans);
+    font-size: 0.68rem;
+    font-weight: 600;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    color: var(--mid);
+    min-width: 120px;
+    flex-shrink: 0;
+  }
+
+  .quiet-nil {
+    font-family: var(--serif);
+    font-size: 0.88rem;
+    color: var(--light);
+    font-style: italic;
+  }
+
+  .quiet-ref {
+    font-family: var(--serif);
+    font-size: 0.88rem;
+    color: var(--dark);
+  }
+
+  /* ─── STATUS STRIP ───────────────────────────────── */
+
+  .status-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 1px;
+    background: var(--faint);
+    border: 1px solid var(--faint);
+    border-radius: 2px;
+    overflow: hidden;
+    margin-bottom: 1.2rem;
+  }
+
+  .status-cell {
+    background: var(--white);
+    padding: 0.85rem 1rem;
+  }
+
+  .status-label {
+    font-family: var(--sans);
+    font-size: 0.6rem;
+    font-weight: 700;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--mid);
+    margin-bottom: 0.35rem;
+  }
+
+  .status-desc {
+    font-family: var(--serif);
+    font-size: 0.82rem;
+    line-height: 1.45;
+    color: var(--dark);
+  }
+
+  .status-indicator {
+    display: inline-block;
+    width: 6px;
+    height: 6px;
+    border-radius: 50%;
+    margin-right: 0.4em;
+    vertical-align: middle;
+    position: relative;
+    top: -1px;
+  }
+
+  .ind-danger  { background: var(--danger); }
+  .ind-warning { background: var(--warning); }
+  .ind-success { background: var(--success); }
+
+  @media (max-width: 540px) {
+    .status-grid { grid-template-columns: 1fr; }
+  }
+
+  /* ─── SYSTEM TABLE ───────────────────────────────── */
+
+  .sys-table {
+    width: 100%;
+    border-collapse: collapse;
+    font-family: var(--sans);
+    font-size: 0.78rem;
+    margin-bottom: 0.8rem;
+  }
+
+  .sys-table td {
+    padding: 0.45rem 0;
+    border-bottom: 1px solid var(--faint);
+    color: var(--dark);
+    vertical-align: top;
+  }
+
+  .sys-table td:first-child {
+    color: var(--mid);
+    width: 55%;
+    padding-right: 1rem;
+  }
+
+  .sys-table tr:last-child td { border-bottom: none; }
+
+  .sys-footnote {
+    font-family: var(--sans);
+    font-size: 0.68rem;
+    color: var(--light);
+    line-height: 1.5;
+  }
+
+  /* ─── STALE TABLE ─────────────────────────────────── */
+
+  .stale-table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 0.86rem;
+    margin-bottom: 0.6rem;
+  }
+
+  .stale-table th {
+    font-family: var(--sans);
+    font-size: 0.6rem;
+    font-weight: 700;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: var(--mid);
+    text-align: left;
+    padding: 0.4rem 0.75rem 0.4rem 0;
+    border-bottom: 1px solid var(--faint);
+  }
+
+  .stale-table td {
+    font-family: var(--serif);
+    padding: 0.5rem 0.75rem 0.5rem 0;
+    border-bottom: 1px solid var(--faint);
+    color: var(--dark);
+    vertical-align: top;
+  }
+
+  .stale-table td.days {
+    font-family: var(--sans);
+    font-weight: 700;
+    color: var(--warning);
+    white-space: nowrap;
+    width: 60px;
+  }
+
+  .stale-table tr:last-child td { border-bottom: none; }
+
+  .stale-buckets {
+    display: flex;
+    gap: 1.5rem;
+    flex-wrap: wrap;
+    margin-bottom: 0.8rem;
+  }
+
+  .stale-bucket {
+    font-family: var(--sans);
+    font-size: 0.7rem;
+  }
+
+  .stale-bucket .n {
+    font-size: 1.2rem;
+    font-weight: 700;
+    color: var(--dark);
+    line-height: 1;
+    display: block;
+  }
+
+  .stale-bucket .cat {
+    color: var(--mid);
+    font-size: 0.62rem;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+  }
+
+  /* ─── COLOPHON ───────────────────────────────────── */
+
+  .colophon {
+    padding: 2rem 0 1rem;
+    border-top: 1px solid var(--faint);
+    font-family: var(--sans);
+    font-size: 0.65rem;
+    color: var(--light);
+    letter-spacing: 0.04em;
+    line-height: 1.6;
+  }
+
+  .colophon strong { color: var(--mid); }
+
+  /* ─── NEEDS YOU ──────────────────────────────────── */
+
+  .needs-you-card {
+    background: #fff8f5;
+    border: 1px solid #fad5c3;
+    border-radius: 2px;
+    padding: 1rem 1.2rem;
+  }
+
+  .needs-you-label {
+    font-family: var(--sans);
+    font-size: 0.6rem;
+    font-weight: 700;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--orange);
+    margin-bottom: 0.45rem;
+  }
+
+  .needs-you-title {
+    font-family: var(--sans);
+    font-size: 0.95rem;
+    font-weight: 600;
+    color: var(--dark);
+    margin-bottom: 0.5rem;
+    line-height: 1.3;
+  }
+
+  /* ─── OPS SUB-ITEMS ──────────────────────────────── */
+
+  .ops-item {
+    margin-bottom: 1.2rem;
+    padding-bottom: 1.2rem;
+    border-bottom: 1px solid var(--faint);
+  }
+
+  .ops-item:last-child { border-bottom: none; margin-bottom: 0; padding-bottom: 0; }
+
+  .ops-item-title {
+    font-family: var(--sans);
+    font-size: 0.88rem;
+    font-weight: 600;
+    color: var(--dark);
+    margin-bottom: 0.4rem;
+  }
+
+  /* ─── UTIL ───────────────────────────────────────── */
+
+  .xref {
+    font-family: var(--sans);
+    font-size: 0.7rem;
+    color: var(--info);
+    font-style: normal;
+    white-space: nowrap;
+  }
+
+  .spacer-sm { margin-top: 0.8rem; }
+  .spacer-md { margin-top: 1.4rem; }
+
+  a { color: inherit; text-decoration: none; }
+</style>
+</head>
+<body>
+<div class="page-wrap">
+
+  <!-- ═══ MASTHEAD ═══════════════════════════════════ -->
+  <header class="masthead">
+    <div class="masthead-mark"></div>
+    <h1 class="masthead-title"><span>NEXUS</span> — The Daily Overview</h1>
+    <p class="masthead-meta">
+      Wednesday<span class="sep">·</span>24 June 2026<span class="sep">·</span><span class="focus">Operations &amp; Overdue</span>
+    </p>
+  </header>
+
+  <!-- ═══ AT-A-GLANCE STRIP ══════════════════════════ -->
+  <div class="glance-strip" role="region" aria-label="At a glance">
+    <div class="glance-item">
+      <span class="glance-num">2</span>
+      <span class="glance-label">Decisions ready</span>
+    </div>
+    <div class="glance-item">
+      <span class="glance-num">1</span>
+      <span class="glance-label">Action required</span>
+    </div>
+    <div class="glance-item">
+      <span class="glance-num">1</span>
+      <span class="glance-label">Needs you</span>
+    </div>
+    <div class="glance-item">
+      <span class="glance-num">155</span>
+      <span class="glance-label">Items awaiting triage</span>
+    </div>
+    <div class="glance-headline">
+      <p>Three overdue items await promotion; autoresearch down a second day.</p>
+    </div>
+    <nav class="contents-list" aria-label="Sections">
+      <a href="#s1"><span class="cnum">01</span> Ready for Decision</a>
+      <a href="#s3"><span class="cnum">03</span> Action Required</a>
+      <a href="#s4"><span class="cnum">04</span> Watch List</a>
+      <a href="#s5"><span class="cnum">05</span> Sales Intelligence</a>
+      <a href="#s6"><span class="cnum">06</span> Product</a>
+      <a href="#s7"><span class="cnum">07</span> Operations</a>
+      <a href="#s8"><span class="cnum">08</span> Quiet Desk</a>
+      <a href="#s9"><span class="cnum">09</span> Needs You</a>
+      <a href="#s10"><span class="cnum">10</span> Status</a>
+      <a href="#s11"><span class="cnum">11</span> Stale &amp; Triage</a>
+    </nav>
+  </div>
+
+  <!-- ═══ LEDE ════════════════════════════════════════ -->
+  <div class="two-col" style="margin-bottom: 0;">
+    <div class="rail">
+      <span class="rail-num">Lede</span>
+    </div>
+    <div class="main-col">
+      <p class="lede">Three overdue intelligence items need promoting from the raw inbox — Polpure's distribution move, 2026 raw-materials pricing, and a CETCO competitor profile. Autoresearch was killed by the watchdog overnight for the second day running, and is the top operational fix. No same-day decisions are forced — but AICIS renewal, which closes 31 August, still has no owner.</p>
+    </div>
+  </div>
+
+  <hr class="section-rule rule-heavy">
+
+  <!-- ═══ S01 — READY FOR DECISION ═══════════════════ -->
+  <section id="s1">
+    <div class="two-col">
+      <div class="rail">
+        <div class="rail-num">01</div>
+        <span class="rail-kicker">Ready for<br>Decision</span>
+      </div>
+      <div class="main-col">
+        <p class="section-head">Ready for Decision</p>
+
+        <!-- Item 1 -->
+        <div class="item-card">
+          <h2 class="item-title">Promote Polpure to the competitor register — and check for channel conflicts</h2>
+          <div class="meta-row">
+            <span class="badge badge-unverified">Unverified</span>
+            <span class="badge badge-conf">Confidence 0.90</span>
+            <span class="badge badge-days">78 days in inbox</span>
+            <span class="badge badge-bizdev">Business development</span>
+          </div>
+          <p class="item-body">Brisbane-based Polpure has partnered with MetaFLO Technologies and Ditch Witch and positioned itself as a key Australian HDD distributor for drilling-fluid and waste products; its MetaFLO solidifier competes directly with Eco Dry.</p>
+          <div class="item-next">
+            <strong>Next:</strong> On promotion, cross-check Polpure's stated partners against Blick's current and prospective channels for conflicts and flag to sales.
+          </div>
+          <p class="item-source">Source: Overview_of_Polpure_s_Distribution_and_Partnership</p>
+          <div class="your-call">
+            <p class="your-call-label">Your call</p>
+            <div class="call-row" id="cr1">
+              <div class="call-buttons">
+                <button class="call-btn primary" onclick="logCall('cr1','Right call — promote')">Right call</button>
+                <button class="call-btn" onclick="logCall('cr1','Not pursuing')">Not pursuing</button>
+                <button class="call-btn" onclick="logCall('cr1','Already done')">Already done</button>
+              </div>
+              <p class="call-confirm" id="cf1"><span class="call-confirm-dot"></span><span class="call-confirm-text"></span></p>
+            </div>
+          </div>
+        </div>
+
+        <!-- Item 2 -->
+        <div class="item-card">
+          <h2 class="item-title">Route 2026 raw-materials pricing to procurement before the next reorder</h2>
+          <div class="meta-row">
+            <span class="badge badge-unverified">Unverified</span>
+            <span class="badge badge-conf">Confidence 0.90</span>
+            <span class="badge badge-days">78 days unreviewed</span>
+            <span class="badge badge-ops">Operations</span>
+          </div>
+          <p class="item-body">AU drilling-grade sodium bentonite is AUD 250–350/t in Q1 2026, up 10–15% on 2025, forecast +5–8% more by year-end (energy costs and Red Sea shipping); the note recommends considering hedging. It is 78 days unreviewed and has not reached procurement — H2 buying is happening without it.</p>
+          <div class="stat-callout">
+            <span class="stat-num">+10–15%</span>
+            <span class="stat-label">Bentonite vs 2025 — now AUD 250–350/t</span>
+          </div>
+          <div class="item-next">
+            <strong>Next:</strong> Promote to Intelligence/market and forward to procurement to compare against current supplier quotes.
+          </div>
+          <p class="item-source">Source: Current_and_Forecasted_Prices_2026</p>
+          <div class="your-call">
+            <p class="your-call-label">Your call</p>
+            <div class="call-row" id="cr2">
+              <div class="call-buttons">
+                <button class="call-btn primary" onclick="logCall('cr2','Right call — promote')">Right call</button>
+                <button class="call-btn" onclick="logCall('cr2','Not pursuing')">Not pursuing</button>
+                <button class="call-btn" onclick="logCall('cr2','Already done')">Already done</button>
+              </div>
+              <p class="call-confirm" id="cf2"><span class="call-confirm-dot"></span><span class="call-confirm-text"></span></p>
+            </div>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </section>
+
+  <hr class="section-rule">
+
+  <!-- ═══ S03 — ACTION REQUIRED ══════════════════════ -->
+  <section id="s3">
+    <div class="two-col">
+      <div class="rail">
+        <div class="rail-num">03</div>
+        <span class="rail-kicker">Action<br>Required</span>
+      </div>
+      <div class="main-col">
+        <p class="section-head">Action Required — A person must do this</p>
+        <div class="item-card">
+          <div class="action-badge">Requires a person</div>
+          <h2 class="item-title">Confirm AICIS renewal is lodged for all relevant products before 31 August</h2>
+          <div class="meta-row">
+            <span class="badge badge-unverified">Unverified</span>
+            <span class="badge badge-conf">Confidence 0.70</span>
+            <span class="badge badge-compliance">Compliance</span>
+          </div>
+          <p class="item-body">A 16 April system note flagged that Eco Dry's AICIS notification has no owner assigned. The cycle closes 31 August every year; miss it and you lose authority to operate.</p>
+          <div class="stat-callout">
+            <span class="stat-num">67</span>
+            <span class="stat-label">Days until the AICIS cycle closes</span>
+          </div>
+          <div class="item-next">
+            <strong>Next:</strong> Assign an owner this month to check the AICIS registrant portal for every Blick product containing an introduced industrial chemical, confirm the cycle is lodged, and move the action-register item to active.
+          </div>
+          <p class="item-source">Source: The_AICIS_registration_cycle_runs_from_September_1</p>
+          <div class="your-call">
+            <p class="your-call-label">Your call</p>
+            <div class="call-row" id="cr3">
+              <div class="call-buttons">
+                <button class="call-btn primary" onclick="logCall('cr3','On it — assign me')">On it — assign me</button>
+                <button class="call-btn" onclick="logCall('cr3','Not relevant')">Not relevant</button>
+                <button class="call-btn" onclick="logCall('cr3','Already lodged')">Already lodged</button>
+              </div>
+              <p class="call-confirm" id="cf3"><span class="call-confirm-dot"></span><span class="call-confirm-text"></span></p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <hr class="section-rule">
+
+  <!-- ═══ S04 — WATCH LIST ════════════════════════════ -->
+  <section id="s4">
+    <div class="two-col">
+      <div class="rail">
+        <div class="rail-num">04</div>
+        <span class="rail-kicker">Watch List</span>
+      </div>
+      <div class="main-col">
+        <p class="section-head">Watch List</p>
+        <div class="item-card">
+          <div class="watch-badge">Watching</div>
+          <h2 class="item-title">CETCO is a USD 2bn shadow over Eco Dry — and still 65 days in draft</h2>
+          <div class="meta-row">
+            <span class="badge badge-unverified">Unverified</span>
+            <span class="badge badge-conf">Confidence 0.90</span>
+            <span class="badge badge-days">65 days in draft</span>
+          </div>
+          <p class="item-body">CETCO, the construction-technologies subsidiary of Minerals Technologies (~USD 2bn annual revenue in bentonite drilling, construction and environmental products), overlaps directly with Blick's core range — yet its profile is still absent from the curated competitor register.</p>
+          <div class="item-next">
+            <strong>Next:</strong> At the next vault triage, promote to Intelligence/competitors and add the revenue and scale figures to the sales comparison matrix.
+          </div>
+          <p class="item-source">Source: CETCO_MTI_Revenue_and_Scale</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <hr class="section-rule">
+
+  <!-- ═══ S05 — SALES INTELLIGENCE ═══════════════════ -->
+  <section id="s5">
+    <div class="two-col">
+      <div class="rail">
+        <div class="rail-num">05</div>
+        <span class="rail-kicker">Sales<br>Intelligence</span>
+      </div>
+      <div class="main-col">
+        <p class="section-head">Sales Intelligence</p>
+        <div class="geo-grid">
+          <div class="geo-item">
+            <p class="geo-label">AU — National</p>
+            <p class="geo-body">No new national signals — no scans completed overnight. The only national-reach signal is Polpure's distribution move <span class="xref">(01 Ready for Decision)</span>.</p>
+          </div>
+          <div class="geo-item">
+            <p class="geo-label">AU — WA</p>
+            <p class="geo-nil">Nothing to report.</p>
+          </div>
+          <div class="geo-item">
+            <p class="geo-label">AU — East Coast</p>
+            <p class="geo-body">Polpure (Brisbane) competes with Eco Dry in waste solidification <span class="xref">(01 Ready for Decision)</span>.</p>
+          </div>
+          <div class="geo-item">
+            <p class="geo-label">NZ</p>
+            <p class="geo-nil">Nothing to report.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <hr class="section-rule">
+
+  <!-- ═══ S06 — PRODUCT ══════════════════════════════ -->
+  <section id="s6">
+    <div class="two-col">
+      <div class="rail">
+        <div class="rail-num">06</div>
+        <span class="rail-kicker">Product</span>
+      </div>
+      <div class="main-col">
+        <p class="section-head">Product</p>
+        <div class="ops-item">
+          <p class="ops-item-title">Internal alignment</p>
+          <p class="item-body" style="font-size:0.92rem;">Polpure <span class="xref">(01 Ready for Decision)</span> and CETCO <span class="xref">(04 Watch List)</span> both bear on Eco Dry's positioning in drilling-waste solidification; neither is in the curated register yet, so current sales and product docs may not reflect the live competitive landscape.</p>
+          <div class="item-next spacer-sm">
+            <strong>Next:</strong> Promote both at the next triage and cross-reference against Eco Dry positioning.
+          </div>
+        </div>
+        <div class="ops-item">
+          <p class="ops-item-title">External signals</p>
+          <p class="geo-nil" style="margin-top:0.2rem;">Nothing to report.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <hr class="section-rule">
+
+  <!-- ═══ S07 — OPERATIONS ════════════════════════════ -->
+  <section id="s7">
+    <div class="two-col">
+      <div class="rail">
+        <div class="rail-num">07</div>
+        <span class="rail-kicker">Operations</span>
+      </div>
+      <div class="main-col">
+        <p class="section-head">Operations</p>
+        <div class="ops-item">
+          <p class="ops-item-title">Autoresearch is down for a second straight day</p>
+          <p class="item-body" style="font-size:0.92rem;">Killed by the time-limit watchdog before any of the six scheduled domain scans completed — 0 of 6 domains, 0 items promoted. Until it's fixed, every section above draws only on the existing vault and action register.</p>
+          <div class="item-next spacer-sm">
+            <strong>Next:</strong> Check the autoresearch daily log and confirm Gemma is resident in VRAM before the next scheduled run.
+          </div>
+        </div>
+        <div class="ops-item">
+          <p class="ops-item-title">Seven repositories need a human decision</p>
+          <p class="item-body" style="font-size:0.92rem;">Most material: hub-app (40 local changes, 3 behind remote), nexus (12 local changes, diverged), website-test (34 local changes, untracked) — a restoreability risk.</p>
+          <div class="item-next spacer-sm">
+            <strong>Next:</strong> Decide per repo whether local changes are intentional WIP or should be reconciled. Full detail in the GitHub Hygiene Review.
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <hr class="section-rule">
+
+  <!-- ═══ S08 — QUIET DESK ════════════════════════════ -->
+  <section id="s8">
+    <div class="two-col">
+      <div class="rail">
+        <div class="rail-num">08</div>
+        <span class="rail-kicker">Quiet Desk</span>
+      </div>
+      <div class="main-col">
+        <p class="section-head">Quiet Desk</p>
+        <div class="quiet-row">
+          <div class="quiet-item">
+            <span class="quiet-topic">Industry</span>
+            <span class="quiet-nil">No scans overnight.</span>
+          </div>
+          <div class="quiet-item">
+            <span class="quiet-topic">Technology Watch</span>
+            <span class="quiet-nil">Nothing to report.</span>
+          </div>
+          <div class="quiet-item">
+            <span class="quiet-topic">Innovation</span>
+            <span class="quiet-nil">Nothing to report.</span>
+          </div>
+          <div class="quiet-item">
+            <span class="quiet-topic">AI Radar</span>
+            <span class="quiet-nil">Nothing material this week.</span>
+          </div>
+          <div class="quiet-item">
+            <span class="quiet-topic">H&amp;S &amp; Compliance</span>
+            <span class="quiet-ref">AICIS renewal, 31 August <span class="xref">(03 Action Required)</span>.</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <hr class="section-rule">
+
+  <!-- ═══ S09 — NEEDS YOU ═════════════════════════════ -->
+  <section id="s9">
+    <div class="two-col">
+      <div class="rail">
+        <div class="rail-num">09</div>
+        <span class="rail-kicker">Needs You</span>
+      </div>
+      <div class="main-col">
+        <p class="section-head">Needs You</p>
+        <div class="needs-you-card">
+          <p class="needs-you-label">Awaiting action</p>
+          <p class="needs-you-title">This week's LinkedIn post is ready — but its preview isn't live to approve</p>
+          <p class="item-body" style="font-size:0.92rem;">The post generated, but its preview page isn't reachable on GitHub Pages — most likely the background publisher couldn't reach the NewmanDrive volume (Full Disk Access).</p>
+          <div class="item-next spacer-sm">
+            <strong>Next:</strong> Run the publisher from a terminal on the Mac Mini, then refresh the preview.
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <hr class="section-rule">
+
+  <!-- ═══ S10 — STATUS ════════════════════════════════ -->
+  <section id="s10">
+    <div class="two-col">
+      <div class="rail">
+        <div class="rail-num">10</div>
+        <span class="rail-kicker">Status</span>
+      </div>
+      <div class="main-col">
+        <p class="section-head">Status</p>
+        <div class="status-grid" style="margin-bottom:1.4rem;">
+          <div class="status-cell">
+            <p class="status-label">Market intelligence</p>
+            <p class="status-desc"><span class="status-indicator ind-danger"></span>Stale — autoresearch killed by watchdog for a second day.</p>
+          </div>
+          <div class="status-cell">
+            <p class="status-label">Business development</p>
+            <p class="status-desc"><span class="status-indicator ind-warning"></span>One active signal: Polpure AU distribution.</p>
+          </div>
+          <div class="status-cell">
+            <p class="status-label">Operations</p>
+            <p class="status-desc"><span class="status-indicator ind-warning"></span>Autoresearch unresolved; AICIS unconfirmed; pricing not with procurement; 7 repos to reconcile.</p>
+          </div>
+        </div>
+
+        <p class="section-head dark">System</p>
+        <table class="sys-table">
+          <tr><td>Local calls</td><td>132</td></tr>
+          <tr><td>Cloud calls</td><td>16</td></tr>
+          <tr><td>Fallback events</td><td>9</td></tr>
+          <tr><td>Est. cloud cost</td><td>USD 3.65</td></tr>
+          <tr><td>Est. local savings</td><td>USD 0.23</td></tr>
+        </table>
+        <p class="sys-footnote">Contact-data frontmatter 0% across 237 company notes — assessed as backfill lag. Governance: 2 conflicts to resolve (oldest 4d), 0 open queries.</p>
+      </div>
+    </div>
+  </section>
+
+  <hr class="section-rule">
+
+  <!-- ═══ S11 — STALE & TRIAGE ════════════════════════ -->
+  <section id="s11">
+    <div class="two-col">
+      <div class="rail">
+        <div class="rail-num">11</div>
+        <span class="rail-kicker">Stale &amp;<br>Triage</span>
+      </div>
+      <div class="main-col">
+        <p class="section-head">Stale — Needs Triage</p>
+        <div class="stale-buckets">
+          <div class="stale-bucket">
+            <span class="n">155</span>
+            <span class="cat">Total</span>
+          </div>
+          <div class="stale-bucket">
+            <span class="n">63</span>
+            <span class="cat">Operations</span>
+          </div>
+          <div class="stale-bucket">
+            <span class="n">47</span>
+            <span class="cat">Innovation</span>
+          </div>
+          <div class="stale-bucket">
+            <span class="n">45</span>
+            <span class="cat">Product dev.</span>
+          </div>
+        </div>
+        <p style="font-family:var(--sans);font-size:0.68rem;font-weight:700;letter-spacing:0.08em;text-transform:uppercase;color:var(--mid);margin-bottom:0.5rem;">Oldest five</p>
+        <table class="stale-table">
+          <thead>
+            <tr>
+              <th>Item</th>
+              <th style="text-align:right;">Age</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>AICIS registration requirements for Blick</td>
+              <td class="days" style="text-align:right;">71d</td>
+            </tr>
+            <tr>
+              <td>Strategic expansion into eco-friendly fluids</td>
+              <td class="days" style="text-align:right;">71d</td>
+            </tr>
+            <tr>
+              <td>Liquid waste management in drilling operations</td>
+              <td class="days" style="text-align:right;">71d</td>
+            </tr>
+            <tr>
+              <td>Regulated waste management in Queensland</td>
+              <td class="days" style="text-align:right;">71d</td>
+            </tr>
+            <tr>
+              <td>Australian Industrial Chemicals Introduction Scheme</td>
+              <td class="days" style="text-align:right;">71d</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </section>
+
+  <!-- ═══ COLOPHON ════════════════════════════════════ -->
+  <footer class="colophon">
+    <strong>NEXUS · The Daily Overview · Issue 2026-06-24</strong> — A rendered view of the canonical vault markdown; the markdown remains the version of truth.
+  </footer>
+
+</div><!-- /page-wrap -->
+
+<script>
+  function logCall(rowId, label) {
+    var row = document.getElementById(rowId);
+    if (!row) return;
+    var num = rowId.replace('cr','');
+    var confirm = document.getElementById('cf' + num);
+    if (!confirm) return;
+    row.classList.add('locked');
+    var text = confirm.querySelector('.call-confirm-text');
+    text.textContent = 'Logged: "' + label + '" — will post to autoresearch on next sync. (Demo)';
+    confirm.classList.add('show');
+  }
+</script>
+</body>
+</html>

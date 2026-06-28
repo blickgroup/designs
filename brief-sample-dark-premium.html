@@ -1,0 +1,346 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>NEXUS — The Daily Overview · 24 June 2026</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --bg:#0a0b10; --bg2:#0e1017;
+    --glass:rgba(255,255,255,.045); --glass-line:rgba(255,255,255,.10);
+    --txt:#f3f5fa; --txt2:#b4bcce; --txt3:#6f7891;
+    --orange:#ff6a35; --orange-2:#ffb24d;
+    --red:#ff4d6a; --amber:#ffb020; --blue:#4d9bff; --cyan:#34e0d0; --violet:#9b8cff;
+    --ok:#2ee6a0;
+    --display:"Space Grotesk",-apple-system,system-ui,sans-serif;
+    --sans:"Inter",-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;
+  }
+  *{box-sizing:border-box;}
+  html{scroll-behavior:smooth;}
+  body{margin:0; background:var(--bg); color:var(--txt); font-family:var(--sans);
+       font-size:17px; line-height:1.6; -webkit-font-smoothing:antialiased;
+       background-image:
+         radial-gradient(900px 600px at 85% -5%, rgba(255,106,53,.16), transparent 60%),
+         radial-gradient(800px 600px at -10% 30%, rgba(155,140,255,.10), transparent 55%),
+         radial-gradient(700px 500px at 110% 80%, rgba(52,224,208,.07), transparent 55%);
+       background-attachment:fixed;}
+  .inner{max-width:900px; margin:0 auto; padding:0 30px;}
+  @media(max-width:640px){.inner{padding:0 18px;} body{font-size:16px;}}
+  a{color:inherit;}
+
+  /* ===== COVER ===== */
+  .cover{position:relative; overflow:hidden; border-bottom:1px solid var(--glass-line);}
+  .cover .mesh{position:absolute; inset:0; background:
+      radial-gradient(600px 400px at 78% 8%, rgba(255,106,53,.42), transparent 60%),
+      radial-gradient(520px 420px at 12% 90%, rgba(155,140,255,.30), transparent 60%);
+      filter:blur(8px); opacity:.9;}
+  .cover .grid-tex{position:absolute; inset:0; background-image:linear-gradient(rgba(255,255,255,.04) 1px,transparent 1px),linear-gradient(90deg,rgba(255,255,255,.04) 1px,transparent 1px); background-size:46px 46px; mask-image:radial-gradient(80% 70% at 50% 30%,#000,transparent 80%); opacity:.5;}
+  .cover .inner{position:relative; padding:42px 30px 46px;}
+  .toprow{display:flex; justify-content:space-between; align-items:center; font-family:var(--sans);
+      font-size:11px; letter-spacing:.32em; text-transform:uppercase; color:var(--txt3);}
+  .toprow .live{display:flex; align-items:center; gap:8px; color:var(--txt2);}
+  .pulse{width:8px; height:8px; border-radius:50%; background:var(--orange); box-shadow:0 0 12px 2px var(--orange); animation:pulse 2.2s infinite;}
+  @keyframes pulse{0%{box-shadow:0 0 0 0 rgba(255,106,53,.6);}70%{box-shadow:0 0 0 10px rgba(255,106,53,0);}100%{box-shadow:0 0 0 0 rgba(255,106,53,0);}}
+  .wordmark{font-family:var(--display); font-weight:700; font-size:104px; line-height:.9; letter-spacing:-.05em; margin:34px 0 6px;
+      background:linear-gradient(92deg,#fff 18%, #ffd9c5 50%, var(--orange) 88%); -webkit-background-clip:text; background-clip:text; -webkit-text-fill-color:transparent;}
+  @media(max-width:640px){.wordmark{font-size:64px;}}
+  .strap{font-family:var(--sans); font-weight:500; font-size:13px; letter-spacing:.46em; text-transform:uppercase; color:#e7b79b; margin-bottom:30px;}
+  .headline{font-family:var(--display); font-weight:500; font-size:27px; line-height:1.34; max-width:660px; color:#eef1f7;}
+  .headline b{color:#fff; font-weight:600;} .headline .hot{color:var(--orange);}
+  .glance{display:flex; gap:14px; margin-top:36px; flex-wrap:wrap;}
+  .gchip{flex:1; min-width:130px; background:var(--glass); border:1px solid var(--glass-line); border-radius:16px; padding:16px 18px; backdrop-filter:blur(8px); position:relative; overflow:hidden;}
+  .gchip::before{content:""; position:absolute; left:0; top:0; bottom:0; width:3px;}
+  .gchip.c1::before{background:var(--orange);} .gchip.c2::before{background:var(--red);} .gchip.c3::before{background:var(--blue);} .gchip.c4::before{background:var(--violet);}
+  .gchip .num{font-family:var(--display); font-weight:700; font-size:38px; line-height:1; color:#fff;}
+  .gchip.c1 .num{color:var(--orange);}
+  .gchip .lbl{font-size:10.5px; letter-spacing:.14em; text-transform:uppercase; color:var(--txt3); margin-top:8px;}
+
+  /* ===== LEDE ===== */
+  .lede-band .inner{padding:46px 30px 8px;}
+  .lede{font-size:21px; line-height:1.55; color:var(--txt2); max-width:740px;}
+  .lede b{color:#fff; font-weight:600;}
+
+  /* ===== SECTIONS ===== */
+  .section{padding:40px 0; position:relative;}
+  .section .inner{position:relative;}
+  .kick{font-family:var(--sans); font-size:11.5px; font-weight:700; letter-spacing:.24em; text-transform:uppercase; display:flex; align-items:center; gap:13px; margin:0 0 4px;}
+  .kick .num{font-family:var(--display); font-size:14px; color:var(--txt3); letter-spacing:0;}
+  .kick .tick{flex:1; height:1px;}
+  .sub{font-family:var(--sans); font-size:12.5px; color:var(--txt3); margin:0 0 22px;}
+  /* per-zone accent */
+  .a-orange .kick{color:var(--orange);} .a-orange .kick .tick{background:linear-gradient(90deg,rgba(255,106,53,.5),transparent);}
+  .a-red .kick{color:var(--red);} .a-red .kick .tick{background:linear-gradient(90deg,rgba(255,77,106,.5),transparent);}
+  .a-amber .kick{color:var(--amber);} .a-amber .kick .tick{background:linear-gradient(90deg,rgba(255,176,32,.5),transparent);}
+  .a-blue .kick{color:var(--blue);} .a-blue .kick .tick{background:linear-gradient(90deg,rgba(77,155,255,.5),transparent);}
+  .a-cyan .kick{color:var(--cyan);} .a-cyan .kick .tick{background:linear-gradient(90deg,rgba(52,224,208,.45),transparent);}
+  .a-violet .kick{color:var(--violet);} .a-violet .kick .tick{background:linear-gradient(90deg,rgba(155,140,255,.5),transparent);}
+  /* faint section glow so zones differ without washing out */
+  .glow{position:absolute; width:520px; height:300px; border-radius:50%; filter:blur(80px); opacity:.10; pointer-events:none; z-index:0;}
+  .glow.g-orange{background:var(--orange); right:-120px; top:0;}
+  .glow.g-red{background:var(--red); left:-140px; top:20px;}
+  .glow.g-blue{background:var(--blue); right:-120px; top:0;}
+  .glow.g-amber{background:var(--amber); left:-120px; top:0;}
+
+  /* ===== CARD ===== */
+  .card{position:relative; z-index:1; background:linear-gradient(180deg, rgba(255,255,255,.06), rgba(255,255,255,.025));
+        border:1px solid var(--glass-line); border-radius:20px; padding:26px 28px 22px; margin-bottom:20px;
+        backdrop-filter:blur(10px); box-shadow:0 30px 60px -30px rgba(0,0,0,.8); overflow:hidden; transition:transform .28s ease, border-color .28s ease, box-shadow .28s ease;}
+  .card::before{content:""; position:absolute; top:0; left:0; right:0; height:3px;}
+  .card.decide::before{background:linear-gradient(90deg,var(--orange),var(--orange-2));}
+  .card.action::before{background:linear-gradient(90deg,var(--red),#ff8a6a);}
+  .card.needs::before{background:linear-gradient(90deg,var(--blue),var(--cyan));}
+  .card.ops::before{background:linear-gradient(90deg,var(--amber),#ffd27a);}
+  .card:hover{transform:translateY(-5px); border-color:rgba(255,255,255,.2); box-shadow:0 40px 80px -28px rgba(0,0,0,.9);}
+  .card .type{font-family:var(--sans); font-size:10.5px; font-weight:700; letter-spacing:.18em; text-transform:uppercase; color:var(--txt3); margin-bottom:9px;}
+  .card h2{font-family:var(--display); font-weight:600; font-size:25px; line-height:1.22; letter-spacing:-.01em; margin:0 0 11px; color:#fff;}
+  .card .deck{font-size:16.5px; line-height:1.55; color:var(--txt2); margin:0 0 16px;}
+  .card .deck b{color:#fff; font-weight:600;}
+
+  .stat{float:right; width:172px; margin:0 0 14px 26px; text-align:right;}
+  .stat .n{font-family:var(--display); font-weight:700; font-size:48px; line-height:.9; letter-spacing:-.02em;
+       background:linear-gradient(180deg,#fff,var(--orange)); -webkit-background-clip:text; background-clip:text; -webkit-text-fill-color:transparent;}
+  .stat .c{font-family:var(--sans); font-size:11.5px; line-height:1.45; color:var(--txt3); margin-top:8px;}
+  @media(max-width:560px){.stat{float:none; width:auto; text-align:left; margin:0 0 14px;}}
+
+  .meta{display:flex; flex-wrap:wrap; gap:8px; margin-bottom:15px;}
+  .pill{font-family:var(--sans); font-size:11px; font-weight:600; padding:4px 11px; border-radius:30px; letter-spacing:.02em; border:1px solid var(--glass-line);}
+  .pill.unv{background:rgba(255,176,32,.10); color:#ffca6e; border-color:rgba(255,176,32,.25);}
+  .pill.conf{background:rgba(46,230,160,.10); color:#6ff0c0; border-color:rgba(46,230,160,.22);}
+  .pill.age{background:rgba(255,106,53,.10); color:#ff9a6e; border-color:rgba(255,106,53,.22);}
+  .pill.dom{background:rgba(77,155,255,.10); color:#8cc0ff; border-color:rgba(77,155,255,.22);}
+  .next{font-family:var(--sans); font-size:14.5px; line-height:1.5; background:rgba(255,106,53,.08); border:1px solid rgba(255,106,53,.22); border-radius:11px; padding:12px 15px; margin:0 0 6px; color:#ffc1a3;}
+  .next b{color:var(--orange); text-transform:uppercase; font-size:10.5px; letter-spacing:.14em; margin-right:5px;}
+  .src{font-family:var(--sans); font-size:10.5px; color:var(--txt3); letter-spacing:.03em; clear:both; padding-top:4px;}
+
+  /* ===== YOUR CALL ===== */
+  .yc{font-family:var(--sans); margin-top:16px; padding-top:15px; border-top:1px solid var(--glass-line); display:flex; align-items:center; gap:10px; flex-wrap:wrap;}
+  .yc .q{font-size:10.5px; letter-spacing:.18em; text-transform:uppercase; color:var(--txt3);}
+  .yc button{font:inherit; font-size:13px; font-weight:600; cursor:pointer; border-radius:30px; padding:8px 17px; border:1px solid var(--glass-line); background:rgba(255,255,255,.04); color:var(--txt); transition:.18s;}
+  .yc button:hover{transform:translateY(-1px);}
+  .yc .good:hover{background:var(--ok); border-color:var(--ok); color:#06281c; box-shadow:0 0 18px rgba(46,230,160,.4);}
+  .yc .act:hover{background:var(--orange); border-color:var(--orange); color:#160a04; box-shadow:0 0 18px rgba(255,106,53,.45);}
+  .yc .no:hover{background:var(--red); border-color:var(--red); color:#fff; box-shadow:0 0 18px rgba(255,77,106,.4);}
+  .yc .later:hover{background:var(--violet); border-color:var(--violet); color:#0c0a16; box-shadow:0 0 18px rgba(155,140,255,.4);}
+  .yc .hint{margin-left:auto; font-size:10px; color:var(--txt3); letter-spacing:.04em;}
+  .yc-msg{font-family:var(--sans); font-size:13.5px; line-height:1.5; margin:12px 0 0; padding:0 16px; max-height:0; opacity:0; overflow:hidden; border-radius:11px; transition:max-height .4s ease, opacity .3s ease, padding .3s ease;}
+  .yc-msg.show{max-height:130px; opacity:1; padding:12px 16px;}
+  .yc-msg.good{background:rgba(46,230,160,.10); color:#7ff0c4; border:1px solid rgba(46,230,160,.3);}
+  .yc-msg.no{background:rgba(255,77,106,.10); color:#ff97aa; border:1px solid rgba(255,77,106,.3);}
+  .yc-msg.info{background:rgba(77,155,255,.10); color:#9cc6ff; border:1px solid rgba(77,155,255,.3);}
+  .yc-msg.act{background:rgba(255,106,53,.10); color:#ff9a6e; border:1px solid rgba(255,106,53,.3);}
+  .yc-msg.later{background:rgba(155,140,255,.10); color:#bcb0ff; border:1px solid rgba(155,140,255,.3);}
+
+  /* ===== WATCH / FLAT / GRID ===== */
+  .watch{position:relative; z-index:1; border-left:3px solid var(--amber); padding:2px 0 2px 22px;}
+  .watch.warnish{border-color:var(--amber);}
+  .watch h2{font-family:var(--display); font-weight:600; font-size:23px; line-height:1.22; margin:0 0 10px; color:#fff;}
+  .watch .deck{font-size:16.5px; color:var(--txt2); margin:0 0 13px;}
+  .grid{position:relative; z-index:1; display:grid; grid-template-columns:1fr 1fr; gap:12px;}
+  @media(max-width:600px){.grid{grid-template-columns:1fr;}}
+  .tile{background:var(--glass); border:1px solid var(--glass-line); border-radius:14px; padding:15px 17px;}
+  .tile h3{font-family:var(--sans); font-size:11px; font-weight:700; letter-spacing:.08em; text-transform:uppercase; margin:0 0 6px; color:var(--txt2);}
+  .tile p{font-size:15px; margin:0; color:var(--txt2);}
+  .tile .nil{color:var(--txt3); font-style:italic;}
+  .xref{font-family:var(--sans); color:var(--blue); font-size:12px; font-weight:600; white-space:nowrap;}
+  .prose{position:relative; z-index:1; font-size:16.5px; color:var(--txt2); max-width:740px;} .prose b{color:#fff; font-weight:600;}
+  .prose .ext{color:var(--txt3); font-style:italic; font-size:14.5px;}
+
+  /* ===== CLOSING ===== */
+  .close{border-top:1px solid var(--glass-line); margin-top:8px; background:rgba(0,0,0,.25);}
+  .close .inner{padding:42px 30px 48px;}
+  .statusrow{margin:4px 0 26px;}
+  .statusrow .s{font-size:16px; margin:9px 0; color:var(--txt2);} .statusrow .s b{color:#fff; font-weight:600;}
+  .dot{display:inline-block; width:9px; height:9px; border-radius:50%; margin-right:10px; box-shadow:0 0 10px currentColor;}
+  .dot.r{background:var(--red); color:var(--red);} .dot.a{background:var(--amber); color:var(--amber);}
+  .metrics{display:flex; flex-wrap:wrap; gap:12px; margin-bottom:18px;}
+  .metrics .m{flex:1; min-width:104px; background:var(--glass); border:1px solid var(--glass-line); border-radius:14px; padding:15px 16px;}
+  .metrics .mv{font-family:var(--display); font-weight:700; font-size:25px; color:#fff;}
+  .metrics .ml{font-family:var(--sans); font-size:10px; letter-spacing:.12em; text-transform:uppercase; color:var(--txt3); margin-top:6px;}
+  .footnote{font-family:var(--sans); font-size:12px; color:var(--txt3); line-height:1.6;}
+  .stale{font-family:var(--sans); font-size:13px; color:var(--txt3); margin-top:24px;} .stale b{color:var(--txt);}
+  .stale ul{margin:8px 0 0; padding-left:18px;} .stale li{margin:3px 0;}
+  .colophon{margin-top:30px; padding-top:18px; border-top:1px solid var(--glass-line); font-family:var(--sans); font-size:11px; color:var(--txt3); letter-spacing:.04em; text-align:center; line-height:1.7;}
+  .colophon code{color:#9aa3b8;}
+  .reveal{opacity:0; transform:translateY(18px); transition:opacity .6s ease, transform .6s ease;}
+  .reveal.in{opacity:1; transform:none;}
+</style>
+</head>
+<body>
+
+<!-- COVER -->
+<section class="cover">
+  <div class="mesh"></div><div class="grid-tex"></div>
+  <div class="inner">
+    <div class="toprow"><span class="live"><span class="pulse"></span> Blick Group · Intelligence</span><span>Issue · 24.06.2026</span></div>
+    <div class="wordmark">NEXUS</div>
+    <div class="strap">The Daily Overview</div>
+    <div class="headline">Three overdue items await promotion, and <span class="hot">autoresearch is down a second day</span> — but no decision is forced on you today.</div>
+    <div class="glance">
+      <div class="gchip c1"><div class="num">2</div><div class="lbl">Decisions ready</div></div>
+      <div class="gchip c2"><div class="num">1</div><div class="lbl">Action required</div></div>
+      <div class="gchip c3"><div class="num">1</div><div class="lbl">Needs you</div></div>
+      <div class="gchip c4"><div class="num">155</div><div class="lbl">In triage</div></div>
+    </div>
+  </div>
+</section>
+
+<!-- LEDE -->
+<section class="lede-band"><div class="inner">
+  <p class="lede">Three overdue intelligence items need promoting from the raw inbox — <b>Polpure's distribution move</b>, <b>2026 raw-materials pricing</b>, and a <b>CETCO competitor profile</b>. Autoresearch was killed by the watchdog overnight for the second day running, and is the top operational fix. No same-day decisions are forced — but AICIS renewal, which closes 31 August, still has no owner.</p>
+</div></section>
+
+<!-- 01 READY FOR DECISION -->
+<section class="section a-orange"><div class="glow g-orange"></div><div class="inner">
+  <div class="kick"><span class="num">01</span> Ready for Decision <span class="tick"></span></div>
+  <p class="sub">Prepared and waiting on your call.</p>
+
+  <article class="card decide reveal">
+    <div class="type">Competitor signal</div>
+    <h2>Promote Polpure to the competitor register — and check for channel conflicts</h2>
+    <p class="deck">Brisbane-based <b>Polpure</b> has partnered with MetaFLO Technologies and Ditch Witch and positioned itself as a key Australian HDD distributor for drilling-fluid and waste products; its MetaFLO solidifier competes directly with <b>Eco Dry</b>.</p>
+    <div class="meta"><span class="pill unv">Unverified</span><span class="pill conf">Confidence 0.90</span><span class="pill age">78 days in inbox</span><span class="pill dom">Business development</span></div>
+    <p class="next"><b>Next</b> on promotion, cross-check Polpure's stated partners against Blick's current and prospective channels for conflicts, and flag to sales.</p>
+    <p class="src">Source: Overview_of_Polpure_s_Distribution_and_Partnership</p>
+    <div class="yc"><span class="q">Your call</span>
+      <button class="good" onclick="yc(this,'good','Filed as good intel and saved to the knowledge base — no task created. Autoresearch keeps surfacing distribution-move signals like this.')">Like it</button>
+      <button class="act" onclick="yc(this,'act','Promoted to the competitor register as an idea in Compass; logged as actionable.')">Act on it</button>
+      <button class="no" onclick="yc(this,'no','Logged as not-pursuing — drops from future briefs; autoresearch down-ranks similar signals.')">Not pursuing</button>
+      <button class="later" onclick="yc(this,'later','Snoozed — hidden now, resurfaces for a decision later.')">Later</button>
+      <span class="hint">posts to autoresearch ↩</span></div>
+    <div class="yc-msg"></div>
+  </article>
+
+  <article class="card decide reveal">
+    <div class="type">Procurement signal</div>
+    <div class="stat"><div class="n">+10–15%</div><div class="c">bentonite vs 2025 — now AUD 250–350/t, forecast +5–8% by year-end</div></div>
+    <h2>Route 2026 raw-materials pricing to procurement before the next reorder</h2>
+    <p class="deck">AU drilling-grade sodium bentonite is up sharply on energy costs and Red Sea shipping; the note recommends considering hedging. It is <b>78 days unreviewed</b> and has not reached procurement — H2 buying is happening without it.</p>
+    <div class="meta"><span class="pill unv">Unverified</span><span class="pill conf">Confidence 0.90</span><span class="pill age">78 days unreviewed</span><span class="pill dom">Operations</span></div>
+    <p class="next"><b>Next</b> promote to Intelligence/market and forward to procurement to compare against current supplier quotes.</p>
+    <p class="src">Source: Current_and_Forecasted_Prices_2026</p>
+    <div class="yc"><span class="q">Your call</span>
+      <button class="good" onclick="yc(this,'good','Filed as good intel — saved to the knowledge base, no task created.')">Like it</button>
+      <button class="act" onclick="yc(this,'act','Routed to procurement and promoted to Compass; logged as actionable.')">Act on it</button>
+      <button class="no" onclick="yc(this,'no','Logged as not-pursuing — autoresearch weights raw-material pricing notes lower.')">Not pursuing</button>
+      <button class="later" onclick="yc(this,'later','Snoozed — resurfaces before the next reorder cycle.')">Later</button>
+      <span class="hint">posts to autoresearch ↩</span></div>
+    <div class="yc-msg"></div>
+  </article>
+</div></section>
+
+<!-- 02 ACTION REQUIRED -->
+<section class="section a-red"><div class="glow g-red"></div><div class="inner">
+  <div class="kick"><span class="num">02</span> Action Required <span class="tick"></span></div>
+  <p class="sub">A person must do this — it cannot be delegated to the system.</p>
+  <article class="card action reveal">
+    <div class="type">Compliance deadline</div>
+    <div class="stat"><div class="n">67</div><div class="c">days until the AICIS cycle closes on 31 August</div></div>
+    <h2>Confirm AICIS renewal is lodged for all relevant products before 31 August</h2>
+    <p class="deck">A 16 April system note flagged that <b>Eco Dry</b>'s AICIS notification has no owner assigned. The cycle closes every year on 31 August; miss it and you lose authority to operate.</p>
+    <div class="meta"><span class="pill unv">Unverified</span><span class="pill conf">Confidence 0.70</span><span class="pill dom">Compliance</span></div>
+    <p class="next"><b>Next</b> assign an owner this month to check the AICIS registrant portal for every Blick product containing an introduced industrial chemical, confirm the cycle is lodged, and move the action-register item to active.</p>
+    <p class="src">Source: The_AICIS_registration_cycle_runs_from_September_1</p>
+    <div class="yc"><span class="q">Your call</span>
+      <button class="good" onclick="yc(this,'good','Filed as good intel — noted, no task created.')">Like it</button>
+      <button class="act" onclick="yc(this,'act','Created a follow-up task in the Hub, assigned and linked back to this item — tracked in your follow-ups.')">Act on it</button>
+      <button class="no" onclick="yc(this,'no','Logged as not-relevant.')">Not pursuing</button>
+      <button class="later" onclick="yc(this,'later','Snoozed — resurfaces before the 31 August deadline.')">Later</button>
+      <span class="hint">posts to autoresearch ↩</span></div>
+    <div class="yc-msg"></div>
+  </article>
+</div></section>
+
+<!-- 03 WATCH LIST -->
+<section class="section a-amber"><div class="glow g-amber"></div><div class="inner">
+  <div class="kick"><span class="num">03</span> Watch List <span class="tick"></span></div>
+  <p class="sub">Tracking — no action needed today.</p>
+  <div class="watch warnish reveal">
+    <h2>CETCO is a USD 2bn shadow over Eco Dry — and still 65 days in draft</h2>
+    <p class="deck"><b>CETCO</b>, the construction-technologies subsidiary of <b>Minerals Technologies</b> (~USD 2bn annual revenue in bentonite drilling, construction and environmental products), overlaps directly with Blick's core range — yet its profile is still absent from the curated competitor register.</p>
+    <div class="meta"><span class="pill unv">Unverified</span><span class="pill conf">Confidence 0.90</span><span class="pill age">65 days in draft</span></div>
+    <p class="next"><b>Next</b> at the next vault triage, promote to Intelligence/competitors and add the revenue and scale figures to the sales comparison matrix.</p>
+    <p class="src">Source: CETCO_MTI_Revenue_and_Scale</p>
+  </div>
+</div></section>
+
+<!-- 04/05 SALES + PRODUCT -->
+<section class="section a-blue"><div class="glow g-blue"></div><div class="inner">
+  <div class="kick"><span class="num">04</span> Sales Intelligence <span class="tick"></span></div>
+  <div class="grid reveal" style="margin-bottom:34px;">
+    <div class="tile"><h3>Australia — National</h3><p>No new national signals — no scans completed overnight. The only national-reach signal is Polpure's distribution move. <span class="xref">→ 01</span></p></div>
+    <div class="tile"><h3>AU — East Coast</h3><p>Polpure (Brisbane) competes with Eco Dry in waste solidification. <span class="xref">→ 01</span></p></div>
+  </div>
+  <div class="kick"><span class="num">05</span> Product <span class="tick"></span></div>
+  <p class="prose reveal"><b>Internal alignment.</b> Polpure <span class="xref">(→ 01)</span> and CETCO <span class="xref">(→ 03)</span> both bear on <b>Eco Dry</b>'s positioning in drilling-waste solidification; neither is in the curated register yet, so current sales and product docs may not reflect the live competitive landscape. <b>Next:</b> promote both at the next triage and cross-reference against Eco Dry positioning.</p>
+</div></section>
+
+<!-- 06 OPERATIONS -->
+<section class="section a-amber"><div class="glow g-amber"></div><div class="inner">
+  <div class="kick"><span class="num">06</span> Operations <span class="tick"></span></div>
+  <article class="card ops reveal">
+    <div class="type">System · top fix</div>
+    <h2>Autoresearch is down for a second straight day</h2>
+    <p class="deck">The engine was killed by the time-limit watchdog before any of the six scheduled domain scans completed — <b>0 of 6 domains, 0 items promoted</b>. Until it's fixed, every section above draws only on the existing vault and action register.</p>
+    <p class="next"><b>Next</b> check the autoresearch daily log and confirm Gemma is resident in VRAM before the next scheduled run.</p>
+  </article>
+  <div class="watch warnish reveal">
+    <h2>Seven repositories need a human decision</h2>
+    <p class="deck">Most material: <b>hub-app</b> (40 local changes, 3 behind remote), <b>nexus</b> (12 local changes, diverged), <b>website-test</b> (34 local changes, untracked) — a restoreability risk if checkouts diverge further.</p>
+    <p class="next"><b>Next</b> decide per repo whether local changes are intentional work-in-progress or should be reconciled. Full detail in the GitHub Hygiene Review.</p>
+  </div>
+</div></section>
+
+<!-- 07 NEEDS YOU -->
+<section class="section a-blue"><div class="glow g-blue"></div><div class="inner">
+  <div class="kick"><span class="num">07</span> Needs You <span class="tick"></span></div>
+  <article class="card needs reveal">
+    <div class="type">Publishing</div>
+    <h2>This week's LinkedIn post is ready — but its preview isn't live to approve</h2>
+    <p class="deck">The post generated, but its preview page isn't reachable on GitHub Pages — most likely the background publisher couldn't reach the NewmanDrive volume (Full Disk Access).</p>
+    <p class="next"><b>Next</b> run the publisher from a terminal on the Mac Mini, then refresh the preview.</p>
+  </article>
+</div></section>
+
+<!-- 09 CLOSING -->
+<section class="close a-violet"><div class="inner">
+  <div class="kick"><span class="num">08</span> Status &amp; System <span class="tick"></span></div>
+  <div class="statusrow">
+    <p class="s"><span class="dot r"></span><b>Market intelligence —</b> stale; autoresearch killed by the watchdog for a second day.</p>
+    <p class="s"><span class="dot a"></span><b>Business development —</b> one active signal: Polpure AU distribution.</p>
+    <p class="s"><span class="dot a"></span><b>Operations —</b> autoresearch unresolved; AICIS unconfirmed; pricing not with procurement; 7 repos to reconcile.</p>
+  </div>
+  <div class="metrics">
+    <div class="m"><div class="mv">132</div><div class="ml">Local calls</div></div>
+    <div class="m"><div class="mv">16</div><div class="ml">Cloud calls</div></div>
+    <div class="m"><div class="mv">9</div><div class="ml">Fallbacks</div></div>
+    <div class="m"><div class="mv">$3.65</div><div class="ml">Cloud cost</div></div>
+    <div class="m"><div class="mv">$0.23</div><div class="ml">Local saved</div></div>
+  </div>
+  <p class="footnote">Contact-data frontmatter 0% across 237 company notes — assessed as backfill lag. Governance: 2 conflicts to resolve (oldest 4d), 0 open queries.</p>
+  <div class="stale"><b>Stale — needs triage:</b> 155 items at status new for ≥7 days (63 operations · 47 innovation · 45 product-development). Oldest five:
+    <ul>
+      <li>AICIS registration requirements for Blick — 71d</li>
+      <li>Strategic expansion into eco-friendly fluids — 71d</li>
+      <li>Liquid waste management in drilling operations — 71d</li>
+      <li>Regulated waste management in Queensland — 71d</li>
+      <li>Australian Industrial Chemicals Introduction Scheme — 71d</li>
+    </ul>
+  </div>
+  <div class="colophon">NEXUS · THE DAILY OVERVIEW · ISSUE 2026-06-24<br>A rendered view of <code>BlickVault/Intelligence/briefings/daily-overview/2026-06-24-daily-overview.md</code> — the vault markdown remains the version of truth.</div>
+</div></section>
+
+<script>
+  function yc(btn, kind, msg){
+    var card = btn.closest('.card'); var box = card.querySelector('.yc-msg');
+    box.className = 'yc-msg show ' + kind;
+    box.innerHTML = '&#10003; ' + msg + ' <span style="opacity:.55">(demo — the live version posts this to autoresearch)</span>';
+    card.querySelectorAll('.yc button').forEach(function(b){ b.style.opacity=(b===btn)?'1':'.3'; b.disabled=true; b.style.cursor='default'; });
+  }
+  var io=new IntersectionObserver(function(es){es.forEach(function(e){if(e.isIntersecting){e.target.classList.add('in'); io.unobserve(e.target);}});},{threshold:.12});
+  document.querySelectorAll('.reveal').forEach(function(el){io.observe(el);});
+</script>
+</body>
+</html>
