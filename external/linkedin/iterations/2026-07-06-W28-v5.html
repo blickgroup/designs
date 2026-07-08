@@ -1,0 +1,228 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>LinkedIn Preview — Construct Gel — LinkedIn (week 28)</title>
+<style>
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body { background: #f3f2ef; font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif; padding: 20px; }
+  .container { max-width: 680px; margin: 0 auto; }
+
+  /* Header */
+  .page-header { background: #fff; border-radius: 8px; padding: 16px 20px; margin-bottom: 16px; border-left: 4px solid #ea580c; }
+  .page-header h1 { font-size: 16px; font-weight: 700; color: #000000e6; }
+  .page-header .meta { font-size: 12px; color: #00000099; margin-top: 4px; }
+  .status-badge { display: inline-block; padding: 2px 8px; border-radius: 12px; font-size: 11px; font-weight: 600; text-transform: uppercase; background: #94a3b8; color: #fff; margin-left: 8px; }
+
+  /* Tabs */
+  .tabs { display: flex; gap: 8px; margin-bottom: 12px; }
+  .tab-btn { padding: 8px 16px; border: none; border-radius: 20px; cursor: pointer; font-size: 13px; font-weight: 500; background: #e2e8f0; color: #00000099; transition: all 0.15s; }
+  .tab-btn.active { background: #0a66c2; color: #fff; }
+
+  /* Tab panels */
+  .tab-panel { display: none; }
+  .tab-panel.active { display: block; }
+
+  /* LinkedIn card */
+  .li-card { background: #ffffff; border-radius: 8px; border: 1px solid #e2e8f0; overflow: hidden; margin-bottom: 12px; }
+  .li-header { display: flex; align-items: center; gap: 10px; padding: 12px 16px 8px; }
+  .li-avatar { width: 40px; height: 40px; border-radius: 50%; background: #ea580c; color: #fff; font-size: 13px; font-weight: 700; display: flex; align-items: center; justify-content: center; flex-shrink: 0; }
+  .li-meta { flex: 1; }
+  .li-name { font-size: 14px; font-weight: 600; color: #000000e6; }
+  .li-sub { font-size: 12px; color: #00000099; }
+  .li-follow { font-size: 14px; font-weight: 600; color: #0a66c2; cursor: pointer; }
+  .li-body { padding: 8px 16px 12px; font-size: 14px; line-height: 1.55; color: #000000e6; }
+  .li-hook { font-weight: 600; margin-bottom: 10px; }
+  .li-text { margin-bottom: 10px; }
+  .li-cta { color: #00000099; margin-bottom: 8px; font-style: italic; }
+  .li-hashtags { color: #0a66c2; font-size: 13px; }
+  .li-footer { display: flex; gap: 20px; padding: 8px 16px; border-top: 1px solid #f1f5f9; font-size: 13px; color: #00000099; }
+  .li-footer span { cursor: pointer; }
+
+  /* Char bar */
+  .char-bar { height: 4px; background: #e2e8f0; border-radius: 2px; margin-bottom: 4px; }
+  .char-fill { height: 100%; border-radius: 2px; transition: width 0.3s; }
+  .char-label { font-size: 12px; margin-bottom: 12px; }
+
+  /* Notes */
+  .notes-box { background: #fefce8; border: 1px solid #fde68a; border-radius: 6px; padding: 12px; margin-bottom: 12px; font-size: 13px; }
+  .notes-label { font-weight: 600; margin-bottom: 4px; color: #92400e; }
+  .notes-text { color: #78350f; line-height: 1.5; }
+
+  /* Warnings */
+  .warnings-box { background: #fff7ed; border: 1px solid #fed7aa; border-radius: 6px; padding: 12px; margin-bottom: 16px; font-size: 13px; }
+  .warnings-box.ok { background: #f0fdf4; border-color: #bbf7d0; }
+  .warnings-label { font-weight: 600; margin-bottom: 4px; color: #b45309; }
+  .warnings-box.ok .warnings-label { color: #15803d; }
+  .warnings-box ul { padding-left: 16px; color: #7c2d12; }
+  .warnings-box ul li { margin-top: 2px; }
+
+  /* Buttons */
+  .action-row { display: flex; gap: 10px; margin-top: 8px; }
+  .btn-approve { flex: 1; padding: 12px; border: none; border-radius: 6px; font-size: 14px; font-weight: 600; cursor: pointer; background: #15803d; color: #fff; transition: opacity 0.15s; }
+  .btn-approve:hover { opacity: 0.9; }
+  .btn-reject { flex: 1; padding: 12px; border: none; border-radius: 6px; font-size: 14px; font-weight: 600; cursor: pointer; background: #dc2626; color: #fff; transition: opacity 0.15s; }
+  .btn-reject:hover { opacity: 0.9; }
+
+  /* Result message */
+  .result-msg { display: none; padding: 12px; border-radius: 6px; text-align: center; font-weight: 600; font-size: 14px; margin-top: 12px; }
+  .result-msg.ok { background: #f0fdf4; color: #15803d; border: 1px solid #bbf7d0; }
+  .result-msg.err { background: #fef2f2; color: #dc2626; border: 1px solid #fecaca; }
+</style>
+</head>
+<body>
+<div class="container">
+
+  <div class="page-header">
+    <h1>Construct Gel — LinkedIn (week 28) <span class="status-badge">draft</span></h1>
+    <div class="meta">
+      Blick Group (company page) · text · Created 2026-07-06T00:00:00.000Z · 2 posts drafted
+    </div>
+  </div>
+
+  
+    <div class="warnings-box">
+      <div class="warnings-label">⚠️ Brand voice checks</div>
+      <ul><li>Post 1: Em/en dash in copy — banned by brand voice (auto-fixed to comma in preview)</li><li>Post 2: Em/en dash in copy — banned by brand voice (auto-fixed to comma in preview)</li></ul>
+    </div>
+
+  <div class="tabs">
+    <button class="tab-btn active" onclick="showTab(0)" id="tab-0">
+      Wednesday Educational
+    </button>
+    <button class="tab-btn " onclick="showTab(1)" id="tab-1">
+      Friday Product Spotlight
+    </button></div>
+
+  
+    <div class="tab-panel active" id="panel-0">
+      <!-- LinkedIn post card -->
+      <div class="li-card">
+        <div class="li-header">
+          <div class="li-avatar">BG</div>
+          <div class="li-meta">
+            <div class="li-name">Blick Group</div>
+            <div class="li-sub">Drilling Fluids · Australia &amp; New Zealand · Just now</div>
+          </div>
+          <div class="li-follow">+ Follow</div>
+        </div>
+        <div class="li-body">
+          <div class="li-hook">"API certified" isn't a marketing word. It's the difference between documented and theoretical.</div>
+          <div class="li-text">Any bentonite can claim it meets a spec on paper. Certified bentonite has to prove it, batch by batch, with a certificate of analysis you can actually check.<br><br>Uncertified material is the opposite: consistency you're told to assume, not consistency you can verify. And on a bentonite, inconsistency shows up in two places.<br><br>First, filtration control. A batch that runs off-spec on filtrate loss won't seal the bore wall properly, you get a weak filter cake, fluid loss into the formation, and a wall that wants to slough before the concrete goes in.<br><br>Second, sand content. Uncertified bentonite typically carries more inert material, clay that isn't doing any clay's job, plus grit that is doing damage. That sand doesn't build viscosity or hold cuttings. It just wears out your pumps, your shaker screens, and your seals, batch after batch.<br><br>Certification doesn't make the clay smarter. It makes the consistency provable, so what passed on the COA is what's actually going into your bore.</div>
+          <div class="li-cta">Are you checking the COA on every batch, or just on the first one?</div>
+          <div class="li-hashtags"><span style="color:#0a66c2">#HDD</span> <span style="color:#0a66c2">#DrillingFluids</span> <span style="color:#0a66c2">#BoreStability</span> <span style="color:#0a66c2">#TrenchlessTechnology</span></div>
+        </div>
+        <div class="li-footer">
+          <span>👍 Like</span><span>💬 Comment</span><span>🔁 Repost</span><span>📤 Send</span>
+        </div>
+      </div>
+
+      <!-- Char count bar -->
+      <div class="char-bar">
+        <div class="char-fill" style="width:40.5%; background:#0a66c2"></div>
+      </div>
+      <div class="char-label" style="color:#00000099">
+        1215 / 3,000 characters
+      </div>
+
+      
+
+      <!-- Approve/reject for this specific post -->
+      <div class="action-row">
+        <button class="btn-approve" onclick="approvePost(1, '2026-07-06-W28-v5', 'BlickVault/Channels/content/linkedin-2026-w28-construct-gel.md')">
+          ✓ Approve Post 1
+        </button>
+        <button class="btn-reject" onclick="rejectPost(1, '2026-07-06-W28-v5', 'BlickVault/Channels/content/linkedin-2026-w28-construct-gel.md')">
+          ✕ Reject Post 1
+        </button>
+      </div>
+    </div>
+    <div class="tab-panel " id="panel-1">
+      <!-- LinkedIn post card -->
+      <div class="li-card">
+        <div class="li-header">
+          <div class="li-avatar">BG</div>
+          <div class="li-meta">
+            <div class="li-name">Blick Group</div>
+            <div class="li-sub">Drilling Fluids · Australia &amp; New Zealand · Just now</div>
+          </div>
+          <div class="li-follow">+ Follow</div>
+        </div>
+        <div class="li-body">
+          <div class="li-hook">Built for the ground that wants to cave in before the concrete goes in.</div>
+          <div class="li-text">Construct Gel is Blick's construction-grade bentonite for bored piles, diaphragm walls, and foundation drilling in soft, saturated, or unstable ground, tested to ISO 13500 Clause 9 / API Spec 13A Section 9 on every batch, not just the first one off the line.<br><br>It holds the bore open on hydrostatic pressure and builds a filter cake fast enough to seal the wall before it sloughs. Across our last three COA-tested batches, filtrate volume came in at 14.6 ml every time (limit is 15 ml max), the kind of batch-to-batch consistency that keeps your fluid program predictable instead of a guessing game.<br><br>Dosed 14, 100 kg/m³ depending on ground conditions (30, 45 kg/m³ typical for well-conditioned water), and stocked in AU and NZ.</div>
+          <div class="li-cta">Specifying bentonite for an upcoming piling or diaphragm wall job? Talk to our technical team before you finalise the fluid program.</div>
+          <div class="li-hashtags"><span style="color:#0a66c2">#HDD</span> <span style="color:#0a66c2">#DrillingFluids</span> <span style="color:#0a66c2">#ConstructGel</span> <span style="color:#0a66c2">#BlickFluids</span> <span style="color:#0a66c2">#GeotechnicalDrilling</span><br><br>---<br>## Preview<br>&gt; This section shows what will be sent to LinkedIn. Review before approving.<br><br>**Target:** Blick Group [[company]] page<br>**Format:** text<br>**Character count:** 1296/3000 chars<br>**Preview URL:** https://blickgroup.github.io/designs/designs/linkedin/2026-07-06-W28-v5.html<br><br>To approve: change `status: draft` → `status: approved` in the frontmatter above.<br>To schedule: also set `publish_at: YYYY-MM-DDTHH:MM:SS+10:00`<br><br><br>---<br>## Generation Metadata<br>- Line: linkedin<br>- Research queries: 1<br>- Indexer context: 554 chars<br>- Memory context: 275 chars<br>- Generation time: 306.0s</div>
+        </div>
+        <div class="li-footer">
+          <span>👍 Like</span><span>💬 Comment</span><span>🔁 Repost</span><span>📤 Send</span>
+        </div>
+      </div>
+
+      <!-- Char count bar -->
+      <div class="char-bar">
+        <div class="char-fill" style="width:52.800000000000004%; background:#0a66c2"></div>
+      </div>
+      <div class="char-label" style="color:#00000099">
+        1584 / 3,000 characters
+      </div>
+
+      
+
+      <!-- Approve/reject for this specific post -->
+      <div class="action-row">
+        <button class="btn-approve" onclick="approvePost(2, '2026-07-06-W28-v5', 'BlickVault/Channels/content/linkedin-2026-w28-construct-gel.md')">
+          ✓ Approve Post 2
+        </button>
+        <button class="btn-reject" onclick="rejectPost(2, '2026-07-06-W28-v5', 'BlickVault/Channels/content/linkedin-2026-w28-construct-gel.md')">
+          ✕ Reject Post 2
+        </button>
+      </div>
+    </div>
+
+  <div class="result-msg" id="result-msg"></div>
+
+</div>
+
+<script>
+function showTab(i) {
+  document.querySelectorAll('.tab-btn').forEach((b,j) => b.classList.toggle('active', i===j));
+  document.querySelectorAll('.tab-panel').forEach((p,j) => p.classList.toggle('active', i===j));
+}
+
+async function approvePost(postNum, slug, draftPath) {
+  await sendAction('approve', postNum, slug, draftPath);
+}
+
+async function rejectPost(postNum, slug, draftPath) {
+  await sendAction('reject', postNum, slug, draftPath);
+}
+
+async function sendAction(action, postNum, slug, draftPath) {
+  const msg = document.getElementById('result-msg');
+  msg.className = 'result-msg';
+  msg.style.display = 'none';
+  try {
+    const res = await fetch('https://blick-n8n.fly.dev/webhook/linkedin-' + action, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ slug, postNum, draftPath, action })
+    });
+    if (res.ok) {
+      msg.textContent = action === 'approve'
+        ? '✓ Post ' + postNum + ' approved — n8n will publish on schedule'
+        : '✕ Post ' + postNum + ' rejected — runner will avoid this angle';
+      msg.className = 'result-msg ok';
+    } else {
+      throw new Error('HTTP ' + res.status);
+    }
+  } catch(e) {
+    msg.textContent = 'Could not reach n8n (' + e.message + '). Edit status manually in Obsidian.';
+    msg.className = 'result-msg err';
+  }
+  msg.style.display = 'block';
+}
+</script>
+</body>
+</html>
