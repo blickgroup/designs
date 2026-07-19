@@ -4,7 +4,7 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Nexus OS — Blick AI Operating System</title>
-<!-- Generated 2026-07-12 by nexus/scripts/generate-nexus-presentation.js -->
+<!-- Generated 2026-07-19 by nexus/scripts/generate-nexus-presentation.js -->
 <!-- Source data: nexus/launchd/ · ~/.claude/skills/ · nexus-vault.db -->
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -189,7 +189,7 @@ footer{padding:60px 0;border-top:1px solid var(--line);text-align:center}
     <p class="hero-sub">A continuously-running AI that compounds knowledge, monitors operations, surfaces intelligence, and heals itself — without being asked.</p>
     <div class="hero-stats">
       <div class="hero-stat">
-        <span class="hero-stat-num accent-cyan">60</span>
+        <span class="hero-stat-num accent-cyan">63</span>
         <span class="hero-stat-label">Scheduled Agents</span>
       </div>
       <div class="hero-stat">
@@ -205,11 +205,11 @@ footer{padding:60px 0;border-top:1px solid var(--line);text-align:center}
         <span class="hero-stat-label">Named Entities</span>
       </div>
       <div class="hero-stat">
-        <span class="hero-stat-num" style="color:var(--text);">46,281</span>
+        <span class="hero-stat-num" style="color:var(--text);">50,779</span>
         <span class="hero-stat-label">Graph Links</span>
       </div>
     </div>
-    <div class="generated-badge">Auto-generated 2026-07-12 from live sources</div>
+    <div class="generated-badge">Auto-generated 2026-07-19 from live sources</div>
   </div>
 </section>
 
@@ -222,7 +222,7 @@ footer{padding:60px 0;border-top:1px solid var(--line);text-align:center}
       <div class="layer-row"><div class="layer-label"><div class="layer-bar" style="background:var(--orange);"></div><div><div class="layer-num">L1</div><div class="layer-name">Human Interface</div></div></div><div class="layer-content"><span class="pill pill-orange">Obsidian (vault UI)</span><span class="pill pill-orange">Claude Code (dev shell)</span><span class="pill pill-orange">Daily Brief</span><span class="pill pill-orange">Hub-App / Compass</span><span class="pill pill-dim">MacBook → VNC / SMB</span><span class="pill pill-dim">Tailscale mesh</span></div></div>
       <div class="layer-row"><div class="layer-label"><div class="layer-bar" style="background:var(--purple);"></div><div><div class="layer-num">L2</div><div class="layer-name">AI Inference</div></div></div><div class="layer-content"><span class="pill pill-purple">Gemma 4 E4B — local fast</span><span class="pill pill-purple">Gemma 4 26B — local heavy</span><span class="pill pill-purple">Nomic embed-text</span><span class="pill pill-dim">Claude Sonnet / Opus — cloud</span><span class="pill pill-dim">XAI Grok — web-grounded</span><span class="pill pill-dim">Gemini 2.5 Pro — NotebookLM</span></div></div>
       <div class="layer-row"><div class="layer-label"><div class="layer-bar" style="background:var(--blue);"></div><div><div class="layer-num">L3</div><div class="layer-name">Intelligence Engine</div></div></div><div class="layer-content"><span class="pill pill-blue">Indexer</span><span class="pill pill-blue">Embedder</span><span class="pill pill-blue">Graph Builder</span><span class="pill pill-blue">Entity Extractor</span><span class="pill pill-blue">Autoresearch</span><span class="pill pill-blue">Brief Pipeline</span><span class="pill pill-blue">Vault Writeback</span><span class="pill pill-blue">Action Register</span><span class="pill pill-blue">Self-Healing (3-layer)</span></div></div>
-      <div class="layer-row"><div class="layer-label"><div class="layer-bar" style="background:var(--green);"></div><div><div class="layer-num">L4</div><div class="layer-name">Storage</div></div></div><div class="layer-content"><span class="pill pill-green">BlickVault (4921 notes)</span><span class="pill pill-green">nexus-vault.db (SQLite)</span><span class="pill pill-green">blick-memory.db</span><span class="pill pill-green">Session logs (JSONL)</span><span class="pill pill-dim">All on /Volumes/NewmanDrive/</span></div></div>
+      <div class="layer-row"><div class="layer-label"><div class="layer-bar" style="background:var(--green);"></div><div><div class="layer-num">L4</div><div class="layer-name">Storage</div></div></div><div class="layer-content"><span class="pill pill-green">BlickVault (5364 notes)</span><span class="pill pill-green">nexus-vault.db (SQLite)</span><span class="pill pill-green">blick-memory.db</span><span class="pill pill-green">Session logs (JSONL)</span><span class="pill pill-dim">All on /Volumes/NewmanDrive/</span></div></div>
       <div class="layer-row"><div class="layer-label"><div class="layer-bar" style="background:var(--cyan);"></div><div><div class="layer-num">L5</div><div class="layer-name">External</div></div></div><div class="layer-content"><span class="pill pill-cyan">Google Drive</span><span class="pill pill-cyan">BigQuery</span><span class="pill pill-cyan">Fly.io</span><span class="pill pill-cyan">GitHub</span><span class="pill pill-cyan">n8n (self-hosted)</span><span class="pill pill-cyan">Sentry</span><span class="pill pill-cyan">Brave · Firecrawl · XAI</span></div></div>
     </div>
   </div>
@@ -250,7 +250,7 @@ footer{padding:60px 0;border-top:1px solid var(--line);text-align:center}
   <div class="container fade-up">
     <div class="eyebrow">Layer 3 — Autonomy</div>
     <div class="section-divider"></div>
-    <h2 style="margin-bottom:16px;">60 agents.<br>Always running.</h2>
+    <h2 style="margin-bottom:16px;">63 agents.<br>Always running.</h2>
     <p style="max-width:560px;margin-bottom:48px;">Every agent is a <code>launchd</code> plist in <code>~/Library/LaunchAgents/</code>. They reload automatically at login. The source of truth lives in <code>nexus/launchd/</code> — installed via <code>install-launch-agents.sh</code>.</p>
     
     <div class="schedule-group">
@@ -636,7 +636,7 @@ footer{padding:60px 0;border-top:1px solid var(--line);text-align:center}
       <div class="bento-cell c5 r2"><div class="bento-accent-bar" style="background:var(--green);"></div><div class="bento-eyebrow">BlickVault — Source of Truth</div><div class="bento-title">Markdown. Human-readable. Always.</div><div class="bento-body" style="font-family:'SF Mono',monospace;font-size:11px;line-height:2;margin-top:12px;"><span style="color:var(--green);">Inbox/</span> <span style="color:var(--text3);">← autoresearch, raw capture</span><br><span style="color:var(--green);">Contacts/</span> <span style="color:var(--text3);">← companies/ · people/</span><br><span style="color:var(--green);">Products/</span> <span style="color:var(--text3);">← specs, rules, competitive</span><br><span style="color:var(--green);">Intelligence/</span> <span style="color:var(--text3);">← briefs, market intel</span><br><span style="color:var(--green);">Innovation/nexus/</span> <span style="color:var(--text3);">← architecture docs</span><br><span style="color:var(--green);">System/</span> <span style="color:var(--text3);">← sessions, register, tools</span><br><span style="color:var(--green);">Operations/</span> <span style="color:var(--text3);">← compliance, HR, H&S</span><br><span style="color:var(--green);">Private/originals/</span> <span style="color:var(--text3);">← nightly thinking capture</span><br><span style="color:var(--green);">Actions/</span> <span style="color:var(--text3);">← action register notes</span></div></div>
       <div class="bento-cell c7"><div class="bento-accent-bar" style="background:var(--blue);"></div><div class="bento-eyebrow">nexus-vault.db — SQLite · WAL mode · Disposable</div><div class="bento-title">The index. Rebuilt from markdown anytime.</div><div class="bento-body" style="margin-top:10px;display:flex;flex-wrap:wrap;gap:6px;"><span class="pill pill-green" style="font-size:11px;">documents</span><span class="pill pill-blue" style="font-size:11px;">documents_fts (FTS5/BM25)</span><span class="pill" style="font-size:11px;border-color:rgba(168,85,247,.3);color:var(--purple);background:rgba(168,85,247,.06);">documents_vec_768 (768-dim)</span><span class="pill pill-green" style="font-size:11px;">document_links (graph)</span><span class="pill pill-green" style="font-size:11px;">document_entities</span><span class="pill pill-green" style="font-size:11px;">action_register</span><span class="pill pill-green" style="font-size:11px;">writeback_log</span><span class="pill pill-green" style="font-size:11px;">writeback_review</span></div></div>
       <div class="bento-cell c4"><div class="bento-eyebrow">Trust Hierarchy</div><div class="bento-title">Source quality shapes search.</div><div style="margin-top:16px;"><div class="trust-row" style="padding:10px 0;"><div class="trust-level" style="color:var(--green);">curated</div><div class="trust-bar-wrap"><div class="trust-bar-fill" style="width:90%;background:var(--green);"></div></div><div class="trust-boost" style="color:var(--green);">1.3×</div></div><div class="trust-row" style="padding:10px 0;"><div class="trust-level" style="color:var(--blue);">compiled</div><div class="trust-bar-wrap"><div class="trust-bar-fill" style="width:65%;background:var(--blue);"></div></div><div class="trust-boost" style="color:var(--blue);">1.0×</div></div><div class="trust-row" style="padding:10px 0;border-bottom:none;"><div class="trust-level" style="color:var(--text3);">raw</div><div class="trust-bar-wrap"><div class="trust-bar-fill" style="width:35%;background:var(--text3);"></div></div><div class="trust-boost" style="color:var(--text3);">0.8×</div></div></div></div>
-      <div class="bento-cell c3"><div class="bento-eyebrow">Entity Scale</div><div class="bento-num accent-cyan">2,601</div><div class="bento-body">named entities · 46,281 resolved graph links</div></div>
+      <div class="bento-cell c3"><div class="bento-eyebrow">Entity Scale</div><div class="bento-num accent-cyan">2,601</div><div class="bento-body">named entities · 50,779 resolved graph links</div></div>
     </div>
     <div class="storage-grid">
       <div class="db-card"><div class="db-header"><div class="db-name">blick-memory.db</div><span class="db-badge dbb-table">SQLite</span></div><div class="db-desc">Structured business data: contacts, products, intel, opportunities. Stable business records separate from the document graph.</div></div>
@@ -824,7 +824,7 @@ footer{padding:60px 0;border-top:1px solid var(--line);text-align:center}
           <div class="tnode-tags">
             <span class="ttag" style="color:var(--orange);border-color:rgba(255,107,53,0.25)">Nexus Engine</span>
             <span class="ttag">4 MCP servers</span>
-            <span class="ttag">60 launchd agents</span>
+            <span class="ttag">63 launchd agents</span>
             <span class="ttag">3 Ollama models</span>
             <span class="ttag">BlickVault host</span>
             <span class="ttag">/Volumes/NewmanDrive/</span>
@@ -870,7 +870,7 @@ footer{padding:60px 0;border-top:1px solid var(--line);text-align:center}
           <div class="tnode-name">launchd</div>
           <div class="tnode-type">macOS scheduler</div>
           <div class="tnode-tags">
-            <span class="ttag">60 agents</span>
+            <span class="ttag">63 agents</span>
             <span class="ttag">brief pipeline</span>
             <span class="ttag">health checks</span>
             <span class="ttag">self-healing</span>
@@ -1067,7 +1067,7 @@ footer{padding:60px 0;border-top:1px solid var(--line);text-align:center}
     <div class="section-divider"></div>
     <h2 style="margin-bottom:48px;">Where things run.</h2>
     <div class="infra-grid" style="margin-bottom:40px;">
-      <div class="infra-card" style="border-color:rgba(255,107,53,.2);"><div class="infra-icon" style="background:rgba(255,107,53,.1);">🧠</div><div class="infra-host">Always On</div><div class="infra-name">Mac Mini "developer"</div><div class="infra-desc">Primary brain. All Nexus intelligence, scheduling, MCP servers, LLMs. <code>/Volumes/NewmanDrive/</code> — all project data here. 60 launchd agents. 3 Ollama models.</div></div>
+      <div class="infra-card" style="border-color:rgba(255,107,53,.2);"><div class="infra-icon" style="background:rgba(255,107,53,.1);">🧠</div><div class="infra-host">Always On</div><div class="infra-name">Mac Mini "developer"</div><div class="infra-desc">Primary brain. All Nexus intelligence, scheduling, MCP servers, LLMs. <code>/Volumes/NewmanDrive/</code> — all project data here. 63 launchd agents. 3 Ollama models.</div></div>
       <div class="infra-card"><div class="infra-icon" style="background:rgba(255,255,255,.04);">💻</div><div class="infra-host">Mobile Client</div><div class="infra-name">MacBook</div><div class="infra-desc">Thin client only. Obsidian → vault via <code>smb://dev-mac-mini/BlickVault</code>. VNC → developer. Tailscale mesh. No compute on MacBook.</div></div>
     </div>
     <div class="callout callout-warn" style="margin-bottom:20px;"><strong>Production-first.</strong> No permanent dev environment. Branch from main → PR to main → <code>infrastructure/scripts/deploy-production.sh &lt;service&gt;</code>. Never push directly. Never force-push.</div>
@@ -1097,7 +1097,7 @@ footer{padding:60px 0;border-top:1px solid var(--line);text-align:center}
 <footer>
   <div class="container">
     <div class="footer-brand">Blick <span>Group</span></div>
-    <div class="footer-sub">Nexus OS · Internal Reference · Auto-generated 2026-07-12 · blick.group</div>
+    <div class="footer-sub">Nexus OS · Internal Reference · Auto-generated 2026-07-19 · blick.group</div>
   </div>
 </footer>
 
