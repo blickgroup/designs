@@ -6,240 +6,122 @@
   <title>Blick: A Natural History — Episode 1, Into the Unknown</title>
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-  <link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,600;0,9..144,800;1,9..144,500&family=Source+Sans+3:ital,wght@0,400;0,600;0,700;0,800;1,400&display=swap" rel="stylesheet" />
+  <link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,600;0,9..144,800;1,9..144,500&family=Source+Sans+3:ital,wght@0,400;0,600;0,700;0,800&display=swap" rel="stylesheet" />
   <style>
     :root {
       --orange: #f05323;
-      --ink: #1a1612;
-      --muted: #5a534c;
-      --paper: #f3eee4;
-      --card: #fffaf2;
-      --rule: #1a1612;
+      --ink: #161310;
+      --paper: #f4eee3;
+      --card: #fffdf8;
     }
     * { box-sizing: border-box; margin: 0; padding: 0; }
-    html, body { background: #d9d0c2; color: var(--ink); }
-    body {
-      font-family: "Source Sans 3", sans-serif;
-      padding: 18px 18px 40px;
-    }
+    html, body { background: #cfc4b3; color: var(--ink); }
+    body { font-family: "Source Sans 3", sans-serif; padding: 16px 16px 36px; }
     .page {
-      max-width: 1480px;
+      max-width: 1520px;
       margin: 0 auto;
       background: var(--paper);
       border: 3px solid var(--ink);
-      padding: 18px 18px 14px;
-      box-shadow: 0 18px 40px rgba(0,0,0,.18);
-    }
-    .kicker {
-      font-size: 11px;
-      letter-spacing: .22em;
-      text-transform: uppercase;
-      font-weight: 800;
-      color: var(--orange);
+      padding: 14px;
     }
     header.mast {
       display: grid;
-      grid-template-columns: 150px 1.15fr 1.05fr 210px;
-      gap: 14px;
-      align-items: stretch;
-      padding-bottom: 14px;
+      grid-template-columns: 138px 1.2fr 1fr 200px;
+      gap: 12px;
+      margin-bottom: 12px;
+      padding-bottom: 12px;
       border-bottom: 3px solid var(--ink);
-      margin-bottom: 14px;
     }
-    .narrator {
-      width: 100%;
-      height: 100%;
-      object-fit: cover;
-      border: 2px solid var(--ink);
-    }
-    h1 {
-      font-family: Fraunces, serif;
-      font-weight: 800;
-      font-size: clamp(28px, 3.4vw, 48px);
-      line-height: .95;
-      letter-spacing: -.02em;
-    }
-    h1 span { display: block; color: var(--orange); font-size: .42em; letter-spacing: .18em; font-weight: 800; margin-bottom: .35em; }
-    .intro {
-      font-family: Fraunces, serif;
-      font-style: italic;
-      font-size: 15.5px;
-      line-height: 1.35;
-      max-width: 36em;
-      margin-top: 8px;
-    }
-    .head-map {
-      width: 100%;
-      height: 100%;
-      object-fit: cover;
-      border: 2px solid var(--ink);
-    }
-    .badge {
-      background: var(--ink);
-      color: var(--paper);
-      padding: 14px 14px 12px;
-      display: flex;
-      flex-direction: column;
-      justify-content: space-between;
-    }
-    .badge strong { font-size: 13px; letter-spacing: .14em; text-transform: uppercase; color: #ffb39a; }
-    .badge p { font-family: Fraunces, serif; font-size: 22px; line-height: 1.05; font-weight: 800; }
-    .grid {
-      display: grid;
-      grid-template-columns: 1fr 1fr 1fr;
-      gap: 12px;
-    }
-    .panel {
-      background: var(--card);
-      border: 2.5px solid var(--ink);
-      display: flex;
-      flex-direction: column;
-      min-height: 0;
-    }
+    .narrator { width: 100%; height: 168px; object-fit: cover; object-position: top; border: 2px solid var(--ink); }
+    .kicker { font-size: 11px; letter-spacing: .2em; text-transform: uppercase; font-weight: 800; color: var(--orange); }
+    h1 { font-family: Fraunces, serif; font-weight: 800; font-size: clamp(28px, 3.3vw, 46px); line-height: .92; }
+    h1 small { display: block; color: var(--orange); font-size: .4em; letter-spacing: .16em; margin-bottom: .3em; }
+    .intro { font-family: Fraunces, serif; font-style: italic; font-size: 15px; line-height: 1.32; margin-top: 8px; }
+    .head-map { width: 100%; height: 168px; object-fit: cover; border: 2px solid var(--ink); }
+    .badge { background: var(--ink); color: var(--paper); padding: 12px; display: flex; flex-direction: column; justify-content: space-between; }
+    .badge strong { font-size: 11px; letter-spacing: .14em; text-transform: uppercase; color: #ffb39a; }
+    .badge p { font-family: Fraunces, serif; font-size: 22px; font-weight: 800; line-height: 1.05; }
+    .grid { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 10px; }
+    .panel { background: var(--card); border: 2.5px solid var(--ink); display: flex; flex-direction: column; }
     .panel-head {
-      display: flex;
-      align-items: baseline;
-      gap: 8px;
-      padding: 8px 10px 6px;
-      border-bottom: 2px solid var(--ink);
+      display: flex; gap: 8px; align-items: baseline;
+      padding: 6px 9px 5px; border-bottom: 2px solid var(--ink); background: #fff;
     }
-    .num {
-      font-family: Fraunces, serif;
-      font-weight: 800;
-      font-size: 22px;
-      color: var(--orange);
-      line-height: 1;
-    }
-    .panel-head h2 {
-      font-size: 13.5px;
-      letter-spacing: .04em;
-      text-transform: uppercase;
-      font-weight: 800;
-    }
-    .shot {
-      position: relative;
-      height: 210px;
-      overflow: hidden;
-      border-bottom: 2px solid var(--ink);
-    }
-    .shot img {
-      width: 100%;
-      height: 100%;
-      object-fit: cover;
-      object-position: center;
-    }
+    .num { font-family: Fraunces, serif; font-weight: 800; color: var(--orange); font-size: 20px; }
+    .panel-head h2 { font-size: 12.5px; letter-spacing: .05em; text-transform: uppercase; font-weight: 800; }
+    .shot { position: relative; height: 268px; overflow: hidden; }
+    .shot img { width: 100%; height: 100%; object-fit: cover; display: block; }
     .bubble {
-      position: absolute;
-      left: 10px;
-      top: 10px;
-      max-width: 72%;
-      background: #fff;
+      position: absolute; z-index: 3;
+      background: #fff; border: 2px solid var(--ink);
+      border-radius: 18px 18px 18px 5px;
+      padding: 7px 11px; max-width: 70%;
+      font-family: Fraunces, serif; font-style: italic; font-size: 14px; line-height: 1.2;
+      box-shadow: 2px 2px 0 rgba(0,0,0,.2);
+    }
+    .tag {
+      position: absolute; z-index: 3;
+      background: #fffce8; color: var(--ink);
       border: 2px solid var(--ink);
-      border-radius: 16px 16px 16px 4px;
-      padding: 6px 10px;
-      font-family: Fraunces, serif;
-      font-style: italic;
-      font-size: 13.5px;
-      line-height: 1.2;
-      box-shadow: 2px 2px 0 rgba(0,0,0,.15);
+      padding: 3px 7px;
+      font-size: 11px; font-weight: 800; letter-spacing: .03em; text-transform: uppercase;
+      line-height: 1.15; white-space: nowrap;
+      box-shadow: 2px 2px 0 rgba(0,0,0,.18);
     }
-    .body { padding: 9px 10px 10px; }
-    .impl {
-      display: flex;
-      flex-wrap: wrap;
-      gap: 5px;
-      margin-bottom: 8px;
+    .tag.done { background: var(--orange); color: #fff; border-color: #9a2e12; }
+    .tag.part { background: #f6d56b; }
+    .tag.next { background: #fff; }
+    .sign {
+      position: absolute; z-index: 3; text-align: center;
+      font-weight: 800; letter-spacing: .04em; text-transform: uppercase;
+      line-height: 1.1; color: #1a1612;
+      text-shadow: 0 1px 0 rgba(255,255,255,.35);
     }
-    .chip {
-      font-size: 11px;
-      font-weight: 700;
-      letter-spacing: .02em;
-      border: 1.5px solid var(--ink);
-      padding: 2px 7px;
-      background: #fff;
+    .caption {
+      padding: 8px 10px 9px;
+      font-size: 13.4px; line-height: 1.32;
+      border-top: 2px solid var(--ink);
+      background: #fffaf0;
     }
-    .chip.on { background: var(--orange); color: #fff; border-color: var(--orange); }
-    .chip.part { background: #f3e2a1; }
-    .chip.next { background: #fff; border-style: dashed; color: var(--ink); }
-    .body p {
-      font-size: 13.2px;
-      line-height: 1.35;
-      color: var(--ink);
-    }
+    .caption b { font-weight: 800; }
     footer.tail {
-      margin-top: 12px;
-      display: grid;
-      grid-template-columns: 1.1fr 1.4fr .9fr;
-      gap: 12px;
-      border-top: 3px solid var(--ink);
-      padding-top: 12px;
-      align-items: stretch;
+      margin-top: 10px; padding-top: 10px; border-top: 3px solid var(--ink);
+      display: grid; grid-template-columns: 1.05fr 1.35fr .9fr; gap: 10px;
     }
-    .close {
-      font-family: Fraunces, serif;
-      font-size: 16px;
-      line-height: 1.35;
-    }
-    .close em { color: var(--orange); font-style: italic; }
-    .continued {
-      position: relative;
-      border: 2px solid var(--ink);
-      overflow: hidden;
-      min-height: 150px;
-    }
+    .close { font-family: Fraunces, serif; font-size: 16px; line-height: 1.35; }
+    .close em { color: var(--orange); }
+    .continued { position: relative; border: 2px solid var(--ink); min-height: 148px; overflow: hidden; }
     .continued img { width: 100%; height: 100%; object-fit: cover; display: block; }
     .continued span {
-      position: absolute;
-      left: 10px; bottom: 8px;
-      font-family: Fraunces, serif;
-      font-weight: 800;
-      letter-spacing: .12em;
-      font-size: 15px;
-      color: #fff;
-      text-shadow: 0 1px 6px #000;
+      position: absolute; left: 10px; bottom: 8px;
+      font-family: Fraunces, serif; font-weight: 800; letter-spacing: .1em;
+      color: #fff; text-shadow: 0 1px 8px #000; font-size: 16px;
     }
-    .sept {
-      background: var(--ink);
-      color: var(--paper);
-      padding: 12px 14px;
-    }
-    .sept strong {
-      display: block;
-      color: var(--orange);
-      letter-spacing: .16em;
-      font-size: 11px;
-      margin-bottom: 8px;
-    }
+    .sept { background: var(--ink); color: var(--paper); padding: 12px 14px; }
+    .sept strong { display: block; color: var(--orange); letter-spacing: .16em; font-size: 11px; margin-bottom: 6px; text-transform: uppercase; }
     .sept li { list-style: none; font-size: 13.5px; line-height: 1.45; }
     .sept li:before { content: "→ "; color: var(--orange); }
     .brandline {
-      margin-top: 10px;
-      display: flex;
-      justify-content: space-between;
-      align-items: baseline;
-      font-size: 12px;
-      letter-spacing: .16em;
-      text-transform: uppercase;
-      font-weight: 800;
+      margin-top: 8px; display: flex; justify-content: space-between;
+      font-size: 12px; letter-spacing: .14em; text-transform: uppercase; font-weight: 800;
     }
     .brandline b { color: var(--orange); font-size: 18px; letter-spacing: .04em; }
     @media (max-width: 980px) {
       header.mast, .grid, footer.tail { grid-template-columns: 1fr; }
-      .shot { height: 240px; }
-      .narrator { height: 220px; object-position: top; }
+      .shot { height: 300px; }
     }
   </style>
 </head>
 <body>
   <article class="page">
     <header class="mast">
-      <img class="narrator" src="assets/narrator.jpg" alt="A field narrator in a hard hat" />
+      <img class="narrator" src="assets/narrator.jpg" alt="" />
       <div>
         <div class="kicker">Episode 1 — Into the unknown</div>
-        <h1><span>Blick</span>A Natural History</h1>
-        <p class="intro">Across the vast lands of Australia and New Zealand lives a remarkable species — the Blick team. Adaptive. Determined. And, until this quarter, occasionally found in five different versions of the same fact.</p>
+        <h1><small>Blick</small>A Natural History</h1>
+        <p class="intro">A two-country company, working off five versions of the truth, set out to see its own range. This is the quarter the habitats were mapped — and the first real picture was drawn.</p>
       </div>
-      <img class="head-map" src="assets/header-map.jpg" alt="Australia and New Zealand bound by one orange path" />
+      <img class="head-map" src="assets/header-map.jpg" alt="Australia and New Zealand bound by one path" />
       <div class="badge">
         <strong>Same team. Bigger horizons.</strong>
         <p>Quarter 3<br>The foundations</p>
@@ -251,110 +133,87 @@
       <article class="panel">
         <div class="panel-head"><span class="num">1</span><h2>Five places to find the same thing</h2></div>
         <div class="shot">
-          <img src="assets/p1-habitats.jpg" alt="Five messy habitats of company information" />
-          <p class="bubble">Which one is the real number?</p>
+          <img src="assets/p1-habitats.jpg" alt="" />
+          <p class="bubble" style="left:8%;top:6%">Which one is the real number?</p>
+          <span class="tag" style="left:3%;top:38%">SharePoint</span>
+          <span class="tag" style="left:28%;top:78%">The dump</span>
+          <span class="tag" style="left:62%;top:8%">OneDrive</span>
+          <span class="tag" style="left:22%;top:18%">Spreadsheets</span>
+          <span class="tag" style="left:68%;top:78%">Someone’s laptop</span>
         </div>
-        <div class="body">
-          <div class="impl">
-            <span class="chip">SharePoint</span>
-            <span class="chip">The dump</span>
-            <span class="chip">OneDrive</span>
-            <span class="chip">Spreadsheets</span>
-            <span class="chip">Someone’s laptop</span>
-          </div>
-          <p>For years, information lived in five disconnected habitats. Each believed it was the truth. A split team could not see what the other shore was doing.</p>
-        </div>
+        <p class="caption">For years the facts lived in five disconnected habitats. Each believed it was the truth. A split team could not see what the other shore was doing.</p>
       </article>
 
       <article class="panel">
         <div class="panel-head"><span class="num">2</span><h2>Enter the single source</h2></div>
         <div class="shot">
-          <img src="assets/p2-front-door.jpg" alt="One front door onto Australia and New Zealand as a single picture" />
-          <p class="bubble">At last… we can see it all at once.</p>
+          <img src="assets/p2-front-door.jpg" alt="" />
+          <p class="bubble" style="left:6%;top:6%">At last — we can see it all at once.</p>
+          <span class="tag done" style="left:4%;top:58%">The front door</span>
+          <span class="tag done" style="left:4%;top:70%">Watercooler</span>
+          <span class="tag done" style="left:4%;top:82%">Data layer</span>
+          <span class="tag done" style="right:4%;top:8%">Access control</span>
+          <span class="tag done" style="right:4%;bottom:8%">AU + NZ live view</span>
         </div>
-        <div class="body">
-          <div class="impl">
-            <span class="chip on">Watercooler</span>
-            <span class="chip on">Data layer</span>
-            <span class="chip on">Access control</span>
-            <span class="chip on">AU + NZ live view</span>
-          </div>
-          <p>One live feed of safety, product issues, follow-ups and ideas. One safe front door into information that used to sit in five places. Clean, audited control of who can see and do what. <strong>Delivered this quarter.</strong></p>
-        </div>
+        <p class="caption">One live feed of safety, product issues, follow-ups and ideas. One door into what used to sit in five places. Who can see and do what is now audited. <b>Delivered this quarter.</b></p>
       </article>
 
       <article class="panel">
         <div class="panel-head"><span class="num">3</span><h2>The trials of trust</h2></div>
         <div class="shot">
-          <img src="assets/p3-trust.jpg" alt="Lab testing a proven field reading" />
-          <p class="bubble">Not a guess. A proven result.</p>
+          <img src="assets/p3-trust.jpg" alt="" />
+          <p class="bubble" style="left:6%;top:6%">Not a guess. A proven result.</p>
+          <span class="tag done" style="left:4%;top:18%">Security hardening</span>
+          <span class="tag done" style="right:4%;top:58%">SENXIN rheometer</span>
+          <span class="tag part" style="left:6%;bottom:10%">Autoresearch + intel</span>
+          <span class="tag part" style="right:4%;bottom:10%">Fluid-testing programmes</span>
         </div>
-        <div class="body">
-          <div class="impl">
-            <span class="chip on">Security hardening</span>
-            <span class="chip part">Autoresearch + intel</span>
-            <span class="chip on">SENXIN rheometer</span>
-            <span class="chip part">Fluid-testing programmes</span>
-          </div>
-          <p>As we grow, data, research and lab results have to be dependable — not luck. Staff logins protected. Research that stops repeating itself. Field instrument proven fit for the field. <strong>Part delivered. More landing in September.</strong></p>
-        </div>
+        <p class="caption">As we grow, data, research and lab results have to be dependable — not luck. Logins protected. Research that stops repeating itself. The field instrument proven fit for the job. <b>Part delivered. More in September.</b></p>
       </article>
 
       <article class="panel">
         <div class="panel-head"><span class="num">4</span><h2>Mapping the unknown</h2></div>
         <div class="shot">
-          <img src="assets/p4-map.jpg" alt="Bentonite range map with a new northern torch" />
-          <p class="bubble">Now we can see the bigger picture.</p>
+          <img src="assets/p4-map.jpg" alt="" />
+          <p class="bubble" style="left:6%;top:6%;max-width:48%">Now we can see the bigger picture.</p>
+          <span class="tag done" style="left:34%;top:22%">Viadux · new channel north</span>
+          <span class="tag part" style="left:6%;top:42%">Bentonite range<br>by market, region, state</span>
+          <span class="tag done" style="right:4%;top:42%">Website tracking<br>AU vs NZ</span>
+          <span class="tag part" style="left:8%;bottom:8%">Gaps marked — draft</span>
         </div>
-        <div class="body">
-          <div class="impl">
-            <span class="chip part">Bentonite map — market, region, state</span>
-            <span class="chip on">Website tracking AU vs NZ</span>
-            <span class="chip on">Viadux · Northern Territory</span>
-          </div>
-          <p>A first shared map of the bentonite range, with the gaps marked. We can see who is walking up to us online. A new live channel into the Territory. <strong>Draft laid. Deeper range and competitor work lands in September.</strong></p>
-        </div>
+        <p class="caption">A first shared map of the bentonite range, with the gaps marked. We can see who is engaging online, Australia versus New Zealand. A live channel into the Territory. <b>Draft laid. Deeper range and competitor work lands in September.</b></p>
       </article>
 
       <article class="panel">
         <div class="panel-head"><span class="num">5</span><h2>A stronger supply line</h2></div>
         <div class="shot">
-          <img src="assets/p5-supply.jpg" alt="Warehouse stock being read on a tablet, two supply trucks" />
-          <p class="bubble">A bit more weight… but a lot less risk.</p>
+          <img src="assets/p5-supply.jpg" alt="" />
+          <p class="bubble" style="left:6%;top:6%">A bit more weight… a lot less risk.</p>
+          <span class="tag part" style="left:4%;bottom:10%">AI reading NZ stock</span>
+          <span class="tag part" style="left:38%;top:38%">Perth 3PL</span>
+          <span class="tag part" style="right:4%;top:28%">Backup sand + rods</span>
+          <span class="tag next" style="right:4%;bottom:10%">HDD tooling · reamers · carry foam · HDD Gel 2</span>
         </div>
-        <div class="body">
-          <div class="impl">
-            <span class="chip part">AI reading NZ stock</span>
-            <span class="chip part">Tidier warehousing</span>
-            <span class="chip part">Perth 3PL</span>
-            <span class="chip part">Backup sand + rods</span>
-            <span class="chip next">HDD tooling · reamers · carry foam · HDD Gel 2</span>
-          </div>
-          <p>The right products in the right place, and never one supplier between us and the job. <strong>Mostly landing in the final cycle — this is the loaded September room.</strong></p>
-        </div>
+        <p class="caption">The right products in the right place, and never one supplier between us and the job. Tidier warehousing. A broader, properly-tested range still loading. <b>Mostly the September room.</b></p>
       </article>
 
       <article class="panel">
         <div class="panel-head"><span class="num">6</span><h2>Back in the wild</h2></div>
         <div class="shot">
-          <img src="assets/p6-wild.jpg" alt="The road splitting toward Adelaide and Auckland" />
-          <p class="bubble">Good to be back out there.</p>
+          <img src="assets/p6-wild.jpg" alt="" />
+          <p class="bubble" style="left:28%;top:6%">Good to be back out there.</p>
+          <span class="tag next" style="left:4%;top:46%">DrillFest · Adelaide</span>
+          <span class="tag next" style="right:3%;top:50%">International No-Dig · Auckland</span>
         </div>
-        <div class="body">
-          <div class="impl">
-            <span class="chip next">DrillFest · Adelaide</span>
-            <span class="chip next">International No-Dig · Auckland</span>
-          </div>
-          <p>Maps don’t sell. Presence does. Two industry gatherings are lined up. <strong>Coming up next cycle — the road, not a fifth equal labour.</strong></p>
-        </div>
+        <p class="caption">Maps don’t sell. Presence does. Two industry gatherings are lined up on the horizon. <b>Coming next cycle — the road, not a fifth equal labour.</b></p>
       </article>
 
     </section>
 
     <footer class="tail">
-      <p class="close">This quarter wasn’t the end. It was the preparation. Three of the five major areas are already real. The market picture and the stock work land in September. <em>And that’s when the real adventure begins.</em></p>
+      <p class="close">This quarter wasn’t the end. It was the preparation. Three of the five major areas are already real. The market picture and the stock work land in September. <em>That’s when the real adventure begins.</em></p>
       <div class="continued">
-        <img src="assets/continued.jpg" alt="The team walking toward the next horizon" />
+        <img src="assets/continued.jpg" alt="" />
         <span>To be continued…</span>
       </div>
       <div class="sept">
