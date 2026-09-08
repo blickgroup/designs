@@ -1,0 +1,355 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Contact — Warehouse Addresses (Mockup v2)</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
+  <style>
+    /* ── Brand tokens (mirrored from src/styles/brand.css) ───────── */
+    :root {
+      --orange: #f05323;
+      --orange-light: #f47550;
+      --black: #1A1A1A;
+      --charcoal: #2D2D2D;
+      --grey-dark: #58595b;
+      --grey-mid: #A9A9A9;
+      --grey-light: #bcbec0;
+      --off-white: #FAFAFA;
+      --white: #FFFFFF;
+      --font: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+      --ease-smooth: cubic-bezier(0.16, 1, 0.3, 1);
+      --duration-fast: 0.3s;
+      --duration-normal: 0.4s;
+      --radius-sm: 12px;
+      --radius-xl: 24px;
+      --radius-pill: 100px;
+      --shadow-sm: 0 8px 24px rgba(0, 0, 0, 0.06);
+      --shadow-md: 0 16px 48px rgba(0, 0, 0, 0.06);
+      --shadow-orange: 0 4px 24px rgba(240, 83, 35, 0.25);
+    }
+
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    body { font-family: var(--font); color: var(--charcoal); background: var(--white); -webkit-font-smoothing: antialiased; }
+    .container { max-width: 1200px; margin: 0 auto; padding: 0 32px; }
+    a { color: inherit; }
+
+    .section-tag {
+      display: inline-block; font-size: 0.72rem; font-weight: 600;
+      letter-spacing: 0.14em; text-transform: uppercase; color: var(--orange);
+      margin-bottom: 16px;
+    }
+    .accent { color: var(--orange); }
+
+    /* ── Mockup helper banner (not part of real page) ───────────── */
+    .mockNote {
+      background: #fff7f4; border-bottom: 1px solid rgba(240,83,35,.2);
+      color: var(--charcoal); font-size: 0.85rem; line-height: 1.5;
+      padding: 12px 32px; text-align: center;
+    }
+    .mockNote strong { color: var(--orange); }
+
+    /* ── Hero ───────────────────────────────────────────────────── */
+    .hero { padding: 120px 0 80px; position: relative; overflow: hidden; }
+    .heroBg { position: absolute; inset: 0; z-index: 0; pointer-events: none; }
+    .geo { position: absolute; border-radius: 50%; opacity: 0.06; background: var(--orange); }
+    .geo1 { width: 500px; height: 500px; top: -180px; right: -120px; }
+    .geo2 { width: 280px; height: 280px; bottom: -80px; left: -60px; opacity: 0.04; }
+    .heroContent { position: relative; z-index: 1; max-width: 720px; }
+    .heroContent h1 {
+      font-size: clamp(2.8rem, 5.5vw, 4.2rem); font-weight: 800; line-height: 1.05;
+      letter-spacing: -0.03em; color: var(--black); margin-bottom: 24px;
+    }
+    .heroContent > p { font-size: 1.12rem; line-height: 1.8; color: var(--grey-dark); max-width: 560px; }
+
+    /* ── Contact grid (form + info column) ──────────────────────── */
+    .contactSection { padding: 0 0 100px; }
+    .contactGrid { display: grid; grid-template-columns: 1.1fr 0.9fr; gap: 64px; align-items: start; }
+
+    /* Form placeholder (skeleton only — real page renders ContactForm) */
+    .formCard {
+      background: var(--white); border: 1px solid var(--grey-light);
+      border-radius: var(--radius-xl); padding: 56px 48px; position: relative; overflow: hidden;
+      box-shadow: var(--shadow-sm);
+    }
+    .formCard::before { content: ''; position: absolute; top: 0; left: 0; right: 0; height: 3px; background: linear-gradient(90deg, var(--orange), var(--orange-light)); }
+    .formTitle { font-size: 1.5rem; font-weight: 800; color: var(--black); letter-spacing: -0.02em; margin-bottom: 8px; }
+    .formSubtitle { font-size: 0.95rem; color: var(--grey-dark); line-height: 1.7; margin-bottom: 32px; }
+    .skel { background: var(--off-white); border: 1.5px solid var(--grey-light); border-radius: var(--radius-sm); height: 48px; margin-bottom: 18px; }
+    .skel.tall { height: 120px; }
+    .skel.btn { width: 180px; height: 54px; background: var(--orange); border: none; border-radius: var(--radius-pill); }
+
+    .infoColumn { display: flex; flex-direction: column; gap: 24px; position: sticky; top: 40px; }
+    .infoCard {
+      background: var(--white); border: 1px solid var(--grey-light); border-radius: var(--radius-xl);
+      padding: 36px 32px; transition: all var(--duration-normal) var(--ease-smooth); position: relative; overflow: hidden;
+    }
+    .infoCard::before { content: ''; position: absolute; top: 0; left: 0; width: 3px; height: 0; background: var(--orange); border-radius: 0 2px 2px 0; transition: height var(--duration-normal) var(--ease-smooth); }
+    .infoCard:hover { transform: translateY(-4px); box-shadow: var(--shadow-md); border-color: rgba(240,83,35,.12); }
+    .infoCard:hover::before { height: 100%; }
+    .infoCardHeader { display: flex; align-items: center; gap: 14px; margin-bottom: 20px; }
+    .infoCardIcon { width: 48px; height: 48px; border-radius: 14px; background: rgba(240,83,35,.06); display: flex; align-items: center; justify-content: center; flex-shrink: 0; }
+    .infoCardIcon svg { width: 22px; height: 22px; stroke: var(--orange); fill: none; stroke-width: 1.5; stroke-linecap: round; stroke-linejoin: round; }
+    .infoCardLabel { font-size: 0.72rem; font-weight: 600; letter-spacing: 0.12em; text-transform: uppercase; color: var(--grey-mid); margin-bottom: 2px; }
+    .infoCardTitle { font-size: 1.1rem; font-weight: 700; color: var(--black); letter-spacing: -0.01em; }
+    .infoCardBody { display: flex; flex-direction: column; gap: 10px; padding-left: 62px; }
+    .infoDetail { display: flex; align-items: flex-start; gap: 10px; font-size: 0.95rem; color: var(--grey-dark); line-height: 1.6; }
+    .infoDetail svg { width: 16px; height: 16px; stroke: var(--orange); fill: none; stroke-width: 1.5; stroke-linecap: round; stroke-linejoin: round; flex-shrink: 0; margin-top: 3px; }
+    .infoDetailLink { color: var(--charcoal); text-decoration: none; font-weight: 500; transition: color var(--duration-fast); }
+    .infoDetailLink:hover { color: var(--orange); }
+
+    .emailCard { background: linear-gradient(135deg, var(--black) 0%, var(--charcoal) 100%); border-color: transparent; color: var(--white); }
+    .emailCard .infoCardLabel { color: rgba(255,255,255,.6); }
+    .emailCard .infoCardTitle { color: var(--white); }
+    .emailCard .infoCardIcon { background: rgba(240,83,35,.15); }
+    .emailCard .infoDetail { color: rgba(255,255,255,.6); }
+    .emailCard .infoDetailLink { color: var(--white); font-size: 1.1rem; font-weight: 600; }
+
+    /* ── NEW: Our Locations section ─────────────────────────────── */
+    .locations { padding: 100px 0 130px; background: var(--off-white); position: relative; }
+    .locationsHead { text-align: center; max-width: 620px; margin: 0 auto 16px; }
+    .locationsHead h2 { font-size: clamp(2rem, 4vw, 2.8rem); font-weight: 800; letter-spacing: -0.02em; line-height: 1.1; color: var(--black); margin-bottom: 14px; }
+    .locationsHead p { font-size: 1.02rem; color: var(--grey-dark); line-height: 1.7; }
+
+    /* Market toggle (mockup-only — real page picks by /nz or /au route) */
+    .toggle { display: flex; justify-content: center; gap: 8px; margin: 28px 0 48px; }
+    .toggle button {
+      font-family: var(--font); font-size: 0.85rem; font-weight: 600; letter-spacing: 0.04em;
+      padding: 10px 22px; border-radius: var(--radius-pill); border: 1.5px solid var(--grey-light);
+      background: var(--white); color: var(--grey-dark); cursor: pointer; transition: all var(--duration-fast) var(--ease-smooth);
+    }
+    .toggle button.active { background: var(--orange); color: var(--white); border-color: var(--orange); box-shadow: var(--shadow-orange); }
+
+    .locGrid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 24px; }
+    .locCard {
+      background: var(--white); border: 1px solid var(--grey-light); border-radius: var(--radius-xl);
+      padding: 30px 26px; transition: all var(--duration-normal) var(--ease-smooth); position: relative; overflow: hidden;
+    }
+    .locCard::before { content: ''; position: absolute; top: 0; left: 0; width: 3px; height: 0; background: var(--orange); border-radius: 0 2px 2px 0; transition: height var(--duration-normal) var(--ease-smooth); }
+    .locCard:hover { transform: translateY(-4px); box-shadow: var(--shadow-md); border-color: rgba(240,83,35,.12); }
+    .locCard:hover::before { height: 100%; }
+    .locPin { width: 44px; height: 44px; border-radius: 13px; background: rgba(240,83,35,.06); display: flex; align-items: center; justify-content: center; margin-bottom: 18px; }
+    .locPin svg { width: 20px; height: 20px; stroke: var(--orange); fill: none; stroke-width: 1.5; stroke-linecap: round; stroke-linejoin: round; }
+    .locHub { font-size: 0.7rem; font-weight: 600; letter-spacing: 0.12em; text-transform: uppercase; color: var(--grey-mid); margin-bottom: 4px; }
+    .locCity { font-size: 1.15rem; font-weight: 700; color: var(--black); letter-spacing: -0.01em; margin-bottom: 12px; }
+    /* Address is selectable text (easy manual copy) sitting in a tinted well */
+    .locAddr {
+      font-size: 0.92rem; color: var(--grey-dark); line-height: 1.65; margin-bottom: 16px;
+      user-select: all; -webkit-user-select: all; cursor: text;
+      background: var(--off-white); border: 1px solid var(--grey-light);
+      border-radius: var(--radius-sm); padding: 12px 14px;
+    }
+    .locActions { display: flex; gap: 10px; flex-wrap: wrap; }
+    .locBtn {
+      display: inline-flex; align-items: center; gap: 6px; font-family: var(--font);
+      font-size: 0.82rem; font-weight: 600; cursor: pointer; text-decoration: none;
+      padding: 9px 14px; border-radius: var(--radius-pill); transition: all var(--duration-fast) var(--ease-smooth);
+    }
+    .locBtn svg { width: 14px; height: 14px; stroke: currentColor; fill: none; stroke-width: 2; stroke-linecap: round; stroke-linejoin: round; }
+    .locBtn.copy { background: rgba(240,83,35,.08); color: var(--orange); border: 1px solid rgba(240,83,35,.18); }
+    .locBtn.copy:hover { background: rgba(240,83,35,.14); }
+    .locBtn.copy.copied { background: #e9f9ef; color: #16a34a; border-color: rgba(22,163,74,.25); }
+    .locBtn.map { background: var(--white); color: var(--charcoal); border: 1px solid var(--grey-light); }
+    .locBtn.map:hover { color: var(--orange); border-color: rgba(240,83,35,.3); }
+    .hqBadge { display: inline-block; font-size: 0.62rem; font-weight: 700; letter-spacing: 0.08em; text-transform: uppercase; color: var(--orange); background: rgba(240,83,35,.1); padding: 3px 8px; border-radius: var(--radius-pill); margin-left: 8px; vertical-align: middle; }
+
+    .market { display: none; }
+    .market.show { display: grid; }
+
+    @media (max-width: 1024px) {
+      .contactGrid { grid-template-columns: 1fr; gap: 48px; }
+      .infoColumn { position: static; }
+      .locGrid { grid-template-columns: repeat(2, 1fr); }
+    }
+    @media (max-width: 640px) {
+      .formCard { padding: 40px 28px; }
+      .infoCardBody { padding-left: 0; }
+      .locGrid { grid-template-columns: 1fr; }
+    }
+  </style>
+</head>
+<body>
+  <div class="mockNote">
+    <strong>MOCKUP v2</strong> — proposed "Our Locations" section for the Contact page, with real warehouse addresses.
+    Each card has a <strong>Copy</strong> button and a <strong>Map</strong> link. Use the toggle to preview each market;
+    the live site shows only the current country's warehouses automatically (<code>/nz</code> or <code>/au</code>).
+  </div>
+
+  <!-- ── Hero (unchanged) ─────────────────────────────────────── -->
+  <section class="hero">
+    <div class="heroBg"><div class="geo geo1"></div><div class="geo geo2"></div></div>
+    <div class="container">
+      <div class="heroContent">
+        <div class="section-tag">Let's Talk</div>
+        <h1>Every successful project starts with the <span class="accent">right conversation</span></h1>
+        <p>Whether you need technical advice, a quote, or want to discuss an upcoming project, we're here to help.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- ── Form + info column (unchanged: one primary office card) ─ -->
+  <section class="contactSection">
+    <div class="container">
+      <div class="contactGrid">
+        <div class="formCard">
+          <div class="formTitle">Send us a message</div>
+          <div class="formSubtitle">Fill in the form and the team will get back to you. (Form fields shown as placeholders in this mockup.)</div>
+          <div class="skel"></div><div class="skel"></div><div class="skel"></div>
+          <div class="skel tall"></div><div class="skel btn"></div>
+        </div>
+
+        <div class="infoColumn">
+          <div class="infoCard">
+            <div class="infoCardHeader">
+              <div class="infoCardIcon"><svg viewBox="0 0 24 24"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg></div>
+              <div><div class="infoCardLabel">New Zealand</div><div class="infoCardTitle">Head Office</div></div>
+            </div>
+            <div class="infoCardBody">
+              <div class="infoDetail"><svg viewBox="0 0 24 24"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg><span>Hamilton, New Zealand</span></div>
+              <div class="infoDetail"><svg viewBox="0 0 24 24"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72c.127.96.361 1.903.7 2.81a2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45c.907.339 1.85.573 2.81.7A2 2 0 0 1 22 16.92z"/></svg><a href="#" class="infoDetailLink">+64 7 849 2366</a></div>
+            </div>
+          </div>
+          <div class="infoCard emailCard">
+            <div class="infoCardHeader">
+              <div class="infoCardIcon"><svg viewBox="0 0 24 24"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/></svg></div>
+              <div><div class="infoCardLabel">Email</div><div class="infoCardTitle">Get in Touch</div></div>
+            </div>
+            <div class="infoCardBody"><div class="infoDetail"><svg viewBox="0 0 24 24"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/></svg><a href="#" class="infoDetailLink">sales@blick.group</a></div></div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ── NEW: Our Locations (warehouse addresses) ───────────────── -->
+  <section class="locations">
+    <div class="container">
+      <div class="locationsHead">
+        <div class="section-tag">Our Locations</div>
+        <h2>Stocked <span class="accent">close to your site</span></h2>
+        <p>Product is held across our warehouse network for fast local supply. Find your nearest location below.</p>
+      </div>
+
+      <div class="toggle">
+        <button class="active" onclick="showMarket('nz', this)">New Zealand</button>
+        <button onclick="showMarket('au', this)">Australia</button>
+      </div>
+
+      <!-- NZ warehouses -->
+      <div class="locGrid market show" id="nz">
+        <div class="locCard">
+          <div class="locPin"><svg viewBox="0 0 24 24"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg></div>
+          <div class="locHub">Waikato</div>
+          <div class="locCity">Hamilton<span class="hqBadge">Head Office</span></div>
+          <div class="locAddr">21 Kahu Crescent<br/>Te Rapa, Hamilton 3200<br/>New Zealand</div>
+          <div class="locActions">
+            <button class="locBtn copy" data-addr="21 Kahu Crescent, Te Rapa, Hamilton 3200, New Zealand"><svg viewBox="0 0 24 24"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg>Copy</button>
+            <a class="locBtn map" target="_blank" rel="noopener" href="https://www.google.com/maps/search/?api=1&query=21%20Kahu%20Crescent%2C%20Te%20Rapa%2C%20Hamilton%203200%2C%20New%20Zealand"><svg viewBox="0 0 24 24"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg>Map</a>
+          </div>
+        </div>
+        <div class="locCard">
+          <div class="locPin"><svg viewBox="0 0 24 24"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg></div>
+          <div class="locHub">Auckland</div>
+          <div class="locCity">Auckland</div>
+          <div class="locAddr">c/o JTG Logistics<br/>30 Toiawaka Road<br/>Drury, Auckland 2579<br/>New Zealand</div>
+          <div class="locActions">
+            <button class="locBtn copy" data-addr="c/o JTG Logistics, 30 Toiawaka Road, Drury, Auckland 2579, New Zealand"><svg viewBox="0 0 24 24"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg>Copy</button>
+            <a class="locBtn map" target="_blank" rel="noopener" href="https://www.google.com/maps/search/?api=1&query=30%20Toiawaka%20Road%2C%20Drury%2C%20Auckland%202579%2C%20New%20Zealand"><svg viewBox="0 0 24 24"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg>Map</a>
+          </div>
+        </div>
+        <div class="locCard">
+          <div class="locPin"><svg viewBox="0 0 24 24"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg></div>
+          <div class="locHub">Bay of Plenty</div>
+          <div class="locCity">Tauranga</div>
+          <div class="locAddr">c/o Les Harrison Transport<br/>12 Cessna Place, Mt Maunganui<br/>Tauranga 3116<br/>New Zealand</div>
+          <div class="locActions">
+            <button class="locBtn copy" data-addr="c/o Les Harrison Transport, 12 Cessna Place, Mt Maunganui, Tauranga 3116, New Zealand"><svg viewBox="0 0 24 24"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg>Copy</button>
+            <a class="locBtn map" target="_blank" rel="noopener" href="https://www.google.com/maps/search/?api=1&query=12%20Cessna%20Place%2C%20Mount%20Maunganui%2C%20Tauranga%203116%2C%20New%20Zealand"><svg viewBox="0 0 24 24"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg>Map</a>
+          </div>
+        </div>
+        <div class="locCard">
+          <div class="locPin"><svg viewBox="0 0 24 24"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg></div>
+          <div class="locHub">Canterbury</div>
+          <div class="locCity">Christchurch</div>
+          <div class="locAddr">c/o Able Logistics<br/>272 Main South Road<br/>Hornby, Christchurch 8042<br/>New Zealand</div>
+          <div class="locActions">
+            <button class="locBtn copy" data-addr="c/o Able Logistics, 272 Main South Road, Hornby, Christchurch 8042, New Zealand"><svg viewBox="0 0 24 24"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg>Copy</button>
+            <a class="locBtn map" target="_blank" rel="noopener" href="https://www.google.com/maps/search/?api=1&query=272%20Main%20South%20Road%2C%20Hornby%2C%20Christchurch%208042%2C%20New%20Zealand"><svg viewBox="0 0 24 24"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg>Map</a>
+          </div>
+        </div>
+      </div>
+
+      <!-- AU warehouses -->
+      <div class="locGrid market" id="au">
+        <div class="locCard">
+          <div class="locPin"><svg viewBox="0 0 24 24"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg></div>
+          <div class="locHub">New South Wales</div>
+          <div class="locCity">Sydney</div>
+          <div class="locAddr">c/o Freight Assist<br/>26 Pavesi Street<br/>Smithfield, Sydney NSW 2164<br/>Australia</div>
+          <div class="locActions">
+            <button class="locBtn copy" data-addr="c/o Freight Assist, 26 Pavesi Street, Smithfield, Sydney NSW 2164, Australia"><svg viewBox="0 0 24 24"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg>Copy</button>
+            <a class="locBtn map" target="_blank" rel="noopener" href="https://www.google.com/maps/search/?api=1&query=26%20Pavesi%20Street%2C%20Smithfield%20NSW%202164%2C%20Australia"><svg viewBox="0 0 24 24"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg>Map</a>
+          </div>
+        </div>
+        <div class="locCard">
+          <div class="locPin"><svg viewBox="0 0 24 24"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg></div>
+          <div class="locHub">Victoria</div>
+          <div class="locCity">Melbourne</div>
+          <div class="locAddr">20 Trevi Crescent<br/>Tullamarine, Victoria 3043<br/>Australia</div>
+          <div class="locActions">
+            <button class="locBtn copy" data-addr="20 Trevi Crescent, Tullamarine, Victoria 3043, Australia"><svg viewBox="0 0 24 24"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg>Copy</button>
+            <a class="locBtn map" target="_blank" rel="noopener" href="https://www.google.com/maps/search/?api=1&query=20%20Trevi%20Crescent%2C%20Tullamarine%20VIC%203043%2C%20Australia"><svg viewBox="0 0 24 24"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg>Map</a>
+          </div>
+        </div>
+        <div class="locCard">
+          <div class="locPin"><svg viewBox="0 0 24 24"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg></div>
+          <div class="locHub">Western Australia</div>
+          <div class="locCity">Perth</div>
+          <div class="locAddr">c/o Skippers Transport<br/>85 Sheffield Rd East<br/>Welshpool, WA 6106<br/>Australia</div>
+          <div class="locActions">
+            <button class="locBtn copy" data-addr="c/o Skippers Transport, 85 Sheffield Rd East, Welshpool WA 6106, Australia"><svg viewBox="0 0 24 24"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg>Copy</button>
+            <a class="locBtn map" target="_blank" rel="noopener" href="https://www.google.com/maps/search/?api=1&query=85%20Sheffield%20Road%20East%2C%20Welshpool%20WA%206106%2C%20Australia"><svg viewBox="0 0 24 24"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg>Map</a>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <script>
+    function showMarket(id, btn) {
+      document.querySelectorAll('.market').forEach(function (m) { m.classList.remove('show'); });
+      document.getElementById(id).classList.add('show');
+      document.querySelectorAll('.toggle button').forEach(function (b) { b.classList.remove('active'); });
+      btn.classList.add('active');
+    }
+
+    // Copy-to-clipboard for each address
+    document.querySelectorAll('.locBtn.copy').forEach(function (btn) {
+      btn.addEventListener('click', function () {
+        var addr = btn.getAttribute('data-addr');
+        var done = function () {
+          var original = btn.innerHTML;
+          btn.classList.add('copied');
+          btn.innerHTML = '<svg viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg>Copied';
+          setTimeout(function () { btn.classList.remove('copied'); btn.innerHTML = original; }, 1800);
+        };
+        if (navigator.clipboard && navigator.clipboard.writeText) {
+          navigator.clipboard.writeText(addr).then(done).catch(function () { fallbackCopy(addr, done); });
+        } else {
+          fallbackCopy(addr, done);
+        }
+      });
+    });
+
+    function fallbackCopy(text, cb) {
+      var ta = document.createElement('textarea');
+      ta.value = text; ta.style.position = 'fixed'; ta.style.opacity = '0';
+      document.body.appendChild(ta); ta.focus(); ta.select();
+      try { document.execCommand('copy'); cb(); } catch (e) {}
+      document.body.removeChild(ta);
+    }
+  </script>
+</body>
+</html>
