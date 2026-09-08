@@ -1,0 +1,584 @@
+
+<!DOCTYPE html>
+<html lang="en-AU">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>The Survey of the Two Lands — Blick Q3 2026</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@500;700&family=Fraunces:ital,opsz,wght@0,9..144,500;0,9..144,700;1,9..144,500&family=Source+Sans+3:wght@400;600;700&display=swap" rel="stylesheet" />
+  <style>
+    :root {
+      --orange: #f05323;
+      --ink: #f5f3ef;
+      --muted: #b7c0c4;
+      --night: #071015;
+      --deep: #0c1a20;
+      --slate: #1a2e36;
+      --seal: #c4421b;
+    }
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    html, body { height: 100%; background: var(--night); color: var(--ink); }
+    body {
+      font-family: "Source Sans 3", sans-serif;
+      overflow: hidden;
+    }
+    .deck {
+      height: 100dvh;
+      overflow-y: auto;
+      scroll-snap-type: y mandatory;
+      scroll-behavior: smooth;
+    }
+    .chapter {
+      position: relative;
+      height: 100dvh;
+      min-height: 100dvh;
+      max-height: 100dvh;
+      scroll-snap-align: start;
+      overflow: hidden;
+      display: grid;
+      grid-template-rows: 1fr auto;
+    }
+    .art {
+      position: absolute;
+      inset: 0;
+      background-size: cover;
+      background-position: center;
+      transform: scale(1.08);
+      animation: ken 28s ease-in-out infinite alternate;
+      filter: saturate(1.05) contrast(1.04);
+    }
+    .art::after {
+      content: "";
+      position: absolute;
+      inset: 0;
+      background:
+        linear-gradient(180deg, rgba(7,16,21,.35) 0%, rgba(7,16,21,.15) 40%, rgba(7,16,21,.82) 100%),
+        radial-gradient(120% 80% at 50% 20%, transparent 40%, rgba(7,16,21,.45) 100%);
+    }
+    @keyframes ken {
+      from { transform: scale(1.08) translate3d(0,0,0); }
+      to { transform: scale(1.16) translate3d(-1.4%, 1.2%, 0); }
+    }
+    .veil { position: relative; z-index: 2; padding: 4.5rem 6vw 2rem; max-width: 78rem; }
+    .roman {
+      font-family: Cinzel, serif;
+      letter-spacing: .28em;
+      text-transform: uppercase;
+      font-size: .72rem;
+      color: var(--orange);
+      font-weight: 700;
+    }
+    h1, h2 {
+      font-family: Cinzel, serif;
+      font-weight: 700;
+      line-height: 1.05;
+      text-wrap: balance;
+    }
+    h1 { font-size: clamp(2.1rem, 5vw, 4.2rem); margin: .35rem 0 .8rem; }
+    h2 { font-size: clamp(1.7rem, 3.6vw, 3rem); margin: .3rem 0 .7rem; }
+    .plain {
+      font-family: Fraunces, serif;
+      font-size: clamp(1.15rem, 2.1vw, 1.55rem);
+      line-height: 1.45;
+      max-width: 40rem;
+      color: var(--ink);
+    }
+    .plain em { font-style: italic; color: #fff; }
+    .why { color: var(--muted); font-size: 1rem; margin-top: .8rem; max-width: 36rem; }
+    .chorus {
+      z-index: 3;
+      display: flex;
+      align-items: flex-end;
+      justify-content: space-between;
+      gap: 1.5rem;
+      padding: 1.1rem 6vw 1.4rem;
+      background: linear-gradient(180deg, transparent, rgba(7,16,21,.92));
+    }
+    .chorus p {
+      font-family: Fraunces, serif;
+      font-style: italic;
+      font-size: clamp(1rem, 1.8vw, 1.25rem);
+      max-width: 46rem;
+      line-height: 1.4;
+    }
+    .surveyor {
+      width: 92px;
+      height: 118px;
+      object-fit: cover;
+      object-position: top;
+      border-radius: 12px 12px 4px 4px;
+      border: 1px solid rgba(240,83,35,.45);
+      box-shadow: 0 10px 30px rgba(0,0,0,.45);
+      flex-shrink: 0;
+    }
+    .seal {
+      display: inline-flex;
+      align-items: center;
+      gap: .45rem;
+      margin-top: 1rem;
+      padding: .35rem .7rem;
+      border-radius: 999px;
+      font-size: .78rem;
+      font-weight: 700;
+      letter-spacing: .08em;
+      text-transform: uppercase;
+      border: 1px solid rgba(240,83,35,.55);
+      background: rgba(240,83,35,.12);
+      color: #ffd7c8;
+    }
+    .seal.part { border-color: #c9a227; background: rgba(201,162,39,.12); color: #f3e2a1; }
+    .seal.road { border-color: #7f8f96; background: rgba(127,143,150,.12); color: #d5dee2; }
+    .hotspots { position: absolute; inset: 0; z-index: 4; pointer-events: none; }
+    .relic {
+      pointer-events: auto;
+      position: absolute;
+      width: 28px; height: 28px;
+      border: 0;
+      border-radius: 50%;
+      background: var(--orange);
+      box-shadow: 0 0 0 8px rgba(240,83,35,.22), 0 0 24px rgba(240,83,35,.7);
+      cursor: pointer;
+      animation: pulse 2.4s ease-in-out infinite;
+    }
+    .relic:focus-visible { outline: 2px solid #fff; outline-offset: 4px; }
+    .relic::after {
+      content: "";
+      position: absolute;
+      inset: -14px;
+    }
+    @keyframes pulse {
+      0%, 100% { transform: scale(1); box-shadow: 0 0 0 8px rgba(240,83,35,.22), 0 0 24px rgba(240,83,35,.7); }
+      50% { transform: scale(1.12); box-shadow: 0 0 0 14px rgba(240,83,35,.08), 0 0 28px rgba(240,83,35,.9); }
+    }
+    .tablet {
+      position: absolute;
+      z-index: 6;
+      width: min(26rem, 88vw);
+      padding: 1.15rem 1.2rem 1.2rem;
+      background: #e8d7b8;
+      color: #2a2118;
+      border-radius: 4px 18px 8px 14px;
+      box-shadow: 0 18px 50px rgba(0,0,0,.5);
+      display: none;
+      transform: rotate(-1.2deg);
+    }
+    .tablet.open { display: block; }
+    .tablet h3 {
+      font-family: Cinzel, serif;
+      font-size: .95rem;
+      margin-bottom: .35rem;
+    }
+    .tablet p { font-size: .95rem; line-height: 1.4; }
+    .tablet .close {
+      position: absolute; top: .4rem; right: .55rem;
+      border: 0; background: transparent; font-size: 1.2rem; cursor: pointer;
+    }
+    .nav {
+      position: fixed; right: 1.1rem; top: 50%;
+      transform: translateY(-50%);
+      z-index: 10;
+      display: flex; flex-direction: column; gap: .45rem;
+    }
+    .nav button {
+      width: 11px; height: 11px; border-radius: 50%;
+      border: 1px solid rgba(245,243,239,.4);
+      background: transparent; cursor: pointer;
+    }
+    .nav button.now { background: var(--orange); border-color: var(--orange); }
+    .hud {
+      position: fixed; top: 0; left: 0; right: 0; z-index: 12;
+      display: flex; justify-content: space-between; align-items: center;
+      padding: .7rem 1.2rem;
+      background: linear-gradient(180deg, rgba(7,16,21,.75), transparent);
+      font-size: .78rem; letter-spacing: .12em; text-transform: uppercase;
+      color: var(--muted);
+    }
+    .rope { display: flex; gap: 6px; align-items: center; }
+    .strand {
+      width: 42px; height: 4px; border-radius: 99px;
+      background: rgba(245,243,239,.22);
+    }
+    .strand.on { background: var(--orange); }
+    .strand.half {
+      background: linear-gradient(90deg, var(--orange) 55%, rgba(245,243,239,.22) 55%);
+    }
+    .strand.ghost {
+      background: transparent;
+      border: 1px dashed rgba(245,243,239,.4);
+      height: 6px;
+    }
+    .hud-actions { display: flex; gap: .6rem; }
+    .hud-actions button {
+      background: transparent; color: var(--ink);
+      border: 1px solid rgba(245,243,239,.25);
+      border-radius: 999px; padding: .25rem .7rem;
+      cursor: pointer; letter-spacing: .08em; text-transform: uppercase;
+      font-size: .7rem;
+    }
+    .notes {
+      position: fixed; left: 1rem; bottom: 1rem; z-index: 12;
+      width: min(24rem, 90vw);
+      background: rgba(12,26,32,.92);
+      border: 1px solid rgba(240,83,35,.35);
+      padding: .85rem 1rem;
+      border-radius: 10px;
+      display: none;
+    }
+    .notes.show { display: block; }
+    .notes strong { color: var(--orange); display: block; margin-bottom: .3rem; font-size: .75rem; letter-spacing: .12em; text-transform: uppercase; }
+    .notes p { font-size: .92rem; line-height: 1.4; color: var(--ink); }
+    .hint {
+      position: absolute; left: 6vw; bottom: 5.6rem; z-index: 5;
+      font-size: .75rem; letter-spacing: .16em; text-transform: uppercase;
+      color: var(--muted);
+      animation: bob 2.2s ease-in-out infinite;
+    }
+    @keyframes bob {
+      0%,100% { transform: translateY(0); opacity: .7; }
+      50% { transform: translateY(8px); opacity: 1; }
+    }
+    .close-grid {
+      position: relative; z-index: 2;
+      padding: 12vh 8vw 8vh;
+      display: grid;
+      gap: 1.4rem;
+      max-width: 52rem;
+    }
+    .close-grid h1 { font-size: clamp(2rem, 5vw, 3.6rem); }
+    .end-line {
+      font-family: Fraunces, serif;
+      font-size: clamp(1.3rem, 2.4vw, 1.8rem);
+      line-height: 1.4;
+    }
+    @media (prefers-reduced-motion: reduce) {
+      .art { animation: none; transform: none; }
+      .relic { animation: none; }
+      .hint { animation: none; }
+      .deck { scroll-behavior: auto; }
+    }
+    @media (max-width: 760px) {
+      .surveyor { display: none; }
+      .veil { padding: 5rem 1.2rem 1.2rem; }
+      .chorus { padding: 1rem 1.2rem 1.3rem; }
+      .nav { display: none; }
+      .strand { width: 22px; }
+    }
+  </style>
+</head>
+<body>
+  <div class="hud">
+    <div>Blick · Q3 2026 · The Survey of the Two Lands</div>
+    <div class="rope" aria-hidden="true">
+      <span class="strand on" title="The Thread — delivered"></span>
+      <span class="strand half" title="The Forge — part delivered"></span>
+      <span class="strand half" title="The Map — draft laid"></span>
+      <span class="strand half" title="The Hold — loading"></span>
+      <span class="strand ghost" title="The Road — next"></span>
+    </div>
+    <div class="hud-actions">
+      <button type="button" id="notesBtn">Talk-through</button>
+      <button type="button" id="fullBtn">Present</button>
+    </div>
+  </div>
+
+  <nav class="nav" aria-label="Chapters">
+    <button data-go="0" class="now" title="Opening"></button>
+    <button data-go="1" title="The why"></button>
+    <button data-go="2" title="The Thread"></button>
+    <button data-go="3" title="The Forge"></button>
+    <button data-go="4" title="The Map"></button>
+    <button data-go="5" title="The Hold"></button>
+    <button data-go="6" title="The Road"></button>
+    <button data-go="7" title="The close"></button>
+  </nav>
+
+  <div class="notes" id="notes">
+    <strong>Say this</strong>
+    <p id="noteText">Don’t open with a list. Open with the picture: two countries, one thread. Then tell them this quarter was the season we learned to see.</p>
+  </div>
+
+  <main class="deck" id="deck">
+
+    <section class="chapter" id="opening" data-note="Don’t open with a list. Open with the picture: two countries, one thread. Then tell them this quarter was the season we learned to see.">
+      <div class="art" style="background-image:url('assets/00-world.jpg')"></div>
+      <div class="veil">
+        <div class="roman">A story of the quarter · not a status list</div>
+        <h1>The Survey of the Two Lands</h1>
+        <p class="plain">The heroes who charged in first died in the dark. This quarter, we became a company that can <em>see</em>.</p>
+      </div>
+      <div class="chorus">
+        <p>“You cannot grow a range you cannot see — and you cannot see it if Australia and New Zealand are working off different facts.”</p>
+        <img class="surveyor" src="assets/01-surveyor.jpg" alt="The Surveyor, narrator of the quarter" />
+      </div>
+      <div class="hint">Scroll the story ↓</div>
+    </section>
+
+    <section class="chapter" id="why" data-note="The why, in one breath: we needed a real picture of the range and the markets it serves. That picture is worthless if the company itself is split. So the market work and the one-company work had to travel together.">
+      <div class="art" style="background-image:url('assets/02-titans.jpg')"></div>
+      <div class="veil">
+        <div class="roman">The why · in one breath</div>
+        <h2>Two lands. One set of facts.</h2>
+        <p class="plain">This quarter was about knowing our range, who each product serves, and where the gaps are — across Australia and New Zealand. A map drawn on split ground is a lie. So the market work and the one-company work travelled together.</p>
+        <p class="why">Four labours. One road still to walk.</p>
+      </div>
+      <div class="chorus">
+        <p>Four labours this quarter. The road back to customers is marked — we walk it next.</p>
+        <img class="surveyor" src="assets/01-surveyor.jpg" alt="" />
+      </div>
+    </section>
+
+    <section class="chapter" id="thread" data-note="Labour I is already real. Watercooler, the front door to our information, access control. People in AU and NZ can finally see the same company. Click the orange sparks if you want the relics — or just tell the story.">
+      <div class="art" style="background-image:url('assets/labour-1-thread.jpg')"></div>
+      <div class="hotspots">
+        <button class="relic" style="left:22%; top:48%" data-tablet="t1a" aria-label="The live feed"></button>
+        <button class="relic" style="left:49%; top:28%" data-tablet="t1b" aria-label="The front door"></button>
+        <button class="relic" style="left:62%; top:34%" data-tablet="t1c" aria-label="The keys"></button>
+        <aside class="tablet" id="t1a" style="left:8%; top:58%">
+          <button class="close" aria-label="Close">×</button>
+          <h3>The messenger birds</h3>
+          <p>One live feed of everything happening across the company — safety, product issues, follow-ups, ideas — so a split team isn’t in the dark.</p>
+        </aside>
+        <aside class="tablet" id="t1b" style="left:28%; top:42%">
+          <button class="close" aria-label="Close">×</button>
+          <h3>One front door</h3>
+          <p>Our information used to sit in five disconnected places. There is now one safe door into it.</p>
+        </aside>
+        <aside class="tablet" id="t1c" style="left:58%; top:48%">
+          <button class="close" aria-label="Close">×</button>
+          <h3>The keys</h3>
+          <p>Clean, audited control of who can see and do what. Delivered this quarter.</p>
+        </aside>
+      </div>
+      <div class="veil">
+        <div class="roman">Labour I · Excellence</div>
+        <h2>The Thread</h2>
+        <p class="plain">Two countries. Two ways of working. People couldn’t see what the other shore was doing. So we laid a single thread.</p>
+        <span class="seal">Delivered this quarter</span>
+      </div>
+      <div class="chorus">
+        <p>We made Blick easier to run as one company. The two lands can finally talk.</p>
+        <img class="surveyor" src="assets/01-surveyor.jpg" alt="" />
+      </div>
+    </section>
+
+    <section class="chapter" id="forge" data-note="Labour II is quality. Don’t say ‘innovation’. Say: as we grow, the data, the research and the lab results have to be dependable — not luck. Security, sharper research, field-testing we can trust.">
+      <div class="art" style="background-image:url('assets/labour-2-forge.jpg')"></div>
+      <div class="hotspots">
+        <button class="relic" style="left:38%; top:68%" data-tablet="t2a" aria-label="The shield"></button>
+        <button class="relic" style="left:72%; top:22%" data-tablet="t2b" aria-label="The true tablet"></button>
+        <button class="relic" style="left:74%; top:58%" data-tablet="t2c" aria-label="The measure"></button>
+        <aside class="tablet" id="t2a" style="left:12%; top:55%">
+          <button class="close" aria-label="Close">×</button>
+          <h3>The shield</h3>
+          <p>Closed real security gaps so staff logins and company data are protected.</p>
+        </aside>
+        <aside class="tablet" id="t2b" style="left:42%; top:18%">
+          <button class="close" aria-label="Close">×</button>
+          <h3>One true tablet</h3>
+          <p>Market research that is sharper, and that stops telling the same story twice.</p>
+        </aside>
+        <aside class="tablet" id="t2c" style="left:48%; top:62%">
+          <button class="close" aria-label="Close">×</button>
+          <h3>The measure</h3>
+          <p>Field-testing we can trust. The SENXIN rheometer is proven fit for the field. Fluid-testing programmes are underway.</p>
+        </aside>
+      </div>
+      <div class="veil">
+        <div class="roman">Labour II · Excellence + Innovation</div>
+        <h2>The Forge</h2>
+        <p class="plain">A growing company that guesses is a company that breaks. We closed holes in the walls. We taught the research not to repeat itself. We proved the field instrument is fit for the job.</p>
+        <span class="seal part">Part delivered · more landing in September</span>
+      </div>
+      <div class="chorus">
+        <p>Quality stopped being luck. Trust is a thing you hammer, not a thing you hope for.</p>
+        <img class="surveyor" src="assets/01-surveyor.jpg" alt="" />
+      </div>
+    </section>
+
+    <section class="chapter" id="map" data-note="This is the quarter’s theme. Pause here. The bentonite map, AU vs NZ on the website, the new NT channel. The draft is laid. The deeper range and competitor work is the next sheet.">
+      <div class="art" style="background-image:url('assets/labour-3-map.jpg')"></div>
+      <div class="hotspots">
+        <button class="relic" style="left:48%; top:52%" data-tablet="t3a" aria-label="The bentonite map"></button>
+        <button class="relic" style="left:22%; top:62%" data-tablet="t3b" aria-label="Who is walking up to us"></button>
+        <button class="relic" style="left:42%; top:28%" data-tablet="t3c" aria-label="The northern torch"></button>
+        <aside class="tablet" id="t3a" style="left:52%; top:58%">
+          <button class="close" aria-label="Close">×</button>
+          <h3>The first shared map</h3>
+          <p>Our bentonite range, by market, region and state, with the gaps marked. A draft. The first time the whole company can point at the same picture.</p>
+        </aside>
+        <aside class="tablet" id="t3b" style="left:4%; top:68%">
+          <button class="close" aria-label="Close">×</button>
+          <h3>The two harbours</h3>
+          <p>We can now see who is engaging with us online — Australia versus New Zealand.</p>
+        </aside>
+        <aside class="tablet" id="t3c" style="left:8%; top:18%">
+          <button class="close" aria-label="Close">×</button>
+          <h3>A torch in the north</h3>
+          <p>A new live channel into the Northern Territory, through Viadux.</p>
+        </aside>
+      </div>
+      <div class="veil">
+        <div class="roman">Labour III · the quarter’s theme · Innovation + Market</div>
+        <h2>The Map</h2>
+        <p class="plain">You cannot grow what you cannot see. For the first time we have a shared map of the bentonite range — and we can see who is walking toward us.</p>
+        <span class="seal part">Draft laid · deeper range and competitor work lands in September</span>
+      </div>
+      <div class="chorus">
+        <p>This is the labour the whole quarter was for. The map is drawn. The next sheet is still coming.</p>
+        <img class="surveyor" src="assets/01-surveyor.jpg" alt="" />
+      </div>
+    </section>
+
+    <section class="chapter" id="hold" data-note="Labour IV is the loaded September room. Don’t over-claim. The hold is being packed: smarter stock, backup sand and rods, a broader tested range. Mostly not in the water yet.">
+      <div class="art" style="background-image:url('assets/labour-4-hold.jpg')"></div>
+      <div class="hotspots">
+        <button class="relic" style="left:62%; top:46%" data-tablet="t4a" aria-label="The stock-reader"></button>
+        <button class="relic" style="left:48%; top:22%" data-tablet="t4b" aria-label="Two ships"></button>
+        <button class="relic" style="left:18%; top:68%" data-tablet="t4c" aria-label="The broader range"></button>
+        <aside class="tablet" id="t4a" style="left:36%; top:52%">
+          <button class="close" aria-label="Close">×</button>
+          <h3>The owl that can count</h3>
+          <p>Using AI to read NZ stock levels, tidier warehousing, Perth 3PL. The right product in the right place.</p>
+        </aside>
+        <aside class="tablet" id="t4b" style="left:18%; top:12%">
+          <button class="close" aria-label="Close">×</button>
+          <h3>A second ship</h3>
+          <p>Backup suppliers lined up for critical sand and rods — so one falling over doesn’t catch us out.</p>
+        </aside>
+        <aside class="tablet" id="t4c" style="left:4%; top:48%">
+          <button class="close" aria-label="Close">×</button>
+          <h3>A broader hold</h3>
+          <p>HDD tooling, reamers, carry foam, HDD Gel 2 in international testing. Mostly landing in the final cycle.</p>
+        </aside>
+      </div>
+      <div class="veil">
+        <div class="roman">Labour IV · Product development</div>
+        <h2>The Hold</h2>
+        <p class="plain">The right products in the right place. Less waste. Never one supplier between us and the job. The hold is being packed. It is not yet at sea.</p>
+        <span class="seal part">Mostly landing in September · the loaded room</span>
+      </div>
+      <div class="chorus">
+        <p>This is the biggest remaining labour. Treat it as work in motion, not as a trophy.</p>
+        <img class="surveyor" src="assets/01-surveyor.jpg" alt="" />
+      </div>
+    </section>
+
+    <section class="chapter" id="road" data-note="Do not fold this into the market labour. Knowing the market is not standing in it. DrillFest Adelaide, International No-Dig Auckland. Presence is next cycle. Keep it short, keep it as the road.">
+      <div class="art" style="background-image:url('assets/labour-5-road.jpg')"></div>
+      <div class="hotspots">
+        <button class="relic" style="left:18%; top:42%" data-tablet="t5a" aria-label="DrillFest"></button>
+        <button class="relic" style="left:78%; top:40%" data-tablet="t5b" aria-label="No-Dig Auckland"></button>
+        <aside class="tablet" id="t5a" style="left:8%; top:52%">
+          <button class="close" aria-label="Close">×</button>
+          <h3>The desert games</h3>
+          <p>DrillFest, Adelaide. Lined up. Not walked yet.</p>
+        </aside>
+        <aside class="tablet" id="t5b" style="left:48%; top:52%">
+          <button class="close" aria-label="Close">×</button>
+          <h3>The island games</h3>
+          <p>International No-Dig, Auckland. Lined up. Not walked yet.</p>
+        </aside>
+      </div>
+      <div class="veil">
+        <div class="roman">The road · Customer success · not a fifth equal labour</div>
+        <h2>The Road to the Games</h2>
+        <p class="plain">Maps don’t sell. Presence does. Two industry gatherings are marked on the horizon. We walk them next.</p>
+        <span class="seal road">Coming up next cycle</span>
+      </div>
+      <div class="chorus">
+        <p>Keep this as the road home — thin this quarter on purpose. The work of being seen is still ahead.</p>
+        <img class="surveyor" src="assets/01-surveyor.jpg" alt="" />
+      </div>
+    </section>
+
+    <section class="chapter" id="close" data-note="Close honest. Three of the four labours are already real. The map and the hold land in September. The headline is not ‘we finished’. It is: we spent the quarter becoming a company that can see.">
+      <div class="art" style="background-image:url('assets/00-world.jpg')"></div>
+      <div class="close-grid">
+        <div class="roman">The close</div>
+        <h1>We did not finish the map. We became able to draw one.</h1>
+        <p class="end-line">Three of these four labours are already real. The market-picture and the stock work — the biggest strands — mostly land in September.</p>
+        <p class="plain">So the honest headline isn’t “we finished.” It’s this: we spent the quarter building the eyes. The payoff is next month, when we use them — and then walk back to the market.</p>
+        <span class="seal">The season of sight · Q3 2026</span>
+      </div>
+      <div class="chorus">
+        <p>If they remember one line, make it this: we bound the two lands, and we can finally see the range.</p>
+        <img class="surveyor" src="assets/01-surveyor.jpg" alt="" />
+      </div>
+    </section>
+  </main>
+
+  <script>
+    const deck = document.getElementById("deck");
+    const chapters = [...document.querySelectorAll(".chapter")];
+    const dots = [...document.querySelectorAll(".nav button")];
+    const notes = document.getElementById("notes");
+    const noteText = document.getElementById("noteText");
+    const notesBtn = document.getElementById("notesBtn");
+    const fullBtn = document.getElementById("fullBtn");
+
+    const setDot = () => {
+      const i = Math.round(deck.scrollTop / window.innerHeight);
+      dots.forEach((d, n) => d.classList.toggle("now", n === i));
+      const ch = chapters[Math.max(0, Math.min(i, chapters.length - 1))];
+      if (ch) noteText.textContent = ch.dataset.note;
+    };
+    const jumpHash = () => {
+      const id = location.hash.slice(1);
+      const el = id && document.getElementById(id);
+      if (!el) return;
+      const prev = deck.style.scrollBehavior;
+      deck.style.scrollBehavior = "auto";
+      el.scrollIntoView();
+      deck.style.scrollBehavior = prev;
+    };
+    jumpHash();
+    window.addEventListener("hashchange", jumpHash);
+    deck.addEventListener("scroll", () => requestAnimationFrame(setDot));
+    dots.forEach(d => d.addEventListener("click", () => {
+      chapters[+d.dataset.go].scrollIntoView({ behavior: "smooth" });
+    }));
+
+    document.querySelectorAll(".relic").forEach(btn => {
+      btn.addEventListener("click", (e) => {
+        e.stopPropagation();
+        const id = btn.dataset.tablet;
+        document.querySelectorAll(".tablet").forEach(t => {
+          if (t.id !== id) t.classList.remove("open");
+        });
+        document.getElementById(id).classList.toggle("open");
+      });
+    });
+    document.querySelectorAll(".tablet .close").forEach(b => {
+      b.addEventListener("click", (e) => {
+        e.stopPropagation();
+        b.parentElement.classList.remove("open");
+      });
+    });
+    document.addEventListener("click", () => {
+      document.querySelectorAll(".tablet.open").forEach(t => t.classList.remove("open"));
+    });
+
+    notesBtn.addEventListener("click", () => notes.classList.toggle("show"));
+    fullBtn.addEventListener("click", () => {
+      if (!document.fullscreenElement) document.documentElement.requestFullscreen();
+      else document.exitFullscreen();
+    });
+
+    document.addEventListener("keydown", (e) => {
+      const i = Math.round(deck.scrollTop / window.innerHeight);
+      if (e.key === "ArrowDown" || e.key === "PageDown" || e.key === " ") {
+        e.preventDefault();
+        chapters[Math.min(i + 1, chapters.length - 1)].scrollIntoView({ behavior: "smooth" });
+      }
+      if (e.key === "ArrowUp" || e.key === "PageUp") {
+        e.preventDefault();
+        chapters[Math.max(i - 1, 0)].scrollIntoView({ behavior: "smooth" });
+      }
+      if (e.key === "t") notes.classList.toggle("show");
+      if (e.key === "Escape") document.querySelectorAll(".tablet.open").forEach(t => t.classList.remove("open"));
+    });
+  </script>
+</body>
+</html>
