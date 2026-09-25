@@ -535,7 +535,8 @@
     { "id": "rig-api",         "name": "rig-api",         "kind": "backend-service", "layer": "service", "icon": "🔌", "tech": "Express on Fly",       "pos": { "x": 140,  "y": 490 } },
     { "id": "operations-api",  "name": "operations-api",  "kind": "backend-service", "layer": "service", "icon": "🔌", "tech": "Express on Fly",       "pos": { "x": 500,  "y": 490 } },
     { "id": "compass-api",     "name": "compass-api",     "kind": "backend-service", "layer": "service", "icon": "🔌", "tech": "Express on Fly",       "pos": { "x": 860,  "y": 490 } },
-    { "id": "copper-api",      "name": "copper-api",      "kind": "backend-service", "layer": "service", "icon": "🔌", "tech": "Express on Cloud Run", "pos": { "x": 1220, "y": 490 } },
+    { "id": "copper-api",      "name": "copper-api",      "kind": "backend-service", "layer": "service", "icon": "🔌", "tech": "Express on Fly (blick-copper-api)", "pos": { "x": 1220, "y": 490 } },
+    { "id": "nexus-api",       "name": "nexus-api",       "kind": "backend-service", "layer": "service", "icon": "🧠", "tech": "Node, local Mac Mini via Tailscale, not Fly", "pos": { "x": 1220, "y": 570 } },
 
     { "id": "bigquery", "name": "Google BigQuery", "kind": "datastore", "layer": "data", "icon": "🗄️", "tech": "rig_management · health_safety · blick_shared · blick_identity", "pos": { "x": 600, "y": 670 } },
 
@@ -548,7 +549,7 @@
     { "id": "unleashed-erp",     "name": "Unleashed ERP",      "kind": "external", "layer": "external", "icon": "📋", "tech": "Customer master",           "pos": { "x": 1140, "y": 800 } },
     { "id": "sentry",            "name": "Sentry",             "kind": "external", "layer": "external", "icon": "🚨", "tech": "Error tracking",            "pos": { "x": 1320, "y": 800 } },
     { "id": "fly-io",            "name": "Fly.io",             "kind": "infrastructure", "layer": "external", "icon": "🪂", "tech": "Container host",        "pos": { "x": 420,  "y": 930 } },
-    { "id": "gcp-cloud-run",     "name": "Cloud Run",          "kind": "infrastructure", "layer": "external", "icon": "☁️", "tech": "Serverless container",  "pos": { "x": 960,  "y": 930 } },
+    { "id": "mac-mini",          "name": "Mac Mini",           "kind": "infrastructure", "layer": "external", "icon": "🖥️", "tech": "Developer machine, Tailscale-exposed", "pos": { "x": 960,  "y": 930 } },
     { "id": "browser",           "name": "User Browser",       "kind": "external", "layer": "external", "icon": "🌐", "tech": "Client device",             "pos": { "x": 60,   "y": 930 } }
   ]
 }
@@ -814,19 +815,17 @@
       "steps": [
         { "from": "browser",   "to": "fly-io",          "payload": "flyctl deploy --app blick-<service> --config fly.toml", "protocol": "Fly CLI", "note": "Local dev machine pushes — no GitHub Actions" },
         { "from": "fly-io",    "to": "fly-io",          "payload": "Build OCI image → push to Fly registry → deploy",        "protocol": "Container build" },
-        { "from": "fly-io",    "to": "operations-api",  "payload": "Health check /healthz on new release",                    "protocol": "HTTPS GET",  "note": "Same path for rig-api, compass-api" }
+        { "from": "fly-io",    "to": "operations-api",  "payload": "Health check /healthz on new release",                    "protocol": "HTTPS GET",  "note": "Same path for rig-api, compass-api, copper-api" }
       ]
     },
     {
-      "id": "deploy-cloud-run",
-      "name": "Deploy copper-api to Cloud Run",
+      "id": "run-nexus-api-local",
+      "name": "Run nexus-api (local, not Fly)",
       "category": "Deploy",
-      "trigger": "Cloud Build pipeline triggered",
+      "trigger": "Developer starts/restarts nexus-api on the Mac Mini",
       "steps": [
-        { "from": "browser",        "to": "gcp-cloud-run", "payload": "gcloud builds submit / Cloud Build trigger",  "protocol": "GCP API" },
-        { "from": "gcp-cloud-run",  "to": "gcp-cloud-run", "payload": "Build image, deploy revision",                  "protocol": "Container build" },
-        { "from": "gcp-cloud-run",  "to": "copper-api",    "payload": "New revision serves traffic",                   "protocol": "HTTPS" },
-        { "from": "copper-api",     "to": "copper-crm",    "payload": "Smoke test: GET /tasks (auth check)",           "protocol": "Copper REST" }
+        { "from": "browser",     "to": "mac-mini", "payload": "node services/nexus-api/index.js", "protocol": "Local process start", "note": "No container build, no Fly deploy — deliberate: needs direct filesystem access to SQLite + vault .md files" },
+        { "from": "mac-mini",    "to": "nexus-api", "payload": "Listens on 127.0.0.1:8090",         "protocol": "Local process" }
       ]
     },
     {
@@ -848,6 +847,30 @@
       "steps": [
         { "from": "error-boundary", "to": "sentry", "payload": "POST exception + stacktrace + breadcrumbs + user context", "protocol": "HTTPS POST" },
         { "from": "sentry",         "to": "sentry", "payload": "Group by fingerprint, alert if rate > threshold",          "protocol": "Internal" }
+      ]
+    },
+    {
+      "id": "nexus-brief-view-proxy",
+      "name": "View Nexus Daily Brief",
+      "category": "Nexus",
+      "trigger": "User opens the Nexus Brief view in Hub",
+      "steps": [
+        { "from": "actions-view",   "to": "operations-api", "payload": "GET /api/nexus/brief/view?date=<date>", "protocol": "HTTPS GET" },
+        { "from": "operations-api", "to": "nexus-api",      "payload": "GET https://nexus-api.blick.group/api/brief/view", "protocol": "HTTPS via Tailscale", "note": "operations-api proxies — NEXUS_API_URL env var; frontend never calls nexus-api directly" },
+        { "from": "nexus-api",      "to": "operations-api", "payload": "Server-rendered brief HTML",             "protocol": "HTTPS response" },
+        { "from": "operations-api", "to": "actions-view",   "payload": "Forwarded HTML, rendered in sandboxed iframe", "protocol": "HTTPS response" }
+      ]
+    },
+    {
+      "id": "nexus-action-triage",
+      "name": "Triage Nexus Action Item",
+      "category": "Nexus",
+      "trigger": "User dismisses/parks/promotes an item in the Action Register queue",
+      "steps": [
+        { "from": "actions-view",   "to": "operations-api", "payload": "PATCH /api/nexus/actions/:id/transition { status, reason }", "protocol": "HTTPS PATCH" },
+        { "from": "operations-api", "to": "nexus-api",      "payload": "PATCH https://nexus-api.blick.group/api/actions/:id/transition", "protocol": "HTTPS via Tailscale" },
+        { "from": "nexus-api",      "to": "nexus-api",      "payload": "better-sqlite3: update nexus-vault.db row + write triage_feedback", "protocol": "Internal (SQLite)" },
+        { "from": "nexus-api",      "to": "operations-api", "payload": "Vault .md frontmatter + history table updated on disk (Mac Mini)", "protocol": "Filesystem write", "note": "action-register.js writes back to BlickVault/Actions/*.md" }
       ]
     },
     {

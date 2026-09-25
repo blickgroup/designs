@@ -6,7 +6,7 @@ Skill to update: `/flow-explorer` (see `~/.claude/skills/flow-explorer/SKILL.md`
 
 | Project    | Status   | File                                          | Components | Flows | Last refreshed | Outstanding              |
 |------------|----------|-----------------------------------------------|------------|-------|----------------|--------------------------|
-| Hub App    | ✅ Live  | `approved_designs/hub-app-flow-explorer.html` | 35         | 27    | 2026-05-13     | reverse highlight + shareable URLs (Esc clears) |
+| Hub App    | ✅ Live  | `approved_designs/hub-app-flow-explorer.html` | 36         | 29    | 2026-09-26     | added nexus-api (was missing); fixed copper-api Fly vs stale Cloud Run label; reverse highlight + shareable URLs (Esc clears) |
 | Nexus      | ⬜ TODO  | —                                             | —          | —     | —              | Build initial inventory  |
 | Website    | ⬜ TODO  | —                                             | —          | —     | —              | Build initial inventory  |
 | Compass    | n/a      | (lives inside Hub App explorer)               | —          | —     | —              | —                        |
